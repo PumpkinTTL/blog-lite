@@ -5,23 +5,11 @@
         <a-layout-header class="app-header">
           <div class="header-content">
             <h1>{{ title }}</h1>
-            <a-menu
-              mode="horizontal"
-              :selected-keys="[$route.path]"
-              class="header-menu"
-              @menu-item-click="handleMenuClick"
-            >
+            <a-menu mode="horizontal" :selected-keys="[$route.path]" class="header-menu"
+              @menu-item-click="handleMenuClick">
               <a-menu-item key="/">
                 <font-awesome-icon :icon="['fas', 'home']" />
                 首页
-              </a-menu-item>
-              <a-menu-item key="/about">
-                <font-awesome-icon :icon="['fas', 'cog']" />
-                关于
-              </a-menu-item>
-              <a-menu-item key="/icon-test">
-                <font-awesome-icon :icon="['fas', 'eye']" />
-                图标测试
               </a-menu-item>
             </a-menu>
           </div>
@@ -43,9 +31,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-function sayHello() {
-  pywebview.api.say_hello('弟弟')
-}
 // 这里可以添加全局逻辑
 const title = ref('标题')
 
