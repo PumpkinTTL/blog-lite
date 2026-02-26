@@ -8,7 +8,7 @@
 </script>
 
 <style scoped lang="scss">
-@import "@/styles/variables.scss";
-
-
+.home-container {
+  // 样式
+}
 </style>
