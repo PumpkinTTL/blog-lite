@@ -4,11 +4,9 @@ import router from '@/router'
 import App from './App.vue'
 
 // 样式导入
-// 注意：使用 SASS 主题定制时，不要导入 element-plus/dist/index.css
-// Element Plus 的样式会通过 vite.config.ts 中的配置自动处理
-import 'animate.css'
 import '@/style.css'
-import 'ant-design-vue/dist/reset.css';
+import '@/styles/index.scss'
+import 'animate.css'
 // Font Awesome 图标
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -31,14 +29,31 @@ import {
   faDownload,
   faUpload,
   faArrowLeft,
-  faArrowRight
+  faArrowRight,
+  faBell,
+  faBars,
+  faXmark,
+  faMagnifyingGlass,
+  faStar,
+  faUsers,
+  faBook,
+  faChartLine,
+  faDollarSign,
+  faCompass,
+  faTags,
+  faCircleInfo,
+  faMoon,
+  faSun
 } from '@fortawesome/free-solid-svg-icons'
 
 // 添加图标到库
 library.add(
   faUser, faLock, faHome, faCog, faPlus, faMinus, faRefresh,
   faSearch, faEdit, faTrash, faSave, faCheck, faTimes,
-  faEye, faEyeSlash, faDownload, faUpload, faArrowLeft, faArrowRight
+  faEye, faEyeSlash, faDownload, faUpload, faArrowLeft, faArrowRight,
+  faBell, faBars, faXmark, faMagnifyingGlass, faStar, faUsers,
+  faBook, faChartLine, faDollarSign, faCompass, faTags, faCircleInfo,
+  faMoon, faSun
 )
 
 const app = createApp(App)
