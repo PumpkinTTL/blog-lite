@@ -43,7 +43,9 @@ import {
   faTags,
   faCircleInfo,
   faMoon,
-  faSun
+  faSun,
+  faChevronDown,
+  faCrown
 } from '@fortawesome/free-solid-svg-icons'
 
 // 添加图标到库
@@ -53,7 +55,7 @@ library.add(
   faEye, faEyeSlash, faDownload, faUpload, faArrowLeft, faArrowRight,
   faBell, faBars, faXmark, faMagnifyingGlass, faStar, faUsers,
   faBook, faChartLine, faDollarSign, faCompass, faTags, faCircleInfo,
-  faMoon, faSun
+  faMoon, faSun, faChevronDown, faCrown
 )
 
 const app = createApp(App)
