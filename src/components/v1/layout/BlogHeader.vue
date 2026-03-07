@@ -46,8 +46,8 @@
           <div class="hidden sm:block relative">
             <button class="flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'bg-gray-800/60 hover:bg-gray-800' : 'bg-gray-100 hover:bg-gray-200'" @click="toggleUserMenu">
               <div class="relative">
-                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center ring-2 ring-offset-2" :class="isDark ? 'ring-gray-700 ring-offset-[#0F172A]' : 'ring-gray-200 ring-offset-white'">
-                  <span class="text-sm font-semibold text-white">{{ user?.username?.charAt(0) || 'U' }}</span>
+                <div class="w-8 h-8 rounded-full flex items-center justify-center ring-2 ring-offset-2 overflow-hidden" :class="isDark ? 'ring-gray-700 ring-offset-[#0F172A]' : 'ring-gray-200 ring-offset-white'">
+                  <img src="https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg" alt="用户头像" class="w-full h-full object-cover" />
                 </div>
                 <div v-if="user?.isVip" class="vip-crown-badge">
                   <font-awesome-icon icon="crown" class="text-[7px]" />
@@ -100,8 +100,8 @@
           <div class="pt-3" :class="isDark ? 'border-t border-gray-800' : 'border-t border-gray-200'">
             <div class="flex items-center gap-3 px-4 py-3 rounded-lg" :class="isDark ? 'bg-gray-800/60' : 'bg-white'">
               <div class="relative">
-                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-                  <span class="text-sm font-semibold text-white">{{ user?.username?.charAt(0) || 'U' }}</span>
+                <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden">
+                  <img src="https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg" alt="用户头像" class="w-full h-full object-cover" />
                 </div>
                 <div v-if="user?.isVip" class="vip-crown-badge-large">
                   <font-awesome-icon icon="crown" class="text-[8px]" />
@@ -211,44 +211,93 @@ const openNotifications = () => {
   -webkit-text-fill-color: inherit;
 }
 
-/* VIP 皇冠徽章 - 精致小巧版 */
+/* VIP 皇冠徽章 - 边缘流光版 */
 .vip-crown-badge {
   position: absolute;
   top: -2px;
   right: -2px;
-  width: 15px;
-  height: 15px;
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffc700 100%);
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #f4c430 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #fff;
+  border: 2px solid transparent;
+  background-clip: padding-box;
   box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(255, 215, 0, 0.2),
-    inset 0 1px 1px rgba(255, 255, 255, 0.6);
-  color: #b8860b;
+    0 1px 3px rgba(0, 0, 0, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.7);
+  color: #8b6914;
   z-index: 10;
+}
+
+.vip-crown-badge::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  padding: 2px;
+  background: linear-gradient(90deg, 
+    #ffd700 0%, 
+    #fff 25%, 
+    #ffd700 50%, 
+    #fff 75%, 
+    #ffd700 100%
+  );
+  background-size: 200% 100%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderShimmer 2s linear infinite;
 }
 
 .vip-crown-badge-large {
   position: absolute;
   top: -1px;
   right: -1px;
-  width: 17px;
-  height: 17px;
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffc700 100%);
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #f4c430 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2.5px solid #fff;
+  border: 2.5px solid transparent;
+  background-clip: padding-box;
   box-shadow: 
     0 1px 4px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(255, 215, 0, 0.25),
-    inset 0 1px 2px rgba(255, 255, 255, 0.6);
-  color: #b8860b;
+    inset 0 1px 2px rgba(255, 255, 255, 0.7);
+  color: #8b6914;
   z-index: 10;
+}
+
+.vip-crown-badge-large::before {
+  content: '';
+  position: absolute;
+  inset: -2.5px;
+  border-radius: 50%;
+  padding: 2.5px;
+  background: linear-gradient(90deg, 
+    #ffd700 0%, 
+    #fff 25%, 
+    #ffd700 50%, 
+    #fff 75%, 
+    #ffd700 100%
+  );
+  background-size: 200% 100%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderShimmer 2s linear infinite;
+}
+
+@keyframes borderShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 </style>
