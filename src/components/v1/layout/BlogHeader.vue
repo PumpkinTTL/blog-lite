@@ -1,15 +1,15 @@
 <template>
   <header class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300" :class="isDark ? 'bg-[#0F172A] border-gray-800' : 'bg-white border-gray-200'" style="border-bottom-width: 1px;">
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center gap-4 h-16">
+    <nav class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-2 sm:gap-4 h-14 sm:h-16">
         <!-- Logo -->
-        <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-all" :class="isDark ? 'hover:bg-gray-800/60' : 'hover:bg-gray-100'" @click="goHome">
-          <div class="w-9 h-9 rounded-lg flex items-center justify-center bg-blue-600">
-            <font-awesome-icon icon="book" class="text-white text-base" />
+        <div class="flex items-center gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg cursor-pointer transition-all" :class="isDark ? 'hover:bg-gray-800/60' : 'hover:bg-gray-100'" @click="goHome">
+          <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center bg-blue-600">
+            <font-awesome-icon icon="book" class="text-sm sm:text-base text-white" />
           </div>
           <div class="flex flex-col">
-            <span class="text-base font-semibold leading-tight" :class="isDark ? 'text-white' : 'text-gray-900'">博客资源</span>
-            <span class="text-[10px] font-medium leading-tight" :class="isDark ? 'text-gray-500' : 'text-gray-400'">Resource Hub</span>
+            <span class="text-sm sm:text-base font-semibold leading-tight" :class="isDark ? 'text-white' : 'text-gray-900'">博客资源</span>
+            <span class="hidden sm:block text-[10px] font-medium leading-tight" :class="isDark ? 'text-gray-500' : 'text-gray-400'">Resource Hub</span>
           </div>
         </div>
 
@@ -24,70 +24,82 @@
         <div class="flex-1"></div>
 
         <!-- Actions -->
-        <div class="flex items-center gap-2">
-          <!-- Action Buttons -->
-          <button class="p-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'text-gray-400 hover:text-white hover:bg-gray-800/60' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'" @click="openSearch">
-            <font-awesome-icon icon="search" class="text-base" />
+        <div class="flex items-center gap-1 sm:gap-2">
+          <!-- Search Button -->
+          <button class="p-1.5 sm:p-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'text-gray-400 hover:text-white hover:bg-gray-800/60' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'" @click="openSearch">
+            <font-awesome-icon icon="search" class="text-sm sm:text-base" />
           </button>
 
+          <!-- Theme Toggle (Desktop only) -->
           <button class="hidden sm:block p-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'text-gray-400 hover:text-white hover:bg-gray-800/60' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'" @click="toggleTheme">
             <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="text-base" />
           </button>
 
-          <button class="hidden sm:block relative p-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'text-gray-400 hover:text-white hover:bg-gray-800/60' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'" @click="openNotifications">
+          <!-- Notification Button (Desktop only) -->
+          <button class="hidden sm:block relative p-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'text-gray-400 hover:text-white hover:bg-gray-800/60' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'" @click="toggleNotifications">
             <font-awesome-icon icon="bell" class="text-base" />
             <span v-if="hasNotifications" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2" :class="isDark ? 'ring-[#0F172A]' : 'ring-white'"></span>
           </button>
 
-          <!-- Divider -->
+          <!-- Divider (Desktop only) -->
           <div class="hidden sm:block w-px h-6 mx-1" :class="isDark ? 'bg-gray-700' : 'bg-gray-200'"></div>
 
-          <!-- User -->
-          <div class="hidden sm:block relative">
-            <button class="flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'bg-gray-800/60 hover:bg-gray-800' : 'bg-gray-100 hover:bg-gray-200'" @click="toggleUserMenu">
-              <div class="relative">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center ring-2 ring-offset-2 overflow-hidden" :class="isDark ? 'ring-gray-700 ring-offset-[#0F172A]' : 'ring-gray-200 ring-offset-white'">
-                  <img src="https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg" alt="用户头像" class="w-full h-full object-cover" />
-                </div>
-                <div v-if="user?.isVip" class="vip-crown-badge">
-                  <font-awesome-icon icon="crown" class="text-[7px]" />
-                </div>
+          <!-- User Button (All screens) -->
+          <button class="flex items-center gap-1.5 sm:gap-2.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'bg-gray-800/60 hover:bg-gray-800' : 'bg-gray-100 hover:bg-gray-200'" @click="toggleUserMenu">
+            <div class="relative">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ring-1 sm:ring-2 ring-offset-1 sm:ring-offset-2 overflow-hidden" :class="isDark ? 'ring-gray-700 ring-offset-[#0F172A]' : 'ring-gray-200 ring-offset-white'">
+                <img src="https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg" alt="用户头像" class="w-full h-full object-cover" />
               </div>
-              <span class="text-sm font-medium username-text" :class="[isDark ? 'text-gray-200' : 'text-gray-700', user?.isVip ? 'vip-shimmer' : '']">{{ user?.username || '用户' }}</span>
-              <font-awesome-icon icon="chevron-down" class="text-xs transition-transform" :class="[isDark ? 'text-gray-400' : 'text-gray-500', isUserMenuOpen ? 'rotate-180' : '']" />
-            </button>
-
-            <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100" leave-active-class="transition duration-100 ease-in" leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
-              <div v-if="isUserMenuOpen" class="absolute right-0 mt-2 w-56 rounded-xl shadow-2xl py-2 overflow-hidden" :class="isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'">
-                <div class="px-4 py-3" :class="isDark ? 'bg-gray-900/50' : 'bg-gray-50'">
-                  <p class="text-sm font-semibold username-text" :class="[isDark ? 'text-white' : 'text-gray-900', user?.isVip ? 'vip-shimmer' : '']">{{ user?.username || '用户' }}</p>
-                  <p class="text-xs mt-0.5" :class="isDark ? 'text-gray-400' : 'text-gray-500'">{{ user?.email || 'user@example.com' }}</p>
-                </div>
-                <div class="py-1">
-                  <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
-                    <font-awesome-icon icon="user" class="w-4" />
-                    个人资料
-                  </a>
-                  <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
-                    <font-awesome-icon icon="cog" class="w-4" />
-                    设置
-                  </a>
-                </div>
-                <div class="mt-1 pt-1" :class="isDark ? 'border-t border-gray-700' : 'border-t border-gray-200'">
-                  <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-red-400 hover:text-red-300 hover:bg-red-500/10' : 'text-red-600 hover:text-red-700 hover:bg-red-50'">
-                    <font-awesome-icon icon="arrow-right" class="w-4" />
-                    退出登录
-                  </a>
-                </div>
+              <div v-if="user?.isVip" class="vip-crown-badge-mobile sm:vip-crown-badge">
+                <font-awesome-icon icon="crown" class="text-[6px] sm:text-[7px]" />
               </div>
-            </transition>
-          </div>
+            </div>
+            <span class="text-xs sm:text-sm font-medium username-text max-w-[60px] sm:max-w-none truncate" :class="[isDark ? 'text-gray-200' : 'text-gray-700', user?.isVip ? 'vip-shimmer' : '']">{{ user?.username || '用户' }}</span>
+            <font-awesome-icon icon="chevron-down" class="text-xs transition-transform" :class="[isDark ? 'text-gray-400' : 'text-gray-500', isUserMenuOpen ? 'rotate-180' : '']" />
+          </button>
 
-          <button class="md:hidden p-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'text-gray-400 hover:text-white hover:bg-gray-800/60' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'" @click="toggleMobileMenu">
-            <font-awesome-icon :icon="isMobileMenuOpen ? 'xmark' : 'bars'" class="text-base" />
+          <!-- Mobile Menu Button (Mobile only) -->
+          <button class="md:hidden p-1.5 rounded-lg transition-all cursor-pointer" :class="isDark ? 'text-gray-400 hover:text-white hover:bg-gray-800/60' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'" @click="toggleMobileMenu">
+            <font-awesome-icon :icon="isMobileMenuOpen ? 'xmark' : 'bars'" class="text-sm" />
           </button>
         </div>
       </div>
+
+      <!-- User Menu Dropdown -->
+      <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100" leave-active-class="transition duration-100 ease-in" leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
+        <div v-if="isUserMenuOpen" class="absolute right-3 sm:right-6 lg:right-8 mt-2 w-52 sm:w-56 rounded-xl shadow-2xl py-2 overflow-hidden z-50" :class="isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'">
+          <div class="px-4 py-3" :class="isDark ? 'bg-gray-900/50' : 'bg-gray-50'">
+            <p class="text-sm font-semibold username-text" :class="[isDark ? 'text-white' : 'text-gray-900', user?.isVip ? 'vip-shimmer' : '']">{{ user?.username || '用户' }}</p>
+            <p class="text-xs mt-0.5" :class="isDark ? 'text-gray-400' : 'text-gray-500'">{{ user?.email || 'user@example.com' }}</p>
+          </div>
+          <div class="py-1">
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
+              <font-awesome-icon icon="user" class="w-4" />
+              个人资料
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
+              <font-awesome-icon icon="cog" class="w-4" />
+              设置
+            </a>
+            <!-- Mobile only options -->
+            <a href="#" class="sm:hidden flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleTheme">
+              <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="w-4" />
+              {{ isDark ? '浅色模式' : '深色模式' }}
+            </a>
+            <a href="#" class="sm:hidden flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer relative" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleNotifications">
+              <font-awesome-icon icon="bell" class="w-4" />
+              通知中心
+              <span v-if="hasNotifications" class="ml-auto w-2 h-2 bg-red-500 rounded-full"></span>
+            </a>
+          </div>
+          <div class="mt-1 pt-1" :class="isDark ? 'border-t border-gray-700' : 'border-t border-gray-200'">
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-red-400 hover:text-red-300 hover:bg-red-500/10' : 'text-red-600 hover:text-red-700 hover:bg-red-50'">
+              <font-awesome-icon icon="arrow-right" class="w-4" />
+              退出登录
+            </a>
+          </div>
+        </div>
+      </transition>
     </nav>
 
     <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 -translate-y-2" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 -translate-y-2">
@@ -116,16 +128,21 @@
         </div>
       </div>
     </transition>
+
+    <!-- Notification Center Modal -->
+    <NotificationCenter :is-open="isNotificationOpen" :is-dark="isDark" @close="isNotificationOpen = false" @mark-all-read="handleMarkAllRead" />
   </header>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import NotificationCenter from './NotificationCenter.vue'
 
 const router = useRouter()
 const isMobileMenuOpen = ref(false)
 const isUserMenuOpen = ref(false)
+const isNotificationOpen = ref(false)
 const hasNotifications = ref(true)
 const isDark = ref(false)
 
@@ -134,6 +151,36 @@ const user = ref({
   email: 'zhangsan@example.com',
   isVip: true
 })
+
+const notifications = ref([
+  {
+    id: 1,
+    type: 'success',
+    icon: 'check',
+    title: '系统更新',
+    message: '新版本已发布，包含多项功能优化',
+    time: '5分钟前',
+    read: false
+  },
+  {
+    id: 2,
+    type: 'info',
+    icon: 'circle-info',
+    title: '新资源推荐',
+    message: '发现3个符合你兴趣的优质资源',
+    time: '1小时前',
+    read: false
+  },
+  {
+    id: 3,
+    type: 'warning',
+    icon: 'star',
+    title: 'VIP会员提醒',
+    message: '您的会员将在7天后到期',
+    time: '昨天',
+    read: true
+  }
+])
 
 const navItems = [
   { name: '首页', href: '/', isRoute: true, icon: 'home' },
@@ -159,11 +206,24 @@ const handleNavClickMobile = (item: typeof navItems[0]) => {
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
-  if (isMobileMenuOpen.value) isUserMenuOpen.value = false
+  if (isMobileMenuOpen.value) {
+    isUserMenuOpen.value = false
+    isNotificationOpen.value = false
+  }
 }
 
 const toggleUserMenu = () => {
   isUserMenuOpen.value = !isUserMenuOpen.value
+  if (isUserMenuOpen.value) isNotificationOpen.value = false
+}
+
+const toggleNotifications = () => {
+  isNotificationOpen.value = !isNotificationOpen.value
+  if (isNotificationOpen.value) isUserMenuOpen.value = false
+}
+
+const handleMarkAllRead = () => {
+  hasNotifications.value = false
 }
 
 const toggleTheme = () => {
@@ -172,10 +232,7 @@ const toggleTheme = () => {
 
 const openSearch = () => {
   console.log('Open search')
-}
-
-const openNotifications = () => {
-  console.log('Open notifications')
+  // TODO: 实现搜索功能
 }
 </script>
 
@@ -212,6 +269,46 @@ const openNotifications = () => {
 }
 
 /* VIP 皇冠徽章 - 边缘流光版 */
+.vip-crown-badge-mobile {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #f4c430 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  color: #8b6914;
+  z-index: 10;
+}
+
+.vip-crown-badge-mobile::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 50%;
+  padding: 1.5px;
+  background: linear-gradient(90deg, 
+    #ffd700 0%, 
+    #fff 25%, 
+    #ffd700 50%, 
+    #fff 75%, 
+    #ffd700 100%
+  );
+  background-size: 200% 100%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderShimmer 2s linear infinite;
+}
+
 .vip-crown-badge {
   position: absolute;
   top: -2px;
