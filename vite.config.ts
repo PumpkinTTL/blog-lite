@@ -29,5 +29,10 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, 'src')
     }
+  },
+  server: {
+    host: true, // 监听所有地址，包括局域网
+    port: 5173,
+    open: true
   }
 })

@@ -45,18 +45,56 @@
           <div class="hidden sm:block w-px h-6 mx-1" :class="isDark ? 'bg-gray-700' : 'bg-gray-200'"></div>
 
           <!-- User Button (All screens) -->
-          <button class="flex items-center gap-1.5 sm:gap-2.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'bg-gray-800/60 hover:bg-gray-800' : 'bg-gray-100 hover:bg-gray-200'" @click="toggleUserMenu">
-            <div class="relative">
-              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ring-1 sm:ring-2 ring-offset-1 sm:ring-offset-2 overflow-hidden" :class="isDark ? 'ring-gray-700 ring-offset-[#0F172A]' : 'ring-gray-200 ring-offset-white'">
-                <img src="https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg" alt="用户头像" class="w-full h-full object-cover" />
+          <div class="relative">
+            <button class="flex items-center gap-1.5 sm:gap-2.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'bg-gray-800/60 hover:bg-gray-800' : 'bg-gray-100 hover:bg-gray-200'" @click="toggleUserMenu">
+              <div class="relative">
+                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ring-1 sm:ring-2 ring-offset-1 sm:ring-offset-2 overflow-hidden" :class="isDark ? 'ring-gray-700 ring-offset-[#0F172A]' : 'ring-gray-200 ring-offset-white'">
+                  <img src="https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg" alt="用户头像" class="w-full h-full object-cover" />
+                </div>
+                <div v-if="user?.isVip" class="vip-crown-badge-mobile sm:vip-crown-badge">
+                  <font-awesome-icon icon="crown" class="text-[6px] sm:text-[7px]" />
+                </div>
               </div>
-              <div v-if="user?.isVip" class="vip-crown-badge-mobile sm:vip-crown-badge">
-                <font-awesome-icon icon="crown" class="text-[6px] sm:text-[7px]" />
+              <span class="text-xs sm:text-sm font-medium username-text max-w-[60px] sm:max-w-none truncate" :class="[isDark ? 'text-gray-200' : 'text-gray-700', user?.isVip ? 'vip-shimmer' : '']">{{ user?.username || '用户' }}</span>
+              <font-awesome-icon icon="chevron-down" class="text-xs transition-transform" :class="[isDark ? 'text-gray-400' : 'text-gray-500', isUserMenuOpen ? 'rotate-180' : '']" />
+            </button>
+
+            <!-- User Menu Dropdown -->
+            <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100" leave-active-class="transition duration-100 ease-in" leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
+              <div v-if="isUserMenuOpen" class="absolute right-0 mt-2 w-52 sm:w-56 rounded-xl shadow-2xl py-2 overflow-hidden z-50" :class="isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'">
+                <div class="px-4 py-3" :class="isDark ? 'bg-gray-900/50' : 'bg-gray-50'">
+                  <p class="text-sm font-semibold username-text" :class="[isDark ? 'text-white' : 'text-gray-900', user?.isVip ? 'vip-shimmer' : '']">{{ user?.username || '用户' }}</p>
+                  <p class="text-xs mt-0.5" :class="isDark ? 'text-gray-400' : 'text-gray-500'">{{ user?.email || 'user@example.com' }}</p>
+                </div>
+                <div class="py-1">
+                  <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
+                    <font-awesome-icon icon="user" class="w-4" />
+                    个人资料
+                  </a>
+                  <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
+                    <font-awesome-icon icon="cog" class="w-4" />
+                    设置
+                  </a>
+                  <!-- Mobile only options -->
+                  <a href="#" class="sm:hidden flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleTheme">
+                    <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="w-4" />
+                    {{ isDark ? '浅色模式' : '深色模式' }}
+                  </a>
+                  <a href="#" class="sm:hidden flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer relative" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleNotifications">
+                    <font-awesome-icon icon="bell" class="w-4" />
+                    通知中心
+                    <span v-if="hasNotifications" class="ml-auto w-2 h-2 bg-red-500 rounded-full"></span>
+                  </a>
+                </div>
+                <div class="mt-1 pt-1" :class="isDark ? 'border-t border-gray-700' : 'border-t border-gray-200'">
+                  <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-red-400 hover:text-red-300 hover:bg-red-500/10' : 'text-red-600 hover:text-red-700 hover:bg-red-50'">
+                    <font-awesome-icon icon="arrow-right" class="w-4" />
+                    退出登录
+                  </a>
+                </div>
               </div>
-            </div>
-            <span class="text-xs sm:text-sm font-medium username-text max-w-[60px] sm:max-w-none truncate" :class="[isDark ? 'text-gray-200' : 'text-gray-700', user?.isVip ? 'vip-shimmer' : '']">{{ user?.username || '用户' }}</span>
-            <font-awesome-icon icon="chevron-down" class="text-xs transition-transform" :class="[isDark ? 'text-gray-400' : 'text-gray-500', isUserMenuOpen ? 'rotate-180' : '']" />
-          </button>
+            </transition>
+          </div>
 
           <!-- Mobile Menu Button (Mobile only) -->
           <button class="md:hidden p-1.5 rounded-lg transition-all cursor-pointer" :class="isDark ? 'text-gray-400 hover:text-white hover:bg-gray-800/60' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'" @click="toggleMobileMenu">
@@ -64,42 +102,6 @@
           </button>
         </div>
       </div>
-
-      <!-- User Menu Dropdown -->
-      <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100" leave-active-class="transition duration-100 ease-in" leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
-        <div v-if="isUserMenuOpen" class="absolute right-3 sm:right-6 lg:right-8 mt-2 w-52 sm:w-56 rounded-xl shadow-2xl py-2 overflow-hidden z-50" :class="isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'">
-          <div class="px-4 py-3" :class="isDark ? 'bg-gray-900/50' : 'bg-gray-50'">
-            <p class="text-sm font-semibold username-text" :class="[isDark ? 'text-white' : 'text-gray-900', user?.isVip ? 'vip-shimmer' : '']">{{ user?.username || '用户' }}</p>
-            <p class="text-xs mt-0.5" :class="isDark ? 'text-gray-400' : 'text-gray-500'">{{ user?.email || 'user@example.com' }}</p>
-          </div>
-          <div class="py-1">
-            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
-              <font-awesome-icon icon="user" class="w-4" />
-              个人资料
-            </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
-              <font-awesome-icon icon="cog" class="w-4" />
-              设置
-            </a>
-            <!-- Mobile only options -->
-            <a href="#" class="sm:hidden flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleTheme">
-              <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="w-4" />
-              {{ isDark ? '浅色模式' : '深色模式' }}
-            </a>
-            <a href="#" class="sm:hidden flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer relative" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleNotifications">
-              <font-awesome-icon icon="bell" class="w-4" />
-              通知中心
-              <span v-if="hasNotifications" class="ml-auto w-2 h-2 bg-red-500 rounded-full"></span>
-            </a>
-          </div>
-          <div class="mt-1 pt-1" :class="isDark ? 'border-t border-gray-700' : 'border-t border-gray-200'">
-            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-red-400 hover:text-red-300 hover:bg-red-500/10' : 'text-red-600 hover:text-red-700 hover:bg-red-50'">
-              <font-awesome-icon icon="arrow-right" class="w-4" />
-              退出登录
-            </a>
-          </div>
-        </div>
-      </transition>
     </nav>
 
     <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 -translate-y-2" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 -translate-y-2">
