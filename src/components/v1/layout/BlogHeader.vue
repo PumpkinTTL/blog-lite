@@ -45,7 +45,7 @@
           <div class="hidden sm:block w-px h-6 mx-1" :class="isDark ? 'bg-gray-700' : 'bg-gray-200'"></div>
 
           <!-- User Button (All screens) -->
-          <div class="relative">
+          <div class="relative" ref="userMenuRef">
             <button class="flex items-center gap-1.5 sm:gap-2.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all cursor-pointer" :class="isDark ? 'bg-gray-800/60 hover:bg-gray-800' : 'bg-gray-100 hover:bg-gray-200'" @click="toggleUserMenu">
               <div class="relative">
                 <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ring-1 sm:ring-2 ring-offset-1 sm:ring-offset-2 overflow-hidden" :class="isDark ? 'ring-gray-700 ring-offset-[#0F172A]' : 'ring-gray-200 ring-offset-white'">
@@ -56,40 +56,73 @@
                 </div>
               </div>
               <span class="text-xs sm:text-sm font-medium username-text max-w-[60px] sm:max-w-none truncate" :class="[isDark ? 'text-gray-200' : 'text-gray-700', user?.isVip ? 'vip-shimmer' : '']">{{ user?.username || '用户' }}</span>
-              <font-awesome-icon icon="chevron-down" class="text-xs transition-transform" :class="[isDark ? 'text-gray-400' : 'text-gray-500', isUserMenuOpen ? 'rotate-180' : '']" />
+              <font-awesome-icon icon="chevron-down" class="text-xs transition-transform duration-200" :class="[isDark ? 'text-gray-400' : 'text-gray-500', isUserMenuOpen ? 'rotate-180' : '']" />
             </button>
 
             <!-- User Menu Dropdown -->
-            <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100" leave-active-class="transition duration-100 ease-in" leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
-              <div v-if="isUserMenuOpen" class="absolute right-0 mt-2 w-52 sm:w-56 rounded-xl shadow-2xl py-2 overflow-hidden z-50" :class="isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'">
-                <div class="px-4 py-3" :class="isDark ? 'bg-gray-900/50' : 'bg-gray-50'">
-                  <p class="text-sm font-semibold username-text" :class="[isDark ? 'text-white' : 'text-gray-900', user?.isVip ? 'vip-shimmer' : '']">{{ user?.username || '用户' }}</p>
-                  <p class="text-xs mt-0.5" :class="isDark ? 'text-gray-400' : 'text-gray-500'">{{ user?.email || 'user@example.com' }}</p>
+            <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 scale-95 translate-y-[-10px]" enter-to-class="opacity-100 scale-100 translate-y-0" leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100 scale-100 translate-y-0" leave-to-class="opacity-0 scale-95 translate-y-[-10px]">
+              <div v-if="isUserMenuOpen" class="absolute right-0 mt-4 w-60 sm:w-64 rounded-xl overflow-hidden z-50" :class="isDark ? 'bg-gray-800/95 backdrop-blur-xl border border-gray-700/50' : 'bg-white/95 backdrop-blur-xl border border-gray-200/50'" style="box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);">
+                <!-- User Info Header -->
+                <div class="px-4 py-4 relative overflow-hidden" :class="isDark ? 'bg-gradient-to-br from-gray-900/50 to-gray-800/50' : 'bg-gradient-to-br from-gray-50/50 to-white/50'">
+                  <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent"></div>
+                  <div class="flex items-start gap-3 relative z-10">
+                    <div class="relative flex-shrink-0">
+                      <div class="w-12 h-12 rounded-lg overflow-hidden ring-2 ring-offset-2" :class="isDark ? 'ring-gray-700 ring-offset-gray-800' : 'ring-gray-200 ring-offset-white'">
+                        <img src="https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg" alt="用户头像" class="w-full h-full object-cover" />
+                      </div>
+                      <div v-if="user?.isVip" class="absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center ring-2" :class="isDark ? 'ring-gray-800' : 'ring-white'">
+                        <font-awesome-icon icon="crown" class="text-[8px] text-white" />
+                      </div>
+                    </div>
+                    <div class="flex-1 min-w-0 pt-0.5">
+                      <p class="text-sm font-bold username-text truncate mb-1" :class="[isDark ? 'text-white' : 'text-gray-900', user?.isVip ? 'vip-shimmer' : '']">{{ user?.username || '用户' }}</p>
+                      <p class="text-xs truncate mb-2" :class="isDark ? 'text-gray-400' : 'text-gray-500'">{{ user?.email || 'user@example.com' }}</p>
+                      <span v-if="user?.isVip" class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold rounded-md" :class="isDark ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' : 'bg-yellow-50 text-yellow-600 border border-yellow-200'">
+                        <font-awesome-icon icon="crown" class="text-[8px]" />
+                        VIP会员
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div class="py-1">
-                  <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
-                    <font-awesome-icon icon="user" class="w-4" />
-                    个人资料
+
+                <!-- Menu Items -->
+                <div class="py-2 px-2">
+                  <a href="#" class="flex items-center gap-3 px-3 py-2.5 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
+                    <div class="w-8 h-8 rounded-md flex items-center justify-center transition-all duration-200" :class="isDark ? 'bg-gray-700/50 group-hover:bg-gray-700' : 'bg-gray-100 group-hover:bg-gray-200'">
+                      <font-awesome-icon icon="user" class="text-sm" />
+                    </div>
+                    <span>个人资料</span>
                   </a>
-                  <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
-                    <font-awesome-icon icon="cog" class="w-4" />
-                    设置
+                  <a href="#" class="flex items-center gap-3 px-3 py-2.5 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
+                    <div class="w-8 h-8 rounded-md flex items-center justify-center transition-all duration-200" :class="isDark ? 'bg-gray-700/50 group-hover:bg-gray-700' : 'bg-gray-100 group-hover:bg-gray-200'">
+                      <font-awesome-icon icon="cog" class="text-sm" />
+                    </div>
+                    <span>设置</span>
                   </a>
+                  
                   <!-- Mobile only options -->
-                  <a href="#" class="sm:hidden flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleTheme">
-                    <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="w-4" />
-                    {{ isDark ? '浅色模式' : '深色模式' }}
+                  <a href="#" class="sm:hidden flex items-center gap-3 px-3 py-2.5 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleTheme">
+                    <div class="w-8 h-8 rounded-md flex items-center justify-center transition-all duration-200" :class="isDark ? 'bg-gray-700/50 group-hover:bg-gray-700' : 'bg-gray-100 group-hover:bg-gray-200'">
+                      <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="text-sm" />
+                    </div>
+                    <span>{{ isDark ? '浅色模式' : '深色模式' }}</span>
                   </a>
-                  <a href="#" class="sm:hidden flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer relative" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleNotifications">
-                    <font-awesome-icon icon="bell" class="w-4" />
-                    通知中心
-                    <span v-if="hasNotifications" class="ml-auto w-2 h-2 bg-red-500 rounded-full"></span>
+                  <a href="#" class="sm:hidden flex items-center gap-3 px-3 py-2.5 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group relative" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleNotifications">
+                    <div class="w-8 h-8 rounded-md flex items-center justify-center transition-all duration-200 relative" :class="isDark ? 'bg-gray-700/50 group-hover:bg-gray-700' : 'bg-gray-100 group-hover:bg-gray-200'">
+                      <font-awesome-icon icon="bell" class="text-sm" />
+                      <span v-if="hasNotifications" class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full ring-1" :class="isDark ? 'ring-gray-700' : 'ring-gray-100'"></span>
+                    </div>
+                    <span>通知中心</span>
                   </a>
                 </div>
-                <div class="mt-1 pt-1" :class="isDark ? 'border-t border-gray-700' : 'border-t border-gray-200'">
-                  <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer" :class="isDark ? 'text-red-400 hover:text-red-300 hover:bg-red-500/10' : 'text-red-600 hover:text-red-700 hover:bg-red-50'">
-                    <font-awesome-icon icon="arrow-right" class="w-4" />
-                    退出登录
+
+                <!-- Logout -->
+                <div class="px-2 pb-2 pt-1 border-t" :class="isDark ? 'border-gray-700/50' : 'border-gray-200/50'">
+                  <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group" :class="isDark ? 'text-red-400 hover:text-red-300 hover:bg-red-500/10' : 'text-red-600 hover:text-red-700 hover:bg-red-50'">
+                    <div class="w-8 h-8 rounded-md flex items-center justify-center transition-all duration-200" :class="isDark ? 'bg-red-500/10 group-hover:bg-red-500/20' : 'bg-red-50 group-hover:bg-red-100'">
+                      <font-awesome-icon icon="arrow-right" class="text-sm" />
+                    </div>
+                    <span>退出登录</span>
                   </a>
                 </div>
               </div>
@@ -137,7 +170,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import NotificationCenter from './NotificationCenter.vue'
 
@@ -147,6 +180,7 @@ const isUserMenuOpen = ref(false)
 const isNotificationOpen = ref(false)
 const hasNotifications = ref(true)
 const isDark = ref(false)
+const userMenuRef = ref<HTMLElement | null>(null)
 
 const user = ref({
   username: '又是一年冬',
@@ -236,6 +270,21 @@ const openSearch = () => {
   console.log('Open search')
   // TODO: 实现搜索功能
 }
+
+// 点击外部关闭用户菜单
+const handleClickOutside = (event: MouseEvent) => {
+  if (userMenuRef.value && !userMenuRef.value.contains(event.target as Node)) {
+    isUserMenuOpen.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <style scoped>
