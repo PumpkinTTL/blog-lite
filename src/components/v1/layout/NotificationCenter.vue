@@ -1,76 +1,59 @@
 <template>
-  <transition
-    enter-active-class="animate__animated animate__fadeIn"
-    enter-active-style="animation-duration: 0.2s;"
-    leave-active-class="animate__animated animate__fadeOut"
-    leave-active-style="animation-duration: 0.15s;"
-  >
-    <div
-      v-if="isOpen"
-      class="fixed inset-0 z-50 flex items-start justify-center sm:pt-16 px-4 sm:px-4"
-      @click="close"
+  <a-config-provider :theme="{ algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm }">
+    <a-modal
+      :open="isOpen"
+      :footer="null"
+      :closable="false"
+      :width="isMobile ? 'calc(100vw - 32px)' : 640"
+      :centered="true"
+      :maskClosable="true"
+      wrap-class-name="notification-center-modal"
+      @cancel="close"
     >
-      <!-- Backdrop -->
-      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-
-      <!-- Modal -->
-      <div
-        class="relative w-full max-w-md sm:max-w-lg h-full sm:h-auto animate__animated animate__zoomIn"
-        style="animation-duration: 0.25s"
-        :class="
-          isDark
-            ? 'bg-gray-800/95 backdrop-blur-xl sm:border sm:border-gray-700/30'
-            : 'bg-white/95 backdrop-blur-xl sm:border sm:border-gray-200/30'
-        "
-        :style="{ boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.3)' }"
-        @click.stop
-      >
+      <div class="notification-center-content rounded-lg overflow-hidden">
         <!-- Header -->
         <div
-          class="px-4 sm:px-5 py-3.5 flex items-center justify-between backdrop-blur-sm"
+          class="py-3 sm:py-4 flex items-center justify-between border-b"
           :class="
             isDark
-              ? 'bg-gray-900/40 border-b border-gray-700/30'
-              : 'bg-gray-50/40 border-b border-gray-200/30'
+              ? 'bg-gray-800/50 border-gray-700/50'
+              : 'bg-gray-50/50 border-gray-200/50'
           "
         >
-          <div class="flex items-center gap-2.5">
+          <div class="flex items-center gap-2.5 sm:gap-3">
             <div
-              class="w-9 h-9 rounded-lg flex items-center justify-center relative overflow-hidden"
+              class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center"
               :class="isDark ? 'bg-blue-500/10' : 'bg-blue-50'"
             >
-              <div
-                class="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-transparent"
-              ></div>
               <font-awesome-icon
                 icon="bell"
-                class="text-base relative z-10"
+                class="text-sm sm:text-base"
                 :class="isDark ? 'text-blue-400' : 'text-blue-600'"
               />
             </div>
             <div>
               <h3
-                class="text-base font-semibold"
+                class="text-sm sm:text-base font-semibold"
                 :class="isDark ? 'text-white' : 'text-gray-900'"
               >
                 通知中心
               </h3>
               <p
                 class="text-xs"
-                :class="isDark ? 'text-gray-400' : 'text-gray-500'"
+                :class="isDark ? 'text-gray-500' : 'text-gray-400'"
               >
                 {{ unreadCount }}条未读
               </p>
             </div>
           </div>
-          <div class="flex items-center gap-1.5">
+          <div class="flex items-center gap-1.5 sm:gap-2">
             <button
               v-if="unreadCount > 0"
-              class="px-2.5 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 cursor-pointer"
+              class="px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs font-medium rounded-lg transition-all duration-200 cursor-pointer"
               :class="
                 isDark
-                  ? 'bg-blue-500/10 text-blue-400 hover:bg-blue-500/15'
-                  : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
+                  ? 'bg-blue-500/10 text-blue-400'
+                  : 'bg-blue-50 text-blue-600'
               "
               @click="markAllRead"
             >
@@ -78,11 +61,11 @@
               <span class="hidden sm:inline">全部已读</span>
             </button>
             <button
-              class="p-1.5 rounded-lg transition-all duration-200 cursor-pointer"
+              class="p-1.5 sm:p-2 rounded-lg transition-all duration-200 cursor-pointer"
               :class="
                 isDark
-                  ? 'text-gray-400 hover:text-white hover:bg-gray-700/40'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+                  ? 'text-gray-400'
+                  : 'text-gray-500'
               "
               @click="close"
             >
@@ -91,180 +74,178 @@
           </div>
         </div>
 
-        <!-- Tabs -->
+      <!-- Tabs -->
+      <div
+        class="py-2"
+        :class="isDark ? 'bg-gray-800/30' : 'bg-gray-50/40'"
+      >
         <div
-          class="px-4 sm:px-5 py-2.5 flex gap-1.5 backdrop-blur-sm"
-          :class="isDark ? 'bg-gray-900/20' : 'bg-gray-50/40'"
+          class="notification-tabs-wrap p-0.5 rounded-lg"
+          :class="
+            isDark
+              ? 'bg-gray-800/50'
+              : 'bg-gray-100'
+          "
         >
           <button
             v-for="tab in tabs"
             :key="tab.id"
-            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer relative overflow-hidden"
+            class="notification-tab-btn flex-1 sm:flex-none px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-colors duration-150 cursor-pointer"
             :class="
               activeTab === tab.id
                 ? isDark
-                  ? 'bg-gray-700/60 text-white'
+                  ? 'bg-gray-700 text-white'
                   : 'bg-white text-gray-900'
                 : isDark
-                ? 'text-gray-400 hover:text-white hover:bg-gray-800/40'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
+                ? 'text-gray-400 hover:text-gray-200'
+                : 'text-gray-600 hover:text-gray-900'
             "
             @click="changeTab(tab.id)"
           >
-            <span class="relative z-10">{{ tab.name }}</span>
+            <span>{{ tab.name }}</span>
             <span
               v-if="tab.count > 0"
-              class="relative z-10 ml-1.5 px-1.5 py-0.5 text-xs font-semibold rounded-full transition-all duration-200"
+              class="ml-1.5 px-2 py-0.5 text-xs font-semibold rounded-full"
               :class="
                 activeTab === tab.id
                   ? 'bg-blue-500 text-white'
                   : isDark
-                  ? 'bg-gray-700 text-gray-300'
+                  ? 'bg-gray-700 text-gray-400'
                   : 'bg-gray-200 text-gray-600'
               "
               >{{ tab.count }}</span
             >
-            <div
-              v-if="activeTab === tab.id"
-              class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent"
-            ></div>
           </button>
         </div>
+      </div>
 
-        <!-- Notifications List -->
-        <div
-          class="h-[calc(100vh-140px)] sm:h-auto sm:max-h-[450px] overflow-y-auto custom-scrollbar"
-          :class="isDark ? 'bg-gray-900/10' : 'bg-gray-50/20'"
-        >
-          <transition-group
-            name="notification-list"
-            tag="div"
-            class="p-3 sm:p-4 space-y-2"
-          >
-            <div
-              v-for="(notification, index) in filteredNotifications"
-              :key="notification.id"
-              class="p-3 sm:p-3.5 rounded-lg transition-all duration-200 cursor-pointer relative overflow-hidden group"
-              :class="[
-                isDark
-                  ? 'bg-gray-800/50 hover:bg-gray-800/70 border border-gray-700/30'
-                  : 'bg-white/80 hover:bg-white border border-gray-200/40',
-                !notification.read
-                  ? isDark
-                    ? 'shadow-md shadow-blue-500/5'
-                    : 'shadow-md shadow-blue-500/10'
-                  : 'shadow-sm',
-              ]"
-              :style="{ animationDelay: `${index * 60}ms` }"
-              @click="markAsRead(notification.id)"
+      <!-- Notifications List -->
+      <div
+        ref="listContainer"
+        class="overflow-y-auto custom-scrollbar h-[58vh] max-h-[58vh] min-h-[220px] sm:h-[460px] sm:max-h-[60vh] sm:min-h-[280px]"
+        :class="isDark ? 'bg-gray-800' : 'bg-white'"
+      >
+        <Transition name="tab-list" mode="out-in" appear>
+          <div :key="activeTab" class="py-2.5 sm:py-3">
+            <transition-group
+              name="notification-item"
+              tag="div"
+              class="space-y-2 sm:space-y-2.5"
             >
-              <!-- Gradient overlay for unread -->
               <div
-                v-if="!notification.read"
-                class="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-transparent pointer-events-none"
-              ></div>
-
-              <div class="flex gap-3 relative z-10">
-                <div
-                  class="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center relative overflow-hidden transition-transform duration-200 group-hover:scale-105"
-                  :class="getNotificationStyle(notification.type)"
-                >
+                v-for="(notification, index) in filteredNotifications"
+                :key="notification.id"
+                class="p-3 sm:p-3.5 rounded-lg transition-colors duration-200 cursor-pointer animate__animated animate__fadeInUp"
+                :class="[
+                  isDark
+                    ? 'bg-gray-700/30 border border-gray-700/50'
+                    : 'bg-gray-50/50 border border-gray-200/60',
+                ]"
+                :style="{ '--i': index, animationDelay: `${index * 44}ms`, animationDuration: '320ms' }"
+                @click="markAsRead(notification.id)"
+              >
+                <div class="flex gap-2.5 sm:gap-3">
                   <div
-                    class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"
-                  ></div>
-                  <font-awesome-icon
-                    :icon="notification.icon"
-                    class="text-sm sm:text-base relative z-10"
-                  />
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-start justify-between gap-2 mb-1">
-                    <p
-                      class="text-xs sm:text-sm font-semibold"
-                      :class="isDark ? 'text-white' : 'text-gray-900'"
-                    >
-                      {{ notification.title }}
-                    </p>
-                    <div class="flex items-center gap-1.5 flex-shrink-0">
-                      <span
-                        v-if="!notification.read"
-                        class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"
-                        style="box-shadow: 0 0 6px rgba(59, 130, 246, 0.6)"
-                      ></span>
-                      <span
-                        class="text-xs whitespace-nowrap"
-                        :class="isDark ? 'text-gray-500' : 'text-gray-400'"
-                        >{{ notification.time }}</span
-                      >
-                    </div>
-                  </div>
-                  <p
-                    class="text-xs sm:text-sm leading-relaxed mb-2"
-                    :class="isDark ? 'text-gray-400' : 'text-gray-600'"
+                    class="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center"
+                    :class="getNotificationStyle(notification.type)"
                   >
-                    {{ notification.message }}
-                  </p>
-                  <div v-if="notification.action">
-                    <button
-                      class="text-xs font-medium px-3 py-1.5 rounded-md transition-all duration-200 relative overflow-hidden group/btn"
-                      :class="
-                        isDark
-                          ? 'bg-blue-500/10 text-blue-400 hover:bg-blue-500/15'
-                          : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
-                      "
-                    >
-                      <span class="relative z-10">{{
-                        notification.action
-                      }}</span>
+                    <font-awesome-icon
+                      :icon="notification.icon"
+                      class="text-xs sm:text-sm"
+                    />
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-start justify-between gap-2 mb-1">
+                      <p
+                        class="text-sm sm:text-[15px] font-semibold animate__animated animate__fadeInUp"
+                        :style="{ animationDelay: `${index * 44 + 30}ms`, animationDuration: '280ms' }"
+                        :class="isDark ? 'text-white' : 'text-gray-900'"
+                      >
+                        {{ notification.title }}
+                      </p>
                       <div
-                        class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover/btn:opacity-100 transition-opacity duration-200"
-                      ></div>
-                    </button>
+                        class="flex items-center gap-1.5 flex-shrink-0 animate__animated animate__fadeInUp"
+                        :style="{ animationDelay: `${index * 44 + 48}ms`, animationDuration: '260ms' }"
+                      >
+                        <span
+                          v-if="!notification.read"
+                          class="w-2 h-2 bg-blue-500 rounded-full"
+                        ></span>
+                        <span
+                          class="text-[11px] sm:text-xs whitespace-nowrap"
+                          :class="isDark ? 'text-gray-500' : 'text-gray-400'"
+                          >{{ notification.time }}</span
+                        >
+                      </div>
+                    </div>
+                    <p
+                      class="text-xs sm:text-sm leading-relaxed mb-1.5 sm:mb-2 animate__animated animate__fadeInUp"
+                      :style="{ animationDelay: `${index * 44 + 66}ms`, animationDuration: '300ms' }"
+                      :class="isDark ? 'text-gray-400' : 'text-gray-600'"
+                    >
+                      {{ notification.message }}
+                    </p>
+                    <div
+                      v-if="notification.action"
+                      class="animate__animated animate__fadeInUp"
+                      :style="{ animationDelay: `${index * 44 + 84}ms`, animationDuration: '260ms' }"
+                    >
+                      <button
+                        class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-md"
+                        :class="
+                          isDark
+                            ? 'bg-blue-500/10 text-blue-400'
+                            : 'bg-blue-50 text-blue-600'
+                        "
+                      >
+                        <span>{{ notification.action }}</span>
+                        <font-awesome-icon icon="arrow-right" class="text-[10px]" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </transition-group>
-
-          <!-- Empty State -->
-          <div
-            v-if="filteredNotifications.length === 0"
-            class="px-4 py-16 sm:py-20 text-center"
-          >
-            <div
-              class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-xl flex items-center justify-center relative overflow-hidden"
-              :class="isDark ? 'bg-gray-800/40' : 'bg-gray-100'"
-            >
-              <div
-                class="absolute inset-0 bg-gradient-to-br from-gray-500/10 to-transparent"
-              ></div>
-              <font-awesome-icon
-                icon="bell"
-                class="text-3xl sm:text-4xl relative z-10"
-                :class="isDark ? 'text-gray-600' : 'text-gray-300'"
-              />
-            </div>
-            <p
-              class="text-sm sm:text-base font-semibold mb-1"
-              :class="isDark ? 'text-gray-300' : 'text-gray-600'"
-            >
-              暂无通知
-            </p>
-            <p
-              class="text-xs sm:text-sm"
-              :class="isDark ? 'text-gray-500' : 'text-gray-400'"
-            >
-              所有通知都会显示在这里
-            </p>
+            </transition-group>
           </div>
+        </Transition>
+
+        <!-- Empty State -->
+        <div
+          v-if="filteredNotifications.length === 0"
+          class="py-16 text-center"
+        >
+          <div
+            class="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center"
+            :class="isDark ? 'bg-gray-700/40' : 'bg-gray-100'"
+          >
+            <font-awesome-icon
+              icon="bell"
+              class="text-3xl"
+              :class="isDark ? 'text-gray-600' : 'text-gray-300'"
+            />
+          </div>
+          <p
+            class="text-base font-semibold mb-1"
+            :class="isDark ? 'text-gray-400' : 'text-gray-600'"
+          >
+            暂无通知
+          </p>
+          <p
+            class="text-sm"
+            :class="isDark ? 'text-gray-500' : 'text-gray-400'"
+          >
+            所有通知都会显示在这里
+          </p>
         </div>
       </div>
-    </div>
-  </transition>
+      </div>
+    </a-modal>
+  </a-config-provider>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { theme } from 'ant-design-vue';
 
 interface Notification {
   id: number;
@@ -289,6 +270,15 @@ const emit = defineEmits<{
 }>();
 
 const activeTab = ref("all");
+const isMobile = ref(false);
+
+const mediaQuery = "(max-width: 640px)";
+let mediaMatcher: MediaQueryList | null = null;
+
+const updateMobileState = () => {
+  if (typeof window === "undefined") return;
+  isMobile.value = window.matchMedia(mediaQuery).matches;
+};
 
 const tabs = computed(() => [
   {
@@ -396,35 +386,87 @@ const markAsRead = (id: number) => {
   const notification = notifications.value.find((n) => n.id === id);
   if (notification) notification.read = true;
 };
+
+onMounted(() => {
+  if (typeof window === "undefined") return;
+  mediaMatcher = window.matchMedia(mediaQuery);
+  updateMobileState();
+  mediaMatcher.addEventListener("change", updateMobileState);
+});
+
+onBeforeUnmount(() => {
+  mediaMatcher?.removeEventListener("change", updateMobileState);
+});
 </script>
 
 <style scoped>
-.notification-list-enter-active {
-  animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+/* Ant Design Modal 自定义样式 - 只设置必要的 padding */
+:deep(.ant-modal-body) {
+  padding: 16px;
 }
 
-.notification-list-leave-active {
-  transition: all 0.3s cubic-bezier(0.4, 0, 1, 1);
+.notification-center-content {
+  overflow: hidden;
 }
 
-.notification-list-leave-to {
+.notification-tabs-wrap {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.notification-tab-btn {
+  transform: none;
+}
+
+.tab-list-enter-active {
+  transition: opacity 0.24s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tab-list-leave-active {
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+
+.tab-list-enter-from,
+.tab-list-leave-to {
   opacity: 0;
-  transform: translateX(-10px) scale(0.95);
 }
 
-.notification-list-move {
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.tab-list-enter-from {
+  transform: translateY(6px) scale(0.995);
 }
 
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.tab-list-leave-to {
+  transform: translateY(-2px);
+}
+
+.notification-item-enter-active {
+  transition:
+    opacity 0.22s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.24s ease;
+  transition-delay: calc(var(--i, 0) * 24ms);
+}
+
+.notification-item-leave-active {
+  transition: opacity 0.1s ease, transform 0.1s ease;
+}
+
+.notification-item-enter-from,
+.notification-item-leave-to {
+  opacity: 0;
+}
+
+.notification-item-enter-from {
+  transform: translateY(8px) scale(0.992);
+  filter: blur(2px);
+}
+
+.notification-item-leave-to {
+  transform: translateY(-2px);
+}
+
+.notification-item-move {
+  transition: none;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -443,6 +485,37 @@ const markAsRead = (id: number) => {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(156, 163, 175, 0.4);
+}
+
+:deep(.notification-center-modal .ant-modal) {
+  max-width: 640px;
+}
+
+:deep(.notification-center-modal .ant-modal-content) {
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  :deep(.notification-center-modal .ant-modal) {
+    width: calc(100vw - 32px) !important;
+    max-width: 420px !important;
+    margin: 16px auto;
+  }
+
+  :deep(.notification-center-modal .ant-modal-content) {
+    max-height: calc(100vh - 32px);
+    border-radius: 12px;
+  }
+
+  :deep(.ant-modal-body) {
+    padding: 12px;
+  }
+}
+
+@media (min-width: 641px) {
+  :deep(.ant-modal-body) {
+    padding: 16px;
+  }
 }
 </style>
 
