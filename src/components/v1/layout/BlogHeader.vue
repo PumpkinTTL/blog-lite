@@ -60,10 +60,10 @@
             </button>
 
             <!-- User Menu Dropdown -->
-            <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 scale-95 translate-y-[-10px]" enter-to-class="opacity-100 scale-100 translate-y-0" leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100 scale-100 translate-y-0" leave-to-class="opacity-0 scale-95 translate-y-[-10px]">
+            <transition>
               <div v-if="isUserMenuOpen" class="absolute right-0 mt-4 w-60 sm:w-64 rounded-xl overflow-hidden z-50" :class="isDark ? 'bg-gray-800/95 backdrop-blur-xl border border-gray-700/50' : 'bg-white/95 backdrop-blur-xl border border-gray-200/50'" style="box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);">
                 <!-- User Info Header -->
-                <div class="px-4 py-4 relative overflow-hidden" :class="isDark ? 'bg-gradient-to-br from-gray-900/50 to-gray-800/50' : 'bg-gradient-to-br from-gray-50/50 to-white/50'">
+                <div class="animate__animated animate__fadeInUp px-4 py-4 relative overflow-hidden" style="animation-delay: 12ms; animation-duration: 180ms;" :class="isDark ? 'bg-gradient-to-br from-gray-900/50 to-gray-800/50' : 'bg-gradient-to-br from-gray-50/50 to-white/50'">
                   <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent"></div>
                   <div class="flex items-start gap-3 relative z-10">
                     <div class="relative flex-shrink-0">
@@ -89,21 +89,21 @@
 
                 <!-- Menu Items -->
                 <div class="py-2 px-2">
-                  <a href="#" class="flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
+                  <a href="#" class="animate__animated animate__fadeInUp flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group" style="animation-delay: 38ms; animation-duration: 180ms;" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
                     <font-awesome-icon icon="user" class="text-sm w-4" :class="isDark ? 'text-gray-400 group-hover:text-blue-400' : 'text-gray-500 group-hover:text-blue-600'" />
                     <span>个人资料</span>
                   </a>
-                  <a href="#" class="flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
+                  <a href="#" class="animate__animated animate__fadeInUp flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group" style="animation-delay: 64ms; animation-duration: 180ms;" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'">
                     <font-awesome-icon icon="cog" class="text-sm w-4" :class="isDark ? 'text-gray-400 group-hover:text-blue-400' : 'text-gray-500 group-hover:text-blue-600'" />
                     <span>设置</span>
                   </a>
                   
                   <!-- Mobile only options -->
-                  <a href="#" class="sm:hidden flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleTheme">
+                  <a href="#" class="animate__animated animate__fadeInUp sm:hidden flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group" style="animation-delay: 90ms; animation-duration: 180ms;" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleTheme">
                     <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="text-sm w-4" :class="isDark ? 'text-gray-400 group-hover:text-blue-400' : 'text-gray-500 group-hover:text-blue-600'" />
                     <span>{{ isDark ? '浅色模式' : '深色模式' }}</span>
                   </a>
-                  <a href="#" class="sm:hidden flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group relative" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleNotifications">
+                  <a href="#" class="animate__animated animate__fadeInUp sm:hidden flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group relative" style="animation-delay: 116ms; animation-duration: 180ms;" :class="isDark ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'" @click.prevent="toggleNotifications">
                     <font-awesome-icon icon="bell" class="text-sm w-4" :class="isDark ? 'text-gray-400 group-hover:text-blue-400' : 'text-gray-500 group-hover:text-blue-600'" />
                     <span>通知中心</span>
                     <span v-if="hasNotifications" class="ml-auto w-2 h-2 bg-red-500 rounded-full"></span>
@@ -111,7 +111,7 @@
                 </div>
 
                 <!-- Logout -->
-                <div class="px-2 pb-2 pt-1 border-t" :class="isDark ? 'border-gray-700/50' : 'border-gray-200/50'">
+                <div class="animate__animated animate__fadeInUp px-2 pb-2 pt-1 border-t" style="animation-delay: 142ms; animation-duration: 180ms;" :class="isDark ? 'border-gray-700/50' : 'border-gray-200/50'">
                   <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group" :class="isDark ? 'text-red-400 hover:text-red-300 hover:bg-red-500/10' : 'text-red-600 hover:text-red-700 hover:bg-red-50'">
                     <font-awesome-icon icon="arrow-right" class="text-sm w-4" />
                     <span>退出登录</span>
@@ -285,7 +285,7 @@ onUnmounted(() => {
   position: relative;
   background: linear-gradient(90deg, 
     #ec4899 0%, 
-    #a855f7 25%, 
+    #a855f7 25%,
     #d946ef 50%, 
     #a855f7 75%, 
     #ec4899 100%
@@ -440,4 +440,5 @@ onUnmounted(() => {
     background-position: -200% 0;
   }
 }
+
 </style>
