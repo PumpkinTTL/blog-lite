@@ -115,7 +115,7 @@ const rankClass      = computed(() =>
   props.index === 0 ? 'rank-gold' : props.index === 1 ? 'rank-silver' : props.index === 2 ? 'rank-bronze' : 'rank-normal'
 )
 const catIndex       = computed(() => Math.max(0, CATEGORIES.indexOf(props.post.category)) % 5)
-const isHot          = computed(() => props.post.views >= 3000)
+const isHot          = computed(() => props.post.views >= 7000) /* 提高门槛，使热门更稀有 */
 const dateLabel      = computed(() => {
   const d = new Date(props.post.createdAt)
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
@@ -139,6 +139,7 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   min-width: 0;
+  cursor: pointer;
 
   &.is-hot {
     border: 1px solid #FFEDD5;
@@ -427,23 +428,25 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   :deep(svg) { font-size: 10px; }
 }
 
-/* 热门角标 - 吸附式设计 */
+/* 热门角标 - 树叶形态吸附设计 */
 .hot-badge-pinned {
   position: absolute;
-  top: -1px;
-  left: 12px; /* 移至左侧，避免遮挡右侧收藏操作 */
-  padding: 4px 10px;
+  top: 8px;
+  right: -6px; /* 吸附在封面右边缘，产生悬浮感 */
+  padding: 4px 12px;
   background: linear-gradient(135deg, #fb923c, #f43f5e);
   color: #fff;
   font-size: 10px;
   font-weight: 900;
-  border-radius: 0 0 8px 8px;
+  /* 树叶形状：非对称圆角 */
+  border-radius: 20px 0 20px 4px;
   display: flex;
   align-items: center;
   gap: 4px;
-  box-shadow: 0 4px 10px rgba(244, 63, 94, 0.2);
+  box-shadow: 4px 4px 10px rgba(244, 63, 94, 0.3);
   z-index: 10;
   letter-spacing: 0.05em;
+  transform: rotate(-2deg); /* 增加一点自然倾斜 */
 
   .fire-icon {
     font-size: 11px;
@@ -636,7 +639,20 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   .stats { gap: 7px; flex-wrap: wrap; }
   .stat  { font-size: 10.5px; padding: 2px 6px; }
 
-  .date-unit { display: none; } /* 移动端极其局促时隐藏日期，优先保昵称 */
+  /* 移动端缩小热门角标 */
+  .hot-badge-pinned {
+    transform: scale(0.85) rotate(-2deg);
+    right: -4px;
+    top: 6px;
+  }
+
+  /* 发布时间允许换行，不再隐藏 */
+  .date-unit { 
+    display: flex;
+    background: transparent;
+    border: none;
+    padding-left: 0;
+  } 
   .tags      { display: none; }
   .btn-share { display: none; }
   .btn-read  { padding: 4px 9px; font-size: 11px; margin-left: auto; }
