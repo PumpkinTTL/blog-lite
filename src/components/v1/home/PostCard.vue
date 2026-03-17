@@ -4,6 +4,7 @@
     <!-- ── Cover ── -->
     <div class="cover-wrap" v-if="post.image">
       <img :src="post.image" :alt="post.title" class="cover" loading="lazy" />
+      <div class="cover-mask"></div>
       <div class="cover-top">
         <span class="rank-badge" :class="rankClass">{{ rankLabel }}</span>
         <span class="cat-badge" :class="`cat-${catIndex}`">{{ post.category }}</span>
@@ -31,10 +32,23 @@
       <!-- 3. Author · date -->
       <div class="meta">
         <img :src="post.author.avatar" :alt="post.author.name" class="avatar" loading="lazy" />
-        <span class="author">{{ post.author.name }}</span>
+        <div class="author-wrap">
+          <span class="author" :class="post.author.role">{{ post.author.name }}</span>
+          <span v-if="post.author.role === 'admin'" class="role-badge admin">
+            <font-awesome-icon icon="shield-halved" /> 站长
+          </span>
+          <span v-if="post.author.role === 'system'" class="role-badge system">
+            <font-awesome-icon icon="circle-check" /> 官方
+          </span>
+          <span v-if="post.author.role === 'vip'" class="role-badge vip">
+            <font-awesome-icon icon="crown" /> 会员
+          </span>
+        </div>
         <span class="dot">·</span>
-        <font-awesome-icon icon="calendar-days" class="cal-icon" />
-        <span class="date">{{ dateLabel }}</span>
+        <div class="date-wrap">
+          <font-awesome-icon icon="calendar-days" class="cal-icon" />
+          <span class="date">{{ dateLabel }}</span>
+        </div>
         <span v-if="isHot" class="hot-badge">
           <font-awesome-icon icon="fire" class="fire-icon" />
           热门
@@ -144,12 +158,22 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
+.cover-mask {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.4) 100%);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 1;
+}
+
 .cover-top {
   position: absolute;
   top: 8px; left: 8px; right: 8px;
   display: flex;
   align-items: center;
   gap: 5px;
+  z-index: 2;
 }
 
 /* Rank badge — colored by position */
@@ -199,6 +223,8 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   font-weight: 600;
   backdrop-filter: blur(4px);
 
+  z-index: 2;
+
   :deep(svg) { font-size: 9px; opacity: 0.9; }
 }
 
@@ -233,25 +259,27 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 
 .bookmark {
   flex-shrink: 0;
-  width: 26px;
-  height: 26px;
-  border: 1px solid #E5E7EB;
-  border-radius: 6px;
-  background: transparent;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid #F3F4F6;
+  border-radius: 8px;
+  background: #fff;
   color: #D1D5DB;
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 120ms;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   font-family: inherit;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 
   &:hover {
-    border-color: #FDE68A;
+    border-color: #FCD34D;
     background: #FFFBEB;
     color: #F59E0B;
-    transform: scale(1.1);
+    transform: scale(1.15) rotate(8deg);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
   }
 
   &:active {
@@ -289,28 +317,65 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   flex-shrink: 0;
 }
 
+.author-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .author {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   color: #1F2937;
   white-space: nowrap;
 }
 
+/* 角色样式 */
+.author.admin { color: #EF4444; }
+.author.system { color: #3B82F6; }
+.author.vip { color: #F59E0B; }
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.role-badge.admin { background: #FEF2F2; color: #EF4444; border: 1px solid #FEE2E2; }
+.role-badge.system { background: #EFF6FF; color: #3B82F6; border: 1px solid #DBEAFE; }
+.role-badge.vip { background: #FFFBEB; color: #F59E0B; border: 1px solid #FEF3C7; }
+
 .dot {
-  color: #D1D5DB;
+  color: #E5E7EB;
   font-size: 11px;
   flex-shrink: 0;
 }
 
+.date-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  background: #F9FAFB;
+  border-radius: 4px;
+  border: 1px solid #F3F4F6;
+}
+
 .cal-icon {
-  font-size: 10px;
-  color: #93C5FD;
+  font-size: 9px;
+  color: #9CA3AF;
   flex-shrink: 0;
 }
 
 .date {
-  font-size: 11.5px;
-  color: #9CA3AF;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6B7280;
   white-space: nowrap;
 }
 
@@ -333,7 +398,14 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   .fire-icon {
     font-size: 11px;
     color: #F97316;
+    animation: pulse-orange 2s infinite;
   }
+}
+
+@keyframes pulse-orange {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* 4. Bottom bar */
@@ -356,21 +428,24 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 .stat {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 11.5px;
-  color: #9CA3AF;
-  font-weight: 500;
+  gap: 5px;
+  font-size: 11px;
+  color: #6B7280;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background: #F9FAFB;
 
   :deep(svg) { 
-    font-size: 11px; 
+    font-size: 12px; 
     color: #9CA3AF; 
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
   }
 
-  &:hover {
-    color: #4B5563;
-    :deep(svg) { color: #6B7280; }
-  }
+  &:nth-child(1):hover { color: #3B82F6; background: #EFF6FF; :deep(svg) { color: #3B82F6; transform: scale(1.1); } }
+  &:nth-child(2):hover { color: #EF4444; background: #FEF2F2; :deep(svg) { color: #EF4444; transform: scale(1.1); } }
+  &:nth-child(3):hover { color: #10B981; background: #ECFDF5; :deep(svg) { color: #10B981; transform: scale(1.1); } }
 }
 
 .tags {
@@ -442,22 +517,24 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border: 1px solid #E5E7EB;
-  border-radius: 7px;
-  background: transparent;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid #F3F4F6;
+  border-radius: 9px;
+  background: #fff;
   color: #9CA3AF;
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
   font-family: inherit;
-  transition: all 120ms;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 
   &:hover { 
     background: #F3F4F6; 
-    border-color: #D1D5DB; 
-    color: #374151; 
-    transform: scale(1.05);
+    border-color: #E5E7EB; 
+    color: #111827; 
+    transform: scale(1.1) rotate(-8deg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
   &:active {

@@ -11,6 +11,7 @@ export interface Resource {
   author: {
     name: string
     avatar: string
+    role?: 'admin' | 'system' | 'vip' | 'user'
   }
   likes: number
   views: number
@@ -33,11 +34,11 @@ const tags = [
 ]
 
 const authors = [
-  { name: '张小明', avatar: 'https://i.pravatar.cc/150?img=1' },
-  { name: '李华', avatar: 'https://i.pravatar.cc/150?img=2' },
-  { name: '王芳', avatar: 'https://i.pravatar.cc/150?img=3' },
-  { name: '刘强', avatar: 'https://i.pravatar.cc/150?img=4' },
-  { name: '陈静', avatar: 'https://i.pravatar.cc/150?img=5' }
+  { name: '张小明', avatar: 'https://i.pravatar.cc/150?img=1', role: 'admin' },
+  { name: '李华', avatar: 'https://i.pravatar.cc/150?img=2', role: 'vip' },
+  { name: '王芳', avatar: 'https://i.pravatar.cc/150?img=3', role: 'system' },
+  { name: '刘强', avatar: 'https://i.pravatar.cc/150?img=4', role: 'user' },
+  { name: '陈静', avatar: 'https://i.pravatar.cc/150?img=5', role: 'vip' }
 ]
 
 const titles = [
@@ -104,7 +105,7 @@ export function generateMockResources(count: number): Resource[] {
       category: category.name,
       categoryColor: category.color,
       tags: randomItems(tags, randomNumber(2, 4)),
-      author: randomItem(authors),
+      author: randomItem(authors) as Resource['author'],
       likes: randomNumber(10, 999),
       views: randomNumber(100, 9999),
       featured: Math.random() > 0.8,
