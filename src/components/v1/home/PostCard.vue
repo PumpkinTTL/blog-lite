@@ -13,6 +13,11 @@
         <font-awesome-icon icon="clock" />
         {{ readingMinutes }} min
       </span>
+      <!-- 热门标签 - 吸附在封面图上 -->
+      <div v-if="isHot" class="hot-badge-pinned">
+        <font-awesome-icon icon="fire" class="fire-icon" />
+        <span>HOT</span>
+      </div>
     </div>
 
     <!-- ── Content ── -->
@@ -56,12 +61,6 @@
           <font-awesome-icon icon="calendar-days" />
           <span>{{ dateLabel }}</span>
         </div>
-      </div>
-
-      <!-- 热门角标 - 吸附式 -->
-      <div v-if="isHot" class="hot-badge-pinned">
-        <font-awesome-icon icon="fire" class="fire-icon" />
-        <span>HOT</span>
       </div>
 
       <!-- 4. Bottom bar -->
@@ -144,13 +143,13 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   &.is-hot {
     border: 1px solid #FFEDD5;
     background: #FFFCF8;
-    box-shadow: 0 4px 20px rgba(251, 146, 60, 0.06);
+    box-shadow: none;
   }
 
   &:hover {
     border-color: #BFDBFE;
-    box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.1), 0 10px 10px -12px rgba(37, 99, 235, 0.1);
-    
+    box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.08), 0 10px 10px -12px rgba(37, 99, 235, 0.08);
+
     &.is-hot {
       border-color: #FED7AA;
       box-shadow: 0 20px 30px -5px rgba(251, 146, 60, 0.15);
@@ -207,8 +206,7 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   font-weight: 800;
   letter-spacing: 0.06em;
   color: #fff;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 2;
 }
 
 .rank-gold   { background: rgba(245, 158, 11, 0.95); }
@@ -223,7 +221,7 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   font-size: 10px;
   font-weight: 700;
   color: #fff;
-  backdrop-filter: blur(6px);
+  z-index: 2;
 }
 
 .cat-0 { background: rgba(37, 99, 235, 0.7); }
@@ -240,11 +238,10 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   gap: 4px;
   padding: 3px 8px;
   border-radius: 5px;
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(15, 23, 42, 0.6);
   color: #fff;
   font-size: 10px;
   font-weight: 600;
-  backdrop-filter: blur(4px);
 
   z-index: 2;
 
@@ -428,35 +425,62 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   :deep(svg) { font-size: 10px; }
 }
 
-/* 热门角标 - 树叶形态吸附设计 */
+/* 热门标签 - 吸附在封面图上的扁平化设计 */
 .hot-badge-pinned {
   position: absolute;
-  top: 8px;
-  right: -6px; /* 吸附在封面右边缘，产生悬浮感 */
-  padding: 4px 12px;
-  background: linear-gradient(135deg, #fb923c, #f43f5e);
+  top: 0;
+  right: 12px;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, #fb923c, #f43f5e); /* 恢复粉橙渐变 */
   color: #fff;
   font-size: 10px;
   font-weight: 900;
-  /* 树叶形状：非对称圆角 */
-  border-radius: 20px 0 20px 4px;
+  border-radius: 0 0 6px 6px;
   display: flex;
   align-items: center;
   gap: 4px;
-  box-shadow: 4px 4px 10px rgba(244, 63, 94, 0.3);
   z-index: 10;
   letter-spacing: 0.05em;
-  transform: rotate(-2deg); /* 增加一点自然倾斜 */
+  overflow: hidden; /* 为了流光效果 */
+
+  /* 镜面扫过流光效果，只在hot标签上 */
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      90deg, 
+      transparent, 
+      rgba(255, 255, 255, 0.5), 
+      transparent
+    );
+    transform: skewX(-20deg);
+    animation: hot-shine 3s infinite;
+  }
 
   .fire-icon {
     font-size: 11px;
-    animation: fire-flicker 1.5s infinite;
+    position: relative;
+    z-index: 1;
   }
+
+  span {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@keyframes hot-shine {
+  0% { left: -150%; }
+  30% { left: 150%; }
+  100% { left: 150%; }
 }
 
 @keyframes fire-flicker {
   0% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 2px #fff); }
-  50% { transform: scale(1.2); opacity: 0.8; filter: drop-shadow(0 0 5px #ffedd5); }
   100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 2px #fff); }
 }
 
@@ -641,9 +665,8 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 
   /* 移动端缩小热门角标 */
   .hot-badge-pinned {
-    transform: scale(0.85) rotate(-2deg);
-    right: -4px;
-    top: 6px;
+    transform: scale(0.9);
+    right: 8px;
   }
 
   /* 发布时间允许换行，不再隐藏 */
