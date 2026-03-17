@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import BlogHeader from '@/components/v1/layout/BlogHeader.vue'
-import FilterBar from '@/components/v1/home/FilterBar.vue'
+import FilterBar from '@/components/v1/common/FilterBar.vue'
 import PostFeed from '@/components/v1/home/PostFeed.vue'
 import HomeSidebar from '@/components/v1/home/HomeSidebar.vue'
 import { generateMockResources } from '@/data/mockData'
