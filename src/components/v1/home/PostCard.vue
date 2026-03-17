@@ -138,6 +138,7 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  min-width: 0;
 
   &.is-hot {
     border: 1px solid #FFEDD5;
@@ -325,7 +326,7 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap; /* 允许在空间不足时换行，防止挤出 */
 }
 
 .avatar {
@@ -345,8 +346,8 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 
   .name {
     font-size: 13px;
-    font-weight: 700;
-    color: #4B5563; /* 普通用户颜色稍淡，增加层级感 */
+    font-weight: 600; /* 改为 600，不再过粗 */
+    color: #4B5563;
   }
 
   /* 只有在有角色背景时才显示边框和背景 */
@@ -430,7 +431,7 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 .hot-badge-pinned {
   position: absolute;
   top: -1px;
-  right: 16px;
+  left: 12px; /* 移至左侧，避免遮挡右侧收藏操作 */
   padding: 4px 10px;
   background: linear-gradient(135deg, #fb923c, #f43f5e);
   color: #fff;
@@ -632,9 +633,10 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 
   .bottom-bar { padding-top: 5px; gap: 6px; }
 
-  .stats { gap: 7px; }
-  .stat  { font-size: 10.5px; }
+  .stats { gap: 7px; flex-wrap: wrap; }
+  .stat  { font-size: 10.5px; padding: 2px 6px; }
 
+  .date-unit { display: none; } /* 移动端极其局促时隐藏日期，优先保昵称 */
   .tags      { display: none; }
   .btn-share { display: none; }
   .btn-read  { padding: 4px 9px; font-size: 11px; margin-left: auto; }
