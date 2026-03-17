@@ -272,7 +272,32 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   color: #111827;
   line-height: 1.45;
   letter-spacing: -0.018em;
-  transition: color 120ms;
+  transition: all 0.3s;
+}
+
+/* 热门标题：高级金黄带流光效果 */
+.is-hot .title {
+  background: linear-gradient(
+    110deg, 
+    #92400e 20%, 
+    #b45309 30%, 
+    #f59e0b 40%, 
+    #fff7ed 50%, 
+    #f59e0b 60%, 
+    #b45309 70%, 
+    #92400e 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: title-shine 4s linear infinite;
+  font-weight: 800;
+}
+
+@keyframes title-shine {
+  from { background-position: 150% center; }
+  to { background-position: -50% center; }
 }
 
 .bookmark {
@@ -346,14 +371,15 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
     color: #4B5563;
   }
 
-  /* 只有在有角色背景时才显示边框和背景 */
-  &.admin, &.system, &.vip {
+  /* 统一所有角色的基础容器样式 (包括超级管理员) */
+  &.super_admin, &.admin, &.system, &.vip {
     padding: 2px 2px 2px 8px;
     background: #F9FAFB;
     border: 1px solid #F3F4F6;
-    border-radius: 6px;
+    border-radius: 7px;
+    line-height: 1;
     
-    .name { font-size: 12.5px; } /* 有背景时字号稍微缩小一点点以平衡视觉 */
+    .name { font-size: 12px; }
   }
 
   /* 角色分割线 */
@@ -376,14 +402,15 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 
   /* 身份化配色 - 一体化视觉 */
   &.super_admin {
-    background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
+    background: #fdf4ff; 
     border-color: #f5d0fe;
     .name { color: #86198f; }
-    .role-sep { background: #f0abfc; }
+    .role-sep { background: #f0abfc; margin: 0 6px; }
     .role-label { 
       color: #fff; 
       background: linear-gradient(135deg, #f472b6 0%, #a855f7 100%); 
-      box-shadow: 0 2px 4px rgba(168, 85, 247, 0.2);
+      box-shadow: 0 1px 3px rgba(168, 85, 247, 0.25);
+      border-radius: 5px;
     }
   }
   &.admin {
@@ -600,18 +627,28 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 ───────────────────────────── */
 @media (max-width: 640px) {
   .post-card {
-    grid-template-columns: 96px minmax(0, 1fr);
-    border-radius: 8px;
-    min-height: 96px;
+    grid-template-columns: auto 1fr;
+    border-radius: 12px;
+    min-height: 116px;
+    align-items: center; /* 垂直居中对齐，防止拉伸 */
   }
 
-  .cover-wrap { min-height: 96px; height: 100%; }
+  .cover-wrap { 
+    width: 96px;
+    height: 96px;
+    min-height: 96px;
+    margin: 10px;
+    flex-shrink: 0;
+  }
 
   .time-badge { display: none; }
   .cat-badge  { display: none; }
   .rank-badge { display: none; }
 
-  .content { padding: 9px 11px; gap: 5px; }
+  .content { 
+    padding: 12px 12px 12px 0; 
+    gap: 6px; 
+  }
 
   .title {
     font-size: 13px;
@@ -646,7 +683,16 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
     border: none;
     padding-left: 0;
   } 
-  .tags      { display: none; }
+  .tags { 
+    display: flex; 
+    flex-wrap: nowrap;
+    gap: 3px;
+    margin-top: 2px;
+  }
+  .tag {
+    font-size: 8px;
+    padding: 1px 5px;
+  }
   .btn-share { display: none; }
 }
 </style>
