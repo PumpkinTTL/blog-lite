@@ -1,55 +1,66 @@
 <template>
   <section class="filter-bar">
-    <!-- Left -->
-    <div class="left">
-      <div class="bar-title">
-        <div class="title-icon">
-          <font-awesome-icon icon="newspaper" />
+    <!-- Left: Title & Live Stats -->
+    <div class="left-zone">
+      <div class="brand-box">
+        <div class="brand-icon">
+          <font-awesome-icon icon="compass" class="pulse-icon" />
         </div>
-        <h2>技术文章广场</h2>
+        <div class="brand-text">
+          <h2>探索广场</h2>
+          <span class="live-count">1.2k+ 资源</span>
+        </div>
       </div>
-      <div class="mini-stats">
-        <span class="stat-pill">今日更新 <b>18</b></span>
-        <span class="stat-pill">精选作者 <b>9</b></span>
-        <span class="stat-pill">专题 <b>4</b></span>
-      </div>
+      <div class="divider-v"></div>
     </div>
 
-    <!-- Middle: category chips -->
-    <div class="middle">
-      <div class="chips-wrap">
+    <!-- Center: Modern Categories -->
+    <div class="center-zone">
+      <div class="category-nav">
         <button
-          v-for="item in categories"
+          v-for="(item, index) in categories"
           :key="item"
-          class="chip"
-          :class="{ active: item === activeCategory }"
-          type="button"
+          class="cat-chip"
+          :class="[`cat-${index % 5}`, { active: item === activeCategory }]"
           @click="selectCategory(item)"
-        >{{ item }}</button>
+        >
+          <font-awesome-icon :icon="getCatIcon(item)" class="c-icon" />
+          <span>{{ item }}</span>
+        </button>
       </div>
     </div>
 
-    <!-- Right: sort + view -->
-    <div class="right">
-      <div class="seg-group">
+    <!-- Right: Search & Refined Sort -->
+    <div class="right-zone">
+      <div class="search-pill" :class="{ focused: isSearchFocused }">
+        <font-awesome-icon icon="magnifying-glass" class="s-icon" />
+        <input 
+          type="text" 
+          placeholder="快速查找..." 
+          @focus="isSearchFocused = true"
+          @blur="isSearchFocused = false"
+        />
+        <kbd class="search-kbd">/</kbd>
+      </div>
+
+      <div class="sort-capsule">
         <button
           v-for="item in sortOptions"
           :key="item.value"
-          class="seg-btn"
+          class="sort-tab"
           :class="{ active: item.value === activeSort }"
-          type="button"
           @click="selectSort(item.value)"
-        >{{ item.label }}</button>
-      </div>
-      <div class="seg-group">
-        <button type="button" class="seg-btn active">列表</button>
-        <button type="button" class="seg-btn">紧凑</button>
+        >
+          {{ item.label }}
+        </button>
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+
 const props = defineProps<{
   categories: string[]
   activeCategory: string
@@ -61,10 +72,24 @@ const emit = defineEmits<{
   (e: 'update:activeSort', value: 'latest' | 'popular'): void
 }>()
 
+const isSearchFocused = ref(false)
+
 const sortOptions = [
-  { label: '最新', value: 'latest' as const },
-  { label: '最热', value: 'popular' as const },
+  { label: '最新发布', value: 'latest' as const },
+  { label: '热门互动', value: 'popular' as const },
 ]
+
+const getCatIcon = (cat: string) => {
+  const icons: Record<string, string> = {
+    '全部': 'grid-2',
+    '前端': 'code',
+    '后端': 'server',
+    '设计': 'palette',
+    'AI': 'brain',
+    '工具': 'wrench'
+  }
+  return icons[cat] || 'tag'
+}
 
 const selectCategory = (value: string) => {
   if (value !== props.activeCategory) emit('update:activeCategory', value)
@@ -79,168 +104,215 @@ const selectSort = (value: 'latest' | 'popular') => {
 .filter-bar {
   position: sticky;
   top: 64px;
-  z-index: 20;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0;
-  background: #fff;
-  border: 1px solid #E5E7EB;
-  border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-}
-
-/* ── Left ── */
-.left {
-  padding: 12px 16px;
-  border-right: 1px solid #F3F4F6;
-  min-width: 0;
-}
-
-.bar-title {
+  z-index: 30;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 7px;
+  justify-content: space-between;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(229, 231, 235, 0.7);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01), 0 2px 4px -1px rgba(0, 0, 0, 0.005);
+  margin-bottom: 4px;
 }
 
-.title-icon {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  background: #EFF6FF;
-  color: #2563EB;
+/* ── Left Zone ── */
+.left-zone {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.brand-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 20px;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #3B82F6, #2563EB);
+  color: #fff;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
-  flex-shrink: 0;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+
+  .pulse-icon {
+    animation: slow-rotate 10s linear infinite;
+  }
 }
 
-.bar-title h2 {
+@keyframes slow-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.brand-text h2 {
   margin: 0;
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 800;
   color: #111827;
-  white-space: nowrap;
+  line-height: 1.2;
 }
 
-.mini-stats {
+.live-count {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94A3B8;
+  display: block;
+}
+
+.divider-v {
+  width: 1px;
+  height: 24px;
+  background: #E5E7EB;
+}
+
+/* ── Center Zone (Navigation) ── */
+.center-zone {
+  flex: 1;
   display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 20px;
 }
 
-.stat-pill {
-  font-size: 10.5px;
-  color: #6B7280;
-  background: #F9FAFB;
-  border: 1px solid #E5E7EB;
-  border-radius: 4px;
-  padding: 2px 7px;
-  font-weight: 500;
-
-  b {
-    font-weight: 600;
-    color: #374151;
-  }
-}
-
-/* ── Middle ── */
-.middle {
-  padding: 12px 16px;
-}
-
-.chips-wrap {
+.category-nav {
   display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
+  gap: 6px;
+  background: #F8FAFC;
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid #F1F5F9;
 }
 
-.chip {
-  flex-shrink: 0;
-  border: 1px solid #E5E7EB;
-  background: transparent;
-  color: #6B7280;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 5px 12px;
-  cursor: pointer;
-  transition: all 120ms ease;
-  font-family: inherit;
-
-  &:hover:not(.active) {
-    background: #F9FAFB;
-    border-color: #D1D5DB;
-    color: #374151;
-  }
-}
-
-.chip.active {
-  background: #EFF6FF;
-  color: #2563EB;
-  border-color: #BFDBFE;
-  font-weight: 600;
-}
-
-/* ── Right ── */
-.right {
+.cat-chip {
   display: flex;
-  gap: 8px;
   align-items: center;
-  padding: 12px 16px;
-  border-left: 1px solid #F3F4F6;
-  flex-shrink: 0;
-}
-
-.seg-group {
-  display: inline-flex;
-  border: 1px solid #E5E7EB;
-  border-radius: 7px;
-  background: #F9FAFB;
-  overflow: hidden;
-}
-
-.seg-btn {
+  gap: 8px;
+  padding: 6px 14px;
   border: none;
   background: transparent;
-  color: #6B7280;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 5px 10px;
+  color: #64748B;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
-  transition: all 120ms ease;
 
-  &:hover:not(.active) {
-    background: #F3F4F6;
-    color: #374151;
+  .c-icon { font-size: 11px; opacity: 0.6; }
+
+  &:hover {
+    color: #1E293B;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
   }
 
-  & + & {
-    border-left: 1px solid #E5E7EB;
+  &.active {
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transform: translateY(-1px);
+    
+    &.cat-0 { color: #3B82F6; .c-icon { color: #3B82F6; } }
+    &.cat-1 { color: #F59E0B; .c-icon { color: #F59E0B; } }
+    &.cat-2 { color: #10B981; .c-icon { color: #10B981; } }
+    &.cat-3 { color: #EC4899; .c-icon { color: #EC4899; } }
+    &.cat-4 { color: #8B5CF6; .c-icon { color: #8B5CF6; } }
   }
 }
 
-.seg-btn.active {
-  background: #fff;
-  color: #2563EB;
-  font-weight: 600;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+/* ── Right Zone ── */
+.right-zone {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-pill {
+  display: flex;
+  align-items: center;
+  background: #F1F5F9;
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  padding: 0 12px;
+  width: 160px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.focused {
+    width: 220px;
+    background: #fff;
+    border-color: #3B82F6;
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1);
+  }
+
+  .s-icon { font-size: 12px; color: #94A3B8; }
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #1E293B;
+    &::placeholder { color: #94A3B8; }
+  }
+
+  .search-kbd {
+    font-size: 10px;
+    font-weight: 700;
+    color: #94A3B8;
+    background: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 1px 0 #CBD5E1;
+  }
+}
+
+.sort-capsule {
+  display: flex;
+  background: #F1F5F9;
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+}
+
+.sort-tab {
+  border: none;
+  background: transparent;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748B;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+
+  &.active {
+    background: #fff;
+    color: #3B82F6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
 }
 
 /* ── Responsive ── */
-@media (max-width: 1100px) {
-  .filter-bar {
-    grid-template-columns: 1fr;
-    top: 56px;
-  }
-  .left { border-right: none; border-bottom: 1px solid #F3F4F6; }
-  .right { border-left: none; border-top: 1px solid #F3F4F6; }
-  .middle { padding: 10px 16px; }
+@media (max-width: 1200px) {
+  .left-zone { display: none; }
+}
+
+@media (max-width: 900px) {
+  .filter-bar { flex-direction: column; height: auto; padding: 16px; gap: 16px; }
+  .center-zone { order: 1; padding: 0; width: 100%; }
+  .category-nav { width: 100%; overflow-x: auto; padding-bottom: 8px; }
+  .right-zone { order: 2; width: 100%; justify-content: space-between; }
+  .search-pill { flex: 1; &.focused { width: 100%; } }
 }
 </style>

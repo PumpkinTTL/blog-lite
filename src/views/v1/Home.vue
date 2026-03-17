@@ -4,38 +4,78 @@
     <main class="main-content">
       <div class="container">
 
-        <!-- Hero Banner -->
-        <section class="intro-panel">
-          <div class="intro-left">
-            <p class="intro-kicker">EDITOR PICKS</p>
-            <h1 class="intro-title">开发者内容中枢</h1>
-            <p class="intro-subtitle">高质量教程、工程实践、设计思路，在清晰的阅读界面里高效获取。</p>
+        <!-- ── Refined Workspace Station ── -->
+        <section class="workspace-station">
+          <div class="ws-main">
+            <div class="ws-content">
+              <div class="ws-badge">
+                <span class="pulsing-dot"></span>
+                SYSTEM ENGINE READY
+              </div>
+              <h1 class="ws-title">
+                开发者内容<span class="text-gradient">中枢站</span>
+              </h1>
+              <p class="ws-desc">汇聚全球顶尖开发者的工程实践与设计哲学，为你的技术成长提供持续动力。</p>
+              
+              <!-- Quick Actions -->
+              <div class="ws-actions">
+                <button class="action-btn primary">
+                  <font-awesome-icon icon="plus" />
+                  <span>投递内容</span>
+                </button>
+                <button class="action-btn secondary">
+                  <font-awesome-icon icon="book-open" />
+                  <span>技术指南</span>
+                </button>
+                <div class="action-sep"></div>
+                <div class="ws-presence">
+                  <div class="avatar-stack">
+                    <img v-for="i in 3" :key="i" :src="`https://i.pravatar.cc/100?img=${i+10}`" alt="user" />
+                    <div class="more-count">+8</div>
+                  </div>
+                  <span class="presence-text">正在共同学习</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats Dashboard -->
+            <div class="ws-dashboard">
+              <div class="dash-tile gold">
+                <div class="tile-header">
+                  <font-awesome-icon icon="bolt" />
+                  <span class="trend">↑ 12%</span>
+                </div>
+                <div class="tile-body">
+                  <span class="val">46</span>
+                  <span class="lab">本周新增</span>
+                </div>
+              </div>
+              <div class="dash-tile blue">
+                <div class="tile-header">
+                  <font-awesome-icon icon="users" />
+                  <span class="trend">↑ 4%</span>
+                </div>
+                <div class="tile-body">
+                  <span class="val">132</span>
+                  <span class="lab">活跃作者</span>
+                </div>
+              </div>
+              <div class="dash-tile purple">
+                <div class="tile-header">
+                  <font-awesome-icon icon="layer-group" />
+                  <span class="trend">stable</span>
+                </div>
+                <div class="tile-body">
+                  <span class="val">12</span>
+                  <span class="lab">专题系列</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="intro-metrics">
-            <div class="metric-item">
-              <font-awesome-icon icon="bolt" class="metric-icon" />
-              <div class="metric-body">
-                <strong>46</strong>
-                <span>本周上新</span>
-              </div>
-            </div>
-            <div class="metric-divider"></div>
-            <div class="metric-item">
-              <font-awesome-icon icon="pen-nib" class="metric-icon" />
-              <div class="metric-body">
-                <strong>132</strong>
-                <span>活跃作者</span>
-              </div>
-            </div>
-            <div class="metric-divider"></div>
-            <div class="metric-item">
-              <font-awesome-icon icon="layer-group" class="metric-icon" />
-              <div class="metric-body">
-                <strong>12</strong>
-                <span>推荐专题</span>
-              </div>
-            </div>
-          </div>
+
+          <!-- Background Elements -->
+          <div class="ws-bg-grid"></div>
+          <div class="ws-glow"></div>
         </section>
 
         <FilterBar
@@ -99,98 +139,221 @@ const visiblePosts = computed(() => {
   gap: 12px;
 }
 
-/* ── Intro Panel ── */
-.intro-panel {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 24px 28px;
-  border-radius: 12px;
+/* ── Workspace Station (Completely Refreshed) ── */
+.workspace-station {
+  position: relative;
   background: #fff;
   border: 1px solid #E5E7EB;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  padding: 40px;
+  overflow: hidden;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.02),
+    inset 0 0 40px rgba(243, 244, 246, 0.5);
 }
 
-.intro-left {
+.ws-main {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 60px;
+}
+
+.ws-content {
   flex: 1;
-  min-width: 0;
+  max-width: 600px;
 }
 
-.intro-kicker {
-  margin: 0 0 8px;
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+.ws-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: #F3F4F6;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 800;
   color: #6B7280;
-  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+
+  .pulsing-dot {
+    width: 6px;
+    height: 6px;
+    background: #3B82F6;
+    border-radius: 50%;
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0.4);
+    animation: ws-pulse 2s infinite;
+  }
 }
 
-.intro-title {
-  margin: 0 0 8px;
-  font-size: clamp(22px, 2.4vw, 32px);
-  line-height: 1.15;
+@keyframes ws-pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  70% { transform: scale(1.2); box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+.ws-title {
+  margin: 0 0 16px;
+  font-size: clamp(28px, 3.2vw, 40px);
+  font-weight: 900;
   color: #111827;
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+
+  .text-gradient {
+    background: linear-gradient(135deg, #2563EB, #7C3AED);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
-.intro-subtitle {
-  margin: 0;
+.ws-desc {
+  margin: 0 0 32px;
+  font-size: 15px;
   color: #6B7280;
-  font-size: 13px;
   line-height: 1.6;
+  font-weight: 500;
 }
 
-/* ── Metrics row ── */
-.intro-metrics {
+/* Actions */
+.ws-actions {
   display: flex;
   align-items: center;
-  gap: 0;
-  flex-shrink: 0;
-  border: 1px solid #E5E7EB;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #F9FAFB;
+  gap: 12px;
 }
 
-.metric-item {
-  display: flex;
+.action-btn {
+  display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 20px;
-}
-
-.metric-icon {
+  padding: 10px 24px;
+  border-radius: 12px;
   font-size: 14px;
-  color: #9CA3AF;
-}
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
 
-.metric-body {
-  display: flex;
-  flex-direction: column;
-
-  strong {
-    font-size: 18px;
-    font-weight: 700;
-    color: #111827;
-    line-height: 1;
-    letter-spacing: -0.02em;
+  &.primary {
+    background: #111827;
+    color: #fff;
+    &:hover { background: #374151; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
   }
 
-  span {
-    font-size: 11px;
-    color: #9CA3AF;
-    margin-top: 2px;
-    font-weight: 500;
+  &.secondary {
+    background: #fff;
+    color: #374151;
+    border: 1.5px solid #E5E7EB;
+    &:hover { border-color: #3B82F6; color: #3B82F6; transform: translateY(-2px); }
   }
 }
 
-.metric-divider {
+.action-sep {
   width: 1px;
-  height: 32px;
+  height: 24px;
   background: #E5E7EB;
+  margin: 0 12px;
+}
+
+.ws-presence {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-stack {
+  display: flex;
+  align-items: center;
+
+  img, .more-count {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    margin-left: -10px;
+    &:first-child { margin-left: 0; }
+  }
+
+  .more-count {
+    background: #F3F4F6;
+    color: #6B7280;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.presence-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94A3B8;
+}
+
+/* Dashboard Tiles */
+.ws-dashboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
   flex-shrink: 0;
+}
+
+.dash-tile {
+  padding: 24px;
+  background: #F9FAFB;
+  border: 1px solid #F3F4F6;
+  border-radius: 16px;
+  width: 140px;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.05);
+    background: #fff;
+    border-color: #E5E7EB;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+  }
+
+  .tile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #9CA3AF;
+    font-size: 14px;
+
+    .trend { font-size: 9px; font-weight: 800; color: #10B981; }
+  }
+
+  .val { font-size: 24px; font-weight: 900; color: #111827; display: block; line-height: 1; margin-bottom: 4px; }
+  .lab { font-size: 10px; font-weight: 700; color: #94A3B8; letter-spacing: 0.02em; }
+
+  &.gold:hover { border-color: #FCD34D; .tile-header { color: #D97706; } }
+  &.blue:hover { border-color: #93C5FD; .tile-header { color: #2563EB; } }
+  &.purple:hover { border-color: #D8B4FE; .tile-header { color: #7E22CE; } .trend { color: #94A3B8; } }
+}
+
+/* Background Decorations */
+.ws-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(#F3F4F6 1px, transparent 1px),
+    linear-gradient(90deg, #F3F4F6 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.4;
+  mask-image: radial-gradient(circle at center, black, transparent 80%);
+}
+
+.ws-glow {
+  position: absolute;
+  top: -20%; right: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+  filter: blur(40px);
 }
 
 /* ── Main Grid ── */
@@ -201,35 +364,18 @@ const visiblePosts = computed(() => {
   align-items: start;
 }
 
-@media (max-width: 1100px) {
-  .home-grid {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 1200px) {
+  .ws-main { flex-direction: column; align-items: stretch; gap: 40px; }
+  .ws-content { max-width: 100%; text-align: center; }
+  .ws-actions { justify-content: center; }
+  .ws-dashboard { justify-content: center; }
 }
 
+@media (max-width: 1100px) { .home-grid { grid-template-columns: 1fr; } }
+
 @media (max-width: 768px) {
-  .main-content { padding-top: 56px; }
-
-  .container {
-    padding: 12px 12px calc(56px + 20px);
-    gap: 10px;
-  }
-
-  .intro-panel {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 18px;
-    gap: 16px;
-  }
-
-  .intro-metrics {
-    width: 100%;
-  }
-
-  .metric-item {
-    flex: 1;
-    padding: 12px 14px;
-    gap: 8px;
-  }
+  .workspace-station { padding: 32px 24px; }
+  .ws-actions { flex-direction: column; .action-sep { display: none; } }
+  .ws-dashboard { grid-template-columns: repeat(2, 1fr); .dash-tile { width: 100%; } }
 }
 </style>
