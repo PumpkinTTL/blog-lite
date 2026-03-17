@@ -68,26 +68,6 @@
       icon="users-rectangle"
       type="default"
     />
-
-    <!-- Authors -->
-    <section class="panel">
-      <h3 class="panel-title">
-        <div class="panel-icon">
-          <font-awesome-icon icon="users" />
-        </div>
-        推荐作者
-      </h3>
-      <div class="author-list">
-        <div v-for="person in authors" :key="person.name" class="author-row">
-          <img :src="person.avatar" :alt="person.name" class="author-avatar" />
-          <div class="author-info">
-            <p class="author-name">{{ person.name }}</p>
-            <span class="author-field">{{ person.field }}</span>
-          </div>
-          <button class="follow-btn" type="button">关注</button>
-        </div>
-      </div>
-    </section>
   </aside>
 </template>
 
@@ -100,24 +80,6 @@ const tasks = [
   { name: "组件边界设计", done: 4, total: 6 },
   { name: "状态管理重构", done: 2, total: 5 },
   { name: "移动端适配", done: 3, total: 4 },
-];
-
-const authors = [
-  {
-    name: "林川",
-    field: "Vue 工程化",
-    avatar: "https://i.pravatar.cc/80?img=12",
-  },
-  {
-    name: "张译",
-    field: "前端性能",
-    avatar: "https://i.pravatar.cc/80?img=15",
-  },
-  {
-    name: "阿宁",
-    field: "设计系统",
-    avatar: "https://i.pravatar.cc/80?img=19",
-  },
 ];
 </script>
 
@@ -276,68 +238,6 @@ const authors = [
   border-color: #fde68a;
 }
 
-/* ── Authors ── */
-.author-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.author-row {
-  display: grid;
-  grid-template-columns: 34px 1fr auto;
-  gap: 9px;
-  align-items: center;
-}
-
-.author-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid #e5e7eb;
-  display: block;
-}
-
-.author-info {
-  min-width: 0;
-}
-
-.author-name {
-  margin: 0;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: #111827;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.author-field {
-  font-size: 11px;
-  color: #9ca3af;
-}
-
-.follow-btn {
-  padding: 4px 10px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  background: #fff;
-  color: #374151;
-  font-size: 11.5px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 120ms ease;
-  white-space: nowrap;
-
-  &:hover {
-    border-color: #bfdbfe;
-    background: #eff6ff;
-    color: #2563eb;
-  }
-}
-
 /* ── Responsive ── */
 @media (max-width: 1100px) {
   .sidebar {
@@ -345,25 +245,11 @@ const authors = [
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
-
-  .sidebar > section:last-child {
-    grid-column: 1 / -1;
-    .author-list {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-  }
 }
 
 @media (max-width: 640px) {
   .sidebar {
     grid-template-columns: 1fr;
-  }
-  .sidebar > section:last-child {
-    .author-list {
-      grid-template-columns: 1fr;
-    }
   }
 }
 </style>
