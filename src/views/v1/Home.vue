@@ -13,7 +13,7 @@
 
         <section class="home-grid">
           <PostFeed :posts="visiblePosts" />
-          <HomeSidebar :tags="hotTags" />
+          <HomeSidebar />
         </section>
       </div>
     </main>
@@ -31,14 +31,7 @@ import { generateMockResources } from "@/data/mockData";
 const categories = ["全部", "前端", "后端", "设计", "AI", "工具"];
 const activeCategory = ref("全部");
 const activeSort = ref<"latest" | "popular">("latest");
-const hotTags = [
-  "Vue 3",
-  "TypeScript",
-  "组件化",
-  "性能优化",
-  "设计系统",
-  "工程化",
-];
+const hotTags = [];
 
 const posts = ref(generateMockResources(12));
 const visiblePosts = computed(() => {

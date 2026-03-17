@@ -39,26 +39,6 @@
       </button>
     </section>
 
-    <!-- Hot Tags -->
-    <section class="panel">
-      <h3 class="panel-title">
-        <div class="panel-icon">
-          <font-awesome-icon icon="tags" />
-        </div>
-        热门标签
-      </h3>
-      <div class="tag-grid">
-        <button
-          v-for="(tag, i) in tags"
-          :key="tag"
-          class="tag-btn"
-          :class="`tc${i % 4}`"
-          type="button"
-        >
-          # {{ tag }}
-        </button>
-      </div>
-    </section>
 
     <!-- Second Ad Container (Improved Light Style) -->
     <AdContainer
@@ -74,7 +54,7 @@
 <script setup lang="ts">
 import AdContainer from "@/components/v1/common/AdContainer.vue";
 
-defineProps<{ tags: string[] }>();
+defineProps<{}>();
 
 const tasks = [
   { name: "组件边界设计", done: 4, total: 6 },
@@ -195,48 +175,6 @@ const tasks = [
   }
 }
 
-/* ── Tags ── */
-.tag-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.tag-btn {
-  border-radius: 5px;
-  font-size: 11.5px;
-  font-weight: 500;
-  padding: 4px 10px;
-  border: 1px solid;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 120ms ease;
-
-  &:hover {
-    opacity: 0.75;
-  }
-}
-
-.tag-btn.tc0 {
-  color: #1d4ed8;
-  background: #eff6ff;
-  border-color: #bfdbfe;
-}
-.tag-btn.tc1 {
-  color: #7c3aed;
-  background: #f5f3ff;
-  border-color: #ddd6fe;
-}
-.tag-btn.tc2 {
-  color: #0f766e;
-  background: #f0fdfa;
-  border-color: #99f6e4;
-}
-.tag-btn.tc3 {
-  color: #92400e;
-  background: #fffbeb;
-  border-color: #fde68a;
-}
 
 /* ── Responsive ── */
 @media (max-width: 1100px) {
