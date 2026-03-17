@@ -1,57 +1,77 @@
 <template>
   <section class="filter-bar">
-    <!-- Left: Title & Live Stats -->
+    <!-- Left: Brand (Hidden on mobile) -->
     <div class="left-zone">
-      <div class="brand-box">
-        <div class="brand-icon">
-          <font-awesome-icon icon="compass" class="pulse-icon" />
+      <div class="brand-hub">
+        <div class="hub-icon">
+          <font-awesome-icon icon="compass" class="rotate-icon" />
         </div>
-        <div class="brand-text">
-          <h2>探索广场</h2>
-          <span class="live-count">1.2k+ 资源</span>
+        <div class="hub-text">
+          <h2 class="hub-title">探索广场</h2>
+          <span class="hub-meta">1.2k+ 内容精选</span>
         </div>
       </div>
-      <div class="divider-v"></div>
     </div>
 
-    <!-- Center: Modern Categories -->
+    <!-- Center: Fluid Category Navigation -->
     <div class="center-zone">
-      <div class="category-nav">
-        <button
-          v-for="(item, index) in categories"
-          :key="item"
-          class="cat-chip"
-          :class="[`cat-${index % 5}`, { active: item === activeCategory }]"
-          @click="selectCategory(item)"
-        >
-          <font-awesome-icon :icon="getCatIcon(item)" class="c-icon" />
-          <span>{{ item }}</span>
-        </button>
+      <div class="scroll-container">
+        <div class="category-nav" ref="navContainer">
+          <!-- The Motion Slider -->
+          <div class="nav-slider" :style="activeBgStyle"></div>
+          
+          <button
+            v-for="(item, index) in categories"
+            :ref="(el) => catRefs[index] = el"
+            :key="item"
+            class="cat-item"
+            :class="[{ active: item === activeCategory }]"
+            @click="selectCategory(item)"
+          >
+            <font-awesome-icon :icon="getCatIcon(item)" class="c-i" />
+            <span class="c-l">{{ item }}</span>
+            <span class="c-c" v-if="index > 0">{{ 12 + index * 8 }}</span>
+          </button>
+        </div>
+        <!-- Gradient Masks -->
+        <div class="edge-mask left"></div>
+        <div class="edge-mask right"></div>
       </div>
     </div>
 
-    <!-- Right: Search & Refined Sort -->
+    <!-- Right: Tools Section -->
     <div class="right-zone">
-      <div class="search-pill" :class="{ focused: isSearchFocused }">
-        <font-awesome-icon icon="magnifying-glass" class="s-icon" />
-        <input 
-          type="text" 
-          placeholder="快速查找..." 
-          @focus="isSearchFocused = true"
-          @blur="isSearchFocused = false"
-        />
-        <kbd class="search-kbd">/</kbd>
-      </div>
+      <div class="tools-container">
+        <!-- Search Pill -->
+        <div class="search-wrap" :class="{ 'is-active': isSearchFocused }">
+          <font-awesome-icon icon="magnifying-glass" class="s-i" />
+          <input 
+            type="text" 
+            placeholder="发现新灵感..." 
+            @focus="isSearchFocused = true"
+            @blur="isSearchFocused = false"
+          />
+        </div>
 
-      <div class="sort-capsule">
-        <button
-          v-for="item in sortOptions"
-          :key="item.value"
-          class="sort-tab"
-          :class="{ active: item.value === activeSort }"
-          @click="selectSort(item.value)"
-        >
-          {{ item.label }}
+        <div class="v-divider"></div>
+
+        <!-- Sort Switches -->
+        <div class="sort-switches">
+          <button
+            v-for="item in sortOptions"
+            :key="item.value"
+            class="sort-tab"
+            :class="{ active: item.value === activeSort }"
+            @click="selectSort(item.value)"
+          >
+            <font-awesome-icon :icon="item.value === 'latest' ? 'clock' : 'fire'" class="s-i" />
+            <span class="s-l">{{ item.label }}</span>
+          </button>
+        </div>
+
+        <!-- Settings icon -->
+        <button class="settings-btn" title="显示选项">
+          <font-awesome-icon icon="sliders" />
         </button>
       </div>
     </div>
@@ -59,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, nextTick, onMounted, watch } from 'vue'
 
 const props = defineProps<{
   categories: string[]
@@ -73,10 +93,53 @@ const emit = defineEmits<{
 }>()
 
 const isSearchFocused = ref(false)
+const catRefs = ref<any[]>([])
+const navContainer = ref<HTMLElement | null>(null)
+const activeBgStyle = ref({
+  left: '0px',
+  width: '0px',
+  opacity: '0'
+})
+
+let resizeObserver: ResizeObserver | null = null
+
+// 更新滑动背景位置
+const updateActiveBg = () => {
+  const index = props.categories.indexOf(props.activeCategory)
+  const el = catRefs.value[index]
+  if (el) {
+    activeBgStyle.value = {
+      left: `${el.offsetLeft}px`,
+      width: `${el.offsetWidth}px`,
+      opacity: '1'
+    }
+  }
+}
+
+watch(() => props.activeCategory, () => {
+  nextTick(updateActiveBg)
+})
+
+onMounted(() => {
+  nextTick(updateActiveBg)
+  
+  // 监听容器尺寸变化，确保背景同步
+  if (navContainer.value) {
+    resizeObserver = new ResizeObserver(() => {
+      updateActiveBg()
+    })
+    resizeObserver.observe(navContainer.value)
+  }
+})
+
+import { onUnmounted } from 'vue'
+onUnmounted(() => {
+  if (resizeObserver) resizeObserver.disconnect()
+})
 
 const sortOptions = [
-  { label: '最新发布', value: 'latest' as const },
-  { label: '热门互动', value: 'popular' as const },
+  { label: '最新', value: 'latest' as const },
+  { label: '热门', value: 'popular' as const },
 ]
 
 const getCatIcon = (cat: string) => {
@@ -104,215 +167,294 @@ const selectSort = (value: 'latest' | 'popular') => {
 .filter-bar {
   position: sticky;
   top: 64px;
-  z-index: 30;
+  z-index: 100; /* 确保在最上层 */
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8px 20px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(229, 231, 235, 0.7);
-  border-radius: 16px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01), 0 2px 4px -1px rgba(0, 0, 0, 0.005);
-  margin-bottom: 4px;
+  gap: 16px;
+  padding: 8px 24px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  box-shadow: 
+    0 10px 40px -10px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  margin-bottom: 24px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── Left Zone ── */
+/* ── Brand Hub ── */
 .left-zone {
-  display: flex;
-  align-items: center;
   flex-shrink: 0;
 }
 
-.brand-box {
+.brand-hub {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding-right: 20px;
+  gap: 14px;
 }
 
-.brand-icon {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, #3B82F6, #2563EB);
+.hub-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #4F46E5, #2563EB);
   color: #fff;
-  border-radius: 10px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  font-size: 16px;
+  box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.3);
 
-  .pulse-icon {
-    animation: slow-rotate 10s linear infinite;
-  }
+  .rotate-icon { animation: spin-slow 20s linear infinite; }
 }
 
-@keyframes slow-rotate {
+@keyframes spin-slow {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-.brand-text h2 {
+.hub-title {
   margin: 0;
-  font-size: 15px;
-  font-weight: 800;
-  color: #111827;
-  line-height: 1.2;
+  font-size: 14px;
+  font-weight: 850;
+  color: #1E293B;
+  letter-spacing: -0.02em;
 }
 
-.live-count {
+.hub-meta {
   font-size: 10px;
   font-weight: 700;
   color: #94A3B8;
-  display: block;
+  text-transform: uppercase;
 }
 
-.divider-v {
-  width: 1px;
-  height: 24px;
-  background: #E5E7EB;
-}
-
-/* ── Center Zone (Navigation) ── */
+/* ── Fluid Navigation ── */
 .center-zone {
   flex: 1;
+  min-width: 0; /* 允许收缩 */
+}
+
+.scroll-container {
+  position: relative;
   display: flex;
-  justify-content: center;
-  padding: 0 20px;
+  align-items: center;
 }
 
 .category-nav {
   display: flex;
   gap: 6px;
-  background: #F8FAFC;
-  padding: 4px;
-  border-radius: 12px;
-  border: 1px solid #F1F5F9;
+  background: rgba(241, 245, 249, 0.5);
+  padding: 5px;
+  border-radius: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+  position: relative;
+  width: 100%;
 }
 
-.cat-chip {
+.nav-slider {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  background: #fff;
+  border-radius: 9px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 1;
+  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.cat-item {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
+  padding: 7px 16px;
   border: none;
   background: transparent;
   color: #64748B;
-  border-radius: 8px;
+  border-radius: 9px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 750;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: inherit;
+  white-space: nowrap;
+  transition: all 0.3s;
 
-  .c-icon { font-size: 11px; opacity: 0.6; }
+  .c-i { font-size: 11px; opacity: 0.5; transition: transform 0.3s; }
+  .c-c {
+    font-size: 9px;
+    background: #E2E8F0;
+    color: #94A3B8;
+    padding: 1px 6px;
+    border-radius: 100px;
+    font-weight: 800;
+  }
 
   &:hover {
     color: #1E293B;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    .c-i { transform: scale(1.2); opacity: 1; }
   }
 
   &.active {
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    transform: translateY(-1px);
-    
-    &.cat-0 { color: #3B82F6; .c-icon { color: #3B82F6; } }
-    &.cat-1 { color: #F59E0B; .c-icon { color: #F59E0B; } }
-    &.cat-2 { color: #10B981; .c-icon { color: #10B981; } }
-    &.cat-3 { color: #EC4899; .c-icon { color: #EC4899; } }
-    &.cat-4 { color: #8B5CF6; .c-icon { color: #8B5CF6; } }
+    color: #2563EB;
+    .c-i { color: #2563EB; opacity: 1; }
+    .c-c { background: #DBEAFE; color: #2563EB; }
   }
 }
 
-/* ── Right Zone ── */
+.edge-mask {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 30px;
+  pointer-events: none;
+  z-index: 10;
+  &.left { left: 0; background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent); }
+  &.right { right: 0; background: linear-gradient(-90deg, rgba(230,230,230,0.1), transparent); }
+}
+
+/* ── Tools ── */
 .right-zone {
+  flex-shrink: 0;
+}
+
+.tools-container {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.search-pill {
+.search-wrap {
   display: flex;
   align-items: center;
   background: #F1F5F9;
-  border: 1.5px solid transparent;
-  border-radius: 10px;
-  padding: 0 12px;
-  width: 160px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+  border-radius: 14px;
+  padding: 0 14px;
+  width: 140px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-  &.focused {
+  &.is-active {
     width: 220px;
     background: #fff;
     border-color: #3B82F6;
-    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 12px 20px -8px rgba(59, 130, 246, 0.2);
   }
 
-  .s-icon { font-size: 12px; color: #94A3B8; }
-
+  .s-i { font-size: 12px; color: #94A3B8; }
   input {
     flex: 1;
     border: none;
     outline: none;
     background: transparent;
-    padding: 8px 10px;
+    padding: 10px 10px;
     font-size: 13px;
     color: #1E293B;
+    font-weight: 500;
     &::placeholder { color: #94A3B8; }
-  }
-
-  .search-kbd {
-    font-size: 10px;
-    font-weight: 700;
-    color: #94A3B8;
-    background: #fff;
-    padding: 2px 6px;
-    border-radius: 4px;
-    border: 1px solid #E2E8F0;
-    box-shadow: 0 1px 0 #CBD5E1;
   }
 }
 
-.sort-capsule {
+.v-divider {
+  width: 1px;
+  height: 20px;
+  background: #E2E8F0;
+}
+
+.sort-switches {
   display: flex;
   background: #F1F5F9;
-  padding: 3px;
-  border-radius: 10px;
+  padding: 4px;
+  border-radius: 14px;
   border: 1px solid #E2E8F0;
 }
 
 .sort-tab {
   border: none;
   background: transparent;
-  padding: 6px 12px;
+  padding: 6px 14px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   color: #64748B;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s;
-  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s;
 
   &.active {
     background: #fff;
-    color: #3B82F6;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    color: #111827;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    .s-i { color: #2563EB; }
   }
 }
 
-/* ── Responsive ── */
+.settings-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  background: #fff;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    color: #2563EB;
+    border-color: #3B82F6;
+    background: #F8FAFC;
+    transform: rotate(90deg);
+  }
+}
+
+/* ── Responsive Architecture ── */
 @media (max-width: 1200px) {
-  .left-zone { display: none; }
+  .left-zone { display: none; } /* 平板端隐藏品牌区 */
 }
 
 @media (max-width: 900px) {
-  .filter-bar { flex-direction: column; height: auto; padding: 16px; gap: 16px; }
-  .center-zone { order: 1; padding: 0; width: 100%; }
-  .category-nav { width: 100%; overflow-x: auto; padding-bottom: 8px; }
-  .right-zone { order: 2; width: 100%; justify-content: space-between; }
-  .search-pill { flex: 1; &.focused { width: 100%; } }
+  .filter-bar {
+    flex-wrap: wrap;
+    padding: 16px;
+    gap: 16px;
+  }
+  
+  .center-zone { 
+    order: 1; 
+    width: 100%; 
+    min-width: 100%;
+  }
+  
+  .right-zone { 
+    order: 2; 
+    width: 100%; 
+    .tools-container { 
+      justify-content: space-between; 
+      gap: 8px;
+    }
+    .search-wrap { 
+      flex: 1; 
+      &.is-active { width: 100%; } 
+    }
+    .v-divider { display: none; }
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-bar { padding: 12px; }
+  .scroll-container {
+    mask-image: linear-gradient(90deg, black 85%, transparent);
+  }
+  .cat-item { padding: 7px 12px; font-size: 12px; }
+  .s-l { display: none; } /* 极窄屏只显示排序图标 */
+  .sort-tab { padding: 6px 12px; }
+  .settings-btn { display: none; }
 }
 </style>
