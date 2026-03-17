@@ -34,12 +34,12 @@ const tags = [
 ]
 
 const authors: Resource['author'][] = [
-  { name: 'Kylin_Dev', avatar: 'https://i.pravatar.cc/150?img=1', role: 'super_admin' },
-  { name: 'Pixel_Artisan', avatar: 'https://i.pravatar.cc/150?img=68', role: 'admin' },
-  { name: 'System_Core', avatar: 'https://i.pravatar.cc/150?img=12', role: 'system' },
-  { name: 'Frost_Byte', avatar: 'https://i.pravatar.cc/150?img=11', role: 'vip' },
-  { name: 'Cloud_Walker', avatar: 'https://i.pravatar.cc/150?img=5', role: 'user' },
-  { name: 'Nova_Coder', avatar: 'https://i.pravatar.cc/150?img=9', role: 'vip' }
+  { name: '正义的土豆', avatar: 'https://i.pravatar.cc/150?img=1', role: 'super_admin' },
+  { name: '腼腆的西瓜', avatar: 'https://i.pravatar.cc/150?img=68', role: 'admin' },
+  { name: '熬夜的考拉', avatar: 'https://i.pravatar.cc/150?img=12', role: 'system' },
+  { name: '微醺的布丁', avatar: 'https://i.pravatar.cc/150?img=11', role: 'vip' },
+  { name: '流浪的摩卡', avatar: 'https://i.pravatar.cc/150?img=5', role: 'user' },
+  { name: '追风的饭团', avatar: 'https://i.pravatar.cc/150?img=9', role: 'vip' }
 ]
 
 const titles = [

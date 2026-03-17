@@ -6,8 +6,10 @@
       <img :src="post.image" :alt="post.title" class="cover" loading="lazy" />
       <div class="cover-mask"></div>
       <div class="cover-top">
-        <span class="rank-badge" :class="rankClass">{{ rankLabel }}</span>
-        <span class="cat-badge" :class="`cat-${catIndex}`">{{ post.category }}</span>
+        <span class="cat-badge" :class="`cat-${catIndex}`">
+          <font-awesome-icon :icon="catIcon" class="cat-icon" />
+          {{ post.category }}
+        </span>
       </div>
       <span class="time-badge">
         <font-awesome-icon icon="clock" />
@@ -109,11 +111,11 @@ const props = withDefaults(
   { index: 0 }
 )
 
-const rankLabel      = computed(() => String(props.index + 1).padStart(2, '0'))
-const rankClass      = computed(() =>
-  props.index === 0 ? 'rank-gold' : props.index === 1 ? 'rank-silver' : props.index === 2 ? 'rank-bronze' : 'rank-normal'
-)
 const catIndex       = computed(() => Math.max(0, CATEGORIES.indexOf(props.post.category)) % 5)
+const catIcon        = computed(() => {
+  const map: Record<string, string> = { '前端': 'code', '后端': 'server', '设计': 'palette', 'AI': 'brain', '工具': 'wrench' }
+  return map[props.post.category] || 'tags'
+})
 const isHot          = computed(() => props.post.views >= 7000) /* 提高门槛，使热门更稀有 */
 const dateLabel      = computed(() => {
   const d = new Date(props.post.createdAt)
@@ -198,37 +200,36 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   z-index: 2;
 }
 
-/* Rank badge — colored by position */
-.rank-badge {
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 800;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  flex-shrink: 0;
-}
-
-.rank-gold   { background: linear-gradient(135deg, #FFD700, #F59E0B); }
-.rank-silver { background: linear-gradient(135deg, #E2E8F0, #94A3B8); }
-.rank-bronze { background: linear-gradient(135deg, #D97706, #B45309); }
-.rank-normal { background: rgba(15, 23, 42, 0.6); }
-
+/* Category badge - Ultra Flat style */
 .cat-badge {
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 9px;
   font-weight: 700;
   color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
+  letter-spacing: 0.01em;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  
+  /* 彻底扁平：纯色背景，零阴影，无描边 */
+  border: none;
+  box-shadow: none;
+  text-shadow: none;
+
+  .cat-icon {
+    font-size: 8px;
+    opacity: 0.9;
+  }
 }
 
-.cat-0 { background: linear-gradient(135deg, #60A5FA, #3B82F6); }
-.cat-1 { background: linear-gradient(135deg, #34D399, #10B981); }
-.cat-2 { background: linear-gradient(135deg, #F472B6, #EC4899); }
-.cat-3 { background: linear-gradient(135deg, #A78BFA, #8B5CF6); }
-.cat-4 { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
+.cat-0 { background: #3B82F6; } /* 前端 - 纯蓝 */
+.cat-1 { background: #10B981; } /* 后端 - 纯绿 */
+.cat-2 { background: #EC4899; } /* 设计 - 纯粉 */
+.cat-3 { background: #8B5CF6; } /* AI - 纯紫 */
+.cat-4 { background: #F59E0B; } /* 工具 - 纯橙 */
 
 .time-badge {
   position: absolute;
@@ -642,7 +643,7 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 
   .time-badge { display: none; }
   .cat-badge  { display: none; }
-  .rank-badge { font-size: 9px; padding: 1px 5px; }
+  .rank-badge { display: none; }
 
   .content { padding: 9px 11px; gap: 5px; }
 

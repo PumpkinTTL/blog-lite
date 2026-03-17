@@ -60,7 +60,12 @@ import {
   faFire,
   faShieldHalved,
   faCircleCheck,
-  faGem
+  faGem,
+  faCode,
+  faServer,
+  faPalette,
+  faBrain,
+  faWrench
 } from '@fortawesome/free-solid-svg-icons'
 
 // 添加图标到库
@@ -73,7 +78,8 @@ library.add(
   faMoon, faSun, faChevronDown, faCrown, faClock, faComment,
   faCalendarDays, faBookOpen, faShareNodes, faNewspaper, faListCheck,
   faBolt, faPenNib, faLayerGroup, faHeart, faFire,
-  faShieldHalved, faCrown, faCircleCheck, faGem
+  faShieldHalved, faCrown, faCircleCheck, faGem,
+  faCode, faServer, faPalette, faBrain, faWrench
 )
 
 const app = createApp(App)
