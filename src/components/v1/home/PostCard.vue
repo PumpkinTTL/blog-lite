@@ -32,22 +32,24 @@
       <!-- 3. Author · date -->
       <div class="meta">
         <img :src="post.author.avatar" :alt="post.author.name" class="avatar" loading="lazy" />
-        <div class="author-wrap">
-          <span class="author" :class="post.author.role">{{ post.author.name }}</span>
-          <span v-if="post.author.role === 'admin'" class="role-badge admin">
-            <font-awesome-icon icon="shield-halved" /> 站长
-          </span>
-          <span v-if="post.author.role === 'system'" class="role-badge system">
-            <font-awesome-icon icon="circle-check" /> 官方
-          </span>
-          <span v-if="post.author.role === 'vip'" class="role-badge vip">
-            <font-awesome-icon icon="crown" /> 会员
-          </span>
+        <div class="author-unit" :class="post.author.role">
+          <span class="name">{{ post.author.name }}</span>
+          <template v-if="post.author.role && post.author.role !== 'user'">
+            <span class="role-sep"></span>
+            <span class="role-label">
+              <font-awesome-icon v-if="post.author.role === 'admin'" icon="shield-halved" />
+              <font-awesome-icon v-if="post.author.role === 'system'" icon="circle-check" />
+              <font-awesome-icon v-if="post.author.role === 'vip'" icon="crown" />
+              {{ post.author.role === 'admin' ? '站长' : post.author.role === 'system' ? '官方' : '会员' }}
+            </span>
+          </template>
         </div>
+
         <span class="dot">·</span>
-        <div class="date-wrap">
-          <font-awesome-icon icon="calendar-days" class="cal-icon" />
-          <span class="date">{{ dateLabel }}</span>
+
+        <div class="date-unit">
+          <font-awesome-icon icon="calendar-days" />
+          <span>{{ dateLabel }}</span>
         </div>
         <span v-if="isHot" class="hot-badge">
           <font-awesome-icon icon="fire" class="fire-icon" />
@@ -317,66 +319,81 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   flex-shrink: 0;
 }
 
-.author-wrap {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.author {
-  font-size: 13px;
-  font-weight: 700;
-  color: #1F2937;
-  white-space: nowrap;
-}
-
-/* 角色样式 */
-.author.admin { color: #EF4444; }
-.author.system { color: #3B82F6; }
-.author.vip { color: #F59E0B; }
-
-.role-badge {
+.author-unit {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
-  font-size: 9px;
-  padding: 1px 5px;
-  border-radius: 4px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
+  transition: all 0.2s ease;
 
-.role-badge.admin { background: #FEF2F2; color: #EF4444; border: 1px solid #FEE2E2; }
-.role-badge.system { background: #EFF6FF; color: #3B82F6; border: 1px solid #DBEAFE; }
-.role-badge.vip { background: #FFFBEB; color: #F59E0B; border: 1px solid #FEF3C7; }
+  .name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #4B5563; /* 普通用户颜色稍淡，增加层级感 */
+  }
+
+  /* 只有在有角色背景时才显示边框和背景 */
+  &.admin, &.system, &.vip {
+    padding: 2px 2px 2px 8px;
+    background: #F9FAFB;
+    border: 1px solid #F3F4F6;
+    border-radius: 6px;
+    
+    .name { font-size: 12.5px; } /* 有背景时字号稍微缩小一点点以平衡视觉 */
+  }
+
+  /* 角色分割线 */
+  .role-sep {
+    width: 1px;
+    height: 10px;
+    background: #E5E7EB;
+    margin: 0 6px;
+  }
+
+  .role-label {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* 身份化配色 - 一体化视觉 */
+  &.admin {
+    background: #FEF2F2; border-color: #FEE2E2;
+    .name { color: #B91C1C; }
+    .role-sep { background: #FECACA; }
+    .role-label { color: #EF4444; background: #fff; box-shadow: 0 1px 2px rgba(239, 68, 68, 0.1); }
+  }
+  &.system {
+    background: #EFF6FF; border-color: #DBEAFE;
+    .name { color: #1D4ED8; }
+    .role-sep { background: #BFDBFE; }
+    .role-label { color: #3B82F6; background: #fff; box-shadow: 0 1px 2px rgba(59, 130, 246, 0.1); }
+  }
+  &.vip {
+    background: #FFFBEB; border-color: #FEF3C7;
+    .name { color: #B45309; }
+    .role-sep { background: #FDE68A; }
+    .role-label { color: #F59E0B; background: #fff; box-shadow: 0 1px 2px rgba(245, 158, 11, 0.1); }
+  }
+}
 
 .dot {
   color: #E5E7EB;
-  font-size: 11px;
-  flex-shrink: 0;
+  margin: 0 2px;
 }
 
-.date-wrap {
+.date-unit {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 6px;
-  background: #F9FAFB;
-  border-radius: 4px;
-  border: 1px solid #F3F4F6;
-}
-
-.cal-icon {
-  font-size: 9px;
-  color: #9CA3AF;
-  flex-shrink: 0;
-}
-
-.date {
+  gap: 5px;
   font-size: 11px;
   font-weight: 600;
-  color: #6B7280;
-  white-space: nowrap;
+  color: #9CA3AF;
+  padding: 3px 0;
+  
+  :deep(svg) { font-size: 10px; }
 }
 
 /* Hot badge — shows when views >= 3000 */
