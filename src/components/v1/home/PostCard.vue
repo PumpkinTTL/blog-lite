@@ -200,35 +200,35 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 
 /* Rank badge — colored by position */
 .rank-badge {
-  padding: 3px 10px;
+  padding: 3px 8px;
   border-radius: 6px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.06em;
   color: #fff;
-  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
 }
 
-.rank-gold   { background: rgba(245, 158, 11, 0.95); }
-.rank-silver { background: rgba(100, 116, 139, 0.9); }
-.rank-bronze { background: rgba(180, 83, 9, 0.88); }
-.rank-normal { background: rgba(15, 23, 42, 0.55); }
+.rank-gold   { background: linear-gradient(135deg, #FFD700, #F59E0B); }
+.rank-silver { background: linear-gradient(135deg, #E2E8F0, #94A3B8); }
+.rank-bronze { background: linear-gradient(135deg, #D97706, #B45309); }
+.rank-normal { background: rgba(15, 23, 42, 0.6); }
 
-/* Category badge */
 .cat-badge {
-  padding: 3px 10px;
+  padding: 3px 8px;
   border-radius: 6px;
   font-size: 10px;
   font-weight: 700;
   color: #fff;
-  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
-.cat-0 { background: rgba(37, 99, 235, 0.7); }
-.cat-1 { background: rgba(5, 150, 105, 0.7); }
-.cat-2 { background: rgba(124, 58, 237, 0.7); }
-.cat-3 { background: rgba(217, 119, 6, 0.75); }
-.cat-4 { background: rgba(15, 118, 110, 0.7); }
+.cat-0 { background: linear-gradient(135deg, #60A5FA, #3B82F6); }
+.cat-1 { background: linear-gradient(135deg, #34D399, #10B981); }
+.cat-2 { background: linear-gradient(135deg, #F472B6, #EC4899); }
+.cat-3 { background: linear-gradient(135deg, #A78BFA, #8B5CF6); }
+.cat-4 { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
 
 .time-badge {
   position: absolute;
@@ -425,23 +425,25 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   :deep(svg) { font-size: 10px; }
 }
 
-/* 热门标签 - 吸附在封面图上的扁平化设计 */
+/* 热门文章 - 封面右侧吸附树叶角标 */
 .hot-badge-pinned {
   position: absolute;
-  top: 0;
-  right: 12px;
-  padding: 4px 10px;
-  background: linear-gradient(135deg, #fb923c, #f43f5e); /* 恢复粉橙渐变 */
+  top: 15px; /* 稍微下移，不挤在最顶角 */
+  right: -4px; /* 右侧贴齐封面图边缘 */
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #fb923c, #f43f5e);
   color: #fff;
   font-size: 10px;
   font-weight: 900;
-  border-radius: 0 0 6px 6px;
+  /* 树叶形状：左边圆润，右边贴合 */
+  border-radius: 20px 2px 2px 20px;
   display: flex;
   align-items: center;
   gap: 4px;
   z-index: 10;
   letter-spacing: 0.05em;
-  overflow: hidden; /* 为了流光效果 */
+  overflow: hidden;
+  box-shadow: -2px 4px 10px rgba(244, 63, 94, 0.2);
 
   /* 镜面扫过流光效果，只在hot标签上 */
   &::after {
@@ -663,10 +665,11 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   .stats { gap: 7px; flex-wrap: wrap; }
   .stat  { font-size: 10.5px; padding: 2px 6px; }
 
-  /* 移动端缩小热门角标 */
+  /* 移动端缩小热门角标并微调位置 */
   .hot-badge-pinned {
-    transform: scale(0.9);
-    right: 8px;
+    transform: scale(0.7);
+    right: -10px;
+    top: 12px;
   }
 
   /* 发布时间允许换行，不再隐藏 */
