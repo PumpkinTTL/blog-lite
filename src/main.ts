@@ -56,7 +56,8 @@ import {
   faBolt,
   faPenNib,
   faLayerGroup,
-  faHeart
+  faHeart,
+  faFire
 } from '@fortawesome/free-solid-svg-icons'
 
 // 添加图标到库
@@ -68,7 +69,7 @@ library.add(
   faBook, faChartLine, faDollarSign, faCompass, faTags, faCircleInfo,
   faMoon, faSun, faChevronDown, faCrown, faClock, faComment,
   faCalendarDays, faBookOpen, faShareNodes, faNewspaper, faListCheck,
-  faBolt, faPenNib, faLayerGroup, faHeart
+  faBolt, faPenNib, faLayerGroup, faHeart, faFire
 )
 
 const app = createApp(App)

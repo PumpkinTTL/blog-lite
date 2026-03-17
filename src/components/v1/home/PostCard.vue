@@ -35,7 +35,10 @@
         <span class="dot">·</span>
         <font-awesome-icon icon="calendar-days" class="cal-icon" />
         <span class="date">{{ dateLabel }}</span>
-        <span v-if="isHot" class="hot-badge">🔥 热门</span>
+        <span v-if="isHot" class="hot-badge">
+          <font-awesome-icon icon="fire" class="fire-icon" />
+          热门
+        </span>
       </div>
 
       <!-- 4. Bottom bar -->
@@ -107,14 +110,14 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   display: grid;
   grid-template-columns: 200px minmax(0, 1fr);
   background: #fff;
-  border: 1px solid #E5E7EB;
-  border-radius: 10px;
+  border: 1px solid #F3F4F6;
+  border-radius: 12px;
   overflow: hidden;
-  transition: border-color 160ms, box-shadow 160ms;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
     border-color: #BFDBFE;
-    box-shadow: 0 4px 18px rgba(37, 99, 235, 0.08);
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1), 0 8px 10px -6px rgba(37, 99, 235, 0.1);
 
     .cover { transform: scale(1.04); }
     .title { color: #2563EB; }
@@ -129,6 +132,8 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   min-height: 162px;
   background: #F3F4F6;
   overflow: hidden;
+  margin: 8px 0 8px 8px;
+  border-radius: 8px;
 }
 
 .cover {
@@ -136,7 +141,7 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 320ms ease;
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .cover-top {
@@ -149,12 +154,14 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 
 /* Rank badge — colored by position */
 .rank-badge {
-  padding: 3px 8px;
-  border-radius: 5px;
+  padding: 3px 10px;
+  border-radius: 6px;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.06em;
   color: #fff;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .rank-gold   { background: rgba(245, 158, 11, 0.95); }
@@ -164,18 +171,19 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 
 /* Category badge */
 .cat-badge {
-  padding: 3px 8px;
-  border-radius: 5px;
+  padding: 3px 10px;
+  border-radius: 6px;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   color: #fff;
+  backdrop-filter: blur(6px);
 }
 
-.cat-0 { background: rgba(37, 99, 235, 0.85); }
-.cat-1 { background: rgba(5, 150, 105, 0.85); }
-.cat-2 { background: rgba(124, 58, 237, 0.85); }
-.cat-3 { background: rgba(217, 119, 6, 0.9); }
-.cat-4 { background: rgba(15, 118, 110, 0.85); }
+.cat-0 { background: rgba(37, 99, 235, 0.7); }
+.cat-1 { background: rgba(5, 150, 105, 0.7); }
+.cat-2 { background: rgba(124, 58, 237, 0.7); }
+.cat-3 { background: rgba(217, 119, 6, 0.75); }
+.cat-4 { background: rgba(15, 118, 110, 0.7); }
 
 .time-badge {
   position: absolute;
@@ -185,12 +193,13 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   gap: 4px;
   padding: 3px 8px;
   border-radius: 5px;
-  background: rgba(15, 23, 42, 0.55);
+  background: rgba(15, 23, 42, 0.45);
   color: #fff;
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
 
-  :deep(svg) { font-size: 9px; }
+  :deep(svg) { font-size: 9px; opacity: 0.9; }
 }
 
 /* ─────────────────────────────
@@ -199,8 +208,8 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 .content {
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  padding: 14px 16px;
+  gap: 12px;
+  padding: 16px 20px 16px 12px;
   min-width: 0;
 }
 
@@ -214,11 +223,11 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 .title {
   margin: 0;
   flex: 1;
-  font-size: 15.5px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   color: #111827;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
+  line-height: 1.45;
+  letter-spacing: -0.018em;
   transition: color 120ms;
 }
 
@@ -242,6 +251,11 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
     border-color: #FDE68A;
     background: #FFFBEB;
     color: #F59E0B;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 }
 
@@ -261,16 +275,17 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 .meta {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
   flex-wrap: nowrap;
 }
 
 .avatar {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1.5px solid #E0E7FF;
+  border: 1.5px solid #fff;
+  box-shadow: 0 0 0 1px #E5E7EB;
   flex-shrink: 0;
 }
 
@@ -303,14 +318,22 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 .hot-badge {
   margin-left: auto;
   font-size: 10.5px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 6px;
   background: #FFF7ED;
-  color: #C2410C;
-  border: 1px solid #FED7AA;
+  color: #EA580C;
+  border: 1px solid #FFEDD5;
   white-space: nowrap;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  .fire-icon {
+    font-size: 11px;
+    color: #F97316;
+  }
 }
 
 /* 4. Bottom bar */
@@ -338,7 +361,16 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   color: #9CA3AF;
   font-weight: 500;
 
-  :deep(svg) { font-size: 10px; color: #9CA3AF; }
+  :deep(svg) { 
+    font-size: 11px; 
+    color: #9CA3AF; 
+    transition: color 0.2s ease;
+  }
+
+  &:hover {
+    color: #4B5563;
+    :deep(svg) { color: #6B7280; }
+  }
 }
 
 .tags {
@@ -348,18 +380,24 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
 }
 
 .tag {
-  font-size: 10.5px;
-  font-weight: 500;
-  border-radius: 4px;
-  padding: 2px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 2px 8px;
   white-space: nowrap;
   border: 1px solid;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.95);
+  }
 }
 
-.tag.t0 { color: #1D4ED8; background: #EFF6FF; border-color: #BFDBFE; }
-.tag.t1 { color: #7C3AED; background: #F5F3FF; border-color: #DDD6FE; }
-.tag.t2 { color: #0F766E; background: #F0FDFA; border-color: #99F6E4; }
-.tag.t3 { color: #92400E; background: #FFFBEB; border-color: #FDE68A; }
+.tag.t0 { color: #1e40af; background: #eff6ff; border-color: #dbeafe; }
+.tag.t1 { color: #5b21b6; background: #f5f3ff; border-color: #ede9fe; }
+.tag.t2 { color: #065f46; background: #f0fdf4; border-color: #dcfce7; }
+.tag.t3 { color: #92400e; background: #fffbeb; border-color: #fef3c7; }
 
 .actions {
   display: flex;
@@ -384,9 +422,20 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   white-space: nowrap;
   transition: all 120ms;
 
-  :deep(svg) { font-size: 11px; color: #60A5FA; }
+  :deep(svg) { font-size: 11px; color: #2563EB; }
 
-  &:hover { background: #DBEAFE; border-color: #93C5FD; }
+  &:hover { 
+    background: #2563EB; 
+    border-color: #2563EB;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    :deep(svg) { color: #fff; }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 .btn-share {
@@ -404,7 +453,16 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   font-family: inherit;
   transition: all 120ms;
 
-  &:hover { background: #F9FAFB; border-color: #D1D5DB; color: #6B7280; }
+  &:hover { 
+    background: #F3F4F6; 
+    border-color: #D1D5DB; 
+    color: #374151; 
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 /* ─────────────────────────────
