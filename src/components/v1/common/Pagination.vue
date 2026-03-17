@@ -178,7 +178,6 @@ const changePage = (page: number) => {
   }
 }
 
-
 .page-spacer {
   display: flex;
   gap: 2px;
@@ -221,7 +220,7 @@ const changePage = (page: number) => {
     color: var(--primary);
     font-size: 13px;
   }
-  
+
   .total-label {
     opacity: 0.5;
     font-weight: 500;
