@@ -23,7 +23,6 @@
             @click="changePage(page)"
           >
             <span class="num">{{ page }}</span>
-            <div class="active-indicator" v-if="current === page"></div>
           </button>
 
           <div v-else class="page-spacer">
@@ -43,16 +42,12 @@
         <font-awesome-icon icon="chevron-right" />
       </button>
 
-      <!-- Refined Metadata Area -->
+      <!-- Flat Metadata Area -->
       <div class="meta-section">
         <div class="v-line"></div>
         <div class="page-stats">
           <span class="current-label">第</span>
-          <div class="num-box">
-            <transition name="slide-up" mode="out-in">
-              <span :key="current" class="highlight">{{ current }}</span>
-            </transition>
-          </div>
+          <span class="highlight">{{ current }}</span>
           <span class="total-label">/ {{ totalPages }} 页</span>
         </div>
       </div>
@@ -113,53 +108,38 @@ const changePage = (page: number) => {
 }
 
 .pagination-island {
-  position: relative;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(24px) saturate(200%);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 10px 30px -5px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 1);
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-
-  &:hover {
-    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.12),
-      inset 0 0 0 1px rgba(255, 255, 255, 1);
-    transform: translateY(-2px);
-  }
+  gap: 4px;
+  padding: 4px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 /* ── Nav Triggers ── */
 .nav-trigger {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   background: transparent;
   color: var(--text-tertiary);
-  font-size: 11px;
-  border-radius: 10px;
+  font-size: 10px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.25s;
+  transition: all 0.2s;
 
   &:hover:not(:disabled) {
     background: var(--bg);
     color: var(--primary);
-    transform: scale(1.05);
-  }
-
-  &:active:not(:disabled) {
-    transform: scale(0.95);
   }
 
   &:disabled {
-    opacity: 0.2;
+    opacity: 0.15;
     cursor: not-allowed;
   }
 }
@@ -172,9 +152,8 @@ const changePage = (page: number) => {
 }
 
 .page-blob {
-  position: relative;
-  min-width: 34px;
-  height: 34px;
+  min-width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,16 +161,11 @@ const changePage = (page: number) => {
   background: transparent;
   color: var(--text-secondary);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  border-radius: 10px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 6px;
+  transition: all 0.2s;
   padding: 0 8px;
-
-  .num {
-    position: relative;
-    z-index: 2;
-  }
 
   &:hover:not(.is-active) {
     background: var(--bg);
@@ -201,35 +175,9 @@ const changePage = (page: number) => {
   &.is-active {
     color: #fff;
     background: var(--primary);
-    box-shadow: 0 4px 12px -2px rgba(99, 102, 241, 0.45);
-    transform: scale(1.05);
-
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.2),
-        transparent
-      );
-      border-radius: inherit;
-      z-index: 1;
-    }
   }
 }
 
-.active-indicator {
-  position: absolute;
-  bottom: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 12px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 99px;
-  z-index: 3;
-}
 
 .page-spacer {
   display: flex;
@@ -254,74 +202,46 @@ const changePage = (page: number) => {
 
 .v-line {
   width: 1px;
-  height: 18px;
+  height: 14px;
   background: var(--border);
-  margin: 0 10px;
-  opacity: 0.6;
+  margin: 0 8px;
+  opacity: 0.4;
 }
 
 .page-stats {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-
-  .num-box {
-    min-width: 14px;
-    display: flex;
-    justify-content: center;
-  }
+  letter-spacing: 0.01em;
 
   .highlight {
     color: var(--primary);
     font-size: 13px;
-    font-family: "Inter", sans-serif;
   }
-
+  
   .total-label {
     opacity: 0.5;
+    font-weight: 500;
   }
-}
-
-/* ── Transitions ── */
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transition: all 0.3s ease;
-}
-.slide-up-enter-from {
-  opacity: 0;
-  transform: translateY(10px);
-}
-.slide-up-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
 }
 
 /* ── Dark Mode ── */
 :global(.dark) {
   .pagination-island {
-    background: rgba(15, 23, 42, 0.6);
-    border-color: rgba(255, 255, 255, 0.04);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
-
-    &:hover {
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
+    background: #111827;
+    border-color: rgba(255, 255, 255, 0.05);
   }
 
   .nav-trigger:hover:not(:disabled),
   .page-blob:hover:not(.is-active) {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
   }
 
   .v-line {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
   }
 }
 
