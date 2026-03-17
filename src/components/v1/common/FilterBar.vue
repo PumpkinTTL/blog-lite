@@ -19,10 +19,10 @@
         <div class="category-nav" ref="navContainer">
           <!-- The Motion Slider -->
           <div class="nav-slider" :style="activeBgStyle"></div>
-          
+
           <button
             v-for="(item, index) in categories"
-            :ref="(el) => catRefs[index] = el"
+            :ref="(el) => (catRefs[index] = el)"
             :key="item"
             class="cat-item"
             :class="[{ active: item === activeCategory }]"
@@ -45,9 +45,9 @@
         <!-- Search Pill -->
         <div class="search-wrap" :class="{ 'is-active': isSearchFocused }">
           <font-awesome-icon icon="magnifying-glass" class="s-i" />
-          <input 
-            type="text" 
-            placeholder="发现新灵感..." 
+          <input
+            type="text"
+            placeholder="发现新灵感..."
             @focus="isSearchFocused = true"
             @blur="isSearchFocused = false"
           />
@@ -64,7 +64,10 @@
             :class="{ active: item.value === activeSort }"
             @click="selectSort(item.value)"
           >
-            <font-awesome-icon :icon="item.value === 'latest' ? 'clock' : 'fire'" class="s-i" />
+            <font-awesome-icon
+              :icon="item.value === 'latest' ? 'clock' : 'fire'"
+              class="s-i"
+            />
             <span class="s-l">{{ item.label }}</span>
           </button>
         </div>
@@ -79,88 +82,91 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, onMounted, watch } from 'vue'
+import { ref, computed, nextTick, onMounted, watch } from "vue";
 
 const props = defineProps<{
-  categories: string[]
-  activeCategory: string
-  activeSort: 'latest' | 'popular'
-}>()
+  categories: string[];
+  activeCategory: string;
+  activeSort: "latest" | "popular";
+}>();
 
 const emit = defineEmits<{
-  (e: 'update:activeCategory', value: string): void
-  (e: 'update:activeSort', value: 'latest' | 'popular'): void
-}>()
+  (e: "update:activeCategory", value: string): void;
+  (e: "update:activeSort", value: "latest" | "popular"): void;
+}>();
 
-const isSearchFocused = ref(false)
-const catRefs = ref<any[]>([])
-const navContainer = ref<HTMLElement | null>(null)
+const isSearchFocused = ref(false);
+const catRefs = ref<any[]>([]);
+const navContainer = ref<HTMLElement | null>(null);
 const activeBgStyle = ref({
-  left: '0px',
-  width: '0px',
-  opacity: '0'
-})
+  left: "0px",
+  width: "0px",
+  opacity: "0",
+});
 
-let resizeObserver: ResizeObserver | null = null
+let resizeObserver: ResizeObserver | null = null;
 
 // 更新滑动背景位置
 const updateActiveBg = () => {
-  const index = props.categories.indexOf(props.activeCategory)
-  const el = catRefs.value[index]
+  const index = props.categories.indexOf(props.activeCategory);
+  const el = catRefs.value[index];
   if (el) {
     activeBgStyle.value = {
       left: `${el.offsetLeft}px`,
       width: `${el.offsetWidth}px`,
-      opacity: '1'
-    }
+      opacity: "1",
+    };
   }
-}
+};
 
-watch(() => props.activeCategory, () => {
-  nextTick(updateActiveBg)
-})
+watch(
+  () => props.activeCategory,
+  () => {
+    nextTick(updateActiveBg);
+  }
+);
 
 onMounted(() => {
-  nextTick(updateActiveBg)
-  
+  nextTick(updateActiveBg);
+
   // 监听容器尺寸变化，确保背景同步
   if (navContainer.value) {
     resizeObserver = new ResizeObserver(() => {
-      updateActiveBg()
-    })
-    resizeObserver.observe(navContainer.value)
+      updateActiveBg();
+    });
+    resizeObserver.observe(navContainer.value);
   }
-})
+});
 
-import { onUnmounted } from 'vue'
+import { onUnmounted } from "vue";
 onUnmounted(() => {
-  if (resizeObserver) resizeObserver.disconnect()
-})
+  if (resizeObserver) resizeObserver.disconnect();
+});
 
 const sortOptions = [
-  { label: '最新', value: 'latest' as const },
-  { label: '热门', value: 'popular' as const },
-]
+  { label: "最新", value: "latest" as const },
+  { label: "热门", value: "popular" as const },
+];
 
 const getCatIcon = (cat: string) => {
   const icons: Record<string, string> = {
-    '全部': 'grid-2',
-    '前端': 'code',
-    '后端': 'server',
-    '设计': 'palette',
-    'AI': 'brain',
-    '工具': 'wrench'
-  }
-  return icons[cat] || 'tag'
-}
+    全部: "grid-2",
+    前端: "code",
+    后端: "server",
+    设计: "palette",
+    AI: "brain",
+    工具: "wrench",
+  };
+  return icons[cat] || "tag";
+};
 
 const selectCategory = (value: string) => {
-  if (value !== props.activeCategory) emit('update:activeCategory', value)
-}
+  if (value !== props.activeCategory) emit("update:activeCategory", value);
+};
 
-const selectSort = (value: 'latest' | 'popular') => {
-  if (value !== props.activeSort) emit('update:activeSort', value)
-}
+const selectSort = (value: "latest" | "popular") => {
+  if (value !== props.activeSort) emit("update:activeSort", value);
+};
 </script>
 
 <style scoped lang="scss">
@@ -176,8 +182,7 @@ const selectSort = (value: 'latest' | 'popular') => {
   backdrop-filter: blur(28px) saturate(200%);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 20px;
-  box-shadow: 
-    0 10px 40px -10px rgba(0, 0, 0, 0.08),
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08),
     inset 0 0 0 1px rgba(255, 255, 255, 0.4);
   margin-bottom: 24px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -197,7 +202,7 @@ const selectSort = (value: 'latest' | 'popular') => {
 .hub-icon {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #4F46E5, #2563EB);
+  background: linear-gradient(135deg, #4f46e5, #2563eb);
   color: #fff;
   border-radius: 12px;
   display: flex;
@@ -206,26 +211,32 @@ const selectSort = (value: 'latest' | 'popular') => {
   font-size: 16px;
   box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.3);
 
-  .rotate-icon { animation: spin-slow 20s linear infinite; }
+  .rotate-icon {
+    animation: spin-slow 20s linear infinite;
+  }
 }
 
 @keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .hub-title {
   margin: 0;
   font-size: 14px;
   font-weight: 850;
-  color: #1E293B;
+  color: #1e293b;
   letter-spacing: -0.02em;
 }
 
 .hub-meta {
   font-size: 10px;
   font-weight: 700;
-  color: #94A3B8;
+  color: #94a3b8;
   text-transform: uppercase;
 }
 
@@ -249,7 +260,9 @@ const selectSort = (value: 'latest' | 'popular') => {
   border-radius: 14px;
   overflow-x: auto;
   scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
+  &::-webkit-scrollbar {
+    display: none;
+  }
   position: relative;
   width: 100%;
 }
@@ -274,7 +287,7 @@ const selectSort = (value: 'latest' | 'popular') => {
   padding: 7px 16px;
   border: none;
   background: transparent;
-  color: #64748B;
+  color: #64748b;
   border-radius: 9px;
   font-size: 13px;
   font-weight: 750;
@@ -282,36 +295,56 @@ const selectSort = (value: 'latest' | 'popular') => {
   white-space: nowrap;
   transition: all 0.3s;
 
-  .c-i { font-size: 11px; opacity: 0.5; transition: transform 0.3s; }
+  .c-i {
+    font-size: 11px;
+    opacity: 0.5;
+    transition: transform 0.3s;
+  }
   .c-c {
     font-size: 9px;
-    background: #E2E8F0;
-    color: #94A3B8;
+    background: #e2e8f0;
+    color: #94a3b8;
     padding: 1px 6px;
     border-radius: 100px;
     font-weight: 800;
   }
 
   &:hover {
-    color: #1E293B;
-    .c-i { transform: scale(1.2); opacity: 1; }
+    color: #1e293b;
+    .c-i {
+      transform: scale(1.2);
+      opacity: 1;
+    }
   }
 
   &.active {
-    color: #2563EB;
-    .c-i { color: #2563EB; opacity: 1; }
-    .c-c { background: #DBEAFE; color: #2563EB; }
+    color: #2563eb;
+    .c-i {
+      color: #2563eb;
+      opacity: 1;
+    }
+    .c-c {
+      background: #dbeafe;
+      color: #2563eb;
+    }
   }
 }
 
 .edge-mask {
   position: absolute;
-  top: 0; bottom: 0;
+  top: 0;
+  bottom: 0;
   width: 30px;
   pointer-events: none;
   z-index: 10;
-  &.left { left: 0; background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent); }
-  &.right { right: 0; background: linear-gradient(-90deg, rgba(230,230,230,0.1), transparent); }
+  &.left {
+    left: 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), transparent);
+  }
+  &.right {
+    right: 0;
+    background: linear-gradient(-90deg, rgba(230, 230, 230, 0.1), transparent);
+  }
 }
 
 /* ── Tools ── */
@@ -328,7 +361,7 @@ const selectSort = (value: 'latest' | 'popular') => {
 .search-wrap {
   display: flex;
   align-items: center;
-  background: #F1F5F9;
+  background: #f1f5f9;
   border: 1px solid transparent;
   border-radius: 14px;
   padding: 0 14px;
@@ -338,11 +371,14 @@ const selectSort = (value: 'latest' | 'popular') => {
   &.is-active {
     width: 220px;
     background: #fff;
-    border-color: #3B82F6;
+    border-color: #3b82f6;
     box-shadow: 0 12px 20px -8px rgba(59, 130, 246, 0.2);
   }
 
-  .s-i { font-size: 12px; color: #94A3B8; }
+  .s-i {
+    font-size: 12px;
+    color: #94a3b8;
+  }
   input {
     flex: 1;
     border: none;
@@ -350,24 +386,26 @@ const selectSort = (value: 'latest' | 'popular') => {
     background: transparent;
     padding: 10px 10px;
     font-size: 13px;
-    color: #1E293B;
+    color: #1e293b;
     font-weight: 500;
-    &::placeholder { color: #94A3B8; }
+    &::placeholder {
+      color: #94a3b8;
+    }
   }
 }
 
 .v-divider {
   width: 1px;
   height: 20px;
-  background: #E2E8F0;
+  background: #e2e8f0;
 }
 
 .sort-switches {
   display: flex;
-  background: #F1F5F9;
+  background: #f1f5f9;
   padding: 4px;
   border-radius: 14px;
-  border: 1px solid #E2E8F0;
+  border: 1px solid #e2e8f0;
 }
 
 .sort-tab {
@@ -376,7 +414,7 @@ const selectSort = (value: 'latest' | 'popular') => {
   padding: 6px 14px;
   font-size: 12px;
   font-weight: 800;
-  color: #64748B;
+  color: #64748b;
   border-radius: 10px;
   cursor: pointer;
   display: flex;
@@ -387,8 +425,10 @@ const selectSort = (value: 'latest' | 'popular') => {
   &.active {
     background: #fff;
     color: #111827;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-    .s-i { color: #2563EB; }
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    .s-i {
+      color: #2563eb;
+    }
   }
 }
 
@@ -396,9 +436,9 @@ const selectSort = (value: 'latest' | 'popular') => {
   width: 38px;
   height: 38px;
   border-radius: 12px;
-  border: 1px solid #E2E8F0;
+  border: 1px solid #e2e8f0;
   background: #fff;
-  color: #64748B;
+  color: #64748b;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -407,16 +447,18 @@ const selectSort = (value: 'latest' | 'popular') => {
   transition: all 0.3s;
 
   &:hover {
-    color: #2563EB;
-    border-color: #3B82F6;
-    background: #F8FAFC;
+    color: #2563eb;
+    border-color: #3b82f6;
+    background: #f8fafc;
     transform: rotate(90deg);
   }
 }
 
 /* ── Responsive Architecture ── */
 @media (max-width: 1200px) {
-  .left-zone { display: none; } /* 平板端隐藏品牌区 */
+  .left-zone {
+    display: none;
+  } /* 平板端隐藏品牌区 */
 }
 
 @media (max-width: 900px) {
@@ -425,36 +467,51 @@ const selectSort = (value: 'latest' | 'popular') => {
     padding: 16px;
     gap: 16px;
   }
-  
-  .center-zone { 
-    order: 1; 
-    width: 100%; 
+
+  .center-zone {
+    order: 1;
+    width: 100%;
     min-width: 100%;
   }
-  
-  .right-zone { 
-    order: 2; 
-    width: 100%; 
-    .tools-container { 
-      justify-content: space-between; 
+
+  .right-zone {
+    order: 2;
+    width: 100%;
+    .tools-container {
+      justify-content: space-between;
       gap: 8px;
     }
-    .search-wrap { 
-      flex: 1; 
-      &.is-active { width: 100%; } 
+    .search-wrap {
+      flex: 1;
+      &.is-active {
+        width: 100%;
+      }
     }
-    .v-divider { display: none; }
+    .v-divider {
+      display: none;
+    }
   }
 }
 
 @media (max-width: 480px) {
-  .filter-bar { padding: 12px; }
+  .filter-bar {
+    padding: 12px;
+  }
   .scroll-container {
     mask-image: linear-gradient(90deg, black 85%, transparent);
   }
-  .cat-item { padding: 7px 12px; font-size: 12px; }
-  .s-l { display: none; } /* 极窄屏只显示排序图标 */
-  .sort-tab { padding: 6px 12px; }
-  .settings-btn { display: none; }
+  .cat-item {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+  .s-l {
+    display: none;
+  } /* 极窄屏只显示排序图标 */
+  .sort-tab {
+    padding: 6px 12px;
+  }
+  .settings-btn {
+    display: none;
+  }
 }
 </style>

@@ -51,6 +51,7 @@ declare module 'vue' {
     IconDemo: typeof import('./src/components/IconDemo.vue')['default']
     MobileBottomNav: typeof import('./src/components/v1/layout/MobileBottomNav.vue')['default']
     NotificationCenter: typeof import('./src/components/v1/layout/NotificationCenter.vue')['default']
+    Pagination: typeof import('./src/components/v1/common/Pagination.vue')['default']
     PostCard: typeof import('./src/components/v1/home/PostCard.vue')['default']
     PostFeed: typeof import('./src/components/v1/home/PostFeed.vue')['default']
     ProfileCenter: typeof import('./src/components/v1/layout/ProfileCenter.vue')['default']

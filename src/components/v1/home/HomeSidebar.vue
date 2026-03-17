@@ -1,12 +1,13 @@
 <template>
   <aside class="sidebar">
-
     <!-- Advertising Container (Slot-based) -->
     <AdContainer type="glass">
       <iframe
         src="https://static.nube.sh/html-video/speed-sc/1280x720/index.html?lp=https%3A%2F%2Fnube.sh%2Finvite%2F6723572561HYYC"
-        style="width:100%; height:auto; border:none;"
-        scrolling="no" frameborder="0">
+        style="width: 100%; height: auto; border: none"
+        scrolling="no"
+        frameborder="0"
+      >
       </iframe>
     </AdContainer>
 
@@ -53,13 +54,15 @@
           class="tag-btn"
           :class="`tc${i % 4}`"
           type="button"
-        ># {{ tag }}</button>
+        >
+          # {{ tag }}
+        </button>
       </div>
     </section>
 
     <!-- Second Ad Container (Improved Light Style) -->
-    <AdContainer 
-      title="加入技术沙龙" 
+    <AdContainer
+      title="加入技术沙龙"
       description="与行业大佬零距离接触，探索最前沿的技术变迁与工程实践。"
       buttonText="立即报名"
       icon="users-rectangle"
@@ -85,26 +88,37 @@
         </div>
       </div>
     </section>
-
   </aside>
 </template>
 
 <script setup lang="ts">
-import AdContainer from '@/components/v1/common/AdContainer.vue'
+import AdContainer from "@/components/v1/common/AdContainer.vue";
 
-defineProps<{ tags: string[] }>()
+defineProps<{ tags: string[] }>();
 
 const tasks = [
-  { name: '组件边界设计', done: 4, total: 6 },
-  { name: '状态管理重构', done: 2, total: 5 },
-  { name: '移动端适配', done: 3, total: 4 },
-]
+  { name: "组件边界设计", done: 4, total: 6 },
+  { name: "状态管理重构", done: 2, total: 5 },
+  { name: "移动端适配", done: 3, total: 4 },
+];
 
 const authors = [
-  { name: '林川', field: 'Vue 工程化', avatar: 'https://i.pravatar.cc/80?img=12' },
-  { name: '张译', field: '前端性能', avatar: 'https://i.pravatar.cc/80?img=15' },
-  { name: '阿宁', field: '设计系统', avatar: 'https://i.pravatar.cc/80?img=19' },
-]
+  {
+    name: "林川",
+    field: "Vue 工程化",
+    avatar: "https://i.pravatar.cc/80?img=12",
+  },
+  {
+    name: "张译",
+    field: "前端性能",
+    avatar: "https://i.pravatar.cc/80?img=15",
+  },
+  {
+    name: "阿宁",
+    field: "设计系统",
+    avatar: "https://i.pravatar.cc/80?img=19",
+  },
+];
 </script>
 
 <style scoped lang="scss">
@@ -119,7 +133,7 @@ const authors = [
 /* ── Panel base ── */
 .panel {
   background: #fff;
-  border: 1px solid #E5E7EB;
+  border: 1px solid #e5e7eb;
   border-radius: 10px;
   padding: 16px;
 }
@@ -138,8 +152,8 @@ const authors = [
   width: 24px;
   height: 24px;
   border-radius: 6px;
-  background: #EFF6FF;
-  color: #2563EB;
+  background: #eff6ff;
+  color: #2563eb;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,7 +171,11 @@ const authors = [
   gap: 10px;
 }
 
-.task-item { display: flex; flex-direction: column; gap: 5px; }
+.task-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
 
 .task-top {
   display: flex;
@@ -174,20 +192,20 @@ const authors = [
 .task-count {
   font-size: 11px;
   font-weight: 600;
-  color: #2563EB;
+  color: #2563eb;
 }
 
 .progress-track {
   height: 4px;
   border-radius: 999px;
-  background: #F3F4F6;
+  background: #f3f4f6;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
   border-radius: 999px;
-  background: #2563EB;
+  background: #2563eb;
   transition: width 500ms ease;
 }
 
@@ -200,9 +218,9 @@ const authors = [
   width: 100%;
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid #BFDBFE;
-  background: #EFF6FF;
-  color: #2563EB;
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  color: #2563eb;
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
@@ -210,8 +228,8 @@ const authors = [
   transition: all 150ms ease;
 
   &:hover {
-    background: #DBEAFE;
-    border-color: #93C5FD;
+    background: #dbeafe;
+    border-color: #93c5fd;
   }
 }
 
@@ -232,13 +250,31 @@ const authors = [
   font-family: inherit;
   transition: all 120ms ease;
 
-  &:hover { opacity: 0.75; }
+  &:hover {
+    opacity: 0.75;
+  }
 }
 
-.tag-btn.tc0 { color: #1D4ED8; background: #EFF6FF; border-color: #BFDBFE; }
-.tag-btn.tc1 { color: #7C3AED; background: #F5F3FF; border-color: #DDD6FE; }
-.tag-btn.tc2 { color: #0F766E; background: #F0FDFA; border-color: #99F6E4; }
-.tag-btn.tc3 { color: #92400E; background: #FFFBEB; border-color: #FDE68A; }
+.tag-btn.tc0 {
+  color: #1d4ed8;
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+.tag-btn.tc1 {
+  color: #7c3aed;
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+}
+.tag-btn.tc2 {
+  color: #0f766e;
+  background: #f0fdfa;
+  border-color: #99f6e4;
+}
+.tag-btn.tc3 {
+  color: #92400e;
+  background: #fffbeb;
+  border-color: #fde68a;
+}
 
 /* ── Authors ── */
 .author-list {
@@ -259,11 +295,13 @@ const authors = [
   height: 34px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #E5E7EB;
+  border: 1px solid #e5e7eb;
   display: block;
 }
 
-.author-info { min-width: 0; }
+.author-info {
+  min-width: 0;
+}
 
 .author-name {
   margin: 0;
@@ -277,12 +315,12 @@ const authors = [
 
 .author-field {
   font-size: 11px;
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 
 .follow-btn {
   padding: 4px 10px;
-  border: 1px solid #E5E7EB;
+  border: 1px solid #e5e7eb;
   border-radius: 6px;
   background: #fff;
   color: #374151;
@@ -294,9 +332,9 @@ const authors = [
   white-space: nowrap;
 
   &:hover {
-    border-color: #BFDBFE;
-    background: #EFF6FF;
-    color: #2563EB;
+    border-color: #bfdbfe;
+    background: #eff6ff;
+    color: #2563eb;
   }
 }
 
@@ -319,9 +357,13 @@ const authors = [
 }
 
 @media (max-width: 640px) {
-  .sidebar { grid-template-columns: 1fr; }
+  .sidebar {
+    grid-template-columns: 1fr;
+  }
   .sidebar > section:last-child {
-    .author-list { grid-template-columns: 1fr; }
+    .author-list {
+      grid-template-columns: 1fr;
+    }
   }
 }
 </style>
