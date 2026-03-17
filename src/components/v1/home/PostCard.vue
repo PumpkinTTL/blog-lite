@@ -63,6 +63,13 @@
           <font-awesome-icon icon="calendar-days" />
           <span>{{ dateLabel }}</span>
         </div>
+
+        <!-- 移动端标签展示：放置在时间后面 -->
+        <div class="mobile-tags">
+          <span v-for="(tag, i) in post.tags.slice(0, 2)" :key="tag" class="m-tag" :class="`t${i % 4}`">
+            #{{ tag }}
+          </span>
+        </div>
       </div>
 
       <!-- 4. Bottom bar -->
@@ -450,6 +457,27 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   :deep(svg) { font-size: 10px; }
 }
 
+/* 移动端标签专属样式 (默认隐藏，仅在 mobile 激活) */
+.mobile-tags {
+  display: none;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.m-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  
+  &.t0 { color: #1e40af; background: #eff6ff; border-color: #dbeafe; }
+  &.t1 { color: #5b21b6; background: #f5f3ff; border-color: #ede9fe; }
+  &.t2 { color: #065f46; background: #f0fdf4; border-color: #dcfce7; }
+  &.t3 { color: #92400e; background: #fffbeb; border-color: #fef3c7; }
+}
+
 /* 热门文章 - 封面右侧吸附树叶角标 */
 .hot-badge-pinned {
   position: absolute;
@@ -683,16 +711,17 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
     border: none;
     padding-left: 0;
   } 
-  .tags { 
-    display: flex; 
-    flex-wrap: nowrap;
-    gap: 3px;
-    margin-top: 2px;
+  /* 移动端展示标签：接在时间后面 */
+  .mobile-tags { display: flex; }
+  .tags { display: none; }
+  
+  /* 调整 meta 区域以支持换行 */
+  .meta {
+    gap: 6px;
+    row-gap: 4px;
   }
-  .tag {
-    font-size: 8px;
-    padding: 1px 5px;
-  }
+  
+  .dot { display: none; } /* 移动端隐藏中间的点，靠 gap 和换行区分 */
   .btn-share { display: none; }
 }
 </style>
