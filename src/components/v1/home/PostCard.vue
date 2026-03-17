@@ -86,10 +86,7 @@
         </div>
 
         <div class="actions">
-          <button class="btn-read" type="button">
-            <font-awesome-icon icon="book-open" />
-            阅读全文
-          </button>
+
           <button class="btn-share" type="button" aria-label="分享">
             <font-awesome-icon icon="share-nodes" />
           </button>
@@ -560,37 +557,6 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   flex-shrink: 0;
 }
 
-.btn-read {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 12px;
-  border: 1px solid #BFDBFE;
-  border-radius: 7px;
-  background: #EFF6FF;
-  color: #2563EB;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: inherit;
-  white-space: nowrap;
-  transition: all 120ms;
-
-  :deep(svg) { font-size: 11px; color: #2563EB; }
-
-  &:hover { 
-    background: #2563EB; 
-    border-color: #2563EB;
-    color: #fff;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-    :deep(svg) { color: #fff; }
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-}
 
 .btn-share {
   display: inline-flex;
@@ -682,6 +648,5 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   } 
   .tags      { display: none; }
   .btn-share { display: none; }
-  .btn-read  { padding: 4px 9px; font-size: 11px; margin-left: auto; }
 }
 </style>
