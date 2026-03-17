@@ -150,16 +150,16 @@ const changePage = (page: number) => {
   outline: none;
 
   &:hover:not(:disabled) {
-    background: #fff;
-    color: #4f46e5;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background: var(--bg-secondary);
+    color: var(--primary);
+    box-shadow: var(--shadow-sm);
     transform: scale(1.05);
   }
 
   &.active {
-    background: #4f46e5;
+    background: var(--primary);
     color: #fff;
-    box-shadow: 0 8px 16px -4px rgba(79, 70, 229, 0.4);
+    box-shadow: 0 8px 16px -4px rgba(99, 102, 241, 0.4);
   }
 
   &:disabled {
@@ -195,32 +195,32 @@ const changePage = (page: number) => {
 
 /* ── Dark Mode Support ── */
 :global(.dark) .pagination {
-  background: rgba(30, 41, 59, 0.7);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  background: rgba(15, 23, 42, 0.7);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
   
   .page-item, .page-btn {
-    color: #94a3b8;
+    color: var(--text-secondary);
     
     &:hover:not(:disabled) {
-      background: #334155;
-      color: #818cf8;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     
     &.active {
-      background: #6366f1;
+      background: var(--primary);
       color: #fff;
-      box-shadow: 0 8px 16px -4px rgba(99, 102, 241, 0.5);
+      box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.6);
     }
   }
   
   .page-btn {
-    background: rgba(51, 65, 85, 0.5);
+    background: rgba(255, 255, 255, 0.03);
   }
   
   .pagination-ellipsis {
-    color: #475569;
+    color: var(--text-tertiary);
   }
 }
 
