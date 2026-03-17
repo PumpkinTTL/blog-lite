@@ -11,7 +11,7 @@ export interface Resource {
   author: {
     name: string
     avatar: string
-    role?: 'admin' | 'system' | 'vip' | 'user'
+    role?: 'super_admin' | 'admin' | 'system' | 'vip' | 'user'
   }
   likes: number
   views: number
@@ -33,12 +33,13 @@ const tags = [
   'GraphQL', 'Next.js', 'Nuxt', 'Vite', 'Webpack'
 ]
 
-const authors = [
-  { name: '张小明', avatar: 'https://i.pravatar.cc/150?img=1', role: 'admin' },
-  { name: '李华', avatar: 'https://i.pravatar.cc/150?img=2', role: 'vip' },
-  { name: '王芳', avatar: 'https://i.pravatar.cc/150?img=3', role: 'system' },
-  { name: '刘强', avatar: 'https://i.pravatar.cc/150?img=4', role: 'user' },
-  { name: '陈静', avatar: 'https://i.pravatar.cc/150?img=5', role: 'vip' }
+const authors: Resource['author'][] = [
+  { name: 'Kylin_Dev', avatar: 'https://i.pravatar.cc/150?img=1', role: 'super_admin' },
+  { name: 'Pixel_Artisan', avatar: 'https://i.pravatar.cc/150?img=68', role: 'admin' },
+  { name: 'System_Core', avatar: 'https://i.pravatar.cc/150?img=12', role: 'system' },
+  { name: 'Frost_Byte', avatar: 'https://i.pravatar.cc/150?img=11', role: 'vip' },
+  { name: 'Cloud_Walker', avatar: 'https://i.pravatar.cc/150?img=5', role: 'user' },
+  { name: 'Nova_Coder', avatar: 'https://i.pravatar.cc/150?img=9', role: 'vip' }
 ]
 
 const titles = [

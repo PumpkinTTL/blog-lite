@@ -1,5 +1,5 @@
 <template>
-  <article class="post-card">
+  <article class="post-card" :class="{ 'is-hot': isHot }">
 
     <!-- ── Cover ── -->
     <div class="cover-wrap" v-if="post.image">
@@ -37,10 +37,15 @@
           <template v-if="post.author.role && post.author.role !== 'user'">
             <span class="role-sep"></span>
             <span class="role-label">
+              <font-awesome-icon v-if="post.author.role === 'super_admin'" icon="gem" />
               <font-awesome-icon v-if="post.author.role === 'admin'" icon="shield-halved" />
               <font-awesome-icon v-if="post.author.role === 'system'" icon="circle-check" />
               <font-awesome-icon v-if="post.author.role === 'vip'" icon="crown" />
-              {{ post.author.role === 'admin' ? '站长' : post.author.role === 'system' ? '官方' : '会员' }}
+              {{ 
+                post.author.role === 'super_admin' ? '超管' : 
+                post.author.role === 'admin' ? '站长' : 
+                post.author.role === 'system' ? '官方' : '会员' 
+              }}
             </span>
           </template>
         </div>
@@ -51,10 +56,12 @@
           <font-awesome-icon icon="calendar-days" />
           <span>{{ dateLabel }}</span>
         </div>
-        <span v-if="isHot" class="hot-badge">
-          <font-awesome-icon icon="fire" class="fire-icon" />
-          热门
-        </span>
+      </div>
+
+      <!-- 热门角标 - 吸附式 -->
+      <div v-if="isHot" class="hot-badge-pinned">
+        <font-awesome-icon icon="fire" class="fire-icon" />
+        <span>HOT</span>
       </div>
 
       <!-- 4. Bottom bar -->
@@ -129,11 +136,23 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   border: 1px solid #F3F4F6;
   border-radius: 12px;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  &.is-hot {
+    border: 1px solid #FFEDD5;
+    background: #FFFCF8;
+    box-shadow: 0 4px 20px rgba(251, 146, 60, 0.06);
+  }
 
   &:hover {
     border-color: #BFDBFE;
-    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1), 0 8px 10px -6px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.1), 0 10px 10px -12px rgba(37, 99, 235, 0.1);
+    
+    &.is-hot {
+      border-color: #FED7AA;
+      box-shadow: 0 20px 30px -5px rgba(251, 146, 60, 0.15);
+    }
 
     .cover { transform: scale(1.04); }
     .title { color: #2563EB; }
@@ -359,6 +378,17 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   }
 
   /* 身份化配色 - 一体化视觉 */
+  &.super_admin {
+    background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
+    border-color: #f5d0fe;
+    .name { color: #86198f; }
+    .role-sep { background: #f0abfc; }
+    .role-label { 
+      color: #fff; 
+      background: linear-gradient(135deg, #f472b6 0%, #a855f7 100%); 
+      box-shadow: 0 2px 4px rgba(168, 85, 247, 0.2);
+    }
+  }
   &.admin {
     background: #FEF2F2; border-color: #FEE2E2;
     .name { color: #B91C1C; }
@@ -396,33 +426,34 @@ const formatNum = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : Strin
   :deep(svg) { font-size: 10px; }
 }
 
-/* Hot badge — shows when views >= 3000 */
-.hot-badge {
-  margin-left: auto;
-  font-size: 10.5px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 6px;
-  background: #FFF7ED;
-  color: #EA580C;
-  border: 1px solid #FFEDD5;
-  white-space: nowrap;
-  flex-shrink: 0;
-  display: inline-flex;
+/* 热门角标 - 吸附式设计 */
+.hot-badge-pinned {
+  position: absolute;
+  top: -1px;
+  right: 16px;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, #fb923c, #f43f5e);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  border-radius: 0 0 8px 8px;
+  display: flex;
   align-items: center;
   gap: 4px;
+  box-shadow: 0 4px 10px rgba(244, 63, 94, 0.2);
+  z-index: 10;
+  letter-spacing: 0.05em;
 
   .fire-icon {
     font-size: 11px;
-    color: #F97316;
-    animation: pulse-orange 2s infinite;
+    animation: fire-flicker 1.5s infinite;
   }
 }
 
-@keyframes pulse-orange {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.2); opacity: 0.8; }
-  100% { transform: scale(1); opacity: 1; }
+@keyframes fire-flicker {
+  0% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 2px #fff); }
+  50% { transform: scale(1.2); opacity: 0.8; filter: drop-shadow(0 0 5px #ffedd5); }
+  100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 2px #fff); }
 }
 
 /* 4. Bottom bar */
