@@ -45,7 +45,18 @@ import {
   faMoon,
   faSun,
   faChevronDown,
-  faCrown
+  faCrown,
+  faClock,
+  faComment,
+  faCalendarDays,
+  faBookOpen,
+  faShareNodes,
+  faNewspaper,
+  faListCheck,
+  faBolt,
+  faPenNib,
+  faLayerGroup,
+  faHeart
 } from '@fortawesome/free-solid-svg-icons'
 
 // 添加图标到库
@@ -55,7 +66,9 @@ library.add(
   faEye, faEyeSlash, faDownload, faUpload, faArrowLeft, faArrowRight,
   faBell, faBars, faXmark, faMagnifyingGlass, faStar, faUsers,
   faBook, faChartLine, faDollarSign, faCompass, faTags, faCircleInfo,
-  faMoon, faSun, faChevronDown, faCrown
+  faMoon, faSun, faChevronDown, faCrown, faClock, faComment,
+  faCalendarDays, faBookOpen, faShareNodes, faNewspaper, faListCheck,
+  faBolt, faPenNib, faLayerGroup, faHeart
 )
 
 const app = createApp(App)
