@@ -39,7 +39,6 @@
       </button>
     </section>
 
-
     <!-- Second Ad Container (Improved Light Style) -->
     <AdContainer
       title="加入技术沙龙"
@@ -174,7 +173,6 @@ const tasks = [
     border-color: #93c5fd;
   }
 }
-
 
 /* ── Responsive ── */
 @media (max-width: 1100px) {

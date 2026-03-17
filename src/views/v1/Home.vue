@@ -12,7 +12,14 @@
         />
 
         <section class="home-grid">
-          <PostFeed :posts="visiblePosts" />
+          <div class="feed-column">
+            <PostFeed :posts="visiblePosts" />
+            <Pagination
+              v-model:current="currentPage"
+              :total="totalItems"
+              :pageSize="pageSize"
+            />
+          </div>
           <HomeSidebar />
         </section>
       </div>
@@ -21,11 +28,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import BlogHeader from "@/components/v1/layout/BlogHeader.vue";
 import FilterBar from "@/components/v1/common/FilterBar.vue";
 import PostFeed from "@/components/v1/home/PostFeed.vue";
 import HomeSidebar from "@/components/v1/home/HomeSidebar.vue";
+import Pagination from "@/components/v1/common/Pagination.vue";
 import { generateMockResources } from "@/data/mockData";
 
 const categories = ["全部", "前端", "后端", "设计", "AI", "工具"];
@@ -33,25 +41,47 @@ const activeCategory = ref("全部");
 const activeSort = ref<"latest" | "popular">("latest");
 const hotTags = [];
 
-const posts = ref(generateMockResources(12));
-const visiblePosts = computed(() => {
+// Pagination State
+const currentPage = ref(1);
+const pageSize = 5;
+
+const posts = ref(generateMockResources(24)); // Increase mock data to demonstrate pagination
+
+const filteredPosts = computed(() => {
   const source =
     activeCategory.value === "全部"
       ? posts.value
       : posts.value.filter((item) => item.category === activeCategory.value);
-  return activeSort.value === "popular"
+  
+  const sorted = activeSort.value === "popular"
     ? [...source].sort((a, b) => b.views - a.views)
     : [...source].sort(
         (a, b) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
+  
+  return sorted;
+});
+
+const visiblePosts = computed(() => {
+  const start = (currentPage.value - 1) * pageSize;
+  const end = start + pageSize;
+  return filteredPosts.value.slice(start, end);
+});
+
+const totalItems = computed(() => filteredPosts.value.length);
+
+// Reset page when category or sort changes
+watch([activeCategory, activeSort], () => {
+  currentPage.value = 1;
 });
 </script>
 
 <style scoped lang="scss">
 .home {
   min-height: 100vh;
-  background: #f3f4f6;
+  background: var(--bg);
+  transition: background-color 0.3s ease;
 }
 
 .main-content {
@@ -73,6 +103,12 @@ const visiblePosts = computed(() => {
   grid-template-columns: minmax(0, 1fr) 280px;
   gap: 12px;
   align-items: start;
+}
+
+.feed-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 @media (max-width: 1100px) {
