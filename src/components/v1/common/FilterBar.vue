@@ -20,14 +20,8 @@
           <!-- The Motion Slider -->
           <div class="nav-slider" :style="activeBgStyle"></div>
 
-          <button
-            v-for="(item, index) in categories"
-            :ref="(el) => (catRefs[index] = el)"
-            :key="item"
-            class="cat-item"
-            :class="[{ active: item === activeCategory }]"
-            @click="selectCategory(item)"
-          >
+          <button v-for="(item, index) in categories" :ref="(el) => (catRefs[index] = el)" :key="item" class="cat-item"
+            :class="[{ active: item === activeCategory }]" @click="selectCategory(item)">
             <font-awesome-icon :icon="getCatIcon(item)" class="c-i" />
             <span class="c-l">{{ item }}</span>
             <span class="c-c" v-if="index > 0">{{ 12 + index * 8 }}</span>
@@ -45,29 +39,16 @@
         <!-- Search Pill -->
         <div class="search-wrap" :class="{ 'is-active': isSearchFocused }">
           <font-awesome-icon icon="magnifying-glass" class="s-i" />
-          <input
-            type="text"
-            placeholder="发现新灵感..."
-            @focus="isSearchFocused = true"
-            @blur="isSearchFocused = false"
-          />
+          <input type="text" placeholder="发现新灵感..." @focus="isSearchFocused = true" @blur="isSearchFocused = false" />
         </div>
 
         <div class="v-divider"></div>
 
         <!-- Sort Switches -->
         <div class="sort-switches">
-          <button
-            v-for="item in sortOptions"
-            :key="item.value"
-            class="sort-tab"
-            :class="{ active: item.value === activeSort }"
-            @click="selectSort(item.value)"
-          >
-            <font-awesome-icon
-              :icon="item.value === 'latest' ? 'clock' : 'fire'"
-              class="s-i"
-            />
+          <button v-for="item in sortOptions" :key="item.value" class="sort-tab"
+            :class="{ active: item.value === activeSort }" @click="selectSort(item.value)">
+            <font-awesome-icon :icon="item.value === 'latest' ? 'clock' : 'fire'" class="s-i" />
             <span class="s-l">{{ item.label }}</span>
           </button>
         </div>
@@ -173,7 +154,8 @@ const selectSort = (value: "latest" | "popular") => {
 .filter-bar {
   position: sticky;
   top: 64px;
-  z-index: 100; /* 确保在最上层 */
+  z-index: 100;
+  /* 确保在最上层 */
   display: flex;
   align-items: center;
   gap: 16px;
@@ -220,6 +202,7 @@ const selectSort = (value: "latest" | "popular") => {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -243,7 +226,8 @@ const selectSort = (value: "latest" | "popular") => {
 /* ── Fluid Navigation ── */
 .center-zone {
   flex: 1;
-  min-width: 0; /* 允许收缩 */
+  min-width: 0;
+  /* 允许收缩 */
 }
 
 .scroll-container {
@@ -260,9 +244,11 @@ const selectSort = (value: "latest" | "popular") => {
   border-radius: 14px;
   overflow-x: auto;
   scrollbar-width: none;
+
   &::-webkit-scrollbar {
     display: none;
   }
+
   position: relative;
   width: 100%;
 }
@@ -300,6 +286,7 @@ const selectSort = (value: "latest" | "popular") => {
     opacity: 0.5;
     transition: transform 0.3s;
   }
+
   .c-c {
     font-size: 9px;
     background: #e2e8f0;
@@ -311,6 +298,7 @@ const selectSort = (value: "latest" | "popular") => {
 
   &:hover {
     color: #1e293b;
+
     .c-i {
       transform: scale(1.2);
       opacity: 1;
@@ -319,10 +307,12 @@ const selectSort = (value: "latest" | "popular") => {
 
   &.active {
     color: #2563eb;
+
     .c-i {
       color: #2563eb;
       opacity: 1;
     }
+
     .c-c {
       background: #dbeafe;
       color: #2563eb;
@@ -337,10 +327,12 @@ const selectSort = (value: "latest" | "popular") => {
   width: 30px;
   pointer-events: none;
   z-index: 10;
+
   &.left {
     left: 0;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), transparent);
   }
+
   &.right {
     right: 0;
     background: linear-gradient(-90deg, rgba(230, 230, 230, 0.1), transparent);
@@ -379,6 +371,7 @@ const selectSort = (value: "latest" | "popular") => {
     font-size: 12px;
     color: #94a3b8;
   }
+
   input {
     flex: 1;
     border: none;
@@ -388,6 +381,7 @@ const selectSort = (value: "latest" | "popular") => {
     font-size: 13px;
     color: #1e293b;
     font-weight: 500;
+
     &::placeholder {
       color: #94a3b8;
     }
@@ -426,6 +420,7 @@ const selectSort = (value: "latest" | "popular") => {
     background: #fff;
     color: #111827;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+
     .s-i {
       color: #2563eb;
     }
@@ -458,7 +453,9 @@ const selectSort = (value: "latest" | "popular") => {
 @media (max-width: 1200px) {
   .left-zone {
     display: none;
-  } /* 平板端隐藏品牌区 */
+  }
+
+  /* 平板端隐藏品牌区 */
 }
 
 @media (max-width: 900px) {
@@ -477,16 +474,20 @@ const selectSort = (value: "latest" | "popular") => {
   .right-zone {
     order: 2;
     width: 100%;
+
     .tools-container {
       justify-content: space-between;
       gap: 8px;
     }
+
     .search-wrap {
       flex: 1;
+
       &.is-active {
         width: 100%;
       }
     }
+
     .v-divider {
       display: none;
     }
@@ -497,19 +498,25 @@ const selectSort = (value: "latest" | "popular") => {
   .filter-bar {
     padding: 12px;
   }
+
   .scroll-container {
     mask-image: linear-gradient(90deg, black 85%, transparent);
   }
+
   .cat-item {
     padding: 7px 12px;
     font-size: 12px;
   }
+
   .s-l {
     display: none;
-  } /* 极窄屏只显示排序图标 */
+  }
+
+  /* 极窄屏只显示排序图标 */
   .sort-tab {
     padding: 6px 12px;
   }
+
   .settings-btn {
     display: none;
   }
