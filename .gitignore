@@ -25,3 +25,6 @@ dist-ssr
 
 # Kiro AI assistant
 .kiro
+
+# Windows reserved device names
+nul
