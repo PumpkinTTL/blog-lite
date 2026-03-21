@@ -1,41 +1,46 @@
 <template>
-  <div class="nav-filter-bar">
-    <div class="nav-filter-container">
-      <!-- Left: Category Tabs -->
-      <nav class="categories-nav">
+  <div class="filter-bar-final">
+    <div class="filter-content">
+      <!-- Left: Navigation with sliding pill -->
+      <div class="nav-segment">
+        <div class="active-pill" :style="pillStyle"></div>
         <button
-          v-for="cat in categories"
+          v-for="(cat, index) in categories"
           :key="cat"
-          class="category-tab"
+          :ref="el => setTabRef(el, index)"
+          class="nav-tab"
           :class="{ active: activeCategory === cat }"
           @click="emit('update:activeCategory', cat)"
         >
-          <span class="tab-label">{{ cat }}</span>
-          <div class="tab-indicator" v-if="activeCategory === cat"></div>
+          <div class="icon-wrapper">
+             <font-awesome-icon :icon="getCategoryIcon(cat)" />
+          </div>
+          <span>{{ cat }}</span>
         </button>
-      </nav>
+      </div>
 
-      <div class="spacer"></div>
+      <div class="flex-grow"></div>
 
-      <!-- Right: Search & Sort Group -->
-      <div class="actions-group">
-        <!-- Modern Search Pill -->
-        <div class="search-pill" :class="{ focused: isFocused }">
-          <font-awesome-icon icon="search" class="search-icon" />
+      <!-- Right: Search & Sort Tools -->
+      <div class="tools-segment">
+        <div class="search-input-box" :class="{ focused: isFocused }">
+          <font-awesome-icon icon="search" class="s-icon" />
           <input
             type="text"
             :value="modelValue"
             placeholder="探你所想..."
-            @input="onInput"
+            @input="onSearch"
             @focus="isFocused = true"
             @blur="isFocused = false"
           />
+          <button v-if="modelValue" class="clear-btn" @click="emit('update:modelValue', '')">
+            <font-awesome-icon icon="xmark" />
+          </button>
         </div>
 
-        <!-- Compact Sort Control -->
-        <div class="sort-pills">
+        <div class="sort-toggle-box">
           <button
-            class="sort-btn"
+            class="toggle-btn"
             :class="{ active: activeSort === 'latest' }"
             @click="emit('update:activeSort', 'latest')"
             title="最新"
@@ -43,7 +48,7 @@
             <font-awesome-icon icon="clock" />
           </button>
           <button
-            class="sort-btn"
+            class="toggle-btn"
             :class="{ active: activeSort === 'popular' }"
             @click="emit('update:activeSort', 'popular')"
             title="热门"
@@ -57,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, watch, nextTick, onUnmounted } from "vue";
 
 interface Props {
   categories: string[];
@@ -77,123 +82,180 @@ const emit = defineEmits<{
 }>();
 
 const isFocused = ref(false);
+const tabRefs = ref<HTMLElement[]>([]);
+const pillStyle = ref({ opacity: 0, transform: "translateX(0)", width: "0" });
 
-const onInput = (e: Event) => {
+const setTabRef = (el: any, index: number) => {
+  if (el) tabRefs.value[index] = el;
+};
+
+const updatePill = () => {
+  nextTick(() => {
+    const index = props.categories.indexOf(props.activeCategory);
+    const el = tabRefs.value[index];
+    if (el) {
+      pillStyle.value = {
+        opacity: 1,
+        transform: `translateX(${el.offsetLeft}px)`,
+        width: `${el.offsetWidth}px`,
+      };
+    }
+  });
+};
+
+onMounted(() => {
+  updatePill();
+  window.addEventListener('resize', updatePill);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updatePill);
+});
+
+watch(() => props.activeCategory, updatePill);
+
+const onSearch = (e: Event) => {
   emit("update:modelValue", (e.target as HTMLInputElement).value);
+};
+
+const getCategoryIcon = (cat: string) => {
+  const map: Record<string, string> = {
+    全部: "compass",
+    前端: "code",
+    后端: "server",
+    设计: "palette",
+    AI: "brain",
+    工具: "wrench",
+  };
+  return map[cat] || "tag";
 };
 </script>
 
 <style scoped lang="scss">
-.nav-filter-bar {
+.filter-bar-final {
   width: 100%;
-  margin: 8px 0;
-  // Use sticky to stay visible when scrolling past header
+  margin: 12px 0;
   position: sticky;
   top: 72px;
-  z-index: 40;
+  z-index: 100;
 }
 
-.nav-filter-container {
+.filter-content {
   display: flex;
   align-items: center;
-  height: 56px;
-  padding: 0 16px;
-  background: var(--surface);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  
-  @media (max-width: 800px) {
-    height: auto;
+  gap: 12px;
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: 900px) {
     flex-direction: column;
     padding: 12px;
-    gap: 12px;
+    height: auto;
   }
 }
 
-.categories-nav {
+/* ── Navigation ── */
+.nav-segment {
   display: flex;
-  align-items: center;
-  gap: 24px;
-  height: 100%;
-
-  @media (max-width: 800px) {
+  position: relative;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 10px;
+  
+  @media (max-width: 600px) {
     width: 100%;
     overflow-x: auto;
-    padding-bottom: 4px;
-    gap: 20px;
     &::-webkit-scrollbar { display: none; }
-    scrollbar-width: none;
   }
 }
 
-.category-tab {
+.active-pill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  z-index: 1;
+}
+
+.nav-tab {
   position: relative;
-  height: 100%;
+  z-index: 2;
   display: flex;
   align-items: center;
-  padding: 0 4px;
+  gap: 8px;
+  padding: 8px 16px;
   border: none;
   background: transparent;
-  color: var(--text-secondary);
-  font-size: 14px;
+  color: #64748b;
+  font-size: 13.5px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
   white-space: nowrap;
+  transition: all 0.2s ease;
 
-  &:hover {
-    color: var(--text);
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.2s ease;
+    
+    svg { font-size: 12px; }
   }
 
   &.active {
-    color: var(--primary);
+    color: #4f46e5;
     font-weight: 600;
+    
+    .icon-wrapper {
+      background: #eef2ff;
+      color: #4f46e5;
+    }
+  }
+
+  &:hover:not(.active) {
+    color: #1e293b;
+    .icon-wrapper { background: #e2e8f0; }
   }
 }
 
-.tab-indicator {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--primary);
-  border-radius: 99px;
-  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.2);
-}
+.flex-grow { flex: 1; }
 
-.spacer {
-  flex: 1;
-}
-
-.actions-group {
+/* ── Tools ── */
+.tools-segment {
   display: flex;
   align-items: center;
-  gap: 16px;
-
-  @media (max-width: 800px) {
+  gap: 12px;
+  
+  @media (max-width: 900px) {
     width: 100%;
     justify-content: space-between;
   }
 }
 
-.search-pill {
+.search-input-box {
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 240px;
-  height: 38px;
-  padding: 0 14px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 8px;
+  min-width: 200px;
+  height: 40px;
+  padding: 0 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  transition: all 0.3s ease;
 
-  .search-icon {
-    font-size: 13px;
-    color: var(--text-tertiary);
-  }
+  .s-icon { font-size: 14px; color: #94a3b8; }
 
   input {
     flex: 1;
@@ -201,34 +263,40 @@ const onInput = (e: Event) => {
     outline: none;
     background: transparent;
     font-size: 13px;
-    color: var(--text);
-    &::placeholder { color: var(--text-tertiary); }
+    color: #1e293b;
+    &::placeholder { color: #94a3b8; }
   }
+
+  .clear-btn {
+    border: none;
+    background: transparent;
+    padding: 0 4px;
+    color: #94a3b8;
+    cursor: pointer;
+    &:hover { color: #ef4444; }
+  }
+
+  &:hover { border-color: #cbd5e1; }
 
   &.focused {
-    width: 280px;
-    background: var(--surface);
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px var(--primary-light);
+    background: white;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    min-width: 260px;
     
-    .search-icon { color: var(--primary); }
-  }
-
-  @media (max-width: 600px) {
-    width: 100%;
-    &.focused { width: 100%; }
+    .s-icon { color: #4f46e5; }
   }
 }
 
-.sort-pills {
+.sort-toggle-box {
   display: flex;
-  background: var(--bg);
-  padding: 3px;
-  border-radius: 8px;
-  gap: 2px;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 10px;
+  height: 40px;
 }
 
-.sort-btn {
+.toggle-btn {
   width: 32px;
   height: 32px;
   display: flex;
@@ -236,21 +304,17 @@ const onInput = (e: Event) => {
   justify-content: center;
   border: none;
   background: transparent;
-  color: var(--text-secondary);
+  color: #64748b;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 13px;
 
-  &:hover {
-    color: var(--text);
-    background: rgba(0, 0, 0, 0.05);
-  }
+  &:hover { color: #1e293b; background: rgba(0,0,0,0.05); }
 
   &.active {
-    background: var(--surface);
-    color: var(--primary);
-    box-shadow: var(--shadow-sm);
+    background: white;
+    color: #4f46e5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 }
 </style>
