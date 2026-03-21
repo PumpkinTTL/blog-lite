@@ -1,12 +1,12 @@
 <template>
   <header class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300" :class="isDark ? `bg-[${DARK_BG}] border-gray-800` : 'bg-white border-gray-200'"
     style="border-bottom-width: 1px">
-    <nav class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+    <nav class="mx-auto px-5" style="max-width: 1320px">
       <div class="flex items-center gap-2 sm:gap-4 h-14 sm:h-16">
         <!-- Logo -->
         <div class="flex items-center gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg cursor-pointer transition-all"
           :class="isDark ? 'hover:bg-gray-800/60' : 'hover:bg-gray-100'" @click="goHome">
-          <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center bg-blue-600">
+          <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center" style="background: var(--primary)">
             <font-awesome-icon icon="book" class="text-sm sm:text-base text-white" />
           </div>
           <div class="flex flex-col">
@@ -28,10 +28,7 @@
                 ? 'text-gray-300 hover:text-white hover:bg-gray-700/60'
                 : 'text-gray-700 hover:text-gray-900 hover:bg-white'
               " @click.prevent="handleNavClick(item)">
-            <font-awesome-icon :icon="item.icon" class="text-sm" :class="isDark
-                ? 'group-hover:text-blue-400'
-                : 'group-hover:text-blue-600'
-              " />
+            <font-awesome-icon :icon="item.icon" class="text-sm nav-icon" />
             <span>{{ item.name }}</span>
           </a>
         </div>
@@ -62,7 +59,8 @@
               : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             " @click="toggleNotifications">
             <font-awesome-icon icon="bell" class="text-base" />
-            <span v-if="hasNotifications" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2"
+            <span v-if="hasNotifications" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full ring-2"
+              style="background: var(--error)"
               :class="isDark ? `ring-[${DARK_BG}]` : 'ring-white'"></span>
           </button>
 
@@ -103,7 +101,7 @@
 
             <!-- User Menu Dropdown -->
             <transition>
-              <div v-if="isUserMenuOpen" class="absolute right-0 mt-4 w-60 sm:w-64 rounded-xl overflow-hidden z-50"
+              <div v-if="isUserMenuOpen" class="absolute right-0 mt-4 w-60 sm:w-64 rounded-xl overflow-hidden z-[9999]"
                 :class="isDark
                     ? 'bg-gray-800/95 backdrop-blur-xl border border-gray-700/50'
                     : 'bg-white/95 backdrop-blur-xl border border-gray-200/50'
@@ -114,7 +112,7 @@
                       ? 'bg-gradient-to-br from-gray-900/50 to-gray-800/50'
                       : 'bg-gradient-to-br from-gray-50/50 to-white/50'
                     ">
-                  <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent"></div>
+                  <div class="absolute inset-0 bg-gradient-to-br from-transparent to-transparent" style="background: linear-gradient(to bottom right, rgba(99, 102, 241, 0.05), transparent)"></div>
                   <div class="flex items-start gap-3 relative z-10">
                     <div class="relative flex-shrink-0">
                       <div class="w-12 h-12 rounded-lg overflow-hidden ring-2 ring-offset-2" :class="isDark
@@ -163,10 +161,7 @@
                         ? 'text-gray-300 hover:text-white hover:bg-gray-700/50'
                         : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
                       " @click.prevent="openProfileCenter">
-                    <font-awesome-icon icon="user" class="text-sm w-4" :class="isDark
-                        ? 'text-gray-400 group-hover:text-blue-400'
-                        : 'text-gray-500 group-hover:text-blue-600'
-                      " />
+                    <font-awesome-icon icon="user" class="text-sm w-4 menu-icon" :class="isDark ? 'text-gray-400' : 'text-gray-500'" />
                     <span>个人资料</span>
                   </a>
                   <a href="#"
@@ -175,10 +170,7 @@
                         ? 'text-gray-300 hover:text-white hover:bg-gray-700/50'
                         : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
                       ">
-                    <font-awesome-icon icon="cog" class="text-sm w-4" :class="isDark
-                        ? 'text-gray-400 group-hover:text-blue-400'
-                        : 'text-gray-500 group-hover:text-blue-600'
-                      " />
+                    <font-awesome-icon icon="cog" class="text-sm w-4 menu-icon" :class="isDark ? 'text-gray-400' : 'text-gray-500'" />
                     <span>设置</span>
                   </a>
 
@@ -189,10 +181,7 @@
                         ? 'text-gray-300 hover:text-white hover:bg-gray-700/50'
                         : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
                       " @click.prevent="toggleTheme">
-                    <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="text-sm w-4" :class="isDark
-                        ? 'text-gray-400 group-hover:text-blue-400'
-                        : 'text-gray-500 group-hover:text-blue-600'
-                      " />
+                    <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="text-sm w-4 menu-icon" :class="isDark ? 'text-gray-400' : 'text-gray-500'" />
                     <span>{{ isDark ? "浅色模式" : "深色模式" }}</span>
                   </a>
                   <a href="#"
@@ -201,10 +190,7 @@
                         ? 'text-gray-300 hover:text-white hover:bg-gray-700/50'
                         : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
                       " @click.prevent="toggleNotifications">
-                    <font-awesome-icon icon="bell" class="text-sm w-4" :class="isDark
-                        ? 'text-gray-400 group-hover:text-blue-400'
-                        : 'text-gray-500 group-hover:text-blue-600'
-                      " />
+                    <font-awesome-icon icon="bell" class="text-sm w-4 menu-icon" :class="isDark ? 'text-gray-400' : 'text-gray-500'" />
                     <span>通知中心</span>
                   </a>
                 </div>
@@ -429,6 +415,27 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* 导航图标悬停颜色 - 整行悬停时图标变色 */
+.group:hover .nav-icon {
+  color: var(--primary) !important;
+}
+
+html.dark .group:hover .nav-icon {
+  color: var(--primary-soft) !important;
+}
+
+.menu-icon {
+  transition: color 0.2s;
+}
+
+.group:hover .menu-icon {
+  color: var(--primary) !important;
+}
+
+html.dark .group:hover .menu-icon {
+  color: var(--primary-soft) !important;
+}
+
 /* VIP 会员昵称流光动画 - 粉紫色高级感 */
 .vip-shimmer {
   position: relative;
