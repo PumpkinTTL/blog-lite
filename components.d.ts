@@ -59,6 +59,7 @@ declare module 'vue' {
     PostFeed: typeof import('./src/components/v1/home/PostFeed.vue')['default']
     ProfileCenter: typeof import('./src/components/v1/layout/ProfileCenter.vue')['default']
     ResourceCard: typeof import('./src/components/v1/home/ResourceCard.vue')['default']
+    ResourceSection: typeof import('./src/components/v1/home/ResourceSection.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchBar: typeof import('./src/components/v1/home/SearchBar.vue')['default']

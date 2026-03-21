@@ -32,6 +32,9 @@
           </div>
           <HomeSidebar />
         </section>
+
+        <!-- New Resource Section -->
+        <ResourceSection />
       </div>
     </main>
   </div>
@@ -45,6 +48,7 @@ import FilterBar from "@/components/v1/common/FilterBar.vue";
 import PostFeed from "@/components/v1/home/PostFeed.vue";
 import HomeSidebar from "@/components/v1/home/HomeSidebar.vue";
 import Pagination from "@/components/v1/common/Pagination.vue";
+import ResourceSection from "@/components/v1/home/ResourceSection.vue";
 import { generateMockResources } from "@/data/mockData";
 
 const categories = ["全部", "前端", "后端", "设计", "AI", "工具"];
