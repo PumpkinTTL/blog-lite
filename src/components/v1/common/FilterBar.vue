@@ -20,8 +20,14 @@
           <!-- The Motion Slider -->
           <div class="nav-slider" :style="activeBgStyle"></div>
 
-          <button v-for="(item, index) in categories" :ref="(el) => (catRefs[index] = el)" :key="item" class="cat-item"
-            :class="[{ active: item === activeCategory }]" @click="selectCategory(item)">
+          <button
+            v-for="(item, index) in categories"
+            :ref="(el) => (catRefs[index] = el)"
+            :key="item"
+            class="cat-item"
+            :class="[{ active: item === activeCategory }]"
+            @click="selectCategory(item)"
+          >
             <font-awesome-icon :icon="getCatIcon(item)" class="c-i" />
             <span class="c-l">{{ item }}</span>
             <span class="c-c" v-if="index > 0">{{ 12 + index * 8 }}</span>
@@ -39,16 +45,29 @@
         <!-- Search Pill -->
         <div class="search-wrap" :class="{ 'is-active': isSearchFocused }">
           <font-awesome-icon icon="magnifying-glass" class="s-i" />
-          <input type="text" placeholder="发现新灵感..." @focus="isSearchFocused = true" @blur="isSearchFocused = false" />
+          <input
+            type="text"
+            placeholder="发现新灵感..."
+            @focus="isSearchFocused = true"
+            @blur="isSearchFocused = false"
+          />
         </div>
 
         <div class="v-divider"></div>
 
         <!-- Sort Switches -->
         <div class="sort-switches">
-          <button v-for="item in sortOptions" :key="item.value" class="sort-tab"
-            :class="{ active: item.value === activeSort }" @click="selectSort(item.value)">
-            <font-awesome-icon :icon="item.value === 'latest' ? 'clock' : 'fire'" class="s-i" />
+          <button
+            v-for="item in sortOptions"
+            :key="item.value"
+            class="sort-tab"
+            :class="{ active: item.value === activeSort }"
+            @click="selectSort(item.value)"
+          >
+            <font-awesome-icon
+              :icon="item.value === 'latest' ? 'clock' : 'fire'"
+              class="s-i"
+            />
             <span class="s-l">{{ item.label }}</span>
           </button>
         </div>
