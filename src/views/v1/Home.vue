@@ -4,6 +4,7 @@
     <main class="main-content">
       <div class="container">
         <FilterBar
+          v-model="searchQuery"
           :categories="categories"
           :active-category="activeCategory"
           :active-sort="activeSort"
@@ -39,6 +40,7 @@ import { generateMockResources } from "@/data/mockData";
 const categories = ["全部", "前端", "后端", "设计", "AI", "工具"];
 const activeCategory = ref("全部");
 const activeSort = ref<"latest" | "popular">("latest");
+const searchQuery = ref("");
 const hotTags = [];
 
 // Pagination State
@@ -48,10 +50,18 @@ const pageSize = 5;
 const posts = ref(generateMockResources(24)); // Increase mock data to demonstrate pagination
 
 const filteredPosts = computed(() => {
-  const source =
+  let source =
     activeCategory.value === "全部"
       ? posts.value
       : posts.value.filter((item) => item.category === activeCategory.value);
+  
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase();
+    source = source.filter(item => 
+      item.title.toLowerCase().includes(query) || 
+      item.description.toLowerCase().includes(query)
+    );
+  }
   
   const sorted = activeSort.value === "popular"
     ? [...source].sort((a, b) => b.views - a.views)
@@ -71,8 +81,8 @@ const visiblePosts = computed(() => {
 
 const totalItems = computed(() => filteredPosts.value.length);
 
-// Reset page when category or sort changes
-watch([activeCategory, activeSort], () => {
+// Reset page when category, sort or search changes
+watch([activeCategory, activeSort, searchQuery], () => {
   currentPage.value = 1;
 });
 </script>

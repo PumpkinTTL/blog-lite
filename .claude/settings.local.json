@@ -3,7 +3,14 @@
     "allow": [
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"blog\" --domain color)",
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"filter bar component\" --stack vue)",
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py \"animation \" --domain ux)",
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" animation --domain ux)",
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"minimal\" --domain style)",
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"modern professional\" --domain typography)",
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"composition api\" --stack vue)"
     ]
   }
 }

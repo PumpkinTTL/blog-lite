@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"minimal clean blog\" --domain style)",
+      "Bash(chcp 65001)"
+    ]
+  }
+}
