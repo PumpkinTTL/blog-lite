@@ -289,13 +289,16 @@ function hexToRgb(hex: string) {
   position: relative;
 
   &.hot-title {
+    /* 7-stop high-radiance "double glint" metallic gradient */
     background: linear-gradient(
       to right, 
-      #92400e 0%, 
-      #92400e 40%, 
-      #fffbeb 50%, 
-      #92400e 60%, 
-      #92400e 100%
+      var(--hot-color-dark, #92400e) 0%, 
+      var(--hot-color-mid, #d97706) 20%, 
+      #ffffff 40%, 
+      var(--hot-color-mid, #d97706) 50%, 
+      #ffffff 60%, 
+      var(--hot-color-mid, #d97706) 80%, 
+      var(--hot-color-dark, #92400e) 100%
     );
     background-size: 200% 100%;
     background-clip: text;
@@ -303,6 +306,8 @@ function hexToRgb(hex: string) {
     -webkit-text-fill-color: transparent;
     animation: hotStream 3s linear infinite;
     display: inline-block;
+    font-weight: 800;
+    letter-spacing: -0.01em;
   }
 }
 
@@ -466,16 +471,33 @@ function hexToRgb(hex: string) {
 .dark-mode {
   .card-inner { background: #1e293b; border-color: rgba(255, 255, 255, 0.05); }
 
-  &.is-hot .card-inner {
-    background: linear-gradient(135deg, #1e293b 0%, #2d2613 100%);
+  &.is-hot {
+    .card-inner {
+      background: linear-gradient(135deg, #1e293b 0%, #221d0a 100%);
+      border-color: rgba(255, 215, 0, 0.4); /* Brighter gold border */
+    }
+    
+    &:hover .card-inner {
+      border-color: rgba(255, 215, 0, 0.6);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Brighter, Max-Radiance Gold Palette for Dark Mode */
+    --hot-color-dark: #daa520; 
+    --hot-color-mid: #ffd700;
+  }
+  
+  .hot-badge {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   .resource-title { color: #f1f5f9; }
-  .resource-title.hot-title { color: #fde68a; }
   .resource-desc { color: #94a3b8; }
   .author-name { color: #cbd5e1; }
   .card-footer { border-top-color: rgba(255, 255, 255, 0.05); }
   .download-btn { background: #334155; color: #94a3b8; }
   .avatar-wrap .author-avatar { border-color: #334155; }
+  .meta-stats { background: rgba(255,255,255,0.04); }
 }
 </style>
