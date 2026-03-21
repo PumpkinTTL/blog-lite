@@ -228,7 +228,8 @@ const changePage = (page: number) => {
 }
 
 /* ── Dark Mode ── */
-:global(.dark) {
+:global(html.dark),
+:global(html[data-theme='dark']) {
   .pagination-island {
     background: #111827;
     border-color: rgba(255, 255, 255, 0.05);

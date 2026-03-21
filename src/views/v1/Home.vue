@@ -91,7 +91,6 @@ watch([activeCategory, activeSort, searchQuery], () => {
 .home {
   min-height: 100vh;
   background: var(--bg);
-  transition: background-color 0.3s ease;
 }
 
 .main-content {

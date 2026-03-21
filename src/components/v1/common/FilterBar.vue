@@ -1,7 +1,7 @@
 <template>
   <div class="filter-dashboard-v7">
     <!-- Main Card Container (Now wraps both rows) -->
-    <div class="filter-primary-card">
+    <div class="filter-primary-card" :class="{ 'dark-mode': isDark }">
       <!-- Top Row: Categories, Search, and Sort -->
       <div class="primary-row">
         <div class="category-segment">
@@ -100,6 +100,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, nextTick, onUnmounted } from "vue";
+import { useThemeStore } from "@/stores/theme";
+
+const themeStore = useThemeStore();
+const isDark = computed(() => themeStore.isDark);
 
 interface Props {
   categories: string[];
@@ -193,8 +197,8 @@ const currentTags = computed(() => {
   display: flex;
   flex-direction: column;
   padding: 16px;
-  background: #ffffff;
-  border: 1px solid #eef2f6;
+  background: var(--bg-secondary, #ffffff);
+  border: 1px solid var(--border, #eef2f6);
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
   gap: 12px;
@@ -227,7 +231,7 @@ const currentTags = computed(() => {
 .category-segment {
   display: flex;
   position: relative;
-  background: #f1f4f9;
+  background: var(--bg, #f1f4f9);
   padding: 4px;
   border-radius: 10px;
   height: 40px;
@@ -251,7 +255,7 @@ const currentTags = computed(() => {
   top: 4px;
   bottom: 4px;
   left: 0;
-  background: #ffffff;
+  background: var(--bg-secondary, #ffffff);
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
@@ -267,7 +271,7 @@ const currentTags = computed(() => {
   padding: 0 16px;
   border: none;
   background: transparent;
-  color: #64748b;
+  color: var(--text-secondary, #64748b);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -319,7 +323,7 @@ const currentTags = computed(() => {
   width: 280px;
   height: 40px;
   padding: 0 20px;
-  background: #f1f4f9;
+  background: var(--bg, #f1f4f9);
   border: 1px solid transparent;
   border-radius: 10px;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -340,12 +344,12 @@ const currentTags = computed(() => {
     outline: none;
     background: transparent;
     font-size: 14px;
-    color: #1e293b;
+    color: var(--text, #1e293b);
     height: 100%;
     margin: 0;
     padding: 0;
     &::placeholder {
-      color: #94a3b8;
+      color: var(--text-tertiary, #94a3b8);
     }
   }
 
@@ -356,9 +360,9 @@ const currentTags = computed(() => {
     gap: 2px;
     font-size: 11px;
     font-weight: 700;
-    color: #94a3b8;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    color: var(--text-tertiary, #94a3b8);
+    background: var(--bg-secondary, #ffffff);
+    border: 1px solid var(--border);
     padding: 2px 5px;
     border-radius: 5px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -391,8 +395,8 @@ const currentTags = computed(() => {
   }
 
   &.focused {
-    background: #ffffff;
-    border-color: #4f46e5;
+    background: var(--bg-secondary, #ffffff);
+    border-color: var(--primary, #4f46e5);
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     
     @media (min-width: 951px) {
@@ -418,7 +422,7 @@ const currentTags = computed(() => {
 /* ── Enhanced Sort ── */
 .sort-selector-v7 {
   display: flex;
-  background: #f1f4f9;
+  background: var(--bg, #f1f4f9);
   padding: 4px;
   border-radius: 10px;
   height: 40px;
@@ -434,7 +438,7 @@ const currentTags = computed(() => {
   padding: 0 14px;
   border: none;
   background: transparent;
-  color: #64748b;
+  color: var(--text-secondary, #64748b);
   font-size: 13px;
   font-weight: 600;
   border-radius: 7px;
@@ -445,8 +449,8 @@ const currentTags = computed(() => {
   flex-shrink: 0;
 
   &.active {
-    background: #ffffff;
-    color: #4f46e5;
+    background: var(--bg-secondary, #ffffff);
+    color: var(--primary, #4f46e5);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   }
 
@@ -528,8 +532,8 @@ const currentTags = computed(() => {
   align-items: center;
   gap: 4px;
   padding: 5px 12px;
-  background: #f8fafc;
-  border: 1px solid #eef2f6;
+  background: var(--bg-secondary, #f8fafc);
+  border: 1px solid var(--border, #eef2f6);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -558,6 +562,79 @@ const currentTags = computed(() => {
     }
     .tag-name {
       color: #4f46e5;
+    }
+  }
+}
+
+/* ── Dark Mode Adaptations ── */
+.filter-primary-card.dark-mode {
+  background: var(--bg-tertiary);
+  border-color: var(--border-dark);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+
+  .category-segment,
+  .search-field-v7,
+  .sort-selector-v7 {
+    background: var(--bg);
+  }
+
+  .active-capsule,
+  .sort-v7-btn.active {
+    background: var(--border-dark);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .cat-item-btn,
+  .sort-v7-btn {
+    color: var(--text-secondary);
+    &.active {
+      color: var(--primary-soft);
+    }
+  }
+
+  .search-field-v7 {
+    input {
+      color: var(--text);
+      &::placeholder {
+        color: var(--text-tertiary);
+      }
+    }
+    .kbd-hint {
+      background: var(--border-dark);
+      border-color: var(--border-dark);
+      color: var(--text-tertiary);
+    }
+    &.focused {
+      background: var(--bg);
+      border-color: var(--primary);
+    }
+  }
+
+  .vertical-sep, .row-divider {
+    background: var(--border-dark);
+    opacity: 0.5;
+  }
+
+  .tags-label {
+    color: var(--text-secondary);
+    .fire-icon-box {
+      background: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+    }
+  }
+
+  .v7-tag-chip {
+    background: var(--bg-tertiary);
+    border-color: var(--border-dark);
+    .tag-name {
+      color: var(--text-secondary);
+    }
+    &:hover {
+      background: var(--border-dark);
+      border-color: var(--primary-soft);
+      .tag-name, .hash {
+        color: var(--primary-soft);
+      }
     }
   }
 }

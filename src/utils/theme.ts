@@ -93,7 +93,8 @@ export function initTheme() {
  * 获取当前是否为暗色模式
  */
 export function isDarkMode(): boolean {
-  return document.documentElement.getAttribute('data-theme') === 'dark'
+  const html = document.documentElement
+  return html.classList.contains('dark') || html.getAttribute('data-theme') === 'dark'
 }
 
 /**

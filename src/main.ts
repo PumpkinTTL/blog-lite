@@ -3,6 +3,9 @@ import { createPinia } from 'pinia'
 import router from '@/router'
 import App from './App.vue'
 
+// 主题初始化
+import { initTheme } from '@/utils/theme'
+
 // 样式导入
 import '@/style.css'
 import '@/styles/index.scss'
@@ -92,5 +95,8 @@ const pinia = createPinia()
 app.use(pinia)
 app.use(router)
 app.component('font-awesome-icon', FontAwesomeIcon)
+
+// 初始化主题
+initTheme()
 
 app.mount('#app')

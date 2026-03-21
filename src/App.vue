@@ -14,14 +14,16 @@
 <style lang="scss">
 #app {
   min-height: 100vh;
+  background: var(--bg);
 }
 
 .app-layout {
   min-height: 100vh;
+  background: var(--bg);
 }
 
 .app-main {
   padding: 0;
- 
+  background: var(--bg);
 }
 </style>

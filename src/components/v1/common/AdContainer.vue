@@ -4,7 +4,7 @@
     :class="{ 'is-glass': type === 'glass', 'is-dark': type === 'dark' }"
   >
     <div class="ad-inner">
-      <div class="ad-badge">AD</div>
+      <div class="ad-badge">广告</div>
 
       <!-- Slot for custom ad content (e.g. iframe, banner) -->
       <div class="ad-slot-wrapper" :class="{ 'no-padding': $slots.default }">
