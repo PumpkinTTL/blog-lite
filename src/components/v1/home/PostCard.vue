@@ -1,5 +1,5 @@
 <template>
-  <article class="post-card" :class="{ 'is-hot': isHot }">
+  <article class="post-card" :class="{ 'is-hot': isHot, 'dark-mode': isDark }">
     <!-- ── Cover ── -->
     <div class="cover-wrap" v-if="post.image">
       <img :src="post.image" :alt="post.title" class="cover" loading="lazy" />
@@ -133,6 +133,10 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useThemeStore } from "@/stores/theme";
+
+const themeStore = useThemeStore();
+const isDark = computed(() => themeStore.isDark);
 import type { Resource } from "@/data/mockData";
 
 const CATEGORIES = ["前端", "后端", "设计", "AI", "工具"];
@@ -937,6 +941,103 @@ const formatNum = (n: number) =>
   } /* 移动端隐藏中间的点，靠 gap 和换行区分 */
   .btn-share {
     display: none;
+  }
+}
+
+/* ─────────────────────────────
+   Dark Mode
+   保留特效颜色：热门黄色、hover蓝色、渐变
+   保持昵称和身份标签原样
+───────────────────────────── */
+.post-card.dark-mode {
+  background: var(--bg-secondary);
+  border-color: var(--border);
+
+  .title {
+    color: var(--text);
+  }
+
+  .desc {
+    color: var(--text-secondary);
+  }
+
+  /* meta 区域与卡片背景一致，不单独设置背景 */
+  .meta {
+    color: var(--text-tertiary);
+    border-color: var(--border);
+  }
+
+  /* 分割线深色模式适配 */
+  .author-unit .role-sep {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* 底部上边框深色模式适配 */
+  .bottom-bar {
+    border-top-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* 收藏按钮深色模式适配 */
+  .bookmark {
+    border-color: var(--border);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+
+    &:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+  }
+
+  /* 身份标签容器移除背景，保持原样 */
+  .author-unit.super_admin,
+  .author-unit.admin,
+  .author-unit.system,
+  .author-unit.vip {
+    background: transparent;
+    border-color: var(--border);
+  }
+
+  /* 保持昵称和身份标签原样 */
+  .stats-item {
+    color: var(--text-tertiary);
+  }
+
+  .tags-item {
+    background: var(--bg);
+    color: var(--text-secondary);
+    border-color: var(--border);
+  }
+
+  .btn-share {
+    background: var(--bg-secondary);
+    border-color: var(--border);
+    color: var(--text-secondary);
+
+    &:hover {
+      background: var(--bg);
+      color: var(--text);
+    }
+  }
+
+  /* 火热文章深色模式配色 */
+  &.is-hot {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.08);
+
+    &:hover {
+      border-color: #fbbf24;
+      background: rgba(245, 158, 11, 0.12);
+    }
+  }
+
+  /* 保留hover特效的蓝色 */
+  &:hover {
+    border-color: #bfdbfe;
+
+    &.is-hot {
+      border-color: #fbbf24;
+    }
   }
 }
 </style>
