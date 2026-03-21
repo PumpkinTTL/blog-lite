@@ -315,10 +315,10 @@ const currentTags = computed(() => {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 240px;
+  gap: 12px;
+  width: 280px;
   height: 40px;
-  padding: 0 14px;
+  padding: 0 20px;
   background: #f1f4f9;
   border: 1px solid transparent;
   border-radius: 10px;
@@ -396,7 +396,7 @@ const currentTags = computed(() => {
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     
     @media (min-width: 951px) {
-      width: 300px;
+      width: 320px;
     }
   }
 
