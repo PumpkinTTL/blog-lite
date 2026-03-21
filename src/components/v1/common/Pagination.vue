@@ -1,6 +1,6 @@
 <template>
   <div class="pagination-container" v-if="totalPages > 1">
-    <div class="pagination-island">
+    <div class="pagination-island" :class="{ 'dark-mode': isDark }">
       <!-- Nav Button: Prev -->
       <button
         class="nav-trigger prev"
@@ -57,6 +57,10 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useThemeStore } from "@/stores/theme";
+
+const themeStore = useThemeStore();
+const isDark = computed(() => themeStore.isDark);
 
 interface Props {
   current: number;
@@ -228,20 +232,17 @@ const changePage = (page: number) => {
 }
 
 /* ── Dark Mode ── */
-:global(html.dark),
-:global(html[data-theme='dark']) {
-  .pagination-island {
-    background: #111827;
-    border-color: rgba(255, 255, 255, 0.05);
-  }
+.pagination-island.dark-mode {
+  background: var(--bg-tertiary);
+  border-color: var(--border-dark);
 
   .nav-trigger:hover:not(:disabled),
   .page-blob:hover:not(.is-active) {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--surface-hover);
   }
 
   .v-line {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--border-light);
   }
 }
 

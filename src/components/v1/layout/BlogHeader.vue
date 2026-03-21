@@ -1,6 +1,6 @@
 <template>
-  <header class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300" :class="isDark ? 'bg-[#0F172A] border-gray-800' : 'bg-white border-gray-200'
-    " style="border-bottom-width: 1px">
+  <header class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300" :class="isDark ? `bg-[${DARK_BG}] border-gray-800` : 'bg-white border-gray-200'"
+    style="border-bottom-width: 1px">
     <nav class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
       <div class="flex items-center gap-2 sm:gap-4 h-14 sm:h-16">
         <!-- Logo -->
@@ -63,7 +63,7 @@
             " @click="toggleNotifications">
             <font-awesome-icon icon="bell" class="text-base" />
             <span v-if="hasNotifications" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2"
-              :class="isDark ? 'ring-[#0F172A]' : 'ring-white'"></span>
+              :class="isDark ? `ring-[${DARK_BG}]` : 'ring-white'"></span>
           </button>
 
           <!-- Divider (Desktop only) -->
@@ -81,7 +81,7 @@
                 <div
                   class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ring-1 sm:ring-2 ring-offset-1 sm:ring-offset-2 overflow-hidden"
                   :class="isDark
-                      ? 'ring-gray-700 ring-offset-[#0F172A]'
+                      ? `ring-gray-700 ring-offset-[${DARK_BG}]`
                       : 'ring-gray-200 ring-offset-white'
                     ">
                   <img src="https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg" alt="用户头像"
@@ -295,6 +295,10 @@ import { useRouter } from "vue-router";
 import NotificationCenter from "./NotificationCenter.vue";
 import ProfileCenter from "./ProfileCenter.vue";
 import { useThemeStore } from "@/stores/theme";
+
+// 深色模式颜色常量
+const DARK_BG = '#0F172A';
+const DARK_BORDER = '#1f2937';
 
 const router = useRouter();
 const themeStore = useThemeStore();
