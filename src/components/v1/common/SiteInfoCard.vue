@@ -73,7 +73,6 @@ const stats = [
   border-radius: 20px;
   padding: 18px;
   width: 100%;
-  max-width: 320px;
   box-shadow: var(--shadow);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: 'OPPO Sans', sans-serif;
