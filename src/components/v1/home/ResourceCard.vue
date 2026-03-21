@@ -6,61 +6,49 @@
         <img :src="resource.image" :alt="resource.title" class="resource-image" loading="lazy" />
         <div class="image-overlay"></div>
         
-        <!-- Category Tag (Glassmorphism) -->
+        <!-- Category Tag (Glassmorphism restored to 12px) -->
         <div class="category-tag" :style="{ '--tag-color': resource.categoryColor }">
           <span class="tag-dot"></span>
           {{ resource.category }}
         </div>
 
-        <!-- NEW Badge -->
-        <div v-if="isNew" class="new-badge">
-          <font-awesome-icon icon="bolt" class="icon" />
-          NEW
-        </div>
-
-        <!-- Featured Badge -->
-        <div v-if="resource.featured" class="featured-badge" title="精品推荐">
-          <font-awesome-icon icon="star" />
-        </div>
+        <!-- NEW Badge restored to 12px -->
+        <div v-if="isNew" class="new-badge">NEW</div>
       </div>
 
       <!-- Content -->
       <div class="card-content">
         <h3 class="resource-title">{{ resource.title }}</h3>
+        
+        <!-- Short Description (Compact) -->
         <p class="resource-desc">{{ resource.description }}</p>
 
-        <!-- Tags Cloud -->
+        <!-- Tags Cloud (Colorized, NO #) -->
         <div class="tags-cloud">
-          <span v-for="tag in resource.tags.slice(0, 3)" :key="tag" class="small-tag">
-            #{{ tag }}
+          <span 
+            v-for="(tag, index) in resource.tags.slice(0, 3)" 
+            :key="tag" 
+            class="small-tag"
+            :style="getTagStyle(tag, index)"
+          >
+            {{ tag }}
           </span>
         </div>
 
-        <div class="content-divider"></div>
-
-        <!-- Meta info: Author + Stats -->
-        <div class="card-meta">
+        <!-- Footer Area (Very Compact) -->
+        <div class="card-footer">
           <div class="author-info">
             <img :src="resource.author.avatar" :alt="resource.author.name" class="author-avatar" />
-            <span class="author-name">{{ resource.author.name }}</span>
+            <div class="meta-text">
+              <span class="author-name">{{ resource.author.name }}</span>
+              <div class="stats-row">
+                <span class="stat-item"><font-awesome-icon icon="eye" /> {{ formatNum(resource.views) }}</span>
+                <span class="stat-item"><font-awesome-icon icon="heart" /> {{ formatNum(resource.likes) }}</span>
+              </div>
+            </div>
           </div>
           
-          <div class="stats">
-            <span class="stat-item" title="浏览量">
-              <font-awesome-icon icon="eye" class="icon" />
-              {{ formatNum(resource.views) }}
-            </span>
-          </div>
-        </div>
-
-        <!-- Footer Action -->
-        <div class="card-action">
-          <div class="likes" :class="{ 'is-liked': resource.likes > 500 }">
-             <font-awesome-icon icon="heart" class="icon" />
-             {{ formatNum(resource.likes) }}
-          </div>
           <button class="download-btn" aria-label="获取资源">
-            <span>立即获取</span>
             <font-awesome-icon icon="download" class="icon" />
           </button>
         </div>
@@ -93,46 +81,60 @@ const isNew = computed(() => {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays <= 7;
 });
+
+const tagColors = [
+  { text: '#3B82F6', bg: '#DBEAFE' },
+  { text: '#10B981', bg: '#D1FAE5' },
+  { text: '#F59E0B', bg: '#FEF3C7' },
+  { text: '#8B5CF6', bg: '#F5F3FF' },
+  { text: '#EC4899', bg: '#FCE7F3' },
+  { text: '#06B6D4', bg: '#CFFAFE' },
+];
+
+const getTagStyle = (tag: string, index: number) => {
+  const colorIndex = (tag.length + index) % tagColors.length;
+  const color = tagColors[colorIndex];
+  
+  if (isDark.value) {
+    return {
+      color: color.text,
+      backgroundColor: `rgba(${hexToRgb(color.text)}, 0.1)`,
+      borderColor: `rgba(${hexToRgb(color.text)}, 0.2)`
+    };
+  }
+  return {
+    color: color.text,
+    backgroundColor: color.bg,
+    borderColor: 'transparent'
+  };
+};
+
+function hexToRgb(hex: string) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `${r}, ${g}, ${b}`;
+}
 </script>
 
 <style scoped lang="scss">
 .resource-card {
   position: relative;
   height: 100%;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   cursor: pointer;
 
   &:hover {
-    transform: translateY(-10px);
-
+    transform: translateY(-6px);
     .card-inner {
-      box-shadow: 0 30px 60px -12px rgba(99, 102, 241, 0.25);
+      box-shadow: 0 15px 30px -10px rgba(99, 102, 241, 0.15);
       border-color: var(--primary);
     }
-
-    .resource-image {
-      transform: scale(1.1) rotate(1deg);
-    }
-
-    .image-overlay {
-      opacity: 0.2;
-    }
-
+    .resource-image { transform: scale(1.08); }
     .download-btn {
       background: var(--primary);
       color: white;
-      padding: 0 16px;
-      
-      span {
-        width: auto;
-        opacity: 1;
-        margin-right: 8px;
-      }
-    }
-
-    .tag-dot {
-       transform: scale(1.5);
-       box-shadow: 0 0 10px var(--tag-color);
+      transform: scale(1.1);
     }
   }
 }
@@ -140,19 +142,17 @@ const isNew = computed(() => {
 .card-inner {
   height: 100%;
   background: white;
-  border-radius: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: all 0.4s ease;
-  position: relative;
+  transition: all 0.3s ease;
 }
 
-/* Image Section */
 .image-wrapper {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 1.9 / 1; 
   overflow: hidden;
   background: #f1f5f9;
 }
@@ -161,23 +161,21 @@ const isNew = computed(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.6s ease;
 }
 
 .image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.05));
 }
 
 .category-tag {
   position: absolute;
   top: 12px;
   left: 12px;
-  padding: 6px 12px;
-  border-radius: 10px;
+  padding: 5px 12px;
+  border-radius: 8px;
   color: white;
   font-size: 11px;
   font-weight: 700;
@@ -187,15 +185,13 @@ const isNew = computed(() => {
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 5px;
 
   .tag-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: var(--tag-color);
-    transition: all 0.3s ease;
   }
 }
 
@@ -205,67 +201,39 @@ const isNew = computed(() => {
   right: 12px;
   background: var(--error);
   color: white;
-  padding: 4px 10px;
-  border-radius: 8px;
+  padding: 3px 10px;
+  border-radius: 6px;
   font-size: 10px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-  z-index: 2;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.featured-badge {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  width: 28px;
-  height: 28px;
-  background: rgba(255, 255, 255, 0.9);
-  color: #f59e0b;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-weight: 900;
   z-index: 2;
 }
 
-/* Content Section */
 .card-content {
-  padding: 20px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   flex: 1;
+  gap: 6px;
 }
 
 .resource-title {
-  margin: 0 0 10px;
-  font-size: 17px;
-  font-weight: 800;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
   color: #1e293b;
-  line-height: 1.4;
+  line-height: 1.35;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  letter-spacing: -0.01em;
 }
 
 .resource-desc {
-  margin: 0 0 16px;
-  font-size: 13px;
+  margin: 0;
+  font-size: 11px;
   color: #64748b;
-  line-height: 1.6;
+  line-height: 1.4;
+  height: 31px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -275,41 +243,29 @@ const isNew = computed(() => {
 .tags-cloud {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 4px;
 }
 
 .small-tag {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--primary);
-  background: var(--primary-light);
-  padding: 2px 8px;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-
-  &:hover {
-    filter: brightness(0.95);
-  }
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
 }
 
-.content-divider {
-  height: 1px;
-  background: rgba(0, 0, 0, 0.05);
-  margin-bottom: 16px;
-}
-
-.card-meta {
+.card-footer {
+  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .author-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .author-avatar {
@@ -317,52 +273,37 @@ const isNew = computed(() => {
   height: 24px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1.5px solid white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.meta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .author-name {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
   color: #475569;
 }
 
-.card-action {
-  margin-top: auto;
+.stats-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.likes {
-  display: flex;
-  align-items: center;
   gap: 6px;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 8px;
+  font-weight: 600;
   color: #94a3b8;
-  transition: color 0.3s ease;
-
-  &.is-liked {
-    color: var(--error);
-  }
-}
-
-.stats {
   .stat-item {
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #94a3b8;
+    gap: 2px;
   }
 }
 
 .download-btn {
-  height: 38px;
-  padding: 0 12px;
-  border-radius: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
   border: none;
   background: #f1f5f9;
   color: #64748b;
@@ -370,62 +311,16 @@ const isNew = computed(() => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  font-weight: 700;
-  font-size: 13px;
-
-  span {
-    width: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-  }
-
-  .icon {
-    font-size: 14px;
-  }
-
-  &:hover {
-    box-shadow: 0 8px 15px rgba(99, 102, 241, 0.2);
-  }
+  transition: all 0.3s ease;
+  .icon { font-size: 10px; }
 }
 
-/* Dark Mode */
 .dark-mode {
-  .card-inner {
-    background: #1e293b;
-    border-color: rgba(255, 255, 255, 0.05);
-  }
-
-  .resource-title {
-    color: #f1f5f9;
-  }
-
-  .resource-desc {
-    color: #94a3b8;
-  }
-
-  .small-tag {
-    background: rgba(99, 102, 241, 0.1);
-  }
-
-  .content-divider {
-    background: rgba(255, 255, 255, 0.05);
-  }
-
-  .author-name {
-    color: #cbd5e1;
-  }
-
-  .download-btn {
-    background: #334155;
-    color: #94a3b8;
-  }
-
-  .featured-badge {
-    background: #334155;
-    color: #f59e0b;
-  }
+  .card-inner { background: #1e293b; border-color: rgba(255, 255, 255, 0.05); }
+  .resource-title { color: #f1f5f9; }
+  .resource-desc { color: #94a3b8; }
+  .author-name { color: #cbd5e1; }
+  .card-footer { border-top-color: rgba(255, 255, 255, 0.05); }
+  .download-btn { background: #334155; color: #94a3b8; }
 }
 </style>
