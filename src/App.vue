@@ -5,10 +5,12 @@
         <router-view />
       </a-layout-content>
     </a-layout>
+    <BackTop />
   </div>
 </template>
 
 <script setup lang="ts">
+import BackTop from '@/components/v1/common/BackTop.vue';
 </script>
 
 <style lang="scss">

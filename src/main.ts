@@ -71,7 +71,10 @@ import {
   faWrench,
   faEllipsis,
   faChevronLeft,
-  faChevronRight
+  faChevronRight,
+  faBullhorn,
+  faTriangleExclamation,
+  faArrowUp
 } from '@fortawesome/free-solid-svg-icons'
 
 // 添加图标到库
@@ -86,7 +89,8 @@ library.add(
   faBolt, faPenNib, faLayerGroup, faHeart, faFire,
   faShieldHalved, faCrown, faCircleCheck, faGem,
   faCode, faServer, faPalette, faBrain, faWrench,
-  faEllipsis, faChevronLeft, faChevronRight
+  faEllipsis, faChevronLeft, faChevronRight,
+  faBullhorn, faTriangleExclamation, faArrowUp
 )
 
 const app = createApp(App)

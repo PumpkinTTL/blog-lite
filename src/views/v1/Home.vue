@@ -3,6 +3,15 @@
     <BlogHeader />
     <main class="main-content">
       <div class="container">
+        <Announcement 
+          title="系统更新" 
+          message="我们刚刚升级了博客内核，现在支持更快的页面加载和更精美的暗色模式体验。"
+          tag="NEW"
+          date="2024-03-21"
+          type="primary"
+          persist-key="v1_update_v3"
+        />
+
         <FilterBar
           v-model="searchQuery"
           :categories="categories"
@@ -31,6 +40,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BlogHeader from "@/components/v1/layout/BlogHeader.vue";
+import Announcement from "@/components/v1/common/Announcement.vue";
 import FilterBar from "@/components/v1/common/FilterBar.vue";
 import PostFeed from "@/components/v1/home/PostFeed.vue";
 import HomeSidebar from "@/components/v1/home/HomeSidebar.vue";
