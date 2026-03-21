@@ -1,92 +1,98 @@
 <template>
   <div class="filter-dashboard-v7">
-    <!-- Primary Filter Row (White Card) -->
+    <!-- Main Card Container (Now wraps both rows) -->
     <div class="filter-primary-card">
-      <div class="category-segment">
-        <div class="active-capsule" :style="pillStyle"></div>
-        <button
-          v-for="(cat, index) in categories"
-          :key="cat"
-          :ref="(el) => setTabRef(el, index)"
-          class="cat-item-btn"
-          :class="{ active: activeCategory === cat }"
-          @click="emit('update:activeCategory', cat)"
-        >
-          <font-awesome-icon :icon="getCategoryIcon(cat)" class="btn-i" />
-          <span>{{ cat }}</span>
-        </button>
-      </div>
+      <!-- Top Row: Categories, Search, and Sort -->
+      <div class="primary-row">
+        <div class="category-segment">
+          <div class="active-capsule" :style="pillStyle"></div>
+          <button
+            v-for="(cat, index) in categories"
+            :key="cat"
+            :ref="(el) => setTabRef(el, index)"
+            class="cat-item-btn"
+            :class="{ active: activeCategory === cat }"
+            @click="emit('update:activeCategory', cat)"
+          >
+            <font-awesome-icon :icon="getCategoryIcon(cat)" class="btn-i" />
+            <span>{{ cat }}</span>
+          </button>
+        </div>
 
-      <div class="spacer"></div>
+        <div class="spacer"></div>
 
-      <div class="utility-group">
-        <!-- Robust Search with Clear & CMD+K -->
-        <div class="search-field-v7" :class="{ focused: isFocused }">
-          <font-awesome-icon icon="search" class="search-lead" />
-          <input
-            type="text"
-            :value="modelValue"
-            placeholder="搜索文章内容..."
-            @input="onSearch"
-            @focus="isFocused = true"
-            @blur="isFocused = false"
-          />
-          <div v-if="!modelValue" class="kbd-hint">
-            <span class="kbd-symbol">⌘</span>
-            <span class="kbd-key">K</span>
+        <div class="utility-group">
+          <!-- Robust Search with Clear & CMD+K -->
+          <div class="search-field-v7" :class="{ focused: isFocused }">
+            <font-awesome-icon icon="search" class="search-lead" />
+            <input
+              type="text"
+              :value="modelValue"
+              placeholder="搜索文章内容..."
+              @input="onSearch"
+              @focus="isFocused = true"
+              @blur="isFocused = false"
+            />
+            <div v-if="!modelValue" class="kbd-hint">
+              <span class="kbd-symbol">⌘</span>
+              <span class="kbd-key">K</span>
+            </div>
+            <button
+              v-else
+              class="search-clear"
+              @click="emit('update:modelValue', '')"
+            >
+              <font-awesome-icon icon="circle-xmark" />
+            </button>
           </div>
-          <button
-            v-else
-            class="search-clear"
-            @click="emit('update:modelValue', '')"
-          >
-            <font-awesome-icon icon="circle-xmark" />
-          </button>
-        </div>
 
-        <div class="vertical-sep"></div>
+          <div class="vertical-sep"></div>
 
-        <!-- Segmented Sort Controller -->
-        <div class="sort-selector-v7">
-          <button
-            class="sort-v7-btn"
-            :class="{ active: activeSort === 'latest' }"
-            @click="emit('update:activeSort', 'latest')"
-          >
-            <font-awesome-icon icon="clock" />
-            <span>最新</span>
-          </button>
-          <button
-            class="sort-v7-btn"
-            :class="{ active: activeSort === 'popular' }"
-            @click="emit('update:activeSort', 'popular')"
-          >
-            <font-awesome-icon icon="fire" />
-            <span>热门</span>
-          </button>
+          <!-- Segmented Sort Controller -->
+          <div class="sort-selector-v7">
+            <button
+              class="sort-v7-btn"
+              :class="{ active: activeSort === 'latest' }"
+              @click="emit('update:activeSort', 'latest')"
+            >
+              <font-awesome-icon icon="clock" />
+              <span>最新</span>
+            </button>
+            <button
+              class="sort-v7-btn"
+              :class="{ active: activeSort === 'popular' }"
+              @click="emit('update:activeSort', 'popular')"
+            >
+              <font-awesome-icon icon="fire" />
+              <span>热门</span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Secondary Recommendation Row (Optimized Tags) -->
-    <div class="tags-recommendation-bar">
-      <div class="tags-label">
-        <div class="fire-icon-box">
-          <font-awesome-icon icon="fire" class="fire-vibrate" />
+      <!-- Subtle Divider -->
+      <div class="row-divider"></div>
+
+      <!-- Bottom Row: Popular Tags (Optimized Tags) -->
+      <div class="tags-recommendation-bar">
+        <div class="tags-label">
+          <div class="fire-icon-box">
+            <font-awesome-icon icon="fire" class="fire-vibrate" />
+          </div>
+          <span>热门筛选:</span>
         </div>
-        <span>热门筛选:</span>
-      </div>
 
-      <div class="tags-overflow-container">
-        <button
-          v-for="tag in currentTags"
-          :key="tag"
-          class="v7-tag-chip"
-          @click="emit('update:modelValue', tag)"
-        >
-          <span class="hash">#</span>
-          <span class="tag-name">{{ tag }}</span>
-        </button>
+        <div class="tags-overflow-container">
+          <button
+            v-for="tag in currentTags"
+            :key="tag"
+            class="v7-tag-chip"
+            @click="emit('update:modelValue', tag)"
+          >
+            <span class="hash">#</span>
+            <span class="tag-name">{{ tag }}</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -185,19 +191,37 @@ const currentTags = computed(() => {
 
 .filter-primary-card {
   display: flex;
-  align-items: center;
-  padding: 8px 16px;
+  flex-direction: column;
+  padding: 12px 16px;
   background: #ffffff;
   border: 1px solid #eef2f6;
   border-radius: 14px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  gap: 12px;
+
+  @media (max-width: 950px) {
+    padding: 10px;
+    gap: 12px;
+    border-radius: 12px;
+  }
+}
+
+.primary-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
 
   @media (max-width: 950px) {
     flex-direction: column;
-    height: auto;
-    padding: 12px;
-    gap: 12px;
+    align-items: stretch;
   }
+}
+
+.row-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #f1f5f9 10%, #f1f5f9 90%, transparent);
+  width: 100%;
 }
 
 /* ── Category Segment ── */
@@ -206,7 +230,16 @@ const currentTags = computed(() => {
   position: relative;
   background: #f1f4f9;
   padding: 4px;
-  border-radius: 11px;
+  border-radius: 10px;
+  height: 38px;
+  box-sizing: border-box;
+  overflow-x: auto;
+  scrollbar-width: none;
+  width: 100%;
+  min-width: 0;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .active-capsule {
@@ -215,7 +248,7 @@ const currentTags = computed(() => {
   bottom: 4px;
   left: 0;
   background: #ffffff;
-  border-radius: 8px;
+  border-radius: 7px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
   z-index: 1;
@@ -227,15 +260,16 @@ const currentTags = computed(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 18px;
+  padding: 0 16px;
   border: none;
   background: transparent;
   color: #64748b;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
+  height: 100%;
 
   .btn-i {
     font-size: 11px;
@@ -260,6 +294,17 @@ const currentTags = computed(() => {
   display: flex;
   align-items: center;
   gap: 12px;
+
+  @media (max-width: 950px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  @media (max-width: 500px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
 }
 
 /* ── Enhanced Search ── */
@@ -268,12 +313,12 @@ const currentTags = computed(() => {
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 260px;
-  height: 40px;
+  width: 240px;
+  height: 38px;
   padding: 0 14px;
   background: #f1f4f9;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: 9px;
   transition: all 0.3s ease;
 
   .search-lead {
@@ -327,7 +372,12 @@ const currentTags = computed(() => {
     background: #ffffff;
     border-color: #4f46e5;
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-    width: 300px;
+    width: 280px;
+  }
+
+  @media (max-width: 950px) {
+    flex: 1;
+    width: auto;
   }
 }
 
@@ -335,29 +385,35 @@ const currentTags = computed(() => {
   width: 1px;
   height: 18px;
   background: #e2e8f0;
+
+  @media (max-width: 950px) {
+    display: none;
+  }
 }
 
 /* ── Enhanced Sort ── */
 .sort-selector-v7 {
   display: flex;
   background: #f1f4f9;
-  padding: 3px;
-  border-radius: 9px;
+  padding: 4px;
+  border-radius: 10px;
   height: 38px;
+  box-sizing: border-box;
 }
 
 .sort-v7-btn {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 0 12px;
+  padding: 0 14px;
   border: none;
   background: transparent;
   color: #64748b;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   border-radius: 7px;
   cursor: pointer;
+  height: 100%;
   transition: all 0.2s ease;
 
   &.active {
@@ -365,15 +421,27 @@ const currentTags = computed(() => {
     color: #4f46e5;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   }
+
+  @media (max-width: 950px) {
+    flex: 1;
+    justify-content: center;
+  }
 }
 
 /* ── Specialized Tags Recommendation ── */
 .tags-recommendation-bar {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-top: 10px;
-  padding: 0 4px;
+  gap: 12px;
+  padding: 2px 0;
+  width: 100%;
+  min-width: 0;
+
+  @media (max-width: 950px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 }
 
 .tags-label {
@@ -420,6 +488,8 @@ const currentTags = computed(() => {
   gap: 8px;
   overflow-x: auto;
   scrollbar-width: none;
+  width: 100%;
+  min-width: 0;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -429,12 +499,12 @@ const currentTags = computed(() => {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 14px;
-  background: #ffffff;
+  padding: 5px 12px;
+  background: #f8fafc;
   border: 1px solid #eef2f6;
-  border-radius: 30px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  transition: all 0.2s ease;
   white-space: nowrap;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
 
@@ -451,10 +521,9 @@ const currentTags = computed(() => {
   }
 
   &:hover {
-    background: #f5f3ff;
-    border-color: #4f46e5;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
     .hash {
       color: #4f46e5;
