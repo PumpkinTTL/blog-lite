@@ -12,8 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useThemeStore } from '@/stores/theme';
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useThemeStore } from "@/stores/theme";
 
 const themeStore = useThemeStore();
 const isDark = computed(() => themeStore.isDark);
@@ -28,17 +28,17 @@ const handleScroll = () => {
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth'
+    behavior: "smooth",
   });
 };
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
+  window.addEventListener("scroll", handleScroll);
   handleScroll(); // 初始检查
 });
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
+  window.removeEventListener("scroll", handleScroll);
 });
 </script>
 

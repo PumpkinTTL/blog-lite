@@ -1,29 +1,35 @@
 <template>
-  <div class="resource-card" :class="{ 'dark-mode': isDark }">
+  <div class="resource-card" :class="{ 'dark-mode': isDark, 'is-hot': isHot }">
     <div class="card-inner">
       <!-- Image Wrapper -->
       <div class="image-wrapper">
         <img :src="resource.image" :alt="resource.title" class="resource-image" loading="lazy" />
         <div class="image-overlay"></div>
         
-        <!-- Category Tag (Glassmorphism restored to 12px) -->
+        <!-- Category Tag (Glassmorphism) -->
         <div class="category-tag" :style="{ '--tag-color': resource.categoryColor }">
           <span class="tag-dot"></span>
           {{ resource.category }}
         </div>
 
-        <!-- NEW Badge restored to 12px -->
-        <div v-if="isNew" class="new-badge">NEW</div>
+        <!-- Badges -->
+        <div class="badge-container">
+          <div v-if="isHot" class="hot-badge">
+            <font-awesome-icon icon="fire" />
+            HOT
+          </div>
+          <div v-if="isNew" class="new-badge">NEW</div>
+        </div>
       </div>
 
       <!-- Content -->
       <div class="card-content">
-        <h3 class="resource-title">{{ resource.title }}</h3>
+        <h3 class="resource-title" :class="{ 'hot-title': isHot }">{{ resource.title }}</h3>
         
-        <!-- Short Description (Compact) -->
+        <!-- Short Description -->
         <p class="resource-desc">{{ resource.description }}</p>
 
-        <!-- Tags Cloud (Colorized, NO #) -->
+        <!-- Tags Cloud -->
         <div class="tags-cloud">
           <span 
             v-for="(tag, index) in resource.tags.slice(0, 3)" 
@@ -35,22 +41,36 @@
           </span>
         </div>
 
-        <!-- Footer Area (Very Compact) -->
+        <!-- Footer Area (Premium Meta Rebuild) -->
         <div class="card-footer">
-          <div class="author-info">
-            <img :src="resource.author.avatar" :alt="resource.author.name" class="author-avatar" />
-            <div class="meta-text">
-              <span class="author-name">{{ resource.author.name }}</span>
-              <div class="stats-row">
-                <span class="stat-item"><font-awesome-icon icon="eye" /> {{ formatNum(resource.views) }}</span>
-                <span class="stat-item"><font-awesome-icon icon="heart" /> {{ formatNum(resource.likes) }}</span>
+          <div class="footer-left">
+            <div class="avatar-wrap">
+              <img :src="resource.author.avatar" :alt="resource.author.name" class="author-avatar" />
+              <div v-if="resource.author.role === 'vip' || resource.author.role === 'admin' || resource.author.role === 'super_admin'" class="vip-crown">
+                <font-awesome-icon icon="crown" />
               </div>
+            </div>
+            <div class="meta-content">
+              <span class="author-name">{{ resource.author.name }}</span>
+              <span class="publish-date">{{ formattedDate }}</span>
             </div>
           </div>
           
-          <button class="download-btn" aria-label="获取资源">
-            <font-awesome-icon icon="download" class="icon" />
-          </button>
+          <div class="footer-right">
+            <div class="meta-stats">
+              <span class="stat-pill views">
+                <font-awesome-icon icon="eye" />
+                {{ formatNum(resource.views) }}
+              </span>
+              <span class="stat-pill likes" :class="{ 'is-high': resource.likes > 800 }">
+                <font-awesome-icon :icon="resource.likes > 800 ? 'star' : 'heart'" />
+                {{ formatNum(resource.likes) }}
+              </span>
+            </div>
+            <button class="download-btn" aria-label="获取资源">
+              <font-awesome-icon icon="download" class="icon" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -80,6 +100,13 @@ const isNew = computed(() => {
   const diffTime = Math.abs(now.getTime() - createdDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays <= 7;
+});
+
+const isHot = computed(() => props.resource.views >= 5000);
+
+const formattedDate = computed(() => {
+  const d = new Date(props.resource.createdAt);
+  return `${d.getMonth() + 1}-${d.getDate()}`;
 });
 
 const tagColors = [
@@ -135,6 +162,18 @@ function hexToRgb(hex: string) {
       background: var(--primary);
       color: white;
       transform: scale(1.1);
+    }
+  }
+
+  /* Hot Style */
+  &.is-hot {
+    .card-inner {
+      border-color: #ffed4a30;
+      background: linear-gradient(135deg, #ffffff 0%, #fffdf0 100%);
+    }
+    &:hover .card-inner {
+      border-color: #fbcfe8;
+      box-shadow: 0 15px 30px -10px rgba(244, 63, 94, 0.15);
     }
   }
 }
@@ -195,25 +234,45 @@ function hexToRgb(hex: string) {
   }
 }
 
-.new-badge {
+.badge-container {
   position: absolute;
   top: 12px;
   right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 2;
+}
+
+.new-badge {
   background: var(--error);
   color: white;
   padding: 3px 10px;
   border-radius: 6px;
   font-size: 10px;
   font-weight: 900;
-  z-index: 2;
+  text-align: center;
+}
+
+.hot-badge {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
 }
 
 .card-content {
-  padding: 10px 12px;
+  padding: 12px 14px; /* More padding */
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 6px;
+  gap: 10px; /* Increased vertical gap for breathing room */
 }
 
 .resource-title {
@@ -226,6 +285,30 @@ function hexToRgb(hex: string) {
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  transition: all 0.3s;
+  position: relative;
+
+  &.hot-title {
+    background: linear-gradient(
+      to right, 
+      #92400e 0%, 
+      #92400e 40%, 
+      #fffbeb 50%, 
+      #92400e 60%, 
+      #92400e 100%
+    );
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: hotStream 3s linear infinite;
+    display: inline-block;
+  }
+}
+
+@keyframes hotStream {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
 }
 
 .resource-desc {
@@ -253,74 +336,146 @@ function hexToRgb(hex: string) {
   border-radius: 4px;
 }
 
+/* Footer Section - Spacious & Premium */
 .card-footer {
   margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 8px;
-  border-top: 1px solid rgba(0, 0, 0, 0.03);
+  padding-top: 14px; /* More top space */
+  border-top: 1px dashed rgba(0, 0, 0, 0.05);
 }
 
-.author-info {
+.footer-left {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+  min-width: 0;
+  flex: 1; /* Take space to push stats right */
 }
 
-.author-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  object-fit: cover;
+.avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+  
+  .author-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1.5px solid white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+  
+  .vip-crown {
+    position: absolute;
+    top: -6px;
+    right: -5px;
+    font-size: 10px;
+    color: #f59e0b;
+    background: white;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
 }
 
-.meta-text {
+.meta-content {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  min-width: 0;
 }
 
 .author-name {
-  font-size: 10px;
-  font-weight: 700;
-  color: #475569;
+  font-size: 11px;
+  font-weight: 800;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
 }
 
-.stats-row {
-  display: flex;
-  gap: 6px;
+.publish-date {
   font-size: 8px;
-  font-weight: 600;
   color: #94a3b8;
-  .stat-item {
-    display: flex;
-    align-items: center;
-    gap: 2px;
+  font-weight: 600;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Balanced gap between stats and button */
+}
+
+.meta-stats {
+  display: flex;
+  align-items: center; /* Horizontal alignment for stats */
+  gap: 10px;
+  background: rgba(0,0,0,0.02);
+  padding: 4px 10px;
+  border-radius: 8px; /* "Pill" container for stats */
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #64748b;
+  line-height: 1;
+
+  :deep(svg) {
+    font-size: 10px;
+    opacity: 0.8;
+  }
+
+  &.likes.is-high {
+    color: #f59e0b;
   }
 }
 
 .download-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
   border: none;
   background: #f1f5f9;
-  color: #64748b;
+  color: #475569;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  .icon { font-size: 10px; }
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  &:hover {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.25);
+  }
+
+  .icon { font-size: 12px; }
 }
 
 .dark-mode {
   .card-inner { background: #1e293b; border-color: rgba(255, 255, 255, 0.05); }
+
+  &.is-hot .card-inner {
+    background: linear-gradient(135deg, #1e293b 0%, #2d2613 100%);
+  }
+
   .resource-title { color: #f1f5f9; }
+  .resource-title.hot-title { color: #fde68a; }
   .resource-desc { color: #94a3b8; }
   .author-name { color: #cbd5e1; }
   .card-footer { border-top-color: rgba(255, 255, 255, 0.05); }
   .download-btn { background: #334155; color: #94a3b8; }
+  .avatar-wrap .author-avatar { border-color: #334155; }
 }
 </style>
