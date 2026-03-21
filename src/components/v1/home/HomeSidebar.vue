@@ -1,5 +1,8 @@
 <template>
   <aside class="sidebar">
+    <!-- SITE INFO CARD AT TOP -->
+    <SiteInfoCard />
+
     <!-- Advertising Container (Slot-based) -->
     <AdContainer type="glass">
       <iframe
@@ -16,6 +19,7 @@
 
 <script setup lang="ts">
 import AdContainer from "@/components/v1/common/AdContainer.vue";
+import SiteInfoCard from "@/components/v1/common/SiteInfoCard.vue";
 
 defineProps<{}>();
 </script>

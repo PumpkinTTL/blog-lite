@@ -4,6 +4,7 @@
       <a-layout-content class="app-main">
         <router-view />
       </a-layout-content>
+      <Footer />
     </a-layout>
     <BackTop />
   </div>

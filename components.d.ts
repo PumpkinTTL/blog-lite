@@ -48,6 +48,7 @@ declare module 'vue' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTag: typeof import('element-plus/es')['ElTag']
     FilterBar: typeof import('./src/components/v1/common/FilterBar.vue')['default']
+    Footer: typeof import('./src/components/v1/common/Footer.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     HomeSidebar: typeof import('./src/components/v1/home/HomeSidebar.vue')['default']
     IconDemo: typeof import('./src/components/IconDemo.vue')['default']
@@ -61,6 +62,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchBar: typeof import('./src/components/v1/home/SearchBar.vue')['default']
+    SiteInfoCard: typeof import('./src/components/v1/common/SiteInfoCard.vue')['default']
     TestAntDesign: typeof import('./src/components/TestAntDesign.vue')['default']
     ThemeToggle: typeof import('./src/components/ThemeToggle.vue')['default']
   }

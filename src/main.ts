@@ -14,6 +14,11 @@ import 'animate.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
+  faGithub,
+  faTwitter,
+  faDiscord
+} from '@fortawesome/free-brands-svg-icons'
+import {
   faUser,
   faLock,
   faHome,
@@ -74,11 +79,15 @@ import {
   faChevronRight,
   faBullhorn,
   faTriangleExclamation,
-  faArrowUp
+  faArrowUp,
+  faRss,
+  faPaperPlane,
+  faEnvelope
 } from '@fortawesome/free-solid-svg-icons'
 
 // 添加图标到库
 library.add(
+  faGithub, faTwitter, faDiscord,
   faUser, faLock, faHome, faCog, faPlus, faMinus, faRefresh,
   faSearch, faEdit, faTrash, faSave, faCheck, faTimes,
   faEye, faEyeSlash, faDownload, faUpload, faArrowLeft, faArrowRight,
@@ -90,7 +99,7 @@ library.add(
   faShieldHalved, faCrown, faCircleCheck, faGem,
   faCode, faServer, faPalette, faBrain, faWrench,
   faEllipsis, faChevronLeft, faChevronRight,
-  faBullhorn, faTriangleExclamation, faArrowUp
+  faBullhorn, faTriangleExclamation, faArrowUp, faRss, faPaperPlane, faEnvelope
 )
 
 const app = createApp(App)
