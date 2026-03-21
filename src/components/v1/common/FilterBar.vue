@@ -192,17 +192,16 @@ const currentTags = computed(() => {
 .filter-primary-card {
   display: flex;
   flex-direction: column;
-  padding: 12px 16px;
+  padding: 16px;
   background: #ffffff;
   border: 1px solid #eef2f6;
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
   gap: 12px;
 
   @media (max-width: 950px) {
-    padding: 10px;
+    padding: 12px;
     gap: 12px;
-    border-radius: 12px;
   }
 }
 
@@ -231,14 +230,19 @@ const currentTags = computed(() => {
   background: #f1f4f9;
   padding: 4px;
   border-radius: 10px;
-  height: 38px;
+  height: 40px;
   box-sizing: border-box;
   overflow-x: auto;
   scrollbar-width: none;
-  width: 100%;
+  width: auto;
   min-width: 0;
+  flex-shrink: 0;
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
   }
 }
 
@@ -248,7 +252,7 @@ const currentTags = computed(() => {
   bottom: 4px;
   left: 0;
   background: #ffffff;
-  border-radius: 7px;
+  border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
   z-index: 1;
@@ -297,13 +301,12 @@ const currentTags = computed(() => {
 
   @media (max-width: 950px) {
     width: 100%;
-    justify-content: space-between;
   }
   
-  @media (max-width: 500px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
+    gap: 12px;
   }
 }
 
@@ -314,16 +317,21 @@ const currentTags = computed(() => {
   align-items: center;
   gap: 10px;
   width: 240px;
-  height: 38px;
+  height: 40px;
   padding: 0 14px;
   background: #f1f4f9;
   border: 1px solid transparent;
-  border-radius: 9px;
-  transition: all 0.3s ease;
+  border-radius: 10px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  flex-shrink: 0;
 
   .search-lead {
-    font-size: 13px;
+    font-size: 14px;
     color: #94a3b8;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
   }
 
   input {
@@ -331,8 +339,11 @@ const currentTags = computed(() => {
     border: none;
     outline: none;
     background: transparent;
-    font-size: 13px;
+    font-size: 14px;
     color: #1e293b;
+    height: 100%;
+    margin: 0;
+    padding: 0;
     &::placeholder {
       color: #94a3b8;
     }
@@ -341,18 +352,25 @@ const currentTags = computed(() => {
   .kbd-hint {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 2px;
     font-size: 11px;
     font-weight: 700;
     color: #94a3b8;
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    padding: 2px 4px;
+    padding: 2px 5px;
     border-radius: 5px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
 
     .kbd-symbol {
       font-size: 12px;
+      line-height: 1;
+    }
+
+    @media (max-width: 768px) {
+      display: none;
     }
   }
 
@@ -363,6 +381,10 @@ const currentTags = computed(() => {
     cursor: pointer;
     font-size: 14px;
     padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
     &:hover {
       color: #ef4444;
     }
@@ -372,12 +394,14 @@ const currentTags = computed(() => {
     background: #ffffff;
     border-color: #4f46e5;
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-    width: 280px;
+    
+    @media (min-width: 951px) {
+      width: 300px;
+    }
   }
 
   @media (max-width: 950px) {
-    flex: 1;
-    width: auto;
+    width: 100%;
   }
 }
 
@@ -397,13 +421,15 @@ const currentTags = computed(() => {
   background: #f1f4f9;
   padding: 4px;
   border-radius: 10px;
-  height: 38px;
+  height: 40px;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .sort-v7-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   padding: 0 14px;
   border: none;
@@ -415,6 +441,8 @@ const currentTags = computed(() => {
   cursor: pointer;
   height: 100%;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 
   &.active {
     background: #ffffff;
