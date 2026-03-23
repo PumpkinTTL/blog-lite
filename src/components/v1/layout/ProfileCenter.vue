@@ -600,8 +600,8 @@ const modalWidth = computed(() => (isMobile.value ? "calc(100vw - 64px)" : 840))
 }
 
 .profile-shell.dark .pill {
-  background: rgba(99, 102, 241, 0.2);
-  color: #c7d2fe;
+  background: rgba(59, 130, 246, 0.2);
+  color: #bfdbfe;
 }
 
 @media (max-width: 768px) {

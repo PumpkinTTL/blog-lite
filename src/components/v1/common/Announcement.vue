@@ -129,7 +129,7 @@ const handleCardClick = () => {
   }
 
   // Type Color Configuration
-  &.primary { --t-accent: #6366f1; --t-bg: #f5f3ff; }
+  &.primary { --t-accent: var(--primary, #3b82f6); --t-bg: #dbeafe; }
   &.success { --t-accent: #10b981; --t-bg: #ecfdf5; }
   &.warning { --t-accent: #f59e0b; --t-bg: #fffbeb; }
   &.info    { --t-accent: #3b82f6; --t-bg: #eff6ff; }

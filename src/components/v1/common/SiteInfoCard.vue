@@ -48,7 +48,7 @@ const themeStore = useThemeStore();
 const isDark = computed(() => themeStore.isDark);
 
 const stats = [
-  { label: '内容总计', value: '3,248', icon: 'newspaper', color: '#6366f1' },
+  { label: '内容总计', value: '3,248', icon: 'newspaper', color: '#3b82f6' },
   { label: '建站天数', value: '512+', icon: 'calendar-days', color: '#10b981' },
   { label: '今日到访', value: '1.2k', icon: 'fire', color: '#f43f5e' },
   { label: '累计访客', value: '45.8k', icon: 'users', color: '#f59e0b' }
@@ -57,7 +57,6 @@ const stats = [
 
 <style scoped lang="scss">
 .site-info-card {
-  --primary: #6366f1;
   --bg-card: #ffffff;
   --text-main: #1e293b;
   --text-soft: #64748b;

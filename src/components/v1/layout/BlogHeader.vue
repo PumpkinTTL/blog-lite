@@ -112,7 +112,7 @@
                       ? 'bg-gradient-to-br from-gray-900/50 to-gray-800/50'
                       : 'bg-gradient-to-br from-gray-50/50 to-white/50'
                     ">
-                  <div class="absolute inset-0 bg-gradient-to-br from-transparent to-transparent" style="background: linear-gradient(to bottom right, rgba(99, 102, 241, 0.05), transparent)"></div>
+                  <div class="absolute inset-0 bg-gradient-to-br from-transparent to-transparent" style="background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.05), transparent)"></div>
                   <div class="flex items-start gap-3 relative z-10">
                     <div class="relative flex-shrink-0">
                       <div class="w-12 h-12 rounded-lg overflow-hidden ring-2 ring-offset-2" :class="isDark

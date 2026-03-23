@@ -57,7 +57,7 @@ defineEmits(["click"]);
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  background: linear-gradient(135deg, var(--primary, #3b82f6) 0%, #a855f7 100%);
   padding: 1px; /* Border effect */
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   cursor: pointer;
@@ -103,7 +103,7 @@ defineEmits(["click"]);
       inset: 0;
       background: radial-gradient(
         circle at 0% 0%,
-        rgba(99, 102, 241, 0.15) 0%,
+        rgba(59, 130, 246, 0.15) 0%,
         transparent 50%
       );
     }
@@ -115,7 +115,7 @@ defineEmits(["click"]);
   background: #fff;
   background-image: radial-gradient(
       at 0% 0%,
-      rgba(99, 102, 241, 0.05) 0px,
+      rgba(59, 130, 246, 0.05) 0px,
       transparent 50%
     ),
     radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
@@ -180,8 +180,8 @@ defineEmits(["click"]);
 .ad-icon {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
-  color: #4f46e5;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: var(--primary, #3b82f6);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -232,9 +232,9 @@ defineEmits(["click"]);
   }
 
   &:hover {
-    background: #4f46e5;
+    background: var(--primary, #3b82f6);
     transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
   }
 }
 
@@ -246,7 +246,7 @@ defineEmits(["click"]);
   height: 120px;
   background: radial-gradient(
     circle,
-    rgba(99, 102, 241, 0.15) 0%,
+    rgba(59, 130, 246, 0.15) 0%,
     transparent 70%
   );
   filter: blur(30px);

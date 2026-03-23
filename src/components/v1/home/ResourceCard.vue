@@ -154,7 +154,7 @@ function hexToRgb(hex: string) {
   &:hover {
     transform: translateY(-6px);
     .card-inner {
-      box-shadow: 0 15px 30px -10px rgba(99, 102, 241, 0.15);
+      box-shadow: 0 15px 30px -10px rgba(59, 130, 246, 0.15);
       border-color: var(--primary);
     }
     .resource-image { transform: scale(1.08); }
@@ -462,7 +462,7 @@ function hexToRgb(hex: string) {
     background: var(--primary);
     color: white;
     transform: scale(1.1) rotate(5deg);
-    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.25);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.25);
   }
 
   .icon { font-size: 12px; }

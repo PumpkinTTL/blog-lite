@@ -128,7 +128,6 @@ const handleSubscribe = () => { /* Logic */ };
 
 <style scoped lang="scss">
 .footer-refined-final {
-  --primary: #6366f1;
   --bg: #ffffff;
   --text: #1e293b;
   --text-soft: #64748b;
@@ -174,7 +173,7 @@ const handleSubscribe = () => { /* Logic */ };
 .brand-logo {
   display: flex; align-items: center; gap: 12px; margin-bottom: 16px; cursor: pointer;
   .logo-box {
-    width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), #818cf8);
+    width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), #60a5fa);
     color: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px;
   }
   .logo-text {
@@ -190,7 +189,7 @@ const handleSubscribe = () => { /* Logic */ };
     width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 8px;
     display: flex; align-items: center; justify-content: center; color: var(--text-pale);
     font-size: 15px; transition: all 0.2s;
-    &:hover { border-color: var(--primary); color: var(--primary); background: rgba(99, 102, 241, 0.05); transform: translateY(-3px); }
+    &:hover { border-color: var(--primary); color: var(--primary); background: rgba(59, 130, 246, 0.05); transform: translateY(-3px); }
   }
 }
 

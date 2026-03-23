@@ -285,7 +285,7 @@ const currentTags = computed(() => {
   }
 
   &.active {
-    color: #4f46e5;
+    color: var(--primary, #3b82f6);
     font-weight: 700;
     .btn-i {
       opacity: 1;
@@ -396,8 +396,8 @@ const currentTags = computed(() => {
 
   &.focused {
     background: var(--bg-secondary, #ffffff);
-    border-color: var(--primary, #4f46e5);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    border-color: var(--primary, #3b82f6);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     
     @media (min-width: 951px) {
       width: 320px;
@@ -450,7 +450,7 @@ const currentTags = computed(() => {
 
   &.active {
     background: var(--bg-secondary, #ffffff);
-    color: var(--primary, #4f46e5);
+    color: var(--primary, #3b82f6);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   }
 
@@ -558,10 +558,10 @@ const currentTags = computed(() => {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
     .hash {
-      color: #4f46e5;
+      color: var(--primary, #3b82f6);
     }
     .tag-name {
-      color: #4f46e5;
+      color: var(--primary, #3b82f6);
     }
   }
 }

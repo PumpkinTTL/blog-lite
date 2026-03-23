@@ -65,11 +65,11 @@ onUnmounted(() => {
   }
 
   &:hover {
-    border-color: var(--primary, #6366f1);
+    border-color: var(--primary, #3b82f6);
     background: var(--bg-secondary, #ffffff);
 
     .arrow-icon {
-      color: var(--primary, #6366f1);
+      color: var(--primary, #3b82f6);
     }
   }
 
@@ -95,10 +95,10 @@ onUnmounted(() => {
 
   &:hover {
     background: var(--bg-secondary, #1e293b);
-    border-color: var(--primary-soft, #818cf8);
+    border-color: #60a5fa;
 
     .arrow-icon {
-      color: var(--primary-soft, #818cf8);
+      color: #60a5fa;
     }
   }
 }
