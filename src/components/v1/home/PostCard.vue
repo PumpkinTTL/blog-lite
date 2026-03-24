@@ -1,5 +1,5 @@
 <template>
-  <article class="post-card" :class="{ 'is-hot': isHot, 'dark-mode': isDark }">
+  <article class="post-card" :class="{ 'is-hot': isHot, 'dark-mode': isDark }" @click="goToArticle" role="button" tabindex="0">
     <!-- ── Cover ── -->
     <div class="cover-wrap" v-if="post.image">
       <img :src="post.image" :alt="post.title" class="cover" loading="lazy" />
@@ -26,7 +26,7 @@
       <!-- 1. Title + bookmark -->
       <div class="title-row">
         <h3 class="title">{{ post.title }}</h3>
-        <button class="bookmark" type="button" aria-label="收藏">
+        <button class="bookmark" type="button" aria-label="收藏" @click.stop>
           <font-awesome-icon icon="star" />
         </button>
       </div>
@@ -133,8 +133,10 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 import { useThemeStore } from "@/stores/theme";
 
+const router = useRouter();
 const themeStore = useThemeStore();
 const isDark = computed(() => themeStore.isDark);
 import type { Resource } from "@/data/mockData";
@@ -176,6 +178,10 @@ const commentsEstimate = computed(() =>
 );
 const formatNum = (n: number) =>
   n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n);
+
+const goToArticle = () => {
+  router.push(`/article/${props.post.id}`);
+};
 </script>
 
 <style scoped lang="scss">

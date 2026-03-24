@@ -20,6 +20,7 @@ declare module 'vue' {
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     AModal: typeof import('ant-design-vue/es')['Modal']
     Announcement: typeof import('./src/components/v1/common/Announcement.vue')['default']
+    ArticleHero: typeof import('./src/components/v1/detail/ArticleHero.vue')['default']
     ASpace: typeof import('ant-design-vue/es')['Space']
     BackTop: typeof import('./src/components/v1/common/BackTop.vue')['default']
     BlogHeader: typeof import('./src/components/v1/layout/BlogHeader.vue')['default']

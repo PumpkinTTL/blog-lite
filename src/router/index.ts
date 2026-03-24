@@ -9,6 +9,14 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '首页'
     }
+  },
+  {
+    path: '/article/:id',
+    name: 'ArticleDetail',
+    component: () => import('@/views/v1/ArticleDetail.vue'),
+    meta: {
+      title: '文章详情'
+    }
   }
 ]
 

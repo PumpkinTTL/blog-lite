@@ -1,9 +1,9 @@
 <template>
   <div class="announcement-wrapper">
     <transition name="crisp-fade-premium">
-      <div 
-        v-if="!closed" 
-        class="announcement-card-final" 
+      <div
+        v-if="!closed"
+        class="announcement-card-final"
         :class="[type, { 'dark-mode': isDark, 'is-clickable': !!link }]"
         @click="handleCardClick"
       >
@@ -27,12 +27,21 @@
           <!-- Right: Iconic Actions (No Text as requested) -->
           <div class="actions-group-final" @click.stop>
             <!-- View More Icon Button (Optional) -->
-            <button v-if="link" class="icon-btn-v8 btn-more-v8" @click="handleAction" title="查看更多">
+            <button
+              v-if="link"
+              class="icon-btn-v8 btn-more-v8"
+              @click="handleAction"
+              title="查看更多"
+            >
               <font-awesome-icon icon="arrow-right" />
             </button>
-            
+
             <!-- Close Icon Button (Always present) -->
-            <button class="icon-btn-v8 btn-close-v8" @click="close" title="不再显示">
+            <button
+              class="icon-btn-v8 btn-close-v8"
+              @click="close"
+              title="不再显示"
+            >
               <font-awesome-icon icon="xmark" />
             </button>
           </div>
@@ -43,8 +52,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useThemeStore } from '@/stores/theme';
+import { ref, computed } from "vue";
+import { useThemeStore } from "@/stores/theme";
 
 const themeStore = useThemeStore();
 const isDark = computed(() => themeStore.isDark);
@@ -56,49 +65,52 @@ interface Props {
   date?: string;
   icon?: string;
   link?: string;
-  type?: 'primary' | 'success' | 'warning' | 'info' | 'accent';
+  type?: "primary" | "success" | "warning" | "info" | "accent";
   persistKey?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  title: '系统公告',
-  message: '欢迎访问我们的博客！这里有最新系统公告与更新详情。',
-  tag: 'NEW',
-  date: '',
-  icon: '',
-  type: 'primary',
+  title: "系统公告",
+  message: "欢迎访问我们的博客！这里有最新系统公告与更新详情。",
+  tag: "NEW",
+  date: "",
+  icon: "",
+  type: "primary",
 });
 
-const emit = defineEmits(['close', 'click']);
+const emit = defineEmits(["close", "click"]);
 const closed = ref(false);
 
 const currentIcon = computed(() => {
   if (props.icon) return props.icon;
   const map: Record<string, string> = {
-    primary: 'bullhorn',
-    success: 'circle-check',
-    warning: 'triangle-exclamation',
-    info: 'circle-info',
-    accent: 'bolt'
+    primary: "bullhorn",
+    success: "circle-check",
+    warning: "triangle-exclamation",
+    info: "circle-info",
+    accent: "bolt",
   };
-  return map[props.type] || 'bullhorn';
+  return map[props.type] || "bullhorn";
 });
 
-if (props.persistKey && localStorage.getItem(`announcement_closed_${props.persistKey}`)) {
+if (
+  props.persistKey &&
+  localStorage.getItem(`announcement_closed_${props.persistKey}`)
+) {
   closed.value = true;
 }
 
 const close = () => {
   closed.value = true;
   if (props.persistKey) {
-    localStorage.setItem(`announcement_closed_${props.persistKey}`, 'true');
+    localStorage.setItem(`announcement_closed_${props.persistKey}`, "true");
   }
-  emit('close');
+  emit("close");
 };
 
 const handleAction = () => {
-  if (props.link) window.open(props.link, '_blank');
-  emit('click');
+  if (props.link) window.open(props.link, "_blank");
+  emit("click");
 };
 
 const handleCardClick = () => {
@@ -119,7 +131,7 @@ const handleCardClick = () => {
   border-radius: 14px;
   position: relative;
   padding: 16px 20px;
-  
+
   /* *** HOVER TRANSITION ON CARD AS REQUESTED *** */
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   cursor: default;
@@ -129,11 +141,26 @@ const handleCardClick = () => {
   }
 
   // Type Color Configuration
-  &.primary { --t-accent: var(--primary, #3b82f6); --t-bg: #dbeafe; }
-  &.success { --t-accent: #10b981; --t-bg: #ecfdf5; }
-  &.warning { --t-accent: #f59e0b; --t-bg: #fffbeb; }
-  &.info    { --t-accent: #3b82f6; --t-bg: #eff6ff; }
-  &.accent  { --t-accent: #ec4899; --t-bg: #fdf2f8; }
+  &.primary {
+    --t-accent: var(--primary, #3b82f6);
+    --t-bg: #dbeafe;
+  }
+  &.success {
+    --t-accent: #10b981;
+    --t-bg: #ecfdf5;
+  }
+  &.warning {
+    --t-accent: #f59e0b;
+    --t-bg: #fffbeb;
+  }
+  &.info {
+    --t-accent: #3b82f6;
+    --t-bg: #eff6ff;
+  }
+  &.accent {
+    --t-accent: #ec4899;
+    --t-bg: #fdf2f8;
+  }
 
   &:hover {
     transform: translateY(-4px); /* Premium Card Displacement */
@@ -236,7 +263,9 @@ const handleCardClick = () => {
   &.btn-more-v8 {
     background: var(--t-accent);
     color: #fff;
-    &:hover { filter: brightness(1.1); }
+    &:hover {
+      filter: brightness(1.1);
+    }
   }
 
   &.btn-close-v8:hover {
@@ -250,26 +279,43 @@ const handleCardClick = () => {
   background: var(--bg-tertiary, #0f172a);
   border-color: var(--border-dark, #1e293b);
 
-  .icon-hero-final { background: rgba(255, 255, 255, 0.04); }
-  .title-v8 { color: #f1f5f9; }
-  .message-v8 { color: #94a3b8; }
-  .icon-btn-v8 { background: var(--border-dark); }
-  
-  .btn-more-v8 { background: var(--t-accent); color: #fff; }
+  .icon-hero-final {
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .title-v8 {
+    color: #f1f5f9;
+  }
+  .message-v8 {
+    color: #94a3b8;
+  }
+  .icon-btn-v8 {
+    background: var(--border-dark);
+  }
+
+  .btn-more-v8 {
+    background: var(--t-accent);
+    color: #fff;
+  }
 }
 
 /* Entrance */
-.crisp-fade-premium-enter-active, .crisp-fade-premium-leave-active {
+.crisp-fade-premium-enter-active,
+.crisp-fade-premium-leave-active {
   transition: all 0.3s ease;
 }
-.crisp-fade-premium-enter-from, .crisp-fade-premium-leave-to {
+.crisp-fade-premium-enter-from,
+.crisp-fade-premium-leave-to {
   opacity: 0;
   transform: translateY(-8px);
 }
 
 /* Mobile */
 @media (max-width: 640px) {
-  .actions-group-final { display: none; } /* Hide on mobile for space, use card click */
-  .card-inner-final { padding: 12px; }
+  .actions-group-final {
+    display: none;
+  } /* Hide on mobile for space, use card click */
+  .card-inner-final {
+    padding: 12px;
+  }
 }
 </style>

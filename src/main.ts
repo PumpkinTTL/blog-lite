@@ -69,6 +69,7 @@ import {
   faShieldHalved,
   faCircleCheck,
   faGem,
+  faRobot,
   faCode,
   faServer,
   faPalette,
