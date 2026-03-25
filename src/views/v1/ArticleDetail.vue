@@ -25,11 +25,8 @@
       class="mobile-toc-float"
       :class="{ open: mobileTocOpen }"
     >
-      <div 
-        class="mobile-toc-backdrop" 
-        @click="mobileTocOpen = false"
-      ></div>
-      
+      <div class="mobile-toc-backdrop" @click="mobileTocOpen = false"></div>
+
       <button
         class="mobile-toc-handle"
         type="button"
@@ -41,7 +38,7 @@
           <font-awesome-icon :icon="mobileTocOpen ? 'xmark' : 'list-check'" />
         </div>
         <span class="handle-text">{{ mobileTocOpen ? "关闭" : "目录" }}</span>
-        
+
         <div class="handle-pulse" v-if="!mobileTocOpen"></div>
       </button>
 
@@ -165,9 +162,12 @@ const updateMobileState = () => {
 };
 
 // 监听路由变化，关闭目录
-watch(() => route.path, () => {
-  mobileTocOpen.value = false;
-});
+watch(
+  () => route.path,
+  () => {
+    mobileTocOpen.value = false;
+  }
+);
 
 onMounted(() => {
   updateMobileState();
@@ -182,7 +182,7 @@ onMounted(() => {
       "https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=1200&h=600&fit=crop",
     category: "前端",
     author: {
-      name: "DevMaster",
+      name: "开发者",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=DevMaster",
       role: "admin",
     },
@@ -193,8 +193,7 @@ onMounted(() => {
     readMinutes: 8,
     wordCount: 3680,
     difficulty: "进阶",
-    lead:
-      "AI 算法深度分析：本文核心在于揭示 Vue 3 组合式 API 的逻辑复用机制。通过对数据链路与副作用边界的深度拆解，为开发者提供了一套可落地的状态管理与组件协作范式。不仅是语法的变迁，更是思维方式的进化。",
+    lead: "AI 算法深度分析：本文核心在于揭示 Vue 3 组合式 API 的逻辑复用机制。通过对数据链路与副作用边界的深度拆解，为开发者提供了一套可落地的状态管理与组件协作范式。不仅是语法的变迁，更是思维方式的进化。",
     markdown: markdownContent,
   };
 });
@@ -236,8 +235,7 @@ onBeforeUnmount(() => {
   background: white;
   border-radius: 28px;
   border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.02),
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02),
     0 20px 60px -15px rgba(15, 23, 42, 0.08);
   overflow: hidden;
   transition: all 0.3s ease;
@@ -245,19 +243,30 @@ onBeforeUnmount(() => {
   .article-detail-page.dark-mode & {
     background: #1e293b;
     border-color: rgba(45, 55, 72, 0.8);
-    box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.05),
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05),
       0 20px 60px -15px rgba(0, 0, 0, 0.2);
   }
 }
 
 .shell-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent 5%, rgba(226, 232, 240, 0.6) 20%, rgba(226, 232, 240, 0.6) 80%, transparent 95%);
+  background: linear-gradient(
+    90deg,
+    transparent 5%,
+    rgba(226, 232, 240, 0.6) 20%,
+    rgba(226, 232, 240, 0.6) 80%,
+    transparent 95%
+  );
   margin: 0 40px;
 
   .article-detail-page.dark-mode & {
-    background: linear-gradient(90deg, transparent 5%, rgba(45, 55, 72, 0.6) 20%, rgba(45, 55, 72, 0.6) 80%, transparent 95%);
+    background: linear-gradient(
+      90deg,
+      transparent 5%,
+      rgba(45, 55, 72, 0.6) 20%,
+      rgba(45, 55, 72, 0.6) 80%,
+      transparent 95%
+    );
   }
 }
 
@@ -358,9 +367,15 @@ onBeforeUnmount(() => {
   }
 
   @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
-    70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    0% {
+      box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+    }
   }
 
   .mobile-toc-card {
@@ -392,7 +407,7 @@ onBeforeUnmount(() => {
   .mobile-toc-card-head {
     padding: 24px 20px 20px;
     border-bottom: 1px solid #f1f5f9;
-    
+
     .head-left {
       display: flex;
       align-items: center;
@@ -467,7 +482,7 @@ onBeforeUnmount(() => {
 
     .mobile-toc-handle {
       background: #3b82f6;
-      
+
       &.open {
         background: #334155;
       }

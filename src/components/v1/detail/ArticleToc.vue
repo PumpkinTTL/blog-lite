@@ -3,17 +3,17 @@
     <div class="toc-shell">
       <div class="toc-head">
         <div class="toc-title-row">
-          <div class="icon-wrap">
+          <div class="icon-wrap animate__animated animate__fadeInLeft animate__delay-1000ms">
             <font-awesome-icon icon="list-ul" class="toc-icon" />
           </div>
-          <span class="toc-title">文章目录</span>
+          <span class="toc-title animate__animated animate__fadeInLeft animate__delay-1050ms">文章目录</span>
         </div>
-        <span class="toc-count">{{ headingCount }} 节</span>
+        <span class="toc-count animate__animated animate__fadeInLeft animate__delay-1100ms">{{ headingCount }} 节</span>
       </div>
 
-      <p class="toc-tip">快速预览文章结构，点击跳转指定章节。</p>
+      <p class="toc-tip animate__animated animate__fadeInLeft animate__delay-1150ms">快速预览文章结构，点击跳转指定章节。</p>
 
-      <div class="toc-content">
+      <div class="toc-content animate__animated animate__fadeInLeft animate__delay-1200ms">
         <MdCatalog
           class="toc-catalog"
           :editor-id="editorId"

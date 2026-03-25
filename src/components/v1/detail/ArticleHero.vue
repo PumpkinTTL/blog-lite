@@ -13,24 +13,25 @@
     <div class="hero-body">
       <div class="hero-category-row">
         <div class="cat-badge" :class="`cat-${catIndex}`">
-          <font-awesome-icon :icon="catIcon" class="cat-icon" />
-          {{ article.category }}
+          <font-awesome-icon :icon="catIcon" class="cat-icon animate__animated animate__fadeInLeft" />
+          <span class="animate__animated animate__fadeInLeft animate__delay-50ms">{{ article.category }}</span>
         </div>
-        <div class="meta-eyebrow">
+        <div class="meta-eyebrow animate__animated animate__fadeInLeft animate__delay-100ms">
           <font-awesome-icon icon="newspaper" />
           <span>深度专栏</span>
         </div>
       </div>
 
-      <h1 class="article-title">{{ article.title }}</h1>
-      <p class="article-desc">{{ article.description }}</p>
+      <h1 class="article-title animate__animated animate__fadeInUp animate__delay-150ms">{{ article.title }}</h1>
+      <p class="article-desc animate__animated animate__fadeInUp animate__delay-200ms">{{ article.description }}</p>
 
       <div class="tags-row">
         <span
           v-for="(tag, i) in article.tags.slice(0, 4)"
           :key="tag"
-          class="tag"
+          class="tag animate__animated animate__fadeInLeft"
           :class="`t${i % 4}`"
+          :style="{ animationDelay: `${250 + i * 50}ms` }"
         >
           #{{ tag }}
         </span>
@@ -41,14 +42,14 @@
           <img
             :src="article.author.avatar"
             :alt="article.author.name"
-            class="author-avatar"
+            class="author-avatar animate__animated animate__zoomIn animate__delay-450ms"
           />
           <div class="author-details">
             <div class="author-name-row">
-              <span class="name">{{ article.author.name }}</span>
+              <span class="name animate__animated animate__fadeInLeft animate__delay-500ms">{{ article.author.name }}</span>
               <span
                 v-if="roleLabel"
-                class="role-badge"
+                class="role-badge animate__animated animate__fadeInLeft animate__delay-550ms"
                 :class="article.author.role"
               >
                 <font-awesome-icon
@@ -70,20 +71,20 @@
                 {{ roleLabel }}
               </span>
             </div>
-            <div class="publish-date">{{ article.createdAt }}</div>
+            <div class="publish-date animate__animated animate__fadeInLeft animate__delay-600ms">{{ article.createdAt }}</div>
           </div>
         </div>
 
         <div class="stats-block">
-          <div class="stat-item">
+          <div class="stat-item animate__animated animate__fadeInLeft animate__delay-650ms">
             <font-awesome-icon icon="eye" />
             <span>{{ formatNumber(article.views) }} 浏览</span>
           </div>
-          <div class="stat-item">
+          <div class="stat-item animate__animated animate__fadeInLeft animate__delay-700ms">
             <font-awesome-icon icon="clock" />
             <span>{{ article.readMinutes }} min read</span>
           </div>
-          <div class="stat-item">
+          <div class="stat-item animate__animated animate__fadeInLeft animate__delay-750ms">
             <font-awesome-icon icon="file-lines" />
             <span>{{ formatWordCount(article.wordCount) }} 字</span>
           </div>
@@ -429,6 +430,15 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   .cover-header { height: 200px; }
   .article-title { font-size: 24px; }
   .meta-section { flex-direction: column; align-items: flex-start; gap: 20px; }
-  .stats-block { width: 100%; overflow-x: auto; padding-bottom: 4px; }
+  .stats-block {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .stat-item {
+    padding: 5px 10px;
+    font-size: 12px;
+    flex: 0 1 auto;
+  }
 }
 </style>

@@ -2,7 +2,7 @@
   <section class="article-content" :class="{ 'dark-mode': isDark }">
     <div class="content-shell">
       <div class="content-body-top">
-        <div class="ai-summary-card">
+        <div class="ai-summary-card animate__animated animate__fadeInDown animate__delay-800ms">
           <div class="ai-badge">
             <div class="ai-icon-wrap">
               <font-awesome-icon icon="robot" />
@@ -12,11 +12,11 @@
               <font-awesome-icon icon="bolt" />
             </div>
           </div>
-          
+
           <div class="ai-content">
             <p class="ai-text">{{ article.lead }}</p>
           </div>
-          
+
           <div class="ai-glass-reflection"></div>
         </div>
       </div>
