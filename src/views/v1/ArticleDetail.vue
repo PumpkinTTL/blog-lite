@@ -22,39 +22,62 @@
       class="mobile-toc-float"
       :class="{ open: mobileTocOpen }"
     >
+      <div 
+        class="mobile-toc-backdrop" 
+        @click="mobileTocOpen = false"
+      ></div>
+      
       <button
         class="mobile-toc-handle"
         type="button"
         @click="mobileTocOpen = !mobileTocOpen"
+        :aria-expanded="mobileTocOpen"
+        aria-label="Toggle Table of Contents"
       >
-        <font-awesome-icon :icon="mobileTocOpen ? 'xmark' : 'list-check'" />
-        <span>{{ mobileTocOpen ? "收起" : "目录" }}</span>
+        <div class="handle-icon-box">
+          <font-awesome-icon :icon="mobileTocOpen ? 'xmark' : 'list-check'" />
+        </div>
+        <span class="handle-text">{{ mobileTocOpen ? "关闭" : "目录" }}</span>
+        
+        <div class="handle-pulse" v-if="!mobileTocOpen"></div>
       </button>
 
       <div class="mobile-toc-card">
-        <div class="mobile-toc-card-head">
-          <div class="mobile-toc-card-title">文章目录</div>
-          <div class="mobile-toc-card-tip">贴边展开，随时定位章节</div>
+        <div class="mobile-toc-card-inner">
+          <div class="mobile-toc-card-head">
+            <div class="head-left">
+              <div class="head-icon">
+                <font-awesome-icon icon="list-ul" />
+              </div>
+              <div>
+                <div class="mobile-toc-card-title">文章目录</div>
+                <div class="mobile-toc-card-tip">快速定位章节内容</div>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-toc-body">
+            <ArticleToc
+              :editor-id="previewId"
+              :markdown="article.markdown"
+              :mobile="true"
+              scroll-element="html"
+            />
+          </div>
         </div>
-        <ArticleToc
-          :editor-id="previewId"
-          :markdown="article.markdown"
-          :mobile="true"
-          scroll-element="html"
-        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useThemeStore } from "@/stores/theme";
 import ArticleContent from "@/components/v1/detail/ArticleContent.vue";
 import ArticleHero from "@/components/v1/detail/ArticleHero.vue";
 import ArticleToc from "@/components/v1/detail/ArticleToc.vue";
 
+// ... (Interface and data remains same)
 interface Article {
   id: string;
   title: string;
@@ -125,7 +148,7 @@ const markdownContent = [
 ].join("\n");
 
 const themeStore = useThemeStore();
-const isDark = themeStore.isDark;
+const isDark = computed(() => themeStore.isDark);
 const route = useRoute();
 const article = ref<Article | null>(null);
 const mobileTocOpen = ref(false);
@@ -140,6 +163,11 @@ const updateMobileState = () => {
   if (!isMobile.value) mobileTocOpen.value = false;
 };
 
+// 监听路由变化，关闭目录
+watch(() => route.path, () => {
+  mobileTocOpen.value = false;
+});
+
 onMounted(() => {
   updateMobileState();
   window.addEventListener("resize", updateMobileState);
@@ -148,7 +176,7 @@ onMounted(() => {
     id: route.params.id as string,
     title: "Vue 3 Composition API 深度解析：从原理到实战落地",
     description:
-      "深入探讨 Vue 3 Composition API 的设计理念、拆分方式与项目落地经验，帮助你建立更稳定的状态组织和组件协作思路。",
+      "深入探讨 Vue 3 Composition API 的设计理念、拆分方式与项目落地经验，帮助你建立更稳定的状态组织 and 组件协作思路。",
     cover:
       "https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=1200&h=600&fit=crop",
     category: "前端",
@@ -185,6 +213,7 @@ onBeforeUnmount(() => {
   min-height: 100vh;
   background: var(--bg, #f8fafc);
   color: var(--text, #0a0a0a);
+  transition: background-color 0.3s;
 
   &.dark-mode {
     background: var(--bg, #0f172a);
@@ -196,10 +225,10 @@ onBeforeUnmount(() => {
   position: relative;
   max-width: 1320px;
   margin: 0 auto;
-  padding: 60px 20px 88px;
+  padding: 40px 20px 88px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 32px;
   align-items: start;
 }
 
@@ -211,10 +240,9 @@ onBeforeUnmount(() => {
 }
 
 .detail-right-inner {
-  position: fixed;
-  top: 132px;
-  right: max(20px, calc((100vw - 1320px) / 2 + 20px));
-  width: 320px;
+  position: sticky;
+  top: 100px;
+  width: 100%;
   z-index: 20;
 }
 
@@ -224,127 +252,208 @@ onBeforeUnmount(() => {
 
 @media (max-width: 1400px) {
   .detail-container {
-    grid-template-columns: minmax(0, 1fr) 300px;
-  }
-
-  .detail-right-inner {
-    width: 300px;
-    right: max(16px, calc((100vw - 1200px) / 2 + 16px));
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 24px;
   }
 }
 
 @media (max-width: 1100px) {
   .detail-container {
     grid-template-columns: 1fr;
-    gap: 18px;
-    padding: 48px 14px 72px;
+    padding: 24px 16px 72px;
   }
 
   .mobile-toc-float {
+    display: block;
     position: fixed;
-    top: 34%;
-    right: 0;
-    z-index: 60;
-    display: flex;
-    align-items: flex-start;
-    transform: translateX(calc(100% - 36px));
-    transition:
-      transform 0.42s cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 0.26s ease;
-    filter: drop-shadow(0 18px 36px rgba(15, 23, 42, 0.12));
-    opacity: 0.98;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
   }
 
-  .mobile-toc-float.open {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  .mobile-toc-handle {
-    align-self: flex-start;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    justify-content: center;
-    min-width: 36px;
-    min-height: 118px;
-    margin-top: 18px;
-    margin-right: -14px;
-    padding: 12px 6px 10px;
-    border: 1px solid rgba(226, 232, 240, 0.95);
-    border-right: none;
-    border-top-left-radius: 18px;
-    border-bottom-left-radius: 18px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
-    color: #475569;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.9),
-      0 8px 20px rgba(15, 23, 42, 0.06);
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    letter-spacing: 0.08em;
-    position: relative;
-    z-index: 2;
-  }
-
-  .mobile-toc-handle :deep(svg) {
-    color: #38bdf8;
-  }
-
-  .mobile-toc-float.open .mobile-toc-handle {
-    margin-right: -16px;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.92),
-      0 10px 24px rgba(15, 23, 42, 0.08);
-  }
-
-  .mobile-toc-card {
-    width: min(76vw, 296px);
-    max-height: 68vh;
-    padding: 16px 14px 14px;
-    overflow-y: auto;
-    border-top-left-radius: 22px;
-    border-bottom-left-radius: 22px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
-    box-shadow:
-      -12px 18px 40px rgba(15, 23, 42, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.96);
-    border: 1px solid rgba(226, 232, 240, 0.95);
-    position: relative;
-  }
-
-  .mobile-toc-card::before {
-    content: "";
+  .mobile-toc-backdrop {
     position: absolute;
-    left: -12px;
-    top: 20px;
-    width: 18px;
-    height: calc(100% - 40px);
-    border-top-left-radius: 14px;
-    border-bottom-left-radius: 14px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
-    border: 1px solid rgba(226, 232, 240, 0.95);
-    border-right: none;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
     pointer-events: none;
   }
 
+  .mobile-toc-float.open .mobile-toc-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-toc-handle {
+    pointer-events: auto;
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1002;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 100px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 12px 0 0 12px;
+    box-shadow: -4px 0 16px rgba(37, 99, 235, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    cursor: pointer;
+
+    .handle-icon-box {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .handle-text {
+      writing-mode: vertical-lr;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+  }
+
+  .mobile-toc-float.open .mobile-toc-handle {
+    right: min(80vw, 340px);
+    background: #1e293b;
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .handle-pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+  }
+
+  .mobile-toc-card {
+    pointer-events: auto;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(80vw, 340px);
+    background: white;
+    box-shadow: -10px 0 40px rgba(15, 23, 42, 0.15);
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1001;
+    overflow: hidden;
+  }
+
+  .mobile-toc-float.open .mobile-toc-card {
+    transform: translateX(0);
+  }
+
+  .mobile-toc-card-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  }
+
   .mobile-toc-card-head {
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(226, 232, 240, 0.95);
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    
+    .head-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .head-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #eff6ff;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
   }
 
   .mobile-toc-card-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 800;
-    color: #0f172a;
+    color: #1e293b;
   }
 
   .mobile-toc-card-tip {
-    margin-top: 4px;
-    font-size: 11px;
-    line-height: 1.5;
-    color: #64748b;
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+
+  .mobile-toc-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 10px;
+    }
+  }
+
+  .dark-mode {
+    .mobile-toc-card {
+      background: #0f172a;
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .mobile-toc-card-inner {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    }
+
+    .mobile-toc-card-head {
+      border-color: rgba(255, 255, 255, 0.05);
+
+      .head-icon {
+        background: rgba(59, 130, 246, 0.1);
+        color: #60a5fa;
+      }
+    }
+
+    .mobile-toc-card-title {
+      color: #f8fafc;
+    }
+
+    .mobile-toc-card-tip {
+      color: #64748b;
+    }
+
+    .mobile-toc-handle {
+      background: #3b82f6;
+      
+      &.open {
+        background: #334155;
+      }
+    }
+
+    .mobile-toc-body::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
   }
 }
 </style>
