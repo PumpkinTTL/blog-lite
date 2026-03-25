@@ -151,10 +151,6 @@ const formatNumber = (num: number) => {
   position: relative;
   font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
-  background: var(--bg-card, #ffffff);
-  border-radius: 18px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
-  border: 1px solid var(--border, #f1f5f9);
   overflow: hidden;
 }
 

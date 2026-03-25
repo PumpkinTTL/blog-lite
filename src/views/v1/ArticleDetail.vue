@@ -2,8 +2,11 @@
   <div class="article-detail-page" :class="{ 'dark-mode': isDark }">
     <div class="detail-container">
       <section class="detail-left">
-        <ArticleHero v-if="article" :article="article" />
-        <ArticleContent v-if="article" :article="article" />
+        <div class="master-article-shell" v-if="article">
+          <ArticleHero :article="article" />
+          <div class="shell-divider"></div>
+          <ArticleContent :article="article" />
+        </div>
       </section>
 
       <aside class="detail-right" v-if="article && !isMobile">
@@ -227,9 +230,35 @@ onBeforeUnmount(() => {
 
 .detail-left {
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+}
+
+.master-article-shell {
+  background: white;
+  border-radius: 28px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.02),
+    0 20px 60px -15px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  .article-detail-page.dark-mode & {
+    background: #1e293b;
+    border-color: rgba(45, 55, 72, 0.8);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.05),
+      0 20px 60px -15px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.shell-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 5%, rgba(226, 232, 240, 0.6) 20%, rgba(226, 232, 240, 0.6) 80%, transparent 95%);
+  margin: 0 40px;
+
+  .article-detail-page.dark-mode & {
+    background: linear-gradient(90deg, transparent 5%, rgba(45, 55, 72, 0.6) 20%, rgba(45, 55, 72, 0.6) 80%, transparent 95%);
+  }
 }
 
 .detail-right-inner {
