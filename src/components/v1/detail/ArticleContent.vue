@@ -96,9 +96,7 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   padding: 40px;
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.72);
-  background:
-    radial-gradient(circle at top right, rgba(59, 130, 246, 0.08), transparent 40%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.92));
+  background: white;
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.02),
     0 20px 50px -4px rgba(15, 23, 42, 0.06),
@@ -173,11 +171,35 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   overflow: hidden;
   padding: 24px 28px;
   border-radius: 20px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  background: linear-gradient(135deg, rgba(237, 233, 254, 0.6) 0%, rgba(252, 231, 243, 0.6) 100%);
+  border: 1px solid rgba(167, 139, 250, 0.3);
   box-shadow: 
-    0 10px 30px -10px rgba(15, 23, 42, 0.08),
+    0 12px 34px -12px rgba(139, 92, 246, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    );
+    transform: skewX(-25deg);
+    animation: flowLight 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+}
+
+@keyframes flowLight {
+  0% { left: -150%; }
+  50% { left: 150%; }
+  100% { left: 150%; }
 }
 
 .ai-badge {
@@ -187,28 +209,26 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   margin-bottom: 16px;
   padding: 6px 12px;
   border-radius: 10px;
-  background: white;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);
   font-size: 13px;
   font-weight: 800;
-  color: #1e293b;
+  color: #5b21b6;
 
   .ai-icon-wrap {
-    color: #3b82f6;
-    animation: rotate 4s linear infinite;
+    color: #8b5cf6;
+    display: flex;
+    align-items: center;
   }
 
   .ai-sparkle {
-    color: #f59e0b;
+    color: #ec4899;
     font-size: 11px;
     margin-left: 2px;
     animation: pulse 1.5s ease-in-out infinite;
   }
-}
-
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 @keyframes pulse {
@@ -222,7 +242,7 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   font-size: 15px;
   line-height: 1.75;
   color: #334155;
-  font-weight: 500;
+  font-weight: 600;
   position: relative;
   z-index: 1;
 }
@@ -233,7 +253,7 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -279,9 +299,7 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
 
 .dark-mode {
   .content-shell {
-    background:
-      radial-gradient(circle at top right, rgba(168, 85, 247, 0.15), transparent 40%),
-      linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98));
+    background: #0f172a;
     border-color: rgba(255, 255, 255, 0.05);
     box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
     color: #cbd5e1;
@@ -306,23 +324,38 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   }
 
   .ai-summary-card {
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
-    border-color: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  }
+    background: linear-gradient(135deg, rgba(88, 28, 135, 0.25) 0%, rgba(131, 24, 67, 0.25) 100%);
+    border-color: rgba(167, 139, 250, 0.4);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 
-  .ai-badge {
-    background: #1e293b;
-    color: #f1f5f9;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    
-    .ai-icon-wrap {
-      color: #60a5fa;
+    &::before {
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(167, 139, 250, 0.25),
+        rgba(244, 114, 182, 0.25),
+        transparent
+      );
     }
   }
 
+  .ai-badge {
+    background: rgba(30, 27, 75, 0.8);
+    color: #ddd6fe;
+    border-color: rgba(167, 139, 250, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    
+    .ai-icon-wrap {
+      color: #a78bfa;
+    }
+  }
+
+  .ai-sparkle {
+    color: #f472b6;
+  }
+
   .ai-text {
-    color: #cbd5e1;
+    color: #e2e8f0;
   }
 
   :deep(.md-preview) {
