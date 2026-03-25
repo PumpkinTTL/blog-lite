@@ -84,7 +84,8 @@ import {
   faArrowUp,
   faRss,
   faPaperPlane,
-  faEnvelope
+  faEnvelope,
+  faFileLines
 } from '@fortawesome/free-solid-svg-icons'
 
 // 添加图标到库
@@ -101,7 +102,8 @@ library.add(
   faShieldHalved, faCrown, faCircleCheck, faGem, faRobot,
   faCode, faServer, faPalette, faBrain, faWrench,
   faEllipsis, faChevronLeft, faChevronRight,
-  faBullhorn, faTriangleExclamation, faArrowUp, faRss, faPaperPlane, faEnvelope
+  faBullhorn, faTriangleExclamation, faArrowUp, faRss, faPaperPlane, faEnvelope,
+  faFileLines
 )
 
 const app = createApp(App)

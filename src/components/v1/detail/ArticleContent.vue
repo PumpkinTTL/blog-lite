@@ -1,27 +1,7 @@
 <template>
   <section class="article-content" :class="{ 'dark-mode': isDark }">
     <div class="content-shell">
-      <div class="content-header">
-        <div class="header-top-meta">
-          <div class="eyebrow">
-            <font-awesome-icon icon="newspaper" />
-            <span>深度专栏</span>
-          </div>
-          <div class="reading-meta">
-            <span class="meta-item">
-              <font-awesome-icon icon="clock" />
-              {{ article.readMinutes }} min read
-            </span>
-            <span class="meta-item dot"></span>
-            <span class="meta-item">
-              {{ formatWordCount(article.wordCount) }} words
-            </span>
-          </div>
-        </div>
-
-        <h2 class="content-title">{{ article.title }}</h2>
-        <p class="content-subtitle">{{ article.description }}</p>
-
+      <div class="content-body-top">
         <div class="ai-summary-card">
           <div class="ai-badge">
             <div class="ai-icon-wrap">

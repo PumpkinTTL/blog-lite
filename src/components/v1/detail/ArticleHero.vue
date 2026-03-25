@@ -11,14 +11,19 @@
     </div>
 
     <div class="hero-body">
-      <div class="hero-category">
+      <div class="hero-category-row">
         <div class="cat-badge" :class="`cat-${catIndex}`">
           <font-awesome-icon :icon="catIcon" class="cat-icon" />
           {{ article.category }}
         </div>
+        <div class="meta-eyebrow">
+          <font-awesome-icon icon="newspaper" />
+          <span>深度专栏</span>
+        </div>
       </div>
 
       <h1 class="article-title">{{ article.title }}</h1>
+      <p class="article-desc">{{ article.description }}</p>
 
       <div class="tags-row">
         <span
@@ -71,12 +76,16 @@
 
         <div class="stats-block">
           <div class="stat-item">
-            <font-awesome-icon icon="eye" class="stat-icon" />
+            <font-awesome-icon icon="eye" />
             <span>{{ formatNumber(article.views) }} 浏览</span>
           </div>
           <div class="stat-item">
-            <font-awesome-icon icon="clock" class="stat-icon" />
-            <span>约 {{ readTime }} 分钟阅读</span>
+            <font-awesome-icon icon="clock" />
+            <span>{{ article.readMinutes }} min read</span>
+          </div>
+          <div class="stat-item">
+            <font-awesome-icon icon="file-lines" />
+            <span>{{ formatWordCount(article.wordCount) }} 字</span>
           </div>
         </div>
       </div>
@@ -106,6 +115,8 @@ interface Article {
   createdAt: string;
   views: number;
   tags: string[];
+  readMinutes: number;
+  wordCount: number;
 }
 
 const props = defineProps<{
@@ -136,14 +147,12 @@ const roleLabel = computed(() => {
   return "";
 });
 
-const readTime = computed(() =>
-  Math.max(3, Math.ceil(props.article.description.length / 50))
-);
-
 const formatNumber = (num: number) => {
   if (num >= 1000) return `${(num / 1000).toFixed(1)}k`;
   return num.toString();
 };
+
+const formatWordCount = (count: number) => count.toLocaleString("en-US");
 </script>
 
 <style scoped lang="scss">
@@ -182,11 +191,14 @@ const formatNumber = (num: number) => {
 }
 
 .hero-body {
-  padding: 28px 30px;
+  padding: 32px 40px;
 }
 
-.hero-category {
-  margin-bottom: 12px;
+.hero-category-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .cat-badge {
@@ -205,62 +217,62 @@ const formatNumber = (num: number) => {
     font-size: 12px;
   }
 
-  &.cat-0 {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-  }
-  &.cat-1 {
-    background: linear-gradient(135deg, #10b981, #059669);
-  }
-  &.cat-2 {
-    background: linear-gradient(135deg, #ec4899, #db2777);
-  }
-  &.cat-3 {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-  }
-  &.cat-4 {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-  }
+  &.cat-0 { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+  &.cat-1 { background: linear-gradient(135deg, #10b981, #059669); }
+  &.cat-2 { background: linear-gradient(135deg, #ec4899, #db2777); }
+  &.cat-3 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  &.cat-4 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+}
+
+.meta-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.06);
+  border: 1px solid rgba(37, 99, 235, 0.1);
 }
 
 .article-title {
-  font-size: clamp(22px, 2.4vw, 31px);
-  font-weight: 800;
-  line-height: 1.28;
-  letter-spacing: -0.01em;
-  color: var(--text, #0f172a);
-  margin: 0 0 12px;
+  font-size: clamp(26px, 3.2vw, 36px);
+  font-weight: 850;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+  margin: 0 0 16px;
+}
+
+.article-desc {
+  font-size: 17px;
+  line-height: 1.6;
+  color: #475569;
+  font-weight: 450;
+  margin-bottom: 24px;
+  max-width: 860px;
 }
 
 .tags-row {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 22px;
+  margin-bottom: 28px;
 }
 
 .tag {
   font-size: 12px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 7px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 8px;
   transition: all 0.3s;
 
-  &.t0 {
-    color: #2563eb;
-    background: #eff6ff;
-  }
-  &.t1 {
-    color: #7c3aed;
-    background: #f5f3ff;
-  }
-  &.t2 {
-    color: #059669;
-    background: #ecfdf5;
-  }
-  &.t3 {
-    color: #d97706;
-    background: #fffbeb;
-  }
+  &.t0 { color: #2563eb; background: #eff6ff; }
+  &.t1 { color: #7c3aed; background: #f5f3ff; }
+  &.t2 { color: #059669; background: #ecfdf5; }
+  &.t3 { color: #d97706; background: #fffbeb; }
 
   &:hover {
     filter: brightness(0.95);
@@ -273,8 +285,8 @@ const formatNumber = (num: number) => {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 20px;
-  padding-top: 18px;
-  border-top: 1px dashed var(--border-light, #e2e8f0);
+  padding-top: 24px;
+  border-top: 1px dashed #e2e8f0;
 }
 
 .author-block {
@@ -284,11 +296,12 @@ const formatNumber = (num: number) => {
 }
 
 .author-avatar {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 2px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .author-details {
@@ -303,10 +316,9 @@ const formatNumber = (num: number) => {
   gap: 8px;
 
   .name {
-    font-size: 15px;
-    line-height: 1.2;
+    font-size: 16px;
     font-weight: 700;
-    color: var(--text, #1e293b);
+    color: #1e293b;
   }
 }
 
@@ -315,146 +327,108 @@ const formatNumber = (num: number) => {
   align-items: center;
   gap: 3px;
   font-size: 10px;
-  font-weight: 700;
-  padding: 2px 6px;
+  font-weight: 800;
+  padding: 2px 8px;
   border-radius: 6px;
+  text-transform: uppercase;
 
-  &.super_admin {
-    background: #fdf4ff;
-    color: #c026d3;
-  }
-  &.admin {
-    background: #fef2f2;
-    color: #ef4444;
-  }
-  &.system {
-    background: #eff6ff;
-    color: #3b82f6;
-  }
-  &.vip {
-    background: #fff7ed;
-    color: #f59e0b;
-  }
+  &.super_admin { background: #fdf4ff; color: #c026d3; }
+  &.admin { background: #fef2f2; color: #ef4444; }
+  &.system { background: #eff6ff; color: #3b82f6; }
+  &.vip { background: #fff7ed; color: #f59e0b; }
 }
 
 .publish-date {
   font-size: 12px;
-  color: #64748b;
+  color: #94a3b8;
   font-weight: 500;
 }
 
 .stats-block {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 12px;
+  gap: 6px;
+  font-size: 13px;
   font-weight: 600;
   color: #64748b;
-  padding: 5px 10px;
+  padding: 6px 12px;
   background: #f8fafc;
-  border-radius: 7px;
+  border-radius: 10px;
+  border: 1px solid #f1f5f9;
 
-  .stat-icon {
+  svg {
     font-size: 12px;
-    opacity: 0.7;
+    opacity: 0.8;
   }
 }
 
 .dark-mode {
-  background: var(--bg-card, #1e293b);
-  border-color: var(--border, #334155);
+  .hero-body {
+    background: transparent;
+  }
 
-  .cover-header {
-    background: var(--bg-card, #0f172a);
-    border-color: transparent;
+  .meta-eyebrow {
+    background: rgba(59, 130, 246, 0.1);
+    color: #60a5fa;
+    border-color: rgba(96, 165, 250, 0.2);
   }
 
   .article-title {
     color: #f8fafc;
   }
 
+  .article-desc {
+    color: #94a3b8;
+  }
+
   .tag {
     background: rgba(255, 255, 255, 0.05);
-
-    &.t0 {
-      background: rgba(37, 99, 235, 0.15);
-      color: #93c5fd;
-    }
-    &.t1 {
-      background: rgba(124, 58, 237, 0.15);
-      color: #c4b5fd;
-    }
-    &.t2 {
-      background: rgba(5, 150, 105, 0.15);
-      color: #6ee7b7;
-    }
-    &.t3 {
-      background: rgba(217, 119, 6, 0.15);
-      color: #fcd34d;
-    }
+    
+    &.t0 { background: rgba(37, 99, 235, 0.15); color: #93c5fd; }
+    &.t1 { background: rgba(124, 58, 237, 0.15); color: #c4b5fd; }
+    &.t2 { background: rgba(5, 150, 105, 0.15); color: #6ee7b7; }
+    &.t3 { background: rgba(217, 119, 6, 0.15); color: #fcd34d; }
+    
+    &:hover { background: rgba(255, 255, 255, 0.08); }
   }
 
   .meta-section {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.06);
   }
 
   .name {
     color: #f1f5f9;
   }
 
-  .publish-date {
-    color: #94a3b8;
+  .author-avatar {
+    border-color: #1e293b;
   }
 
   .role-badge {
-    &.super_admin {
-      background: rgba(168, 85, 247, 0.1);
-    }
-    &.admin {
-      background: rgba(239, 68, 68, 0.1);
-    }
-    &.system {
-      background: rgba(59, 130, 246, 0.1);
-    }
-    &.vip {
-      background: rgba(245, 158, 11, 0.1);
-    }
+    &.super_admin { background: rgba(168, 85, 247, 0.1); }
+    &.admin { background: rgba(239, 68, 68, 0.1); }
+    &.system { background: rgba(59, 130, 246, 0.1); }
+    &.vip { background: rgba(245, 158, 11, 0.1); }
   }
 
-  .stats-block .stat-item {
-    background: rgba(255, 255, 255, 0.05);
-    color: #94a3b8;
+  .stat-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.05);
+    color: #64748b;
   }
 }
 
 @media (max-width: 768px) {
-  .hero-body {
-    padding: 22px 18px;
-  }
-
-  .cover-header {
-    height: 188px;
-  }
-
-  .article-title {
-    font-size: 21px;
-  }
-
-  .meta-section {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .stats-block {
-    width: 100%;
-    justify-content: flex-start;
-  }
+  .hero-body { padding: 24px 20px; }
+  .cover-header { height: 200px; }
+  .article-title { font-size: 24px; }
+  .meta-section { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .stats-block { width: 100%; overflow-x: auto; padding-bottom: 4px; }
 }
 </style>
