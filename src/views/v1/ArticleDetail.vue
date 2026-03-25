@@ -77,7 +77,6 @@ import ArticleContent from "@/components/v1/detail/ArticleContent.vue";
 import ArticleHero from "@/components/v1/detail/ArticleHero.vue";
 import ArticleToc from "@/components/v1/detail/ArticleToc.vue";
 
-// ... (Interface and data remains same)
 interface Article {
   id: string;
   title: string;
@@ -97,7 +96,6 @@ interface Article {
   wordCount: number;
   updatedAt: string;
   difficulty: string;
-  takeaways: string[];
   lead: string;
 }
 
@@ -193,12 +191,7 @@ onMounted(() => {
     wordCount: 3680,
     difficulty: "进阶",
     lead:
-      "这篇文章不是概念罗列，而是从真实项目里最常见的状态组织问题出发，帮你判断什么时候该拆 composable、什么时候该保留在页面组件里。",
-    takeaways: [
-      "理清源数据、派生值和副作用的边界",
-      "用更稳的 composable 结构承接接口与状态",
-      "为后续目录、锚点和评论能力预留清晰内容结构",
-    ],
+      "AI 算法深度分析：本文核心在于揭示 Vue 3 组合式 API 的逻辑复用机制。通过对数据链路与副作用边界的深度拆解，为开发者提供了一套可落地的状态管理与组件协作范式。不仅是语法的变迁，更是思维方式的进化。",
     markdown: markdownContent,
   };
 });

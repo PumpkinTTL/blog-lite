@@ -98,7 +98,7 @@ library.add(
   faMoon, faSun, faChevronDown, faCrown, faClock, faComment,
   faCalendarDays, faBookOpen, faShareNodes, faNewspaper, faListCheck, faListUl,
   faBolt, faPenNib, faLayerGroup, faHeart, faFire,
-  faShieldHalved, faCrown, faCircleCheck, faGem,
+  faShieldHalved, faCrown, faCircleCheck, faGem, faRobot,
   faCode, faServer, faPalette, faBrain, faWrench,
   faEllipsis, faChevronLeft, faChevronRight,
   faBullhorn, faTriangleExclamation, faArrowUp, faRss, faPaperPlane, faEnvelope
