@@ -13,7 +13,9 @@
       "Bash(PYTHONIOENCODING=utf-8 python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"composition api\" --stack vue)",
       "Bash(dir srcutils:*)",
       "Bash(dir srcstores:*)",
-      "Bash(grep -r \"ant-layout\\\\|ant-layout-content\" src/ --include=*.vue --include=*.scss --include=*.css)"
+      "Bash(grep -r \"ant-layout\\\\|ant-layout-content\" src/ --include=*.vue --include=*.scss --include=*.css)",
+      "Bash(ssh -T git@github.com)",
+      "Bash(ssh-add -l)"
     ]
   }
 }

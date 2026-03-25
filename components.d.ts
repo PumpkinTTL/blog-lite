@@ -22,6 +22,7 @@ declare module 'vue' {
     Announcement: typeof import('./src/components/v1/common/Announcement.vue')['default']
     ArticleContent: typeof import('./src/components/v1/detail/ArticleContent.vue')['default']
     ArticleHero: typeof import('./src/components/v1/detail/ArticleHero.vue')['default']
+    ArticleToc: typeof import('./src/components/v1/detail/ArticleToc.vue')['default']
     ASpace: typeof import('ant-design-vue/es')['Space']
     BackTop: typeof import('./src/components/v1/common/BackTop.vue')['default']
     BlogHeader: typeof import('./src/components/v1/layout/BlogHeader.vue')['default']

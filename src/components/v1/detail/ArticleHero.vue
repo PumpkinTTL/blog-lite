@@ -1,6 +1,5 @@
 <template>
   <article class="article-hero" :class="{ 'dark-mode': isDark }">
-    <!-- 1. 置顶封面 -->
     <div class="cover-header">
       <img
         :src="article.cover"
@@ -11,9 +10,7 @@
       <div class="cover-overlay"></div>
     </div>
 
-    <!-- 正文容器 -->
     <div class="hero-body">
-      <!-- 2. 分类徽章 -->
       <div class="hero-category">
         <div class="cat-badge" :class="`cat-${catIndex}`">
           <font-awesome-icon :icon="catIcon" class="cat-icon" />
@@ -21,10 +18,8 @@
         </div>
       </div>
 
-      <!-- 3. 大标题 -->
       <h1 class="article-title">{{ article.title }}</h1>
 
-      <!-- 4. 彩色文章标签 (恢复丰富的彩色质感并置于标题下方) -->
       <div class="tags-row">
         <span
           v-for="(tag, i) in article.tags.slice(0, 4)"
@@ -36,7 +31,6 @@
         </span>
       </div>
 
-      <!-- 5. 数据元信息栏 -->
       <div class="meta-section">
         <div class="author-block">
           <img
@@ -83,36 +77,6 @@
           <div class="stat-item">
             <font-awesome-icon icon="clock" class="stat-icon" />
             <span>约 {{ readTime }} 分钟阅读</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 6. 高级版 AI 摘要卡片 (重新优化质感，高级且清透) -->
-      <div class="ai-summary-premium">
-        <!-- 绚丽顶部高光线 -->
-        <div class="ai-glow-line"></div>
-        <div class="ai-glass-bg"></div>
-
-        <div class="ai-sparkles">
-          <span class="sparkle sparkle-1">✦</span>
-          <span class="sparkle sparkle-2">✦</span>
-        </div>
-
-        <div class="ai-inner">
-          <div class="ai-header">
-            <div class="ai-title-wrap">
-              <div class="ai-icon-box">
-                <font-awesome-icon icon="robot" class="ai-icon" />
-              </div>
-              <span class="ai-title">AI 智能摘要</span>
-            </div>
-            <div class="ai-time">
-              <font-awesome-icon icon="bolt" class="bolt-icon" />
-              <span>0.3s生成</span>
-            </div>
-          </div>
-          <div class="ai-body">
-            <p class="ai-text">{{ article.description }}</p>
           </div>
         </div>
       </div>
@@ -188,18 +152,16 @@ const formatNumber = (num: number) => {
   font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   background: var(--bg-card, #ffffff);
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
   border: 1px solid var(--border, #f1f5f9);
-  margin-bottom: 32px;
-  overflow: hidden; // Ensures top cover blends with radius
+  overflow: hidden;
 }
 
-/* 1. 置顶封面 */
 .cover-header {
   position: relative;
   width: 100%;
-  height: 280px;
+  height: 240px;
   background: var(--bg-card, #f8fafc);
   border-bottom: 1px solid var(--border-light, #f1f5f9);
   overflow: hidden;
@@ -223,23 +185,21 @@ const formatNumber = (num: number) => {
   pointer-events: none;
 }
 
-/* 内部间距包裹 */
 .hero-body {
-  padding: 36px 40px;
+  padding: 28px 30px;
 }
 
-/* 2. 分类 */
 .hero-category {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .cat-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
-  border-radius: 10px;
-  font-size: 13px;
+  padding: 5px 12px;
+  border-radius: 9px;
+  font-size: 12px;
   font-weight: 700;
   color: white;
   letter-spacing: 0.03em;
@@ -266,29 +226,27 @@ const formatNumber = (num: number) => {
   }
 }
 
-/* 3. 标题 */
 .article-title {
-  font-size: clamp(24px, 3.5vw, 36px);
+  font-size: clamp(22px, 2.4vw, 31px);
   font-weight: 800;
-  line-height: 1.35;
+  line-height: 1.28;
   letter-spacing: -0.01em;
   color: var(--text, #0f172a);
-  margin: 0 0 16px;
+  margin: 0 0 12px;
 }
 
-/* 4. 恢复并移至标题下方的多彩标签 */
 .tags-row {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 28px;
+  margin-bottom: 22px;
 }
 
 .tag {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 8px;
+  padding: 4px 10px;
+  border-radius: 7px;
   transition: all 0.3s;
 
   &.t0 {
@@ -313,26 +271,25 @@ const formatNumber = (num: number) => {
   }
 }
 
-/* 5. 分割与元信息 */
 .meta-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 20px;
-  padding-top: 24px;
+  padding-top: 18px;
   border-top: 1px dashed var(--border-light, #e2e8f0);
 }
 
 .author-block {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .author-avatar {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -351,6 +308,7 @@ const formatNumber = (num: number) => {
 
   .name {
     font-size: 15px;
+    line-height: 1.2;
     font-weight: 700;
     color: var(--text, #1e293b);
   }
@@ -384,7 +342,7 @@ const formatNumber = (num: number) => {
 }
 
 .publish-date {
-  font-size: 13px;
+  font-size: 12px;
   color: #64748b;
   font-weight: 500;
 }
@@ -392,19 +350,19 @@ const formatNumber = (num: number) => {
 .stats-block {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
+  gap: 5px;
+  font-size: 12px;
   font-weight: 600;
   color: #64748b;
-  padding: 6px 12px;
+  padding: 5px 10px;
   background: #f8fafc;
-  border-radius: 8px;
+  border-radius: 7px;
 
   .stat-icon {
     font-size: 12px;
@@ -412,164 +370,6 @@ const formatNumber = (num: number) => {
   }
 }
 
-/* 6. 高级版 AI 摘要区块 */
-.ai-summary-premium {
-  --ai-summary-radius: 18px;
-  position: relative;
-  margin-top: 32px;
-  padding: 24px;
-  border-radius: var(--ai-summary-radius);
-  background: linear-gradient(
-    135deg,
-    rgba(244, 244, 255, 0.9) 0%,
-    rgba(243, 232, 255, 0.7) 100%
-  );
-  border: 1px solid rgba(216, 180, 254, 0.5);
-  box-shadow: 0 8px 32px rgba(168, 85, 247, 0.06);
-  overflow: hidden;
-}
-
-/* 顶部高光发光线 */
-.ai-glow-line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #c084fc, #ec4899, #c084fc);
-  border-top-left-radius: var(--ai-summary-radius);
-  border-top-right-radius: var(--ai-summary-radius);
-  background-size: 200% auto;
-  animation: shine 3s linear infinite;
-}
-
-@keyframes shine {
-  to {
-    background-position: 200% center;
-  }
-}
-
-.ai-glass-bg {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  backdrop-filter: blur(16px);
-  z-index: 0;
-}
-
-/* 点缀的一点点闪星，不用太多 */
-.ai-sparkles {
-  position: absolute;
-  top: 16px;
-  right: 20px;
-  z-index: 1;
-}
-
-.sparkle {
-  font-size: 10px;
-  color: #c084fc;
-  opacity: 0;
-  animation: pop 4s ease-in-out infinite;
-
-  &.sparkle-1 {
-    animation-delay: 0s;
-    margin-right: 6px;
-  }
-  &.sparkle-2 {
-    animation-delay: 1.5s;
-    font-size: 14px;
-    color: #ec4899;
-  }
-}
-
-@keyframes pop {
-  0%,
-  100% {
-    opacity: 0;
-    transform: scale(0.5) translateY(0);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1) translateY(-4px);
-  }
-}
-
-.ai-inner {
-  position: relative;
-  z-index: 2;
-  border-radius: calc(var(--ai-summary-radius) - 4px);
-  padding: 2px;
-}
-
-.ai-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.ai-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.ai-icon-box {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #a855f7, #ec4899);
-  color: white;
-  border-radius: 10px;
-  font-size: 14px;
-  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
-}
-
-.ai-title {
-  font-size: 15px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #7c3aed, #db2777);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.ai-time {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 20px;
-  color: #c026d3;
-  background: rgba(192, 38, 211, 0.08);
-  border: 1px solid rgba(192, 38, 211, 0.1);
-}
-
-.ai-body {
-  padding: 14px 16px;
-  border-radius: calc(var(--ai-summary-radius) - 6px);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.44) 0%,
-    rgba(255, 255, 255, 0.18) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
-}
-
-.ai-text {
-  font-size: 14px;
-  line-height: 1.8;
-  color: #4c1d95;
-  margin: 0;
-  font-weight: 500;
-}
-
-/* 黑暗模式细节适配 */
 .dark-mode {
   background: var(--bg-card, #1e293b);
   border-color: var(--border, #334155);
@@ -585,6 +385,7 @@ const formatNumber = (num: number) => {
 
   .tag {
     background: rgba(255, 255, 255, 0.05);
+
     &.t0 {
       background: rgba(37, 99, 235, 0.15);
       color: #93c5fd;
@@ -606,9 +407,11 @@ const formatNumber = (num: number) => {
   .meta-section {
     border-color: rgba(255, 255, 255, 0.1);
   }
+
   .name {
     color: #f1f5f9;
   }
+
   .publish-date {
     color: #94a3b8;
   }
@@ -632,49 +435,27 @@ const formatNumber = (num: number) => {
     background: rgba(255, 255, 255, 0.05);
     color: #94a3b8;
   }
-
-  /* 黑暗模式 AI摘要依然高级通透 */
-  .ai-summary-premium {
-    background: linear-gradient(
-      135deg,
-      rgba(88, 28, 135, 0.2) 0%,
-      rgba(126, 34, 206, 0.05) 100%
-    );
-    border-color: rgba(192, 132, 252, 0.25);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  }
-
-  .ai-body {
-    background: linear-gradient(
-      135deg,
-      rgba(76, 29, 149, 0.28) 0%,
-      rgba(59, 7, 100, 0.18) 100%
-    );
-    border-color: rgba(216, 180, 254, 0.16);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  }
-
-  .ai-text {
-    color: #e9d5ff;
-  }
 }
 
-/* 响应式调整 */
 @media (max-width: 768px) {
   .hero-body {
-    padding: 24px;
+    padding: 22px 18px;
   }
+
   .cover-header {
-    height: 200px;
+    height: 188px;
   }
+
   .article-title {
-    font-size: 22px;
+    font-size: 21px;
   }
+
   .meta-section {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
   }
+
   .stats-block {
     width: 100%;
     justify-content: flex-start;
