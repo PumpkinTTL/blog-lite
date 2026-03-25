@@ -39,11 +39,14 @@
 
       <div class="meta-section">
         <div class="author-block">
-          <img
-            :src="article.author.avatar"
-            :alt="article.author.name"
-            class="author-avatar animate__animated animate__zoomIn animate__delay-450ms"
-          />
+          <div class="avatar-wrapper animate__animated animate__zoomIn animate__delay-450ms">
+            <img
+              :src="article.author.avatar"
+              :alt="article.author.name"
+              class="author-avatar"
+            />
+            <div class="avatar-ring"></div>
+          </div>
           <div class="author-details">
             <div class="author-name-row">
               <span class="name animate__animated animate__fadeInLeft animate__delay-500ms">{{ article.author.name }}</span>
@@ -71,7 +74,11 @@
                 {{ roleLabel }}
               </span>
             </div>
-            <div class="publish-date animate__animated animate__fadeInLeft animate__delay-600ms">{{ article.createdAt }}</div>
+            <div class="publish-info animate__animated animate__fadeInLeft animate__delay-600ms">
+              <font-awesome-icon icon="calendar-days" class="date-icon" />
+              <span class="date-label">发布于</span>
+              <span class="date-value">{{ article.createdAt }}</span>
+            </div>
           </div>
         </div>
 
@@ -286,98 +293,152 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 20px;
-  padding-top: 24px;
-  border-top: 1px dashed #e2e8f0;
+  padding-top: 28px;
+  margin-top: 8px;
+  border-top: 1px solid var(--border-light, #f1f5f9);
 }
 
 .author-block {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
 }
 
 .author-avatar {
-  width: 44px;
-  height: 44px;
+  --glow-color: rgba(37, 99, 235, 0.15);
+  --glow-spread: 12px;
+  
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  position: relative;
+  z-index: 2;
   border: 2px solid white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), 0 0 var(--glow-spread) var(--glow-color);
+  animation: avatar-soft-glow 4s ease-in-out infinite;
+}
+
+@keyframes avatar-soft-glow {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), 0 0 var(--glow-spread) var(--glow-color);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 0 0 calc(var(--glow-spread) + 8px) rgba(37, 99, 235, 0.3);
+  }
+}
+
+.avatar-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(37, 99, 235, 0.02));
+  z-index: 1;
+  border: 1px solid rgba(37, 99, 235, 0.1);
+  opacity: 0.6;
 }
 
 .author-details {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .author-name-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 
   .name {
-    font-size: 16px;
-    font-weight: 700;
-    color: #1e293b;
+    font-size: 17px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1;
   }
 }
 
 .role-badge {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   font-size: 10px;
   font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 6px;
+  padding: 3px 10px;
+  border-radius: 7px;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
 
-  &.super_admin { background: #fdf4ff; color: #c026d3; }
-  &.admin { background: #fef2f2; color: #ef4444; }
-  &.system { background: #eff6ff; color: #3b82f6; }
-  &.vip { background: #fff7ed; color: #f59e0b; }
+  &.super_admin { background: #fdf4ff; color: #c026d3; border: 1px solid rgba(192, 38, 211, 0.08); }
+  &.admin { background: #fef2f2; color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.08); }
+  &.system { background: #f0f9ff; color: #0284c7; border: 1px solid rgba(2, 132, 199, 0.08); }
+  &.vip { background: #fffbeb; color: #d97706; border: 1px solid rgba(217, 119, 6, 0.08); }
 }
 
-.publish-date {
-  font-size: 12px;
-  color: #94a3b8;
+.publish-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #64748b;
   font-weight: 500;
+
+  .date-icon {
+    font-size: 12px;
+    color: #94a3b8;
+  }
+
+  .date-label {
+    opacity: 0.7;
+  }
+
+  .date-value {
+    color: #475569;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
 }
 
 .stats-block {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-size: 13px;
   font-weight: 600;
   color: #64748b;
-  padding: 6px 12px;
+  padding: 8px 16px;
   background: #f8fafc;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+  }
 
   svg {
     font-size: 12px;
-    opacity: 0.8;
+    color: #94a3b8;
   }
 }
 
-.dark-mode {
+/* Dark Mode Overrides for Static State */
+.article-hero.dark-mode {
   .hero-body {
     background: transparent;
-  }
-
-  .meta-eyebrow {
-    background: rgba(59, 130, 246, 0.1);
-    color: #60a5fa;
-    border-color: rgba(96, 165, 250, 0.2);
   }
 
   .article-title {
@@ -395,12 +456,10 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
     &.t1 { background: rgba(124, 58, 237, 0.15); color: #c4b5fd; }
     &.t2 { background: rgba(5, 150, 105, 0.15); color: #6ee7b7; }
     &.t3 { background: rgba(217, 119, 6, 0.15); color: #fcd34d; }
-    
-    &:hover { background: rgba(255, 255, 255, 0.08); }
   }
 
   .meta-section {
-    border-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.08);
   }
 
   .name {
@@ -408,20 +467,38 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   }
 
   .author-avatar {
+    --glow-color: rgba(59, 130, 246, 0.4);
+    --glow-spread: 16px;
     border-color: #1e293b;
   }
 
+  .avatar-ring {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), transparent);
+    border-color: rgba(59, 130, 246, 0.1);
+  }
+
   .role-badge {
-    &.super_admin { background: rgba(168, 85, 247, 0.1); }
-    &.admin { background: rgba(239, 68, 68, 0.1); }
-    &.system { background: rgba(59, 130, 246, 0.1); }
-    &.vip { background: rgba(245, 158, 11, 0.1); }
+    border-color: transparent;
+    &.super_admin { background: rgba(168, 85, 247, 0.12); color: #d8b4fe; }
+    &.admin { background: rgba(239, 68, 68, 0.12); color: #fca5a5; }
+    &.system { background: rgba(59, 130, 246, 0.12); color: #93c5fd; }
+    &.vip { background: rgba(245, 158, 11, 0.12); color: #fcd34d; }
+  }
+
+  .publish-info {
+    color: #94a3b8;
+    .date-value { color: #cbd5e1; }
   }
 
   .stat-item {
     background: rgba(255, 255, 255, 0.03);
     border-color: rgba(255, 255, 255, 0.05);
-    color: #64748b;
+    color: #94a3b8;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+    }
   }
 }
 
@@ -429,16 +506,18 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   .hero-body { padding: 24px 20px; }
   .cover-header { height: 200px; }
   .article-title { font-size: 24px; }
-  .meta-section { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .meta-section { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .author-block { width: 100%; }
   .stats-block {
     width: 100%;
     flex-wrap: wrap;
     gap: 8px;
   }
   .stat-item {
-    padding: 5px 10px;
+    padding: 6px 12px;
     font-size: 12px;
-    flex: 0 1 auto;
+    flex: 1 1 auto;
+    justify-content: center;
   }
 }
 </style>

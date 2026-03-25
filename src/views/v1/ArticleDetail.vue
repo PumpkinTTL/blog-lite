@@ -183,7 +183,7 @@ onMounted(() => {
     category: "前端",
     author: {
       name: "开发者",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=DevMaster",
+      avatar: "https://api.dicebear.com/9.x/notionists/svg?seed=Felix&backgroundColor=e6e6fa",
       role: "admin",
     },
     createdAt: "2024-03-20",
