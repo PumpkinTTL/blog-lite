@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <BlogHeader />
     <main class="main-content">
       <div class="container">
         <Announcement 
@@ -42,7 +41,6 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import BlogHeader from "@/components/v1/layout/BlogHeader.vue";
 import Announcement from "@/components/v1/common/Announcement.vue";
 import FilterBar from "@/components/v1/common/FilterBar.vue";
 import PostFeed from "@/components/v1/home/PostFeed.vue";
@@ -105,10 +103,6 @@ watch([activeCategory, activeSort, searchQuery], () => {
 .home {
   min-height: 100vh;
   background: var(--bg);
-}
-
-.main-content {
-  padding-top: 64px;
 }
 
 .container {
