@@ -347,6 +347,28 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
     background: rgba(30, 41, 59, 0.5);
     border-left-color: #60a5fa;
   }
+
+  // 修复富文本编辑器深色模式背景色，使其与网站深色主题一致
+  :deep(.md-preview) {
+    background: transparent !important;
+  }
+
+  :deep(.md-editor) {
+    background: transparent !important;
+  }
+
+  :deep(.md-editor-preview) {
+    background: transparent !important;
+  }
+
+  // 代码块背景色透明
+  :deep(.md-preview pre) {
+    background: transparent !important;
+  }
+
+  :deep(.md-preview code) {
+    background: rgba(30, 41, 59, 0.5) !important;
+  }
 }
 
 @media (max-width: 768px) {
