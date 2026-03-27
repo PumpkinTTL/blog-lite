@@ -13,17 +13,33 @@
     <div class="hero-body">
       <div class="hero-category-row">
         <div class="cat-badge" :class="`cat-${catIndex}`">
-          <font-awesome-icon :icon="catIcon" class="cat-icon animate__animated animate__fadeInLeft" />
-          <span class="animate__animated animate__fadeInLeft animate__delay-50ms">{{ article.category }}</span>
+          <font-awesome-icon
+            :icon="catIcon"
+            class="cat-icon animate__animated animate__fadeInLeft"
+          />
+          <span
+            class="animate__animated animate__fadeInLeft animate__delay-50ms"
+            >{{ article.category }}</span
+          >
         </div>
-        <div class="meta-eyebrow animate__animated animate__fadeInLeft animate__delay-100ms">
+        <div
+          class="meta-eyebrow animate__animated animate__fadeInLeft animate__delay-100ms"
+        >
           <font-awesome-icon icon="newspaper" />
           <span>深度专栏</span>
         </div>
       </div>
 
-      <h1 class="article-title animate__animated animate__fadeInUp animate__delay-150ms">{{ article.title }}</h1>
-      <p class="article-desc animate__animated animate__fadeInUp animate__delay-200ms">{{ article.description }}</p>
+      <h1
+        class="article-title animate__animated animate__fadeInUp animate__delay-150ms"
+      >
+        {{ article.title }}
+      </h1>
+      <p
+        class="article-desc animate__animated animate__fadeInUp animate__delay-200ms"
+      >
+        {{ article.description }}
+      </p>
 
       <div class="tags-row">
         <span
@@ -39,7 +55,9 @@
 
       <div class="meta-section">
         <div class="author-block">
-          <div class="avatar-wrapper animate__animated animate__zoomIn animate__delay-450ms">
+          <div
+            class="avatar-wrapper animate__animated animate__zoomIn animate__delay-450ms"
+          >
             <img
               :src="article.author.avatar"
               :alt="article.author.name"
@@ -49,7 +67,10 @@
           </div>
           <div class="author-details">
             <div class="author-name-row">
-              <span class="name animate__animated animate__fadeInLeft animate__delay-500ms">{{ article.author.name }}</span>
+              <span
+                class="name animate__animated animate__fadeInLeft animate__delay-500ms"
+                >{{ article.author.name }}</span
+              >
               <span
                 v-if="roleLabel"
                 class="role-badge animate__animated animate__fadeInLeft animate__delay-550ms"
@@ -74,7 +95,9 @@
                 {{ roleLabel }}
               </span>
             </div>
-            <div class="publish-info animate__animated animate__fadeInLeft animate__delay-600ms">
+            <div
+              class="publish-info animate__animated animate__fadeInLeft animate__delay-600ms"
+            >
               <font-awesome-icon icon="calendar-days" class="date-icon" />
               <span class="date-label">发布于</span>
               <span class="date-value">{{ article.createdAt }}</span>
@@ -83,15 +106,21 @@
         </div>
 
         <div class="stats-block">
-          <div class="stat-item animate__animated animate__fadeInLeft animate__delay-650ms">
+          <div
+            class="stat-item animate__animated animate__fadeInLeft animate__delay-650ms"
+          >
             <font-awesome-icon icon="eye" />
             <span>{{ formatNumber(article.views) }} 浏览</span>
           </div>
-          <div class="stat-item animate__animated animate__fadeInLeft animate__delay-700ms">
+          <div
+            class="stat-item animate__animated animate__fadeInLeft animate__delay-700ms"
+          >
             <font-awesome-icon icon="clock" />
             <span>{{ article.readMinutes }} min read</span>
           </div>
-          <div class="stat-item animate__animated animate__fadeInLeft animate__delay-750ms">
+          <div
+            class="stat-item animate__animated animate__fadeInLeft animate__delay-750ms"
+          >
             <font-awesome-icon icon="file-lines" />
             <span>{{ formatWordCount(article.wordCount) }} 字</span>
           </div>
@@ -225,11 +254,21 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
     font-size: 12px;
   }
 
-  &.cat-0 { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-  &.cat-1 { background: linear-gradient(135deg, #10b981, #059669); }
-  &.cat-2 { background: linear-gradient(135deg, #ec4899, #db2777); }
-  &.cat-3 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-  &.cat-4 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  &.cat-0 {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+  }
+  &.cat-1 {
+    background: linear-gradient(135deg, #10b981, #059669);
+  }
+  &.cat-2 {
+    background: linear-gradient(135deg, #ec4899, #db2777);
+  }
+  &.cat-3 {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  }
+  &.cat-4 {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+  }
 }
 
 .meta-eyebrow {
@@ -277,10 +316,22 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   border-radius: 8px;
   transition: all 0.3s;
 
-  &.t0 { color: #2563eb; background: #eff6ff; }
-  &.t1 { color: #7c3aed; background: #f5f3ff; }
-  &.t2 { color: #059669; background: #ecfdf5; }
-  &.t3 { color: #d97706; background: #fffbeb; }
+  &.t0 {
+    color: #2563eb;
+    background: #eff6ff;
+  }
+  &.t1 {
+    color: #7c3aed;
+    background: #f5f3ff;
+  }
+  &.t2 {
+    color: #059669;
+    background: #ecfdf5;
+  }
+  &.t3 {
+    color: #d97706;
+    background: #fffbeb;
+  }
 
   &:hover {
     filter: brightness(0.95);
@@ -312,9 +363,6 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
 }
 
 .author-avatar {
-  --glow-color: rgba(37, 99, 235, 0.15);
-  --glow-spread: 12px;
-  
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -322,27 +370,20 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   position: relative;
   z-index: 2;
   border: 2px solid white;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), 0 0 var(--glow-spread) var(--glow-color);
-  animation: avatar-soft-glow 4s ease-in-out infinite;
-}
-
-@keyframes avatar-soft-glow {
-  0%, 100% {
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), 0 0 var(--glow-spread) var(--glow-color);
-  }
-  50% {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 0 0 calc(var(--glow-spread) + 8px) rgba(37, 99, 235, 0.3);
-  }
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 .avatar-ring {
   position: absolute;
-  inset: -4px;
+  inset: -3px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(37, 99, 235, 0.02));
+  background: linear-gradient(
+    135deg,
+    rgba(37, 99, 235, 0.12),
+    rgba(37, 99, 235, 0.02)
+  );
   z-index: 1;
-  border: 1px solid rgba(37, 99, 235, 0.1);
-  opacity: 0.6;
+  border: 1px solid rgba(37, 99, 235, 0.08);
 }
 
 .author-details {
@@ -375,10 +416,26 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   text-transform: uppercase;
   letter-spacing: 0.04em;
 
-  &.super_admin { background: #fdf4ff; color: #c026d3; border: 1px solid rgba(192, 38, 211, 0.08); }
-  &.admin { background: #fef2f2; color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.08); }
-  &.system { background: #f0f9ff; color: #0284c7; border: 1px solid rgba(2, 132, 199, 0.08); }
-  &.vip { background: #fffbeb; color: #d97706; border: 1px solid rgba(217, 119, 6, 0.08); }
+  &.super_admin {
+    background: #fdf4ff;
+    color: #c026d3;
+    border: 1px solid rgba(192, 38, 211, 0.08);
+  }
+  &.admin {
+    background: #fef2f2;
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.08);
+  }
+  &.system {
+    background: #f0f9ff;
+    color: #0284c7;
+    border: 1px solid rgba(2, 132, 199, 0.08);
+  }
+  &.vip {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid rgba(217, 119, 6, 0.08);
+  }
 }
 
 .publish-info {
@@ -451,11 +508,23 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
 
   .tag {
     background: rgba(255, 255, 255, 0.05);
-    
-    &.t0 { background: rgba(37, 99, 235, 0.15); color: #93c5fd; }
-    &.t1 { background: rgba(124, 58, 237, 0.15); color: #c4b5fd; }
-    &.t2 { background: rgba(5, 150, 105, 0.15); color: #6ee7b7; }
-    &.t3 { background: rgba(217, 119, 6, 0.15); color: #fcd34d; }
+
+    &.t0 {
+      background: rgba(37, 99, 235, 0.15);
+      color: #93c5fd;
+    }
+    &.t1 {
+      background: rgba(124, 58, 237, 0.15);
+      color: #c4b5fd;
+    }
+    &.t2 {
+      background: rgba(5, 150, 105, 0.15);
+      color: #6ee7b7;
+    }
+    &.t3 {
+      background: rgba(217, 119, 6, 0.15);
+      color: #fcd34d;
+    }
   }
 
   .meta-section {
@@ -467,9 +536,8 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   }
 
   .author-avatar {
-    --glow-color: rgba(59, 130, 246, 0.4);
-    --glow-spread: 16px;
     border-color: #1e293b;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
   }
 
   .avatar-ring {
@@ -479,15 +547,29 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
 
   .role-badge {
     border-color: transparent;
-    &.super_admin { background: rgba(168, 85, 247, 0.12); color: #d8b4fe; }
-    &.admin { background: rgba(239, 68, 68, 0.12); color: #fca5a5; }
-    &.system { background: rgba(59, 130, 246, 0.12); color: #93c5fd; }
-    &.vip { background: rgba(245, 158, 11, 0.12); color: #fcd34d; }
+    &.super_admin {
+      background: rgba(168, 85, 247, 0.12);
+      color: #d8b4fe;
+    }
+    &.admin {
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+    }
+    &.system {
+      background: rgba(59, 130, 246, 0.12);
+      color: #93c5fd;
+    }
+    &.vip {
+      background: rgba(245, 158, 11, 0.12);
+      color: #fcd34d;
+    }
   }
 
   .publish-info {
     color: #94a3b8;
-    .date-value { color: #cbd5e1; }
+    .date-value {
+      color: #cbd5e1;
+    }
   }
 
   .stat-item {
@@ -503,11 +585,23 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
 }
 
 @media (max-width: 768px) {
-  .hero-body { padding: 24px 20px; }
-  .cover-header { height: 200px; }
-  .article-title { font-size: 24px; }
-  .meta-section { flex-direction: column; align-items: flex-start; gap: 24px; }
-  .author-block { width: 100%; }
+  .hero-body {
+    padding: 24px 20px;
+  }
+  .cover-header {
+    height: 200px;
+  }
+  .article-title {
+    font-size: 24px;
+  }
+  .meta-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .author-block {
+    width: 100%;
+  }
   .stats-block {
     width: 100%;
     flex-wrap: wrap;

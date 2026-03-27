@@ -20,42 +20,40 @@
       </aside>
     </div>
 
+    <!-- ── PRO NAVIGATION MODAL (CENTERED POPUP) ── -->
     <div
       v-if="article && isMobile"
-      class="mobile-toc-float"
+      class="nav-modal-root"
       :class="{ open: mobileTocOpen }"
     >
-      <div class="mobile-toc-backdrop" @click="mobileTocOpen = false"></div>
+      <div class="modal-backdrop" @click="mobileTocOpen = false"></div>
 
+      <!-- Sophisticated Floating Button -->
       <button
-        class="mobile-toc-handle"
-        type="button"
+        class="nav-trigger-fab"
         @click="mobileTocOpen = !mobileTocOpen"
         :aria-expanded="mobileTocOpen"
-        aria-label="Toggle Table of Contents"
+        aria-label="Navigation Menu"
       >
-        <div class="handle-icon-box">
-          <font-awesome-icon :icon="mobileTocOpen ? 'xmark' : 'list-check'" />
+        <div class="icon-box">
+          <font-awesome-icon :icon="mobileTocOpen ? 'xmark' : 'list-ul'" />
         </div>
-        <span class="handle-text">{{ mobileTocOpen ? "关闭" : "目录" }}</span>
-
-        <div class="handle-pulse" v-if="!mobileTocOpen"></div>
       </button>
 
-      <div class="mobile-toc-card">
-        <div class="mobile-toc-card-inner">
-          <div class="mobile-toc-card-head">
-            <div class="head-left">
-              <div class="head-icon">
-                <font-awesome-icon icon="list-ul" />
-              </div>
-              <div>
-                <div class="mobile-toc-card-title">文章目录</div>
-                <div class="mobile-toc-card-tip">快速定位章节内容</div>
-              </div>
+      <!-- Centered Premium Modal -->
+      <div class="modal-viewport">
+        <div class="modal-surface">
+          <header class="modal-header">
+            <div class="header-left">
+              <span class="badge">Outline</span>
+              <h2 class="title">快速导航</h2>
             </div>
-          </div>
-          <div class="mobile-toc-body">
+            <button class="modal-close-btn" @click="mobileTocOpen = false">
+              <font-awesome-icon icon="xmark" />
+            </button>
+          </header>
+          
+          <div class="modal-main">
             <ArticleToc
               :editor-id="previewId"
               :markdown="article.markdown"
@@ -63,6 +61,11 @@
               scroll-element="html"
             />
           </div>
+
+          <footer class="modal-footer">
+            <div class="footer-tip">Scroll or Click to Jump</div>
+            <button class="primary-btn" @click="mobileTocOpen = false">我知道了</button>
+          </footer>
         </div>
       </div>
     </div>
@@ -183,7 +186,8 @@ onMounted(() => {
     category: "前端",
     author: {
       name: "开发者",
-      avatar: "https://api.dicebear.com/9.x/notionists/svg?seed=Felix&backgroundColor=e6e6fa",
+      avatar:
+        "https://api.dicebear.com/9.x/notionists/svg?seed=Felix&backgroundColor=e6e6fa",
       role: "admin",
     },
     createdAt: "2024-03-20",
@@ -224,7 +228,6 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 300px;
   gap: 32px;
-  align-items: start;
 }
 
 .detail-left {
@@ -291,205 +294,185 @@ onBeforeUnmount(() => {
 @media (max-width: 1100px) {
   .detail-container {
     grid-template-columns: 1fr;
-    padding: 24px 16px 72px;
+    padding: 24px 16px 88px;
   }
 
-  .mobile-toc-float {
+  // ── PREMIUM NAVIGATION MODAL STYLES ──
+  .nav-modal-root {
     display: block;
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 1000;
+    z-index: 5000;
   }
 
-  .mobile-toc-backdrop {
+  .modal-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(15, 23, 42, 0.4);
-    backdrop-filter: blur(4px);
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
+    
+    .nav-modal-root.open & {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 
-  .mobile-toc-float.open .mobile-toc-backdrop {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .mobile-toc-handle {
+  // Sleek FAB
+  .nav-trigger-fab {
     pointer-events: auto;
     position: fixed;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1002;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 100px;
-    background: #2563eb;
+    right: 24px;
+    bottom: 40px;
+    z-index: 5002;
+    width: 60px;
+    height: 60px;
+    background: #0f172a;
     color: white;
     border: none;
-    border-radius: 12px 0 0 12px;
-    box-shadow: -4px 0 16px rgba(37, 99, 235, 0.3);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
 
-    .handle-icon-box {
-      font-size: 18px;
-      margin-bottom: 4px;
+    .dark-mode & {
+      background: #3b82f6;
     }
 
-    .handle-text {
-      writing-mode: vertical-lr;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+    .icon-box {
+      font-size: 22px;
+      transition: transform 0.4s ease;
+    }
+
+    .nav-modal-root.open & {
+      transform: scale(0) rotate(180deg);
+      opacity: 0;
     }
   }
 
-  .mobile-toc-float.open .mobile-toc-handle {
-    right: min(80vw, 340px);
-    background: #1e293b;
-    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.2);
-  }
-
-  .handle-pulse {
+  // Modal Viewport
+  .modal-viewport {
     position: absolute;
     inset: 0;
-    border-radius: inherit;
-    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
-    animation: pulse 2s infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 5001;
+    perspective: 1200px;
   }
 
-  @keyframes pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
-    }
-    70% {
-      box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
-    }
-  }
-
-  .mobile-toc-card {
+  .modal-surface {
     pointer-events: auto;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: min(80vw, 340px);
+    width: 100%;
+    max-width: 440px;
     background: white;
-    box-shadow: -10px 0 40px rgba(15, 23, 42, 0.15);
-    transform: translateX(100%);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 1001;
-    overflow: hidden;
-  }
-
-  .mobile-toc-float.open .mobile-toc-card {
-    transform: translateX(0);
-  }
-
-  .mobile-toc-card-inner {
-    height: 100%;
+    border-radius: 36px;
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
-    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-  }
+    max-height: 85vh;
+    transform: translateY(60px) scale(0.92);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); // Bouncy Entrance
 
-  .mobile-toc-card-head {
-    padding: 24px 20px 20px;
-    border-bottom: 1px solid #f1f5f9;
-
-    .head-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .nav-modal-root.open & {
+      transform: translateY(0) scale(1);
+      opacity: 1;
     }
 
-    .head-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: #eff6ff;
-      color: #2563eb;
+    .dark-mode & {
+      background: #111827;
+      box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
+    }
+  }
+
+  .modal-header {
+    padding: 32px 32px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: #3b82f6;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0;
+
+      .dark-mode & {
+        color: white;
+      }
+    }
+
+    .modal-close-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      border: none;
+      color: #94a3b8;
+      font-size: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+
+      .dark-mode & {
+        background: #1e293b;
+      }
     }
   }
 
-  .mobile-toc-card-title {
-    font-size: 18px;
-    font-weight: 800;
-    color: #1e293b;
-  }
-
-  .mobile-toc-card-tip {
-    font-size: 12px;
-    color: #94a3b8;
-    margin-top: 2px;
-  }
-
-  .mobile-toc-body {
+  .modal-main {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
-
-    &::-webkit-scrollbar {
-      width: 4px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: #e2e8f0;
-      border-radius: 10px;
-    }
+    padding: 12px 28px;
+    
+    &::-webkit-scrollbar { display: none; }
   }
 
-  .dark-mode {
-    .mobile-toc-card {
-      background: #0f172a;
-      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
-    }
+  .modal-footer {
+    padding: 20px 32px 40px;
+    text-align: center;
 
-    .mobile-toc-card-inner {
-      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-    }
-
-    .mobile-toc-card-head {
-      border-color: rgba(255, 255, 255, 0.05);
-
-      .head-icon {
-        background: rgba(59, 130, 246, 0.1);
-        color: #60a5fa;
-      }
-    }
-
-    .mobile-toc-card-title {
-      color: #f8fafc;
-    }
-
-    .mobile-toc-card-tip {
+    .footer-tip {
+      font-size: 12px;
       color: #64748b;
+      margin-bottom: 16px;
+      font-weight: 600;
+      opacity: 0.6;
     }
-
-    .mobile-toc-handle {
+    
+    .primary-btn {
+      width: 100%;
+      height: 56px;
       background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 18px;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(59, 130, 246, 0.4);
+      transition: all 0.3s ease;
 
-      &.open {
-        background: #334155;
-      }
-    }
-
-    .mobile-toc-body::-webkit-scrollbar-thumb {
-      background: #334155;
+      &:active { transform: scale(0.98); }
     }
   }
 }
