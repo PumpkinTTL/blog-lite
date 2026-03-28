@@ -1,36 +1,53 @@
 <template>
-  <aside class="toc-panel" :class="{ 'dark-mode': isDark, 'is-mobile': mobile }">
-    <div class="toc-card">
-      <!-- Header -->
+  <aside
+    class="premium-toc"
+    :class="{ 'is-dark': isDark, 'is-mobile': mobile }"
+  >
+    <div class="toc-container" :class="{ 'sticky-wrapper': !mobile }">
+      <!-- Minimalist Header -->
       <div v-if="!mobile" class="toc-header">
-        <div class="toc-title-row">
-          <font-awesome-icon icon="list-ul" class="toc-icon" />
-          <span class="toc-title">文章目录</span>
+        <div class="header-left">
+          <div class="pulse-dot"></div>
+          <span class="toc-title">ON THIS PAGE</span>
         </div>
-        <span class="toc-count">{{ headingCount }} 节</span>
+        <div class="header-right" v-if="headingCount > 0">
+          <div class="circular-progress">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+              <path class="circle-bg"
+                d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <path class="circle"
+                :stroke-dasharray="`${readingProgress}, 100`"
+                d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+            </svg>
+            <span class="percentage">{{ Math.round(readingProgress) }}%</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Progress -->
-      <div v-if="!mobile && headingCount > 0" class="toc-progress">
-        <div class="progress-track">
-          <div class="progress-fill" :style="{ width: readingProgress + '%' }"></div>
-        </div>
-      </div>
-
-      <!-- Catalog -->
-      <div class="toc-body">
-        <div v-if="headingCount > 0" class="toc-viewport">
+      <!-- Main Body -->
+      <div class="toc-content">
+        <div v-if="headingCount > 0" class="toc-wrapper">
+          <div class="tracking-line"></div>
           <MdCatalog
-            class="toc-catalog"
+            class="md-catalog-custom"
             :editor-id="editorId"
             :scroll-element="scrollElement"
             :theme="isDark ? 'dark' : 'light'"
             :offset-top="100"
           />
         </div>
-        <div v-else class="toc-empty">
-          <font-awesome-icon icon="file-lines" />
-          <span>暂无目录</span>
+        
+        <div v-else class="empty-state">
+          <div class="empty-icon">
+            <font-awesome-icon icon="compass" />
+          </div>
+          <p>暂无内容索引</p>
         </div>
       </div>
     </div>
@@ -60,11 +77,12 @@ const themeStore = useThemeStore();
 const isDark = computed(() => themeStore.isDark);
 
 const headingCount = computed(() => {
-  const matches = props.markdown.match(/^#{1,4}\s+/gm);
+  const matches = props.markdown.match(/^#{1,6}\s+/gm);
   return matches ? matches.length : 0;
 });
 
 const readingProgress = ref(0);
+let progressFrameId: number;
 
 const handleScrollProgress = () => {
   if (props.mobile) return;
@@ -73,7 +91,14 @@ const handleScrollProgress = () => {
   const sh = h.scrollHeight || document.body.scrollHeight;
   const ch = h.clientHeight;
   const total = sh - ch;
-  readingProgress.value = total > 0 ? Math.min((st / total) * 100, 100) : 0;
+  
+  if (progressFrameId) {
+    cancelAnimationFrame(progressFrameId);
+  }
+  
+  progressFrameId = requestAnimationFrame(() => {
+    readingProgress.value = total > 0 ? Math.min((st / total) * 100, 100) : 0;
+  });
 };
 
 onMounted(() => {
@@ -84,176 +109,167 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener("scroll", handleScrollProgress);
+  if (!props.mobile) {
+    window.removeEventListener("scroll", handleScrollProgress);
+  }
+  if (progressFrameId) {
+    cancelAnimationFrame(progressFrameId);
+  }
 });
 </script>
 
 <style scoped lang="scss">
-.toc-panel {
+.premium-toc {
   width: 100%;
-  font-family: inherit;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-// ── Card: 对齐主文章卡片风格 ──
-.toc-card {
-  background: white;
-  border-radius: 20px;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.02),
-    0 20px 60px -15px rgba(15, 23, 42, 0.08);
-  overflow: hidden;
-  transition: box-shadow 0.3s;
-
-  .dark-mode & {
-    background: #1e293b;
-    border-color: rgba(45, 55, 72, 0.8);
-    box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.05),
-      0 20px 60px -15px rgba(0, 0, 0, 0.2);
+.toc-container {
+  background: transparent;
+  border-radius: var(--radius-lg);
+  position: relative;
+  
+  // Floating glass effect for PC
+  @media (min-width: 768px) {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    padding: 24px;
+    
+    .is-dark & {
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid rgba(51, 65, 85, 0.4);
+      box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    }
   }
 }
 
-.is-mobile .toc-card {
-  background: transparent;
-  border: none;
-  box-shadow: none;
+.sticky-wrapper {
+  position: sticky;
+  top: 100px; /* Offset from top nav */
 }
 
-// ── Header: 对齐 Hero meta-section 风格 ──
+/* ── Header ── */
 .toc-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid #f1f5f9;
-
-  .dark-mode & {
-    border-color: rgba(51, 65, 85, 0.5);
-  }
+  margin-bottom: 24px;
 }
 
-.toc-title-row {
+.header-left {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.toc-icon {
-  font-size: 13px;
-  color: #2563eb;
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  box-shadow: 0 0 0 0 rgba(var(--primary-rgb, 59, 130, 246), 0.7);
+  animation: pulse-animation 2s infinite;
+}
 
-  .dark-mode & {
-    color: #60a5fa;
-  }
+@keyframes pulse-animation {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
 }
 
 .toc-title {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
-  color: #0f172a;
-  letter-spacing: -0.01em;
-
-  .dark-mode & {
-    color: #f8fafc;
-  }
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
 }
 
-.toc-count {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-  background: #f1f5f9;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
-
-  .dark-mode & {
-    background: rgba(15, 23, 42, 0.5);
-    color: #94a3b8;
-    border-color: rgba(51, 65, 85, 0.5);
-  }
+/* circular progress */
+.circular-progress {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-// ── Progress: 细线进度条 ──
-.toc-progress {
-  padding: 0 24px;
-  margin-bottom: -1px;
+.circular-chart {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 250px;
 }
 
-.progress-track {
-  height: 2px;
-  background: #f1f5f9;
-  border-radius: 2px;
-  overflow: hidden;
-
-  .dark-mode & {
-    background: rgba(51, 65, 85, 0.4);
-  }
+.circle-bg {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 2.5;
 }
 
-.progress-fill {
-  height: 100%;
-  background: #3b82f6;
-  border-radius: 2px;
-  transition: width 0.3s ease;
-
-  .dark-mode & {
-    background: #60a5fa;
-  }
+.circle {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke: var(--primary);
+  transition: stroke-dasharray 0.3s ease;
 }
 
-// ── Body ──
-.toc-body {
-  padding: 12px 0 16px;
+.percentage {
+  position: absolute;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text);
 }
 
-.toc-viewport {
-  max-height: calc(100vh - 320px);
+/* ── Main Content ── */
+.toc-content {
+  position: relative;
+  max-height: calc(100vh - 220px);
   overflow-y: auto;
-  padding: 0 12px;
-
+  padding-right: 4px;
+  
   &::-webkit-scrollbar {
-    width: 3px;
+    width: 2px;
   }
   &::-webkit-scrollbar-track {
     background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: #e2e8f0;
-    border-radius: 10px;
-
-    .dark-mode & {
-      background: #334155;
-    }
+    background: var(--border);
+    border-radius: 4px;
   }
 }
 
-.is-mobile .toc-viewport {
-  max-height: none;
-  padding: 0;
+.toc-wrapper {
+  position: relative;
+  padding-left: 2px; // Space for tracking line
 }
 
-// ── Empty ──
-.toc-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 36px 16px;
-  color: #94a3b8;
-  font-size: 13px;
-
-  svg {
-    font-size: 20px;
-    opacity: 0.4;
-  }
+/* The continuous background line */
+.tracking-line {
+  position: absolute;
+  left: 2px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  opacity: 0.6;
+  z-index: 0;
 }
 
-// ── Catalog: 对齐文章内链接/hover 风格 ──
-:deep(.toc-catalog) {
+/* ── Customizing MdCatalog (NUKE ALL INLINE & DEFAULT STYLES) ── */
+:deep(.md-catalog-custom) {
+  position: relative;
+  z-index: 1;
+
   .md-editor-catalog-indicator {
-    display: none !important;
+    display: none !important; /* completely hide their weird indicator */
   }
 
   .md-editor-catalog-container {
@@ -262,113 +278,157 @@ onUnmounted(() => {
 
   .md-editor-catalog-link {
     position: relative;
-    display: block;
-    padding: 8px 14px 8px 22px;
-    margin: 1px 0;
-    font-size: 13.5px;
-    line-height: 1.5;
-    color: #64748b;
-    border-radius: 8px;
-    transition: color 0.15s, background 0.15s;
+    padding: 6px 0 6px 18px;
+    margin: 4px 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
     cursor: pointer;
-
-    .dark-mode & {
-      color: #94a3b8;
+    transition: all 0.25s ease;
+    border-radius: 0;
+    background: transparent !important;
+    
+    // Nuke any internal span colors (this caused the green issue!)
+    span {
+      color: inherit !important;
+      background: transparent !important;
+      transition: all 0.25s ease;
     }
 
-    // 左侧小圆点指示器
-    &::before {
-      content: "";
-      position: absolute;
-      left: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: transparent;
-      transition: all 0.2s ease;
-    }
-
+    // Hover state
     &:hover {
-      color: #1f2937;
-      background: #f8fafc;
-
-      .dark-mode & {
-        color: #f1f5f9;
-        background: rgba(255, 255, 255, 0.03);
+      color: var(--text) !important;
+      span {
+        color: var(--text) !important;
       }
+    }
+
+    // The active line that highlights over the tracking line
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--primary);
+      border-radius: 2px;
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.3s;
+      opacity: 0;
+      z-index: 2;
     }
   }
 
-  // Active state
+  /* 🔥 THE ACTIVE STATE 🔥 */
   .md-editor-catalog-active > .md-editor-catalog-link {
-    color: #2563eb;
-    background: #eff6ff;
+    color: var(--primary) !important;
     font-weight: 600;
 
-    .dark-mode & {
-      color: #60a5fa;
-      background: rgba(59, 130, 246, 0.1);
+    span {
+      color: var(--primary) !important;
     }
 
     &::before {
-      background: #2563eb;
-
-      .dark-mode & {
-        background: #60a5fa;
-      }
+      transform: scaleY(1);
+      opacity: 1;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
     }
   }
 
-  // Top-level
+  /* Structural typography */
   .md-editor-catalog-container > .md-editor-catalog-link {
-    font-weight: 600;
-    color: #1f2937;
-
-    .dark-mode & {
-      color: #f1f5f9;
+    margin-top: 12px;
+    font-size: 14.5px;
+    color: var(--text);
+    span {
+      color: var(--text);
     }
   }
 
-  // Nesting
   .md-editor-catalog-wrapper {
-    padding-left: 14px;
+    padding-left: 12px;
   }
 }
 
-// ── Mobile ──
+/* ── Empty State ── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px 0;
+  color: var(--text-tertiary);
+
+  .empty-icon {
+    font-size: 32px;
+    opacity: 0.5;
+    background: linear-gradient(135deg, var(--text-tertiary), var(--border));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+}
+
+/* ── Mobile Layout ── */
 .is-mobile {
-  :deep(.toc-catalog) {
+  .toc-container {
+    padding: 0;
+  }
+  
+  .toc-content {
+    max-height: none;
+  }
+
+  .tracking-line {
+    display: none;
+  }
+
+  :deep(.md-catalog-custom) {
     .md-editor-catalog-link {
       padding: 12px 16px;
-      margin: 3px 0;
-      font-size: 14px;
-      border-radius: 10px;
+      margin: 8px 0;
+      border-radius: var(--radius-md);
+      background: var(--surface) !important;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-xs);
+      
+      .is-dark & {
+        background: var(--bg-secondary) !important;
+      }
 
       &::before {
-        display: none;
+        display: none; // No left line on mobile, use full card highlight
       }
 
       &:hover {
-        background: #f8fafc;
-
-        .dark-mode & {
-          background: rgba(255, 255, 255, 0.03);
-        }
+        border-color: var(--primary-light);
       }
     }
 
+    // Mobile Active Item
     .md-editor-catalog-active > .md-editor-catalog-link {
-      background: #eff6ff;
-
-      .dark-mode & {
-        background: rgba(59, 130, 246, 0.1);
+      background: var(--primary) !important;
+      color: white !important;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      transform: translateY(-2px);
+      
+      span {
+        color: white !important;
       }
     }
 
     .md-editor-catalog-wrapper {
-      padding-left: 16px;
+      padding-left: 10px;
     }
   }
 }
