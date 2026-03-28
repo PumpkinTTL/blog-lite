@@ -1,7 +1,10 @@
 <template>
   <div
     class="ad-container"
-    :class="{ 'is-glass': type === 'glass', 'is-dark': type === 'dark' }"
+    :class="[
+      `is-${type}`,
+      { 'dark-mode': isDark }
+    ]"
   >
     <div class="ad-inner">
       <div class="ad-badge">广告</div>
@@ -10,7 +13,10 @@
       <div class="ad-slot-wrapper" :class="{ 'no-padding': $slots.default }">
         <slot>
           <div class="ad-content">
-            <div class="ad-icon" v-if="icon">
+            <div class="ad-icon" v-if="image">
+              <img :src="image" :alt="title" class="ad-image" />
+            </div>
+            <div class="ad-icon" v-else-if="icon">
               <font-awesome-icon :icon="icon" />
             </div>
             <div class="ad-text">
@@ -25,31 +31,35 @@
           </button>
         </slot>
       </div>
-
-      <!-- Background Decorations -->
-      <div class="glow-sphere"></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useThemeStore } from "@/stores/theme";
+
 interface Props {
   title?: string;
   description?: string;
   buttonText?: string;
   icon?: string;
-  type?: "default" | "glass" | "dark";
+  image?: string;
+  type?: "default" | "glass";
 }
 
 withDefaults(defineProps<Props>(), {
   title: "探索无限可能",
   description: "加入我们的开发者社区，获取最新技术资讯与独家资源。",
-  buttonText: "立即加入",
-  icon: "rocket",
+  buttonText: "了解详情",
+  icon: "gem",
   type: "default",
 });
 
 defineEmits(["click"]);
+
+const themeStore = useThemeStore();
+const isDark = computed(() => themeStore.isDark);
 </script>
 
 <style scoped lang="scss">
@@ -57,70 +67,65 @@ defineEmits(["click"]);
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--primary, #3b82f6) 0%, #a855f7 100%);
-  padding: 1px; /* Border effect */
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: #fff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04),
+    0 8px 24px -8px rgba(15, 23, 42, 0.06);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease;
   cursor: pointer;
 
   &:hover {
     transform: translateY(-4px);
-    .btn-arrow {
-      transform: translateX(4px);
-    }
-    .glow-sphere {
-      transform: scale(1.2) translate(-10%, -10%);
-      opacity: 0.6;
-    }
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06),
+      0 16px 40px -8px rgba(15, 23, 42, 0.12);
+    .btn-arrow { transform: translateX(4px); }
   }
 
+  // ── glass ──
   &.is-glass {
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    .ad-title {
-      color: #111827;
-    }
-    .ad-desc {
-      color: #4b5563;
-    }
-    .ad-inner {
-      background: transparent;
-    }
-    .ad-btn {
-      background: #111827;
-      color: #fff;
-    }
+    border-color: rgba(226, 232, 240, 0.5);
   }
 
-  &.is-dark {
-    background: #111827;
-    .ad-inner {
-      background: #111827;
+  // ── dark mode ──
+  &.dark-mode {
+    background: #1e293b;
+    border-color: rgba(51, 65, 85, 0.6);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1),
+      0 8px 24px -8px rgba(0, 0, 0, 0.25);
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+        0 16px 40px -8px rgba(0, 0, 0, 0.35);
     }
-    .ad-inner::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(
-        circle at 0% 0%,
-        rgba(59, 130, 246, 0.15) 0%,
-        transparent 50%
-      );
+
+    .ad-title { color: #f1f5f9; }
+    .ad-desc { color: #94a3b8; }
+    .ad-badge {
+      background: rgba(0, 0, 0, 0.35);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    .ad-icon {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+    }
+
+    &.is-glass {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(16px);
+      border-color: rgba(51, 65, 85, 0.4);
     }
   }
 }
 
 .ad-inner {
   position: relative;
-  background: #fff;
-  background-image: radial-gradient(
-      at 0% 0%,
-      rgba(59, 130, 246, 0.05) 0px,
-      transparent 50%
-    ),
-    radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+  background: transparent;
   border-radius: 15px;
-  padding: 0px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -133,7 +138,7 @@ defineEmits(["click"]);
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 24px; /* Move padding here by default */
+  padding: 24px;
   gap: 20px;
 
   &.no-padding {
@@ -156,9 +161,9 @@ defineEmits(["click"]);
   font-size: 9px;
   font-weight: 800;
   color: rgba(255, 255, 255, 0.9);
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 3px 8px;
   border-radius: 6px;
   letter-spacing: 0.08em;
@@ -166,7 +171,7 @@ defineEmits(["click"]);
   display: flex;
   align-items: center;
   gap: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   pointer-events: none;
   text-transform: uppercase;
 }
@@ -180,7 +185,7 @@ defineEmits(["click"]);
 .ad-icon {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  background: rgba(59, 130, 246, 0.08);
   color: var(--primary, #3b82f6);
   border-radius: 12px;
   display: flex;
@@ -188,11 +193,18 @@ defineEmits(["click"]);
   justify-content: center;
   font-size: 20px;
   flex-shrink: 0;
+  overflow: hidden;
+  transition: background 0.3s, color 0.3s;
 }
 
-.ad-text {
-  flex: 1;
+.ad-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
 }
+
+.ad-text { flex: 1; }
 
 .ad-title {
   margin: 0 0 6px;
@@ -200,6 +212,7 @@ defineEmits(["click"]);
   font-weight: 700;
   color: #1f2937;
   line-height: 1.4;
+  transition: color 0.3s;
 }
 
 .ad-desc {
@@ -207,6 +220,7 @@ defineEmits(["click"]);
   font-size: 13px;
   color: #6b7280;
   line-height: 1.6;
+  transition: color 0.3s;
 }
 
 .ad-btn {
@@ -214,7 +228,7 @@ defineEmits(["click"]);
   padding: 12px;
   border: none;
   border-radius: 12px;
-  background: #111827;
+  background: #1f2937;
   color: #fff;
   font-size: 14px;
   font-weight: 700;
@@ -223,8 +237,7 @@ defineEmits(["click"]);
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 
   .btn-arrow {
     font-size: 11px;
@@ -233,51 +246,29 @@ defineEmits(["click"]);
 
   &:hover {
     background: var(--primary, #3b82f6);
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
   }
-}
 
-.glow-sphere {
-  position: absolute;
-  top: -20px;
-  left: -20px;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(
-    circle,
-    rgba(59, 130, 246, 0.15) 0%,
-    transparent 70%
-  );
-  filter: blur(30px);
-  z-index: -1;
-  animation: float 6s ease-in-out infinite alternate;
+  .dark-mode & {
+    background: var(--primary, #3b82f6);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+
+    &:hover {
+      background: #60a5fa;
+    }
+  }
 }
 
 @keyframes float {
-  from {
-    transform: translate(0, 0);
-  }
-  to {
-    transform: translate(20px, 20px);
-  }
+  from { transform: translate(0, 0); }
+  to { transform: translate(20px, 20px); }
 }
 
-/* Responsive adjustment */
 @media (max-width: 640px) {
-  .ad-slot-wrapper:not(.no-padding) {
-    padding: 18px;
-  }
-  .ad-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
-  }
-  .ad-title {
-    font-size: 15px;
-  }
-  .ad-desc {
-    font-size: 12px;
-  }
+  .ad-slot-wrapper:not(.no-padding) { padding: 18px; }
+  .ad-icon { width: 36px; height: 36px; font-size: 16px; }
+  .ad-title { font-size: 15px; }
+  .ad-desc { font-size: 12px; }
 }
 </style>

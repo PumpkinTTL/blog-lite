@@ -7,6 +7,17 @@
           <div class="shell-divider"></div>
           <ArticleContent :article="article" />
         </div>
+
+        <!-- 文末广告位 -->
+        <div class="after-article-ad" v-if="article">
+          <AdContainer
+            title="想要系统学习 Vue 3？"
+            description="从零到一完整实战课程，覆盖 Composition API、Pinia、TypeScript 全栈开发，限时折扣中。"
+            button-text="了解详情"
+            @click="handleAdClick('after-article')"
+          />
+        </div>
+
       </section>
 
       <aside class="detail-right" v-if="article && !isMobile">
@@ -16,6 +27,18 @@
             :markdown="article.markdown"
             scroll-element="html"
           />
+
+          <!-- 侧边栏广告位 1：推广卡片 -->
+          <div class="sidebar-ad">
+            <AdContainer
+              title="VueConf China 2026"
+              description="全球顶级 Vue 开发者大会，早鸟票限时优惠中，抢先锁定席位！"
+              button-text="了解详情"
+              image="https://api.dicebear.com/9.x/notionists/svg?seed=VueConf&backgroundColor=3b82f6"
+              @click="handleAdClick('sidebar-promo')"
+            />
+          </div>
+
         </div>
       </aside>
     </div>
@@ -67,6 +90,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useThemeStore } from "@/stores/theme";
+import AdContainer from "@/components/v1/common/AdContainer.vue";
 import ArticleContent from "@/components/v1/detail/ArticleContent.vue";
 import ArticleHero from "@/components/v1/detail/ArticleHero.vue";
 import ArticleToc from "@/components/v1/detail/ArticleToc.vue";
@@ -201,6 +225,10 @@ const previewId = computed(() =>
   article.value ? `article-preview-${article.value.id}` : "article-preview"
 );
 
+const handleAdClick = (slot: string) => {
+  console.log(`[Ad] clicked: ${slot}`);
+};
+
 const updateMobileState = () => {
   if (typeof window === "undefined") return;
   isMobile.value = window.innerWidth <= 1100;
@@ -322,6 +350,18 @@ onBeforeUnmount(() => {
   top: 100px;
   width: 100%;
   z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-ad {
+  flex-shrink: 0;
+}
+
+.after-article-ad {
+  margin-top: 24px;
+  max-width: 100%;
 }
 
 @media (max-width: 1400px) {
