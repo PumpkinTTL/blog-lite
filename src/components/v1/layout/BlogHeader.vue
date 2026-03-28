@@ -1,5 +1,6 @@
 <template>
-  <header class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300" :class="isDark ? `bg-[${DARK_BG}] border-gray-800` : 'bg-white border-gray-200'"
+  <header class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300" :class="isDark ? 'border-gray-800' : 'bg-white border-gray-200'"
+    :style="isDark ? { background: 'var(--bg)' } : {}"
     style="border-bottom-width: 1px">
     <nav class="mx-auto px-5" style="max-width: 1320px">
       <div class="flex items-center gap-2 sm:gap-4 h-14 sm:h-16">
