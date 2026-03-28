@@ -84,20 +84,26 @@ const headingCount = computed(() => {
 
 const readingProgress = ref(0);
 let progressFrameId: number;
+let lastProgressUpdate = 0;
 
 const handleScrollProgress = () => {
   if (props.mobile) return;
-  const h = document.documentElement;
-  const st = h.scrollTop || document.body.scrollTop;
-  const sh = h.scrollHeight || document.body.scrollHeight;
-  const ch = h.clientHeight;
-  const total = sh - ch;
+
+  const now = Date.now();
+  // Throttle to ~15fps for progress indicator, no need for 60fps
+  if (now - lastProgressUpdate < 66) return;
+  lastProgressUpdate = now;
 
   if (progressFrameId) {
     cancelAnimationFrame(progressFrameId);
   }
 
   progressFrameId = requestAnimationFrame(() => {
+    const h = document.documentElement;
+    const st = h.scrollTop || document.body.scrollTop;
+    const sh = h.scrollHeight || document.body.scrollHeight;
+    const ch = h.clientHeight;
+    const total = sh - ch;
     readingProgress.value = total > 0 ? Math.min((st / total) * 100, 100) : 0;
   });
 };
@@ -133,8 +139,8 @@ onUnmounted(() => {
   // Floating glass effect for PC
   @media (min-width: 768px) {
     background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
     border: 1px solid rgba(255, 255, 255, 0.6);
     box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.05),
       inset 0 0 0 1px rgba(255, 255, 255, 0.2);
@@ -279,18 +285,18 @@ onUnmounted(() => {
     line-height: 1.6;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.25s ease;
     border-radius: 0;
     background: transparent !important;
+    // Only transition specific properties, never use "all"
+    transition: color 0.2s ease, padding-left 0.2s ease;
 
-    // Only target direct span child, not nested links' spans
     > span {
       color: inherit !important;
       background: transparent !important;
-      transition: all 0.25s ease;
+      transition: color 0.2s ease;
     }
 
-    // Per-item left indicator line — fixed height, won't span nested children
+    // Per-item left indicator line
     &::before {
       content: "";
       position: absolute;
@@ -300,7 +306,8 @@ onUnmounted(() => {
       width: 2px;
       background: transparent;
       border-radius: 2px;
-      transition: background 0.25s ease, box-shadow 0.25s ease;
+      transition: background 0.2s ease, box-shadow 0.2s ease,
+        height 0.2s ease;
     }
 
     // Hover state
@@ -316,6 +323,7 @@ onUnmounted(() => {
   .md-editor-catalog-link.md-editor-catalog-active {
     color: var(--primary) !important;
     font-weight: 600;
+    padding-left: 22px;
 
     > span {
       color: var(--primary) !important;
@@ -323,13 +331,15 @@ onUnmounted(() => {
 
     &::before {
       background: var(--primary);
-      box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
+      height: 22px;
+      box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
     }
 
     // Reset nested child links so they don't inherit active styles
     .md-editor-catalog-link {
       color: var(--text-secondary) !important;
       font-weight: normal;
+      padding-left: 18px;
 
       > span {
         color: var(--text-secondary) !important;
