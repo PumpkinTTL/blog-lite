@@ -22,14 +22,8 @@
       </div>
 
       <div class="preview-wrap">
-        <MdPreview
-          :id="previewId"
-          class="md-preview-reset"
-          :model-value="article.markdown"
-          :theme="isDark ? 'dark' : 'light'"
-          preview-theme="github"
-          code-theme="github"
-        />
+        <MdPreview :id="previewId" class="md-preview-reset" :model-value="article.markdown"
+          :theme="isDark ? 'dark' : 'light'" preview-theme="github" code-theme="github" />
       </div>
     </div>
   </section>
@@ -145,7 +139,7 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
   border-radius: 20px;
   background: linear-gradient(135deg, rgba(237, 233, 254, 0.6) 0%, rgba(252, 231, 243, 0.6) 100%);
   border: 1px solid rgba(167, 139, 250, 0.3);
-  box-shadow: 
+  box-shadow:
     0 12px 34px -12px rgba(139, 92, 246, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
@@ -156,12 +150,10 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
     left: -150%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.6),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.6),
+        transparent);
     transform: skewX(-25deg);
     animation: flowLight 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
@@ -169,9 +161,17 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
 }
 
 @keyframes flowLight {
-  0% { left: -150%; }
-  50% { left: 150%; }
-  100% { left: 150%; }
+  0% {
+    left: -150%;
+  }
+
+  50% {
+    left: 150%;
+  }
+
+  100% {
+    left: 150%;
+  }
 }
 
 .ai-badge {
@@ -204,9 +204,20 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
 }
 
 @keyframes pulse {
-  0% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.1); }
-  100% { opacity: 0.6; transform: scale(1); }
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
 }
 
 .ai-text {
@@ -301,13 +312,11 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 
     &::before {
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(167, 139, 250, 0.25),
-        rgba(244, 114, 182, 0.25),
-        transparent
-      );
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(167, 139, 250, 0.25),
+          rgba(244, 114, 182, 0.25),
+          transparent);
     }
   }
 
@@ -316,7 +325,7 @@ const formatWordCount = (count: number) => count.toLocaleString("en-US");
     color: #ddd6fe;
     border-color: rgba(167, 139, 250, 0.3);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    
+
     .ai-icon-wrap {
       color: #a78bfa;
     }

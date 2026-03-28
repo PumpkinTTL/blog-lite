@@ -20,52 +20,43 @@
       </aside>
     </div>
 
-    <!-- ── PRO NAVIGATION MODAL (CENTERED POPUP) ── -->
+    <!-- ── Mobile TOC Drawer ── -->
     <div
       v-if="article && isMobile"
-      class="nav-modal-root"
+      class="toc-drawer-root"
       :class="{ open: mobileTocOpen }"
     >
-      <div class="modal-backdrop" @click="mobileTocOpen = false"></div>
+      <!-- Backdrop -->
+      <div class="drawer-backdrop" @click="mobileTocOpen = false"></div>
 
-      <!-- Sophisticated Floating Button -->
+      <!-- Trigger Button -->
       <button
-        class="nav-trigger-fab"
+        class="drawer-trigger"
         @click="mobileTocOpen = !mobileTocOpen"
         :aria-expanded="mobileTocOpen"
-        aria-label="Navigation Menu"
+        aria-label="打开目录"
       >
-        <div class="icon-box">
-          <font-awesome-icon :icon="mobileTocOpen ? 'xmark' : 'list-ul'" />
-        </div>
+        <font-awesome-icon icon="list-ul" />
       </button>
 
-      <!-- Centered Premium Modal -->
-      <div class="modal-viewport">
-        <div class="modal-surface">
-          <header class="modal-header">
-            <div class="header-left">
-              <span class="badge">Outline</span>
-              <h2 class="title">快速导航</h2>
-            </div>
-            <button class="modal-close-btn" @click="mobileTocOpen = false">
-              <font-awesome-icon icon="xmark" />
-            </button>
-          </header>
-          
-          <div class="modal-main">
-            <ArticleToc
-              :editor-id="previewId"
-              :markdown="article.markdown"
-              :mobile="true"
-              scroll-element="html"
-            />
+      <!-- Drawer Panel -->
+      <div class="drawer-panel">
+        <div class="drawer-head">
+          <div class="drawer-title-row">
+            <font-awesome-icon icon="list-ul" class="drawer-icon" />
+            <span class="drawer-title">文章目录</span>
           </div>
-
-          <footer class="modal-footer">
-            <div class="footer-tip">Scroll or Click to Jump</div>
-            <button class="primary-btn" @click="mobileTocOpen = false">我知道了</button>
-          </footer>
+          <button class="drawer-close" @click="mobileTocOpen = false">
+            <font-awesome-icon icon="xmark" />
+          </button>
+        </div>
+        <div class="drawer-body">
+          <ArticleToc
+            :editor-id="previewId"
+            :markdown="article.markdown"
+            :mobile="true"
+            scroll-element="html"
+          />
         </div>
       </div>
     </div>
@@ -280,10 +271,6 @@ onBeforeUnmount(() => {
   z-index: 20;
 }
 
-.mobile-toc-float {
-  display: none;
-}
-
 @media (max-width: 1400px) {
   .detail-container {
     grid-template-columns: minmax(0, 1fr) 280px;
@@ -297,182 +284,199 @@ onBeforeUnmount(() => {
     padding: 24px 16px 88px;
   }
 
-  // ── PREMIUM NAVIGATION MODAL STYLES ──
-  .nav-modal-root {
-    display: block;
+  // ── Mobile TOC Drawer ──
+  .toc-drawer-root {
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 5000;
   }
 
-  .modal-backdrop {
+  .drawer-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(10px);
+    background: rgba(15, 23, 42, 0.4);
     opacity: 0;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.3s ease;
     pointer-events: none;
-    
-    .nav-modal-root.open & {
+
+    .toc-drawer-root.open & {
       opacity: 1;
       pointer-events: auto;
     }
   }
 
-  // Sleek FAB
-  .nav-trigger-fab {
+  // Trigger: 右侧竖条按钮
+  .drawer-trigger {
     pointer-events: auto;
     position: fixed;
-    right: 24px;
-    bottom: 40px;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 5002;
-    width: 60px;
-    height: 60px;
-    background: #0f172a;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    cursor: pointer;
-
-    .dark-mode & {
-      background: #3b82f6;
-    }
-
-    .icon-box {
-      font-size: 22px;
-      transition: transform 0.4s ease;
-    }
-
-    .nav-modal-root.open & {
-      transform: scale(0) rotate(180deg);
-      opacity: 0;
-    }
-  }
-
-  // Modal Viewport
-  .modal-viewport {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    z-index: 5001;
-    perspective: 1200px;
-  }
-
-  .modal-surface {
-    pointer-events: auto;
-    width: 100%;
-    max-width: 440px;
+    width: 36px;
+    height: 80px;
     background: white;
-    border-radius: 36px;
-    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.4);
+    color: #2563eb;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-right: none;
+    border-radius: 12px 0 0 12px;
     display: flex;
     flex-direction: column;
-    max-height: 85vh;
-    transform: translateY(60px) scale(0.92);
-    opacity: 0;
-    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); // Bouncy Entrance
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 14px;
+    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: all 0.2s ease;
 
-    .nav-modal-root.open & {
-      transform: translateY(0) scale(1);
-      opacity: 1;
+    .trigger-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748b;
     }
 
     .dark-mode & {
-      background: #111827;
-      box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
+      background: #1e293b;
+      border-color: rgba(45, 55, 72, 0.8);
+      box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3);
+      color: #60a5fa;
+
+      .trigger-label {
+        color: #94a3b8;
+      }
+    }
+
+    &:hover {
+      background: #2563eb;
+      color: #fff;
+      box-shadow: -4px 0 16px rgba(37, 99, 235, 0.25);
+
+      .trigger-label {
+        color: #fff;
+      }
+
+      .dark-mode & {
+        background: #2563eb;
+      }
+    }
+
+    .toc-drawer-root.open & {
+      opacity: 0;
+      pointer-events: none;
     }
   }
 
-  .modal-header {
-    padding: 32px 32px 20px;
+  // Drawer Panel: 实心白底，对齐主文章卡片
+  .drawer-panel {
+    pointer-events: auto;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(80vw, 320px);
+    background: white;
+    box-shadow: -8px 0 30px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 5001;
     display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .dark-mode & {
+      background: #1e293b;
+      box-shadow: -8px 0 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .toc-drawer-root.open & {
+      transform: translateX(0);
+    }
+  }
+
+  .drawer-head {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    flex-shrink: 0;
 
-    .badge {
-      font-size: 10px;
-      font-weight: 800;
-      color: #3b82f6;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      display: block;
-      margin-bottom: 6px;
+    .dark-mode & {
+      border-color: rgba(51, 65, 85, 0.5);
+    }
+  }
+
+  .drawer-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .drawer-icon {
+    font-size: 13px;
+    color: #2563eb;
+
+    .dark-mode & {
+      color: #60a5fa;
+    }
+  }
+
+  .drawer-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+
+    .dark-mode & {
+      color: #f8fafc;
+    }
+  }
+
+  .drawer-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: none;
+    color: #94a3b8;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    .dark-mode & {
+      background: rgba(51, 65, 85, 0.4);
     }
 
-    .title {
-      font-size: 24px;
-      font-weight: 800;
-      color: #0f172a;
-      margin: 0;
-
-      .dark-mode & {
-        color: white;
-      }
-    }
-
-    .modal-close-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
+    &:hover {
+      color: #64748b;
       background: #f1f5f9;
-      border: none;
-      color: #94a3b8;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
 
       .dark-mode & {
-        background: #1e293b;
+        color: #cbd5e1;
+        background: rgba(51, 65, 85, 0.6);
       }
     }
   }
 
-  .modal-main {
+  .drawer-body {
     flex: 1;
     overflow-y: auto;
-    padding: 12px 28px;
-    
-    &::-webkit-scrollbar { display: none; }
-  }
+    padding: 8px 16px 24px;
 
-  .modal-footer {
-    padding: 20px 32px 40px;
-    text-align: center;
-
-    .footer-tip {
-      font-size: 12px;
-      color: #64748b;
-      margin-bottom: 16px;
-      font-weight: 600;
-      opacity: 0.6;
+    &::-webkit-scrollbar {
+      width: 3px;
     }
-    
-    .primary-btn {
-      width: 100%;
-      height: 56px;
-      background: #3b82f6;
-      color: white;
-      border: none;
-      border-radius: 18px;
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      cursor: pointer;
-      box-shadow: 0 10px 24px rgba(59, 130, 246, 0.4);
-      transition: all 0.3s ease;
+    &::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 10px;
 
-      &:active { transform: scale(0.98); }
+      .dark-mode & {
+        background: #334155;
+      }
     }
   }
 }
