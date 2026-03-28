@@ -8,6 +8,9 @@
           <ArticleContent :article="article" />
         </div>
 
+        <!-- 评论区 -->
+        <ArticleComments v-if="article" />
+
         <!-- 文末广告位 -->
         <div class="after-article-ad" v-if="article">
           <AdContainer
@@ -91,6 +94,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useThemeStore } from "@/stores/theme";
 import AdContainer from "@/components/v1/common/AdContainer.vue";
+import ArticleComments from "@/components/v1/detail/ArticleComments.vue";
 import ArticleContent from "@/components/v1/detail/ArticleContent.vue";
 import ArticleHero from "@/components/v1/detail/ArticleHero.vue";
 import ArticleToc from "@/components/v1/detail/ArticleToc.vue";
@@ -362,6 +366,10 @@ onBeforeUnmount(() => {
 .after-article-ad {
   margin-top: 24px;
   max-width: 100%;
+}
+
+.comments-wrapper {
+  margin-top: 24px;
 }
 
 @media (max-width: 1400px) {
