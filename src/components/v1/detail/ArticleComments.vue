@@ -42,7 +42,7 @@
 
     <!-- 评论列表 -->
     <div class="comments-list">
-      <div v-for="comment in comments" :key="comment.id" class="comment-thread">
+      <div v-for="comment in visibleComments" :key="comment.id" class="comment-thread">
         <!-- 主评论 -->
         <div class="comment-item">
           <img :src="comment.avatar" :alt="comment.name" class="comment-avatar" />
@@ -68,7 +68,7 @@
 
         <!-- 嵌套回复 -->
         <div v-if="comment.replies?.length" class="replies">
-          <div v-for="reply in comment.replies" :key="reply.id" class="comment-item reply-item">
+          <div v-for="reply in getVisibleReplies(comment)" :key="reply.id" class="comment-item reply-item">
             <img :src="reply.avatar" :alt="reply.name" class="comment-avatar small" />
             <div class="comment-body">
               <div class="comment-meta">
@@ -92,8 +92,20 @@
               </div>
             </div>
           </div>
+          <!-- 展开更多回复 -->
+          <button v-if="hasMoreReplies(comment)" class="expand-replies-btn" @click="expandReplies(comment)">
+            <font-awesome-icon icon="chevron-down" />
+            展开更多回复（{{ (comment.replies?.length ?? 0) - (replyExpandMap.get(comment.id) ?? REPLY_INIT_COUNT) }} 条）
+          </button>
         </div>
       </div>
+
+      <!-- 加载更多评论 -->
+      <button v-if="hasMoreComments" class="load-more-btn" :disabled="loadingMoreComments" @click="loadMoreComments">
+        <font-awesome-icon v-if="loadingMoreComments" icon="refresh" spin class="load-more-icon" />
+        <font-awesome-icon v-else icon="chevron-down" class="load-more-icon" />
+        {{ loadingMoreComments ? '加载中...' : '查看更多评论' }}
+      </button>
 
       <!-- 空状态 -->
       <div v-if="!comments.length" class="empty-state">
@@ -105,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref } from "vue";
+import { computed, nextTick, reactive, ref } from "vue";
 import { useThemeStore } from "@/stores/theme";
 import coderAvatar from "@/assets/avatars/coder.png";
 import writerAvatar from "@/assets/avatars/writer.png";
@@ -137,6 +149,13 @@ const replyParent = ref<CommentItem | null>(null);
 const inputCardRef = ref<HTMLElement | null>(null);
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 
+// ── 分页配置 ──
+const COMMENT_PAGE_SIZE = 3;
+const REPLY_INIT_COUNT = 2;
+const commentDisplayCount = ref(COMMENT_PAGE_SIZE);
+const replyExpandMap = reactive(new Map<number, number>()); // commentId → 已展开的回复数
+const loadingMoreComments = ref(false);
+
 const currentUser = {
   name: "匿名用户",
   avatar: coderAvatar,
@@ -163,6 +182,36 @@ const comments = ref<CommentItem[]>([
         liked: false,
         isAuthor: true,
         replyTo: "林小北",
+      },
+      {
+        id: 102,
+        name: "陈大鱼",
+        avatar: designerAvatar,
+        content: "我们团队就是从 Vue 2 直接跳到 Composition API 的，前期确实有点痛苦。",
+        time: "45 分钟前",
+        likes: 3,
+        liked: false,
+        replyTo: "林小北",
+      },
+      {
+        id: 103,
+        name: "前端小白",
+        avatar: dataCuratorAvatar,
+        content: "同感！不过熬过前两周就顺畅多了，现在反而不想回去写 Options API 了。",
+        time: "30 分钟前",
+        likes: 5,
+        liked: false,
+        replyTo: "陈大鱼",
+      },
+      {
+        id: 104,
+        name: "林小北",
+        avatar: writerAvatar,
+        content: "是的，关键是前两天别放弃，写几个小需求就上手了。",
+        time: "15 分钟前",
+        likes: 2,
+        liked: false,
+        replyTo: "前端小白",
       },
     ],
   },
@@ -199,6 +248,102 @@ const comments = ref<CommentItem[]>([
       },
     ],
   },
+  {
+    id: 4,
+    name: "赵铁柱",
+    avatar: operatorAvatar,
+    content:
+      "讲真，Pinia + Composable 这套组合拳打下来，状态管理终于不脏了。之前用 Vuex 写大型项目，模块嵌套到后面自己都不想看。",
+    time: "2 天前",
+    likes: 31,
+    liked: false,
+    replies: [
+      {
+        id: 401,
+        name: "开发者",
+        avatar: officerAvatar,
+        content: "Pinia 的 DevTools 支持也做得很好，调试体验比 Vuex 舒服太多了。",
+        time: "1 天前",
+        likes: 12,
+        liked: false,
+        isAuthor: true,
+        replyTo: "赵铁柱",
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "周小鱼",
+    avatar: dataCuratorAvatar,
+    content:
+      "文章里提到的 ref vs reactive 选择建议很中肯，我们项目组之前为这个争论了好久，最后统一用 ref + 解构，代码可读性确实好很多。",
+    time: "3 天前",
+    likes: 19,
+    liked: false,
+  },
+  {
+    id: 6,
+    name: "孙大强",
+    avatar: designerAvatar,
+    content:
+      "自定义指令那块写得不错，不过建议补充一下 Teleport 的使用场景，我们在做全局弹窗的时候用得特别多。",
+    time: "4 天前",
+    likes: 11,
+    liked: false,
+    replies: [
+      {
+        id: 601,
+        name: "开发者",
+        avatar: officerAvatar,
+        content: "好建议！下一篇文章会专门讲 Teleport 和 Suspense 的实战用法。",
+        time: "3 天前",
+        likes: 7,
+        liked: false,
+        isAuthor: true,
+        replyTo: "孙大强",
+      },
+      {
+        id: 602,
+        name: "周小鱼",
+        avatar: dataCuratorAvatar,
+        content: "期待！Suspense 配合异步组件真的是性能优化的利器。",
+        time: "3 天前",
+        likes: 3,
+        liked: false,
+        replyTo: "开发者",
+      },
+      {
+        id: 603,
+        name: "赵铁柱",
+        avatar: operatorAvatar,
+        content: "Teleport 做模态框和通知是真的香，再也不用管 z-index 层级问题了。",
+        time: "2 天前",
+        likes: 6,
+        liked: false,
+        replyTo: "孙大强",
+      },
+    ],
+  },
+  {
+    id: 7,
+    name: "吴前端",
+    avatar: writerAvatar,
+    content:
+      "刚把公司老项目从 Vue 2 迁移到 Vue 3，整体用了两个月，踩了不少坑，不过迁移完之后开发效率确实提升了不少。",
+    time: "5 天前",
+    likes: 28,
+    liked: false,
+  },
+  {
+    id: 8,
+    name: "李全栈",
+    avatar: officerAvatar,
+    content:
+      "作为后端转前端的开发者，Composition API 的写法更接近普通函数调用，学习曲线比 Options API 平缓很多，强烈推荐。",
+    time: "1 周前",
+    likes: 15,
+    liked: false,
+  },
 ]);
 
 const totalCount = computed(() => {
@@ -208,6 +353,35 @@ const totalCount = computed(() => {
   });
   return count;
 });
+
+// ── 评论分页 ──
+const visibleComments = computed(() =>
+  comments.value.slice(0, commentDisplayCount.value)
+);
+const hasMoreComments = computed(
+  () => commentDisplayCount.value < comments.value.length
+);
+
+const loadMoreComments = () => {
+  loadingMoreComments.value = true;
+  setTimeout(() => {
+    commentDisplayCount.value += COMMENT_PAGE_SIZE;
+    loadingMoreComments.value = false;
+  }, 300);
+};
+
+// ── 回复展开 ──
+const getVisibleReplies = (comment: CommentItem) => {
+  const count = replyExpandMap.get(comment.id) ?? REPLY_INIT_COUNT;
+  return comment.replies?.slice(0, count) ?? [];
+};
+const hasMoreReplies = (comment: CommentItem) => {
+  const shown = replyExpandMap.get(comment.id) ?? REPLY_INIT_COUNT;
+  return (comment.replies?.length ?? 0) > shown;
+};
+const expandReplies = (comment: CommentItem) => {
+  replyExpandMap.set(comment.id, comment.replies?.length ?? 0);
+};
 
 const toggleLike = (item: CommentItem) => {
   item.liked = !item.liked;
@@ -697,6 +871,80 @@ const submitComment = () => {
 
   .comment-item+.comment-item {
     margin-top: 12px;
+  }
+}
+
+/* ── Expand Replies ── */
+.expand-replies-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+  padding: 4px 0;
+  border: none;
+  background: none;
+  color: var(--primary, #3b82f6);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  svg {
+    font-size: 10px;
+    transition: transform 0.2s;
+  }
+
+  &:hover {
+    opacity: 0.8;
+
+    svg {
+      transform: translateY(1px);
+    }
+  }
+
+  .dark-mode & {
+    color: #60a5fa;
+  }
+}
+
+/* ── Load More Comments ── */
+.load-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  padding: 14px 0 0;
+  margin-top: 16px;
+  border: none;
+  border-top: 1px solid rgba(226, 232, 240, 0.5);
+  border-radius: 0;
+  background: none;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  .load-more-icon {
+    font-size: 10px;
+  }
+
+  &:hover:not(:disabled) {
+    color: var(--primary, #3b82f6);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  .dark-mode & {
+    border-top-color: rgba(51, 65, 85, 0.35);
+    color: #64748b;
+
+    &:hover:not(:disabled) {
+      color: #60a5fa;
+    }
   }
 }
 
