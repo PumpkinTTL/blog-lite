@@ -35,6 +35,9 @@
             scroll-element="html"
           />
 
+          <!-- 相关推荐 -->
+          <ArticleRelated :articles="relatedArticles" />
+
           <!-- 侧边栏广告位 1：推广卡片 -->
           <div class="sidebar-ad">
             <AdContainer
@@ -103,6 +106,7 @@ import ArticleContent from "@/components/v1/detail/ArticleContent.vue";
 import ArticleHero from "@/components/v1/detail/ArticleHero.vue";
 import ArticleToc from "@/components/v1/detail/ArticleToc.vue";
 import ArticleFooter from "@/components/v1/detail/ArticleFooter.vue";
+import ArticleRelated from "@/components/v1/detail/ArticleRelated.vue";
 import { articleList, getAdjacentArticles } from "@/data/articleMock";
 import type { ArticleFull } from "@/data/articleMock";
 
@@ -136,6 +140,22 @@ const loadArticle = () => {
   prevArticle.value = prev;
   nextArticle.value = next;
 };
+
+// 相关推荐：排除当前文章，取同分类优先，最多3篇
+const relatedArticles = computed(() => {
+  if (!article.value) return [];
+  const currentId = article.value.id;
+  const currentCategory = article.value.category;
+  const others = articleList.filter((a) => a.id !== currentId);
+  const sameCategory = others.filter((a) => a.category === currentCategory);
+  const diffCategory = others.filter((a) => a.category !== currentCategory);
+  return [...sameCategory, ...diffCategory].slice(0, 3).map((a) => ({
+    id: a.id,
+    title: a.title,
+    cover: a.cover,
+    category: a.category,
+  }));
+});
 
 // 监听路由变化，重新加载文章并关闭目录
 watch(
