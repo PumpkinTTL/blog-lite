@@ -141,6 +141,12 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from "vue";
 import { useThemeStore } from "@/stores/theme";
+import coderAvatar from "@/assets/avatars/coder.png";
+import writerAvatar from "@/assets/avatars/writer.png";
+import designerAvatar from "@/assets/avatars/Designer.png";
+import dataCuratorAvatar from "@/assets/avatars/DataCurator.png";
+import officerAvatar from "@/assets/avatars/Officer.png";
+import operatorAvatar from "@/assets/avatars/operator.png";
 
 interface CommentItem {
   id: number;
@@ -167,14 +173,14 @@ const textareaRef = ref<HTMLTextAreaElement | null>(null);
 
 const currentUser = {
   name: "匿名用户",
-  avatar: "https://api.dicebear.com/9.x/thumbs/svg?seed=Anon&backgroundColor=c0aede",
+  avatar: coderAvatar,
 };
 
 const comments = ref<CommentItem[]>([
   {
     id: 1,
     name: "林小北",
-    avatar: "https://api.dicebear.com/9.x/thumbs/svg?seed=LinBei&backgroundColor=b6e3f4",
+    avatar: writerAvatar,
     content:
       "Composition API 确实解决了 Options API 的代码分散问题，但团队迁移的时候最大阻力其实是思维惯性问题。文章里提到的「先统一高频场景」这个策略很实用。",
     time: "2 小时前",
@@ -184,7 +190,7 @@ const comments = ref<CommentItem[]>([
       {
         id: 101,
         name: "开发者",
-        avatar: "https://api.dicebear.com/9.x/thumbs/svg?seed=Dev&backgroundColor=e6e6fa",
+        avatar: officerAvatar,
         content: "对，渐进式迁移才是最稳妥的，感谢认可！",
         time: "1 小时前",
         likes: 8,
@@ -197,7 +203,7 @@ const comments = ref<CommentItem[]>([
   {
     id: 2,
     name: "陈大鱼",
-    avatar: "https://api.dicebear.com/9.x/thumbs/svg?seed=Fish&backgroundColor=ffd5dc",
+    avatar: designerAvatar,
     content:
       "状态边界的三个判断问题很实用，以前总搞不清哪些该抽 composable 哪些留组件内。收藏了。",
     time: "5 小时前",
@@ -207,7 +213,7 @@ const comments = ref<CommentItem[]>([
   {
     id: 3,
     name: "前端小白",
-    avatar: "https://api.dicebear.com/9.x/thumbs/svg?seed=Newbie&backgroundColor=d1f4d1",
+    avatar: dataCuratorAvatar,
     content:
       "请问 useArticle 这个 composable 里的 error 状态一般怎么展示给用户？是 toast 还是 inline 提示？",
     time: "1 天前",
@@ -217,7 +223,7 @@ const comments = ref<CommentItem[]>([
       {
         id: 301,
         name: "林小北",
-        avatar: "https://api.dicebear.com/9.x/thumbs/svg?seed=LinBei&backgroundColor=b6e3f4",
+        avatar: writerAvatar,
         content:
           "看场景，网络错误用 toast，表单校验用 inline。关键数据加载失败可以在页面级做一个 error boundary。",
         time: "20 小时前",
