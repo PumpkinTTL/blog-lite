@@ -12,12 +12,11 @@
 
       <div class="related-list">
         <router-link
-          v-for="(item, index) in articles"
+          v-for="item in articles"
           :key="item.id"
           :to="`/article/${item.id}`"
           class="related-card"
         >
-          <span class="card-index">{{ String(index + 1).padStart(2, '0') }}</span>
           <div class="card-cover">
             <img :src="item.cover" :alt="item.title" loading="lazy" />
             <div class="cover-overlay"></div>
@@ -207,26 +206,11 @@ const isDark = computed(() => themeStore.isDark);
     &::before { height: 20px; }
     .card-cover img { transform: scale(1.08); }
     .card-title { color: var(--primary, #3b82f6); }
-    .card-index { color: var(--primary, #3b82f6); }
 
     .is-dark & {
       .card-title { color: #60a5fa; }
-      .card-index { color: #60a5fa; }
     }
   }
-}
-
-.card-index {
-  width: 22px;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 800;
-  color: #cbd5e1;
-  flex-shrink: 0;
-  font-variant-numeric: tabular-nums;
-  transition: color 0.2s ease;
-
-  .is-dark & { color: #475569; }
 }
 
 .card-cover {
