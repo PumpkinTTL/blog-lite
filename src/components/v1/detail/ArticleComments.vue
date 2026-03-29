@@ -15,41 +15,23 @@
 
     <!-- 评论输入区 -->
     <div class="comment-input-card" ref="inputCardRef">
-      <img
-        :src="currentUser.avatar"
-        :alt="currentUser.name"
-        class="input-avatar"
-      />
+      <img :src="currentUser.avatar" :alt="currentUser.name" class="input-avatar" />
       <div class="input-body">
         <div class="reply-hint" v-if="replyTarget">
           <span>回复 <strong>@{{ replyTarget.name }}</strong></span>
-          <button class="reply-hint-close" @click="cancelReply">
+          <button class="reply-hint-close" @mousedown.prevent @click="cancelReply">
             <font-awesome-icon icon="xmark" />
           </button>
         </div>
-        <textarea
-          ref="textareaRef"
-          v-model="newComment"
-          class="input-textarea"
-          :class="{ expanded: inputFocused || newComment.trim() }"
-          placeholder="写下你的想法..."
-          @focus="inputFocused = true"
-          @blur="handleBlur"
-        />
+        <textarea ref="textareaRef" v-model="newComment" class="input-textarea"
+          :class="{ expanded: inputFocused || newComment.trim() }" placeholder="写下你的想法..." @focus="inputFocused = true"
+          @blur="handleBlur" />
         <transition name="slide-fade">
           <div class="input-actions" v-if="inputFocused || newComment.trim()">
-            <button
-              v-if="replyTarget"
-              class="cancel-reply-btn"
-              @click="cancelReply"
-            >
+            <button v-if="replyTarget" class="cancel-reply-btn" @mousedown.prevent @click="cancelReply">
               取消
             </button>
-            <button
-              class="submit-btn"
-              :disabled="!newComment.trim()"
-              @click="submitComment"
-            >
+            <button class="submit-btn" :disabled="!newComment.trim()" @mousedown.prevent @click="submitComment">
               <font-awesome-icon icon="paper-plane" />
               {{ replyTarget ? '回复' : '发布' }}
             </button>
@@ -60,11 +42,7 @@
 
     <!-- 评论列表 -->
     <div class="comments-list">
-      <div
-        v-for="comment in comments"
-        :key="comment.id"
-        class="comment-thread"
-      >
+      <div v-for="comment in comments" :key="comment.id" class="comment-thread">
         <!-- 主评论 -->
         <div class="comment-item">
           <img :src="comment.avatar" :alt="comment.name" class="comment-avatar" />
@@ -76,11 +54,7 @@
             </div>
             <p class="comment-text">{{ comment.content }}</p>
             <div class="comment-actions">
-              <button
-                class="action-btn"
-                :class="{ liked: comment.liked }"
-                @click="toggleLike(comment)"
-              >
+              <button class="action-btn" :class="{ liked: comment.liked }" @click="toggleLike(comment)">
                 <font-awesome-icon icon="thumbs-up" />
                 <span>{{ comment.likes || '' }}</span>
               </button>
@@ -94,11 +68,7 @@
 
         <!-- 嵌套回复 -->
         <div v-if="comment.replies?.length" class="replies">
-          <div
-            v-for="reply in comment.replies"
-            :key="reply.id"
-            class="comment-item reply-item"
-          >
+          <div v-for="reply in comment.replies" :key="reply.id" class="comment-item reply-item">
             <img :src="reply.avatar" :alt="reply.name" class="comment-avatar small" />
             <div class="comment-body">
               <div class="comment-meta">
@@ -111,11 +81,7 @@
               </div>
               <p class="comment-text">{{ reply.content }}</p>
               <div class="comment-actions">
-                <button
-                  class="action-btn"
-                  :class="{ liked: reply.liked }"
-                  @click="toggleLike(reply)"
-                >
+                <button class="action-btn" :class="{ liked: reply.liked }" @click="toggleLike(reply)">
                   <font-awesome-icon icon="thumbs-up" />
                   <span>{{ reply.likes || '' }}</span>
                 </button>
@@ -264,11 +230,9 @@ const cancelReply = () => {
 };
 
 const handleBlur = () => {
-  setTimeout(() => {
-    if (!newComment.value.trim() && !replyTarget.value) {
-      inputFocused.value = false;
-    }
-  }, 300);
+  if (!newComment.value.trim() && !replyTarget.value) {
+    inputFocused.value = false;
+  }
 };
 
 const submitComment = () => {
@@ -573,7 +537,7 @@ const submitComment = () => {
 }
 
 .comment-thread {
-  & + .comment-thread {
+  &+.comment-thread {
     border-top: 1px solid rgba(226, 232, 240, 0.5);
     padding-top: 16px;
     margin-top: 16px;
@@ -697,7 +661,10 @@ const submitComment = () => {
 
   &:hover {
     color: var(--primary, #3b82f6);
-    svg { transform: scale(1.15); }
+
+    svg {
+      transform: scale(1.15);
+    }
 
     .dark-mode & {
       color: #60a5fa;
@@ -706,7 +673,10 @@ const submitComment = () => {
 
   &.liked {
     color: #ef4444;
-    svg { transform: scale(1.1); }
+
+    svg {
+      transform: scale(1.1);
+    }
 
     &:hover {
       color: #dc2626;
@@ -725,7 +695,7 @@ const submitComment = () => {
     border-left-color: rgba(96, 165, 250, 0.12);
   }
 
-  .comment-item + .comment-item {
+  .comment-item+.comment-item {
     margin-top: 12px;
   }
 }
