@@ -15,7 +15,24 @@
       "Bash(dir srcstores:*)",
       "Bash(grep -r \"ant-layout\\\\|ant-layout-content\" src/ --include=*.vue --include=*.scss --include=*.css)",
       "Bash(ssh -T git@github.com)",
-      "Bash(ssh-add -l)"
+      "Bash(ssh-add -l)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"blog comments compact minimal\" --domain style)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"modern elegant\" --domain typography)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"animation interaction\" --domain ux)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"layout responsive\" --stack vue)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"SaaS dashboard blog\" --domain product)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"saas tech\" --domain color)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"glassmorphism neumorphism soft\" --domain style)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"modern clean professional\" --domain typography)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"z-index layering\" --domain ux)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"loading states\" --domain ux)",
+      "Bash(git checkout:*)",
+      "Bash(python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"button CTA subtle\" --domain ux)",
+      "Bash(python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"animation loading\" --domain ux)",
+      "Bash(python \"C:\\\\Users\\\\Administrator\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"minimal clean\" --domain style)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"button CTA subtle\" --domain ux)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"animation loading\" --domain ux)",
+      "Bash(python \"D:\\\\winResources\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"minimal clean\" --domain style)"
     ]
   }
 }

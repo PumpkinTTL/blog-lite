@@ -38,14 +38,6 @@
 
         <!-- Actions -->
         <div class="flex items-center gap-1 sm:gap-2">
-          <!-- Search Button -->
-          <button class="p-1.5 sm:p-2 rounded-lg transition-all cursor-pointer" :class="isDark
-              ? 'text-gray-400 hover:text-white hover:bg-gray-800/60'
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-            " @click="openSearch">
-            <font-awesome-icon icon="search" class="text-sm sm:text-base" />
-          </button>
-
           <!-- Theme Toggle (Desktop only) -->
           <button class="hidden sm:block p-2 rounded-lg transition-all cursor-pointer" :class="isDark
               ? 'text-gray-400 hover:text-white hover:bg-gray-800/60'
@@ -392,11 +384,6 @@ const handleMarkAllRead = () => {
 
 const toggleTheme = () => {
   themeStore.toggle();
-};
-
-const openSearch = () => {
-  console.log("Open search");
-  // TODO: 实现搜索功能
 };
 
 // 点击外部关闭用户菜单

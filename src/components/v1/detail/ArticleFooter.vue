@@ -180,25 +180,40 @@ const navigate = (id: string) => {
   &:hover:not(.disabled) {
     background: rgba(59, 130, 246, 0.04);
 
-    .nav-title { color: var(--primary, #3b82f6); }
+    .nav-title {
+      color: var(--primary, #3b82f6);
+    }
 
     :deep(.dark-mode *) &,
     :deep(.dark-mode) & {
       background: rgba(96, 165, 250, 0.06);
-      .nav-title { color: #60a5fa; }
+
+      .nav-title {
+        color: #60a5fa;
+      }
     }
   }
 
   &.disabled {
     cursor: default;
 
-    .nav-title { color: #cbd5e1; }
-    .nav-empty { color: #cbd5e1; }
+    .nav-title {
+      color: #cbd5e1;
+    }
+
+    .nav-empty {
+      color: #cbd5e1;
+    }
 
     :deep(.dark-mode *) &,
     :deep(.dark-mode) & {
-      .nav-title { color: #475569; }
-      .nav-empty { color: #475569; }
+      .nav-title {
+        color: #475569;
+      }
+
+      .nav-empty {
+        color: #475569;
+      }
     }
   }
 
@@ -206,7 +221,9 @@ const navigate = (id: string) => {
     text-align: right;
     align-items: flex-end;
 
-    .nav-label { flex-direction: row-reverse; }
+    .nav-label {
+      flex-direction: row-reverse;
+    }
   }
 }
 
@@ -220,7 +237,9 @@ const navigate = (id: string) => {
   letter-spacing: 0.3px;
 
   :deep(.dark-mode *) &,
-  :deep(.dark-mode) & { color: #64748b; }
+  :deep(.dark-mode) & {
+    color: #64748b;
+  }
 }
 
 .nav-title {
@@ -235,7 +254,9 @@ const navigate = (id: string) => {
   transition: color 0.2s;
 
   :deep(.dark-mode *) &,
-  :deep(.dark-mode) & { color: #cbd5e1; }
+  :deep(.dark-mode) & {
+    color: #cbd5e1;
+  }
 }
 
 .nav-empty {
@@ -243,17 +264,39 @@ const navigate = (id: string) => {
   color: #94a3b8;
 
   :deep(.dark-mode *) &,
-  :deep(.dark-mode) & { color: #64748b; }
+  :deep(.dark-mode) & {
+    color: #64748b;
+  }
 }
 
 @media (max-width: 640px) {
-  .article-footer { margin-top: 28px; padding-top: 18px; }
-  .action-row { gap: 4px; margin-bottom: 18px; }
-  .action-item { padding: 5px 10px; font-size: 12px; }
-  .nav-row { grid-template-columns: 1fr; gap: 8px; }
+  .article-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+  }
+
+  .action-row {
+    gap: 4px;
+    margin-bottom: 18px;
+  }
+
+  .action-item {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .nav-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
   .nav-card:nth-child(2) {
-    text-align: left; align-items: flex-start;
-    .nav-label { flex-direction: row; }
+    text-align: left;
+    align-items: flex-start;
+
+    .nav-label {
+      flex-direction: row;
+    }
   }
 }
 </style>

@@ -15,25 +15,51 @@
 
     <!-- 评论输入区 -->
     <div class="comment-input-card" ref="inputCardRef">
-      <img :src="currentUser.avatar" :alt="currentUser.name" class="input-avatar" />
+      <img
+        :src="currentUser.avatar"
+        :alt="currentUser.name"
+        class="input-avatar"
+      />
       <div class="input-body">
         <div class="reply-hint" v-if="replyTarget">
-          <span>回复 <strong>@{{ replyTarget.name }}</strong></span>
-          <button class="reply-hint-close" @mousedown.prevent @click="cancelReply">
+          <span
+            >回复 <strong>@{{ replyTarget.name }}</strong></span
+          >
+          <button
+            class="reply-hint-close"
+            @mousedown.prevent
+            @click="cancelReply"
+          >
             <font-awesome-icon icon="xmark" />
           </button>
         </div>
-        <textarea ref="textareaRef" v-model="newComment" class="input-textarea"
-          :class="{ expanded: inputFocused || newComment.trim() }" placeholder="写下你的想法..." @focus="inputFocused = true"
-          @blur="handleBlur" />
+        <textarea
+          ref="textareaRef"
+          v-model="newComment"
+          class="input-textarea"
+          :class="{ expanded: inputFocused || newComment.trim() }"
+          placeholder="写下你的想法..."
+          @focus="inputFocused = true"
+          @blur="handleBlur"
+        />
         <transition name="slide-fade">
           <div class="input-actions" v-if="inputFocused || newComment.trim()">
-            <button v-if="replyTarget" class="cancel-reply-btn" @mousedown.prevent @click="cancelReply">
+            <button
+              v-if="replyTarget"
+              class="cancel-reply-btn"
+              @mousedown.prevent
+              @click="cancelReply"
+            >
               取消
             </button>
-            <button class="submit-btn" :disabled="!newComment.trim()" @mousedown.prevent @click="submitComment">
+            <button
+              class="submit-btn"
+              :disabled="!newComment.trim()"
+              @mousedown.prevent
+              @click="submitComment"
+            >
               <font-awesome-icon icon="paper-plane" />
-              {{ replyTarget ? '回复' : '发布' }}
+              {{ replyTarget ? "回复" : "发布" }}
             </button>
           </div>
         </transition>
@@ -42,10 +68,18 @@
 
     <!-- 评论列表 -->
     <div class="comments-list">
-      <div v-for="comment in visibleComments" :key="comment.id" class="comment-thread">
+      <div
+        v-for="comment in visibleComments"
+        :key="comment.id"
+        class="comment-thread"
+      >
         <!-- 主评论 -->
         <div class="comment-item">
-          <img :src="comment.avatar" :alt="comment.name" class="comment-avatar" />
+          <img
+            :src="comment.avatar"
+            :alt="comment.name"
+            class="comment-avatar"
+          />
           <div class="comment-body">
             <div class="comment-meta">
               <span class="comment-name">{{ comment.name }}</span>
@@ -54,9 +88,13 @@
             </div>
             <p class="comment-text">{{ comment.content }}</p>
             <div class="comment-actions">
-              <button class="action-btn" :class="{ liked: comment.liked }" @click="toggleLike(comment)">
+              <button
+                class="action-btn"
+                :class="{ liked: comment.liked }"
+                @click="toggleLike(comment)"
+              >
                 <font-awesome-icon icon="thumbs-up" />
-                <span>{{ comment.likes || '' }}</span>
+                <span>{{ comment.likes || "" }}</span>
               </button>
               <button class="action-btn" @click="startReply(comment)">
                 <font-awesome-icon icon="at" />
@@ -68,8 +106,16 @@
 
         <!-- 嵌套回复 -->
         <div v-if="comment.replies?.length" class="replies">
-          <div v-for="reply in getVisibleReplies(comment)" :key="reply.id" class="comment-item reply-item">
-            <img :src="reply.avatar" :alt="reply.name" class="comment-avatar small" />
+          <div
+            v-for="reply in getVisibleReplies(comment)"
+            :key="reply.id"
+            class="comment-item reply-item"
+          >
+            <img
+              :src="reply.avatar"
+              :alt="reply.name"
+              class="comment-avatar small"
+            />
             <div class="comment-body">
               <div class="comment-meta">
                 <span class="comment-name">{{ reply.name }}</span>
@@ -81,9 +127,13 @@
               </div>
               <p class="comment-text">{{ reply.content }}</p>
               <div class="comment-actions">
-                <button class="action-btn" :class="{ liked: reply.liked }" @click="toggleLike(reply)">
+                <button
+                  class="action-btn"
+                  :class="{ liked: reply.liked }"
+                  @click="toggleLike(reply)"
+                >
                   <font-awesome-icon icon="thumbs-up" />
-                  <span>{{ reply.likes || '' }}</span>
+                  <span>{{ reply.likes || "" }}</span>
                 </button>
                 <button class="action-btn" @click="startReply(reply, comment)">
                   <font-awesome-icon icon="at" />
@@ -93,18 +143,36 @@
             </div>
           </div>
           <!-- 展开更多回复 -->
-          <button v-if="hasMoreReplies(comment)" class="expand-replies-btn" @click="expandReplies(comment)">
+          <button
+            v-if="hasMoreReplies(comment)"
+            class="expand-replies-btn"
+            @click="expandReplies(comment)"
+          >
             <font-awesome-icon icon="chevron-down" />
-            展开更多回复（{{ (comment.replies?.length ?? 0) - (replyExpandMap.get(comment.id) ?? REPLY_INIT_COUNT) }} 条）
+            展开更多回复（{{
+              (comment.replies?.length ?? 0) -
+              (replyExpandMap.get(comment.id) ?? REPLY_INIT_COUNT)
+            }}
+            条）
           </button>
         </div>
       </div>
 
       <!-- 加载更多评论 -->
-      <button v-if="hasMoreComments" class="load-more-btn" :disabled="loadingMoreComments" @click="loadMoreComments">
-        <font-awesome-icon v-if="loadingMoreComments" icon="refresh" spin class="load-more-icon" />
+      <button
+        v-if="hasMoreComments"
+        class="load-more-btn"
+        :disabled="loadingMoreComments"
+        @click="loadMoreComments"
+      >
+        <font-awesome-icon
+          v-if="loadingMoreComments"
+          icon="refresh"
+          spin
+          class="load-more-icon"
+        />
         <font-awesome-icon v-else icon="chevron-down" class="load-more-icon" />
-        {{ loadingMoreComments ? '加载中...' : '查看更多评论' }}
+        {{ loadingMoreComments ? "加载中..." : "查看更多评论" }}
       </button>
 
       <!-- 空状态 -->
@@ -187,7 +255,8 @@ const comments = ref<CommentItem[]>([
         id: 102,
         name: "陈大鱼",
         avatar: designerAvatar,
-        content: "我们团队就是从 Vue 2 直接跳到 Composition API 的，前期确实有点痛苦。",
+        content:
+          "我们团队就是从 Vue 2 直接跳到 Composition API 的，前期确实有点痛苦。",
         time: "45 分钟前",
         likes: 3,
         liked: false,
@@ -197,7 +266,8 @@ const comments = ref<CommentItem[]>([
         id: 103,
         name: "前端小白",
         avatar: dataCuratorAvatar,
-        content: "同感！不过熬过前两周就顺畅多了，现在反而不想回去写 Options API 了。",
+        content:
+          "同感！不过熬过前两周就顺畅多了，现在反而不想回去写 Options API 了。",
         time: "30 分钟前",
         likes: 5,
         liked: false,
@@ -262,7 +332,8 @@ const comments = ref<CommentItem[]>([
         id: 401,
         name: "开发者",
         avatar: officerAvatar,
-        content: "Pinia 的 DevTools 支持也做得很好，调试体验比 Vuex 舒服太多了。",
+        content:
+          "Pinia 的 DevTools 支持也做得很好，调试体验比 Vuex 舒服太多了。",
         time: "1 天前",
         likes: 12,
         liked: false,
@@ -316,7 +387,8 @@ const comments = ref<CommentItem[]>([
         id: 603,
         name: "赵铁柱",
         avatar: operatorAvatar,
-        content: "Teleport 做模态框和通知是真的香，再也不用管 z-index 层级问题了。",
+        content:
+          "Teleport 做模态框和通知是真的香，再也不用管 z-index 层级问题了。",
         time: "2 天前",
         likes: 6,
         liked: false,
@@ -479,7 +551,11 @@ const submitComment = () => {
   width: 32px;
   height: 32px;
   border-radius: 9px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(168, 85, 247, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.12),
+    rgba(168, 85, 247, 0.1)
+  );
   color: var(--primary, #3b82f6);
   display: flex;
   align-items: center;
@@ -487,7 +563,11 @@ const submitComment = () => {
   font-size: 14px;
 
   .dark-mode & {
-    background: linear-gradient(135deg, rgba(96, 165, 250, 0.18), rgba(167, 139, 250, 0.14));
+    background: linear-gradient(
+      135deg,
+      rgba(96, 165, 250, 0.18),
+      rgba(167, 139, 250, 0.14)
+    );
     color: #60a5fa;
   }
 }
@@ -595,7 +675,8 @@ const submitComment = () => {
   font-family: inherit;
   height: 40px;
   overflow: hidden;
-  transition: height 0.3s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+  transition: height 0.3s ease-out, border-color 0.2s ease-out,
+    box-shadow 0.2s ease-out;
 
   &.expanded {
     height: 88px;
@@ -711,7 +792,7 @@ const submitComment = () => {
 }
 
 .comment-thread {
-  &+.comment-thread {
+  & + .comment-thread {
     border-top: 1px solid rgba(226, 232, 240, 0.5);
     padding-top: 16px;
     margin-top: 16px;
@@ -869,7 +950,7 @@ const submitComment = () => {
     border-left-color: rgba(96, 165, 250, 0.12);
   }
 
-  .comment-item+.comment-item {
+  .comment-item + .comment-item {
     margin-top: 12px;
   }
 }
