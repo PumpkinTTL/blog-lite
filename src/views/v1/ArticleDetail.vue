@@ -15,6 +15,9 @@
         <!-- 评论区 -->
         <ArticleComments v-if="article" />
 
+        <!-- 移动端相关推荐 -->
+        <ArticleRelated v-if="article && isMobile" :articles="relatedArticles" :mobile="true" />
+
         <!-- 文末广告位 -->
         <div class="after-article-ad" v-if="article">
           <AdContainer
@@ -141,7 +144,7 @@ const loadArticle = () => {
   nextArticle.value = next;
 };
 
-// 相关推荐：排除当前文章，取同分类优先，最多3篇
+// 相关推荐：排除当前文章，取同分类优先，最多5篇
 const relatedArticles = computed(() => {
   if (!article.value) return [];
   const currentId = article.value.id;
@@ -149,7 +152,7 @@ const relatedArticles = computed(() => {
   const others = articleList.filter((a) => a.id !== currentId);
   const sameCategory = others.filter((a) => a.category === currentCategory);
   const diffCategory = others.filter((a) => a.category !== currentCategory);
-  return [...sameCategory, ...diffCategory].slice(0, 3).map((a) => ({
+  return [...sameCategory, ...diffCategory].slice(0, 5).map((a) => ({
     id: a.id,
     title: a.title,
     cover: a.cover,

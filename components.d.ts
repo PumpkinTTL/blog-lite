@@ -26,6 +26,7 @@ declare module 'vue' {
     ArticleFooter: typeof import('./src/components/v1/detail/ArticleFooter.vue')['default']
     ArticleHero: typeof import('./src/components/v1/detail/ArticleHero.vue')['default']
     ArticleNav: typeof import('./src/components/v1/detail/ArticleNav.vue')['default']
+    ArticleRelated: typeof import('./src/components/v1/detail/ArticleRelated.vue')['default']
     ArticleToc: typeof import('./src/components/v1/detail/ArticleToc.vue')['default']
     ASpace: typeof import('ant-design-vue/es')['Space']
     BackTop: typeof import('./src/components/v1/common/BackTop.vue')['default']
