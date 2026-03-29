@@ -7,18 +7,21 @@
           <font-awesome-icon icon="layer-group" />
         </div>
         <span class="header-title">相关推荐</span>
+        <span class="header-count">{{ articles.length }}</span>
       </div>
 
       <!-- Article List -->
       <div class="related-list">
         <router-link
-          v-for="item in articles"
+          v-for="(item, index) in articles"
           :key="item.id"
           :to="`/article/${item.id}`"
           class="related-card"
         >
+          <span class="card-index">{{ String(index + 1).padStart(2, '0') }}</span>
           <div class="card-cover">
             <img :src="item.cover" :alt="item.title" loading="lazy" />
+            <div class="cover-overlay"></div>
           </div>
           <div class="card-info">
             <span class="card-category">{{ item.category }}</span>
@@ -82,7 +85,13 @@ const isDark = computed(() => themeStore.isDark);
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+
+  .is-dark & {
+    border-bottom-color: rgba(51, 65, 85, 0.35);
+  }
 }
 
 .header-icon {
@@ -118,49 +127,115 @@ const isDark = computed(() => themeStore.isDark);
   text-transform: uppercase;
 }
 
+.header-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+  line-height: 1.4;
+
+  .is-dark & {
+    color: #64748b;
+    background: rgba(100, 116, 139, 0.15);
+  }
+}
+
 /* ── Card List ── */
 .related-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
 .related-card {
+  position: relative;
   display: flex;
+  align-items: center;
   gap: 10px;
-  padding: 10px;
-  border-radius: 12px;
+  padding: 10px 10px 10px 0;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
+
+  // 左侧指示条
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    border-radius: 2px;
+    background: var(--primary, #3b82f6);
+    transition: height 0.2s ease;
+  }
+
+  // 卡片间分隔线
+  & + .related-card {
+    border-top: 1px solid rgba(226, 232, 240, 0.4);
+
+    .is-dark & {
+      border-top-color: rgba(51, 65, 85, 0.3);
+    }
+  }
 
   &:hover {
-    background: rgba(59, 130, 246, 0.06);
+    padding-left: 12px;
+
+    &::before {
+      height: 20px;
+    }
+
+    .card-cover img {
+      transform: scale(1.08);
+    }
 
     .card-title {
       color: var(--primary, #3b82f6);
     }
 
-    .card-cover img {
-      transform: scale(1.05);
+    .card-index {
+      color: var(--primary, #3b82f6);
     }
 
     .is-dark & {
-      background: rgba(96, 165, 250, 0.08);
-
       .card-title {
+        color: #60a5fa;
+      }
+      .card-index {
         color: #60a5fa;
       }
     }
   }
 }
 
+/* ── Index Number ── */
+.card-index {
+  width: 22px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #cbd5e1;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
+
+  .is-dark & {
+    color: #475569;
+  }
+}
+
+/* ── Cover ── */
 .card-cover {
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
+  position: relative;
   background: #f1f5f9;
 
   .is-dark & {
@@ -175,12 +250,32 @@ const isDark = computed(() => themeStore.isDark);
   }
 }
 
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.08),
+    rgba(168, 85, 247, 0.06)
+  );
+  pointer-events: none;
+
+  .is-dark & {
+    background: linear-gradient(
+      135deg,
+      rgba(96, 165, 250, 0.1),
+      rgba(167, 139, 250, 0.08)
+    );
+  }
+}
+
+/* ── Info ── */
 .card-info {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   justify-content: center;
 }
 
