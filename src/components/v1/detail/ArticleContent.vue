@@ -25,6 +25,8 @@
         <MdPreview :id="previewId" class="md-preview-reset" :model-value="article.markdown"
           :theme="isDark ? 'dark' : 'light'" preview-theme="github" code-theme="github" />
       </div>
+
+      <slot name="footer"></slot>
     </div>
   </section>
 </template>
