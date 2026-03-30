@@ -327,6 +327,7 @@ const notifications = ref([
 
 const navItems = [
   { name: "首页", href: "/", isRoute: true, icon: "home" },
+  { name: "商城", href: "/shop", isRoute: true, icon: "shop" },
   { name: "资源", href: "#resources", isRoute: false, icon: "book" },
   { name: "关于", href: "#about", isRoute: false, icon: "circle-info" },
 ];

@@ -17,6 +17,14 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '文章详情'
     }
+  },
+  {
+    path: '/shop',
+    name: 'Shop',
+    component: () => import('@/views/v1/Shop.vue'),
+    meta: {
+      title: '资源商城'
+    }
   }
 ]
 
