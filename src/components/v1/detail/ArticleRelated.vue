@@ -95,19 +95,17 @@ const isDark = computed(() => themeStore.isDark);
   position: relative;
   overflow: hidden;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.05),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  background: #fff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02),
+    0 8px 24px -8px rgba(15, 23, 42, 0.06);
   padding: 20px;
 
   .is-dark & {
-    background: rgba(15, 23, 42, 0.4);
-    border: 1px solid rgba(51, 65, 85, 0.4);
-    box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.4),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    background: #1e293b;
+    border-color: rgba(51, 65, 85, 0.6);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05),
+      0 8px 24px -8px rgba(0, 0, 0, 0.2);
   }
 }
 
