@@ -1,7 +1,7 @@
 <template>
   <header class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300" :class="isDark ? 'border-gray-800' : 'bg-white border-gray-200'"
     :style="isDark ? { background: 'var(--bg)' } : {}"
-    style="border-bottom-width: 1px">
+    style="border-bottom-width: 1px; box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)">
     <nav class="mx-auto px-5" style="max-width: 1320px">
       <div class="flex items-center gap-2 sm:gap-4 h-14 sm:h-16">
         <!-- Logo -->
