@@ -1,61 +1,67 @@
 <template>
   <div class="shop-wrapper">
-    <!-- Sophisticated Mini Header -->
-    <header class="mini-header">
-      <div class="breadcrumb">
-        <span class="crumb">首页</span>
-        <font-awesome-icon icon="chevron-right" class="sep" />
-        <span class="crumb active">资源商城</span>
-      </div>
-      <div class="main-info">
-        <h1 class="title">精品资源库</h1>
-        <div class="live-stats">
-          <span class="dot"></span>
-          2,481 件优质资源已上线
-        </div>
-      </div>
-    </header>
-
-    <!-- Ultra-Thin Sticky Filter Bar -->
-    <div class="filter-container">
-      <div class="filter-inner">
-        <nav class="cat-nav">
-          <button
-            v-for="cat in categories"
-            :key="cat.value"
-            class="cat-link"
-            :class="{ active: activeCategory === cat.value }"
-            @click="activeCategory = cat.value"
-          >
-            {{ cat.label }}
-          </button>
-        </nav>
-        
-        <div class="util-box">
-          <div class="mini-search">
-            <font-awesome-icon icon="magnifying-glass" class="s-icon" />
-            <input 
-              v-model="searchKeyword" 
-              type="text" 
-              placeholder="搜索精密资源..." 
-            />
+    <!-- Integrated Control Center - Flattened Dashboard Style -->
+    <div class="shop-ctrl-center">
+      <div class="ctrl-inner">
+        <!-- Top Row: Navigation & Info -->
+        <div class="info-row">
+          <div class="left-box">
+            <div class="breadcrumb-mini">
+              <span class="c">首页</span>
+              <font-awesome-icon icon="chevron-right" class="s" />
+              <span class="c a">资源商城</span>
+            </div>
+            <h1 class="shop-title">精品资源库</h1>
           </div>
-          <div class="v-divider"></div>
-          <div class="mini-tools">
-            <button class="icon-btn" title="筛选器">
-              <font-awesome-icon icon="sliders" />
+          
+          <div class="right-box">
+            <div class="live-pill">
+              <span class="glow-dot"></span>
+              <span class="count">2,481 件资源在线</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Row: Integrated Filter System -->
+        <div class="filter-row">
+          <nav class="cat-list">
+            <button
+              v-for="cat in categories"
+              :key="cat.value"
+              class="cat-item"
+              :class="{ active: activeCategory === cat.value }"
+              @click="activeCategory = cat.value"
+            >
+              {{ cat.label }}
             </button>
-            <button class="icon-btn cart-trigger" title="购物车">
-              <font-awesome-icon icon="basket-shopping" />
-              <span v-if="cartCount > 0" class="badge-dot">{{ cartCount }}</span>
-            </button>
+          </nav>
+          
+          <div class="actions-group">
+            <div class="search-refined">
+              <font-awesome-icon icon="magnifying-glass" class="si" />
+              <input 
+                v-model="searchKeyword" 
+                type="text" 
+                placeholder="搜索资源..." 
+              />
+            </div>
+            <div class="tool-sep"></div>
+            <div class="mini-ops">
+              <button class="op-btn" title="筛选">
+                <font-awesome-icon icon="sliders" />
+              </button>
+              <button class="op-btn cart-trigger" title="购物车">
+                <font-awesome-icon icon="basket-shopping" />
+                <span v-if="cartCount > 0" class="dot-count">{{ cartCount }}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- High-Density Grid -->
-    <main class="grid-main">
+    <!-- High-Density Grid Area -->
+    <main class="grid-container">
       <div v-if="filteredResources.length > 0" class="dense-grid">
         <ResourceCard
           v-for="item in filteredResources"
@@ -72,8 +78,8 @@
             <font-awesome-icon icon="magnifying-glass" />
           </div>
         </div>
-        <p class="empty-text">未匹配到相关精密资源</p>
-        <button class="text-btn" @click="resetFilters">重置所有筛选器</button>
+        <p class="empty-text">未匹配到相关资源</p>
+        <button class="reset-btn" @click="resetFilters">重置筛选</button>
       </div>
     </main>
   </div>
@@ -169,268 +175,233 @@ const resetFilters = () => {
 
 <style scoped lang="scss">
 .shop-wrapper {
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 30px 20px 60px;
+  padding: 40px 20px 80px;
 }
 
-/* Mini Header */
-.mini-header {
-  margin-bottom: 30px;
-
-  .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    color: #94a3b8;
-    font-weight: 500;
-    margin-bottom: 12px;
-
-    .sep { font-size: 8px; color: #cbd5e1; }
-    .active { color: #64748b; }
-  }
-
-  .main-info {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-
-    .title {
-      font-size: 22px;
-      font-weight: 800;
-      color: #0f172a;
-      margin: 0;
-      letter-spacing: -0.02em;
-    }
-
-    .live-stats {
-      font-size: 11px;
-      color: #64748b;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 700;
-      padding: 4px 10px;
-      background: #f1f5f9;
-      border-radius: 8px;
-
-      .dot {
-        width: 6px;
-        height: 6px;
-        background: #10b981;
-        border-radius: 50%;
-        box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
-        animation: glow 2s infinite ease-in-out;
-      }
-    }
-  }
-}
-
-@keyframes glow {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.2); }
-}
-
-/* Filter Bar */
-.filter-container {
+/* Integrated Control Center - Flat Theme Unified */
+.shop-ctrl-center {
   position: sticky;
-  top: 15px;
-  z-index: 100;
-  margin-bottom: 30px;
+  top: 10px;
+  z-index: 1000;
+  margin: 0 0 40px;
+  padding: 24px 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
 }
 
-.filter-inner {
+.breadcrumb-mini {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 700;
+  margin-bottom: 8px;
+
+  .s { font-size: 8px; opacity: 0.5; }
+  .a { color: var(--primary); }
+}
+
+.shop-title {
+  font-size: 26px;
+  font-weight: 950;
+  color: var(--text);
+  margin: 0;
+  letter-spacing: -0.04em;
+}
+
+/* Row Styling */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.live-pill {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: var(--bg);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border-light);
+
+  .glow-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--success-light);
+  }
+}
+
+.filter-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 10px 8px 16px;
-  background: rgba(255, 255, 255, 0.85); /* More solid backdrop */
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(79, 70, 229, 0.08);
-  border-radius: 14px;
-  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+  gap: 20px;
 }
 
-.cat-nav {
+.cat-list {
   display: flex;
-  gap: 6px;
+  gap: 8px;
+  background: var(--bg);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
 }
 
-.cat-link {
-  padding: 7px 14px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #475569;
+.cat-item {
+  padding: 7px 16px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-secondary);
   background: transparent;
   border: none;
-  border-radius: 9px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all var(--transition);
 
-  &:hover { background: #f1f5f9; color: #4f46e5; }
+  &:hover { color: var(--primary); }
   &.active {
-    background: #4f46e5;
-    color: white;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    background: var(--surface);
+    color: var(--primary);
+    box-shadow: var(--shadow-sm);
   }
 }
 
-.util-box {
+.actions-group {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.mini-search {
+.search-refined {
   position: relative;
-  
-  .s-icon {
+  .si {
     position: absolute;
-    left: 12px;
+    left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 12px;
-    color: #4f46e5;
-    opacity: 0.7;
+    font-size: 13px;
+    color: var(--text-tertiary);
   }
-  
   input {
-    width: 180px;
-    height: 34px;
-    padding: 0 12px 0 34px;
+    width: 200px;
+    height: 40px;
+    padding-left: 38px;
     font-size: 12px;
     font-weight: 600;
-    color: #0f172a;
-    background: #f8fafc;
-    border: 1px solid rgba(79, 70, 229, 0.05);
-    border-radius: 10px;
-    transition: all 0.3s;
-    
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    transition: all var(--transition);
     &:focus {
       outline: none;
-      background: #fff;
-      border-color: #4f46e5;
-      width: 240px;
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.05);
+      width: 280px;
+      background: var(--surface);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
     }
   }
 }
 
-.v-divider { width: 1px; height: 20px; background: rgba(79, 70, 229, 0.1); }
+.tool-sep { width: 1px; height: 24px; background: var(--border-light); }
 
-.mini-tools {
-  display: flex;
-  gap: 6px;
-}
+.mini-ops { display: flex; gap: 8px; }
 
-.icon-btn {
+.op-btn {
   position: relative;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
-  border: none;
-  color: #475569;
-  font-size: 15px;
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  font-size: 16px;
   cursor: pointer;
-  border-radius: 10px;
-  transition: all 0.2s;
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+  &:hover {
+    background: var(--surface);
+    color: var(--primary);
+    border-color: var(--primary);
+  }
 
-  &:hover { background: #f1f5f9; color: #4f46e5; }
-
-  .badge-dot {
+  .dot-count {
     position: absolute;
-    top: 3px;
-    right: 3px;
-    min-width: 15px;
-    height: 15px;
-    padding: 0 4px;
-    background: #f43f5e;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    background: var(--error);
     color: white;
-    border-radius: 7px;
-    font-size: 9px;
-    font-weight: 800;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 900;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid white;
-    box-shadow: 0 2px 5px rgba(244, 63, 94, 0.3);
+    border: 2px solid var(--surface);
   }
 }
 
-/* Grid Layout */
+/* Grid Area */
 .dense-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px;
 }
 
 /* Empty State */
 .empty-state {
-  padding: 80px 0;
+  padding: 120px 0;
   text-align: center;
-  
-  .empty-visual {
-    margin-bottom: 20px;
-    .circle-box {
-      width: 50px;
-      height: 50px;
-      background: #f8fafc;
-      border-radius: 50%;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #cbd5e1;
-      font-size: 20px;
-    }
+  .circle-box {
+    width: 64px;
+    height: 64px;
+    background: var(--bg);
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    font-size: 24px;
   }
-
-  .empty-text { font-size: 14px; color: #94a3b8; margin-bottom: 16px; }
-  .text-btn {
-    background: none;
+  .empty-text { font-size: 16px; color: var(--text-secondary); margin-bottom: 24px; font-weight: 600; }
+  .reset-btn {
+    background: var(--primary);
     border: none;
-    color: #3b82f6;
+    color: white;
+    padding: 10px 24px;
+    border-radius: var(--radius-md);
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    &:hover { background: var(--primary-hover); transform: translateY(-1px); }
   }
 }
 
-/* Mobile Adaptation (2 Columns High Density) */
-@media (max-width: 768px) {
-  .shop-wrapper { padding: 20px 15px; }
-  
-  .mini-header .main-info {
-    flex-direction: column;
-    gap: 4px;
-    .title { font-size: 18px; }
-  }
-
-  .filter-inner {
-    flex-direction: column;
-    gap: 12px;
-    padding: 12px;
-    align-items: stretch;
-  }
-
-  .cat-nav {
-    overflow-x: auto;
-    padding-bottom: 4px;
-    &::-webkit-scrollbar { display: none; }
-  }
-
-  .util-box { justify-content: space-between; }
-  .mini-search input { width: 100%; &:focus { width: 100%; } }
-
-  .dense-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
+@media (max-width: 850px) {
+  .shop-ctrl-center { padding: 18px 20px; margin-bottom: 25px; top: 0; border-radius: 0; margin: 0 -20px 25px; border-left: none; border-right: none; }
+  .info-row { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+  .filter-row { flex-direction: column; align-items: stretch; gap: 16px; }
+  .cat-list { overflow-x: auto; padding: 4px; &::-webkit-scrollbar { display: none; } }
+  .actions-group { justify-content: space-between; }
+  .search-refined { flex: 1; }
+  .search-refined input { width: 100%; &:focus { width: 100%; } }
+  .dense-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
 }
 </style>
