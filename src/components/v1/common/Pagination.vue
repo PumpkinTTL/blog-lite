@@ -107,7 +107,7 @@ const changePage = (page: number) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 60px 0 30px;
+  padding: 24px 0 16px;
   width: 100%;
 }
 

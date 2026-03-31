@@ -33,12 +33,8 @@
               @focus="isFocused = true"
               @blur="isFocused = false"
             />
-            <div v-if="!modelValue" class="kbd-hint">
-              <span class="kbd-symbol">⌘</span>
-              <span class="kbd-key">K</span>
-            </div>
             <button
-              v-else
+              v-if="modelValue"
               class="search-clear"
               @click="emit('update:modelValue', '')"
             >
@@ -187,20 +183,18 @@ const currentTags = computed(() => {
 <style scoped lang="scss">
 .filter-dashboard-v7 {
   width: 100%;
-  margin: 16px 0 24px;
   position: sticky;
-  top: 72px;
+  top: 0;
   z-index: 100;
+  background: var(--bg-secondary, #ffffff);
 }
 
 .filter-primary-card {
   display: flex;
   flex-direction: column;
   padding: 16px;
-  background: var(--bg-secondary, #ffffff);
-  border: 1px solid var(--border, #eef2f6);
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  background: transparent;
+  border-radius: 0;
   gap: 12px;
 
   @media (max-width: 950px) {
@@ -214,6 +208,7 @@ const currentTags = computed(() => {
   align-items: center;
   width: 100%;
   gap: 12px;
+  flex-wrap: wrap;
 
   @media (max-width: 950px) {
     flex-direction: column;
@@ -223,8 +218,9 @@ const currentTags = computed(() => {
 
 .row-divider {
   height: 1px;
-  background: linear-gradient(to right, transparent, #f1f5f9 10%, #f1f5f9 90%, transparent);
+  background: linear-gradient(to right, transparent, var(--border, #f1f5f9) 10%, var(--border, #f1f5f9) 90%, transparent);
   width: 100%;
+  margin-bottom: 4px;
 }
 
 /* ── Category Segment ── */
@@ -302,11 +298,12 @@ const currentTags = computed(() => {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 
   @media (max-width: 950px) {
     width: 100%;
   }
-  
+
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
@@ -319,14 +316,14 @@ const currentTags = computed(() => {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: 280px;
+  gap: 8px;
+  width: 240px;
   height: 40px;
-  padding: 0 20px;
+  padding: 0 12px;
   background: var(--bg, #f1f4f9);
   border: 1px solid transparent;
   border-radius: 10px;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   box-sizing: border-box;
   flex-shrink: 0;
 
@@ -348,37 +345,17 @@ const currentTags = computed(() => {
     height: 100%;
     margin: 0;
     padding: 0;
+    padding-right: 24px;
     &::placeholder {
       color: var(--text-tertiary, #94a3b8);
     }
   }
 
-  .kbd-hint {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text-tertiary, #94a3b8);
-    background: var(--bg-secondary, #ffffff);
-    border: 1px solid var(--border);
-    padding: 2px 5px;
-    border-radius: 5px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-    flex-shrink: 0;
-
-    .kbd-symbol {
-      font-size: 12px;
-      line-height: 1;
-    }
-
-    @media (max-width: 768px) {
-      display: none;
-    }
-  }
-
   .search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     border: none;
     background: transparent;
     color: #94a3b8;
@@ -388,7 +365,6 @@ const currentTags = computed(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
     &:hover {
       color: #ef4444;
     }
@@ -398,10 +374,6 @@ const currentTags = computed(() => {
     background: var(--bg-secondary, #ffffff);
     border-color: var(--primary, #3b82f6);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    
-    @media (min-width: 951px) {
-      width: 320px;
-    }
   }
 
   @media (max-width: 950px) {
@@ -569,8 +541,6 @@ const currentTags = computed(() => {
 /* ── Dark Mode Adaptations ── */
 .filter-primary-card.dark-mode {
   background: var(--bg-tertiary);
-  border-color: var(--border-dark);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 
   .category-segment,
   .search-field-v7,

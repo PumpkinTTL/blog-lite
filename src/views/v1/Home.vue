@@ -11,17 +11,16 @@
           persist-key="v1_update_v3"
         />
 
-        <FilterBar
-          v-model="searchQuery"
-          :categories="categories"
-          :active-category="activeCategory"
-          :active-sort="activeSort"
-          @update:active-category="activeCategory = $event"
-          @update:active-sort="activeSort = $event"
-        />
-
         <section class="home-grid">
           <div class="feed-column">
+            <FilterBar
+              v-model="searchQuery"
+              :categories="categories"
+              :active-category="activeCategory"
+              :active-sort="activeSort"
+              @update:active-category="activeCategory = $event"
+              @update:active-sort="activeSort = $event"
+            />
             <PostFeed :posts="visiblePosts" />
             <Pagination
               v-model:current="currentPage"
@@ -111,21 +110,32 @@ watch([activeCategory, activeSort, searchQuery], () => {
   padding: 20px 20px 80px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
 }
 
 /* ── Main Grid ── */
 .home-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 280px;
-  gap: 12px;
+  gap: 24px;
   align-items: start;
 }
 
+/* ── Feed Column (Content Card Container) ── */
 .feed-column {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  
+  /* Dark mode support */
+  &:deep(.dark-mode) {
+    background: var(--bg-tertiary);
+    border-color: var(--border-dark);
+  }
 }
 
 @media (max-width: 1100px) {

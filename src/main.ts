@@ -93,7 +93,10 @@ import {
   faShoppingBag,
   faFilter,
   faSort,
-  faFireFlameCurved
+  faFireFlameCurved,
+  faCircleXmark,
+  faShop,
+  faUsersRectangle
 } from '@fortawesome/free-solid-svg-icons'
 
 // 添加图标到库
@@ -112,7 +115,7 @@ library.add(
   faEllipsis, faChevronLeft, faChevronRight,
   faBullhorn, faTriangleExclamation, faArrowUp, faRss, faPaperPlane, faEnvelope,
   faFileLines, faThumbsUp, faAt, faBookmark,
-  faShoppingCart, faShoppingBag, faFilter, faSort, faFireFlameCurved, faFire, faMagnifyingGlass, faDownload, faEye
+  faShoppingCart, faShoppingBag, faFilter, faSort, faFireFlameCurved, faFire, faMagnifyingGlass, faDownload, faEye, faCircleXmark, faShop, faUsersRectangle
 )
 
 const app = createApp(App)
