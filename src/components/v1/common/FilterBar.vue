@@ -183,10 +183,8 @@ const currentTags = computed(() => {
 <style scoped lang="scss">
 .filter-dashboard-v7 {
   width: 100%;
-  position: sticky;
-  top: 0;
-  z-index: 100;
   background: var(--bg-secondary, #ffffff);
+  flex-shrink: 0;
 }
 
 .filter-primary-card {

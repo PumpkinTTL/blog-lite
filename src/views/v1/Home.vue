@@ -132,7 +132,7 @@ watch([activeCategory, activeSort, searchQuery], () => {
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
   overflow: hidden;
-  max-height: calc(100vh - 280px);
+  position: relative;
 
   /* Dark mode support */
   &:deep(.dark-mode) {
@@ -143,13 +143,19 @@ watch([activeCategory, activeSort, searchQuery], () => {
 
 /* ── PostFeed Scroll Container ── */
 .post-feed-wrapper {
-  flex: 1;
+  height: calc(100vh - 280px);
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .post-feed-wrapper {
+    height: calc(100dvh - 240px);
   }
 }
 
