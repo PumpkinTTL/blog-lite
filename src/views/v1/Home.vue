@@ -26,8 +26,9 @@
             </div>
             <Pagination
               v-model:current="currentPage"
+              v-model:pageSize="pageSize"
               :total="totalItems"
-              :pageSize="pageSize"
+              :pageSizeOptions="[5, 10, 20]"
             />
           </div>
           <HomeSidebar />
@@ -58,7 +59,7 @@ const hotTags = [];
 
 // Pagination State
 const currentPage = ref(1);
-const pageSize = 5;
+const pageSize = ref(5);
 
 const posts = ref(generateMockResources(24)); // Increase mock data to demonstrate pagination
 
@@ -87,8 +88,8 @@ const filteredPosts = computed(() => {
 });
 
 const visiblePosts = computed(() => {
-  const start = (currentPage.value - 1) * pageSize;
-  const end = start + pageSize;
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
   return filteredPosts.value.slice(start, end);
 });
 
@@ -147,6 +148,7 @@ watch([activeCategory, activeSort, searchQuery], () => {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  padding-top: 8px;
 
   &::-webkit-scrollbar {
     display: none;

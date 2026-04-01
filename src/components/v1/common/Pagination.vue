@@ -45,6 +45,35 @@
       <!-- Flat Metadata Area -->
       <div class="meta-section">
         <div class="v-line"></div>
+
+        <!-- Page Size Selector -->
+        <div class="size-selector">
+          <select v-model="selectedPageSize" @change="onPageSizeChange">
+            <option v-for="size in pageSizeOptions" :key="size" :value="size">
+              {{ size }}条/页
+            </option>
+          </select>
+        </div>
+
+        <div class="v-line"></div>
+
+        <!-- Jump to Page -->
+        <div class="jump-section">
+          <span class="jump-label">跳至</span>
+          <input
+            type="number"
+            class="jump-input"
+            v-model.number="jumpPage"
+            :min="1"
+            :max="totalPages"
+            @keyup.enter="doJump"
+            @blur="doJump"
+          />
+          <span class="jump-suffix">页</span>
+        </div>
+
+        <div class="v-line"></div>
+
         <div class="page-stats">
           <span class="current-label">第</span>
           <span class="highlight">{{ current }}</span>
@@ -56,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useThemeStore } from "@/stores/theme";
 
 const themeStore = useThemeStore();
@@ -66,10 +95,31 @@ interface Props {
   current: number;
   total: number;
   pageSize: number;
+  pageSizeOptions?: number[];
 }
 
-const props = defineProps<Props>();
-const emit = defineEmits(["update:current", "change"]);
+const props = withDefaults(defineProps<Props>(), {
+  pageSizeOptions: () => [5, 10, 20],
+});
+
+const emit = defineEmits(["update:current", "update:pageSize", "change"]);
+
+const selectedPageSize = ref(props.pageSize);
+const jumpPage = ref(props.current);
+
+watch(
+  () => props.pageSize,
+  (val) => {
+    selectedPageSize.value = val;
+  }
+);
+
+watch(
+  () => props.current,
+  (val) => {
+    jumpPage.value = val;
+  }
+);
 
 const totalPages = computed(() => Math.ceil(props.total / props.pageSize));
 
@@ -95,9 +145,27 @@ const visiblePages = computed(() => {
 
 const changePage = (page: number) => {
   if (page >= 1 && page <= totalPages.value && page !== props.current) {
+    jumpPage.value = page;
     emit("update:current", page);
     emit("change", page);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+};
+
+const onPageSizeChange = () => {
+  jumpPage.value = 1;
+  emit("update:pageSize", selectedPageSize.value);
+  emit("update:current", 1);
+};
+
+const doJump = () => {
+  let page = jumpPage.value;
+  if (page < 1) page = 1;
+  if (page > totalPages.value) page = totalPages.value;
+  jumpPage.value = page;
+  if (page !== props.current) {
+    emit("update:current", page);
+    emit("change", page);
   }
 };
 </script>
@@ -211,6 +279,88 @@ const changePage = (page: number) => {
   opacity: 0.4;
 }
 
+/* ── Page Size Selector ── */
+.size-selector {
+  select {
+    appearance: none;
+    background: transparent;
+    border: none;
+    padding: 6px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    outline: none;
+    border-radius: 6px;
+    transition: all 0.2s;
+
+    &:hover {
+      background: var(--bg);
+      color: var(--primary);
+    }
+
+    &:focus {
+      background: var(--bg);
+      color: var(--primary);
+    }
+  }
+}
+
+/* ── Jump to Page ── */
+.jump-section {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .jump-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    padding: 6px 4px;
+    transition: color 0.2s;
+  }
+
+  .jump-input {
+    width: 44px;
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    text-align: center;
+    outline: none;
+    background: var(--bg);
+    transition: all 0.2s;
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &:hover {
+      border-color: var(--primary-soft);
+    }
+
+    &:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      color: var(--primary);
+    }
+  }
+
+  .jump-suffix {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    padding: 6px 4px;
+    transition: color 0.2s;
+  }
+}
+
 .page-stats {
   display: flex;
   align-items: center;
@@ -244,9 +394,42 @@ const changePage = (page: number) => {
   .v-line {
     background: var(--border-light);
   }
+
+  .size-selector select {
+    color: var(--text-secondary);
+
+    &:hover,
+    &:focus {
+      background: var(--bg);
+      color: var(--primary-soft);
+    }
+  }
+
+  .jump-section {
+    .jump-label,
+    .jump-suffix {
+      color: var(--text-tertiary);
+    }
+
+    .jump-input {
+      background: var(--bg);
+      border-color: var(--border-dark);
+      color: var(--text);
+
+      &:hover {
+        border-color: var(--primary-soft);
+      }
+
+      &:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        color: var(--primary-soft);
+      }
+    }
+  }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .meta-section {
     display: none;
   }
