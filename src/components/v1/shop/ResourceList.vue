@@ -1,67 +1,60 @@
 <template>
-  <div class="shop-wrapper">
-    <!-- Integrated Control Center - Flattened Dashboard Style -->
-    <div class="shop-ctrl-center">
-      <div class="ctrl-inner">
-        <!-- Top Row: Navigation & Info -->
-        <div class="info-row">
-          <div class="left-box">
-            <div class="breadcrumb-mini">
-              <span class="c">首页</span>
-              <font-awesome-icon icon="chevron-right" class="s" />
-              <span class="c a">资源商城</span>
-            </div>
-            <h1 class="shop-title">精品资源库</h1>
+  <div class="shop-subpage">
+    <!-- Compact Command Dock -->
+    <div class="toolbar-dock">
+      <div class="dock-inner">
+        
+        <!-- Left: Titles and Nav -->
+        <div class="left-col">
+          <div class="breadcrumb">
+            首页 <span class="sep">/</span> <span class="active">资源商城</span>
           </div>
-          
-          <div class="right-box">
-            <div class="live-pill">
-              <span class="glow-dot"></span>
-              <span class="count">2,481 件资源在线</span>
-            </div>
+          <div class="title-group">
+            <font-awesome-icon icon="layer-group" class="title-icon"/>
+            <h1 class="page-title">开发组件库</h1>
+            <div class="status-dot"></div>
           </div>
         </div>
 
-        <!-- Bottom Row: Integrated Filter System -->
-        <div class="filter-row">
-          <nav class="cat-list">
+        <!-- Center/Right: Filters and Actions -->
+        <div class="right-col">
+          <div class="filter-tabs">
             <button
               v-for="cat in categories"
               :key="cat.value"
-              class="cat-item"
+              class="tab-btn"
               :class="{ active: activeCategory === cat.value }"
               @click="activeCategory = cat.value"
             >
               {{ cat.label }}
             </button>
-          </nav>
-          
-          <div class="actions-group">
-            <div class="search-refined">
-              <font-awesome-icon icon="magnifying-glass" class="si" />
-              <input 
-                v-model="searchKeyword" 
-                type="text" 
-                placeholder="搜索资源..." 
-              />
-            </div>
-            <div class="tool-sep"></div>
-            <div class="mini-ops">
-              <button class="op-btn" title="筛选">
-                <font-awesome-icon icon="sliders" />
-              </button>
-              <button class="op-btn cart-trigger" title="购物车">
-                <font-awesome-icon icon="basket-shopping" />
-                <span v-if="cartCount > 0" class="dot-count">{{ cartCount }}</span>
-              </button>
-            </div>
+          </div>
+
+          <div class="search-box">
+            <font-awesome-icon icon="search" class="s-icon" />
+            <input 
+              type="text" 
+              v-model="searchKeyword" 
+              placeholder="搜索资源..." 
+            />
+          </div>
+
+          <div class="action-icons">
+            <button class="icon-btn tool">
+              <font-awesome-icon icon="sliders" />
+            </button>
+            <button class="icon-btn cart">
+              <font-awesome-icon icon="basket-shopping" />
+              <span v-if="cartCount > 0" class="badge-num">{{ cartCount }}</span>
+            </button>
           </div>
         </div>
+
       </div>
     </div>
 
-    <!-- High-Density Grid Area -->
-    <main class="grid-container">
+    <!-- Delicate Grid -->
+    <main class="grid-area">
       <div v-if="filteredResources.length > 0" class="dense-grid">
         <ResourceCard
           v-for="item in filteredResources"
@@ -70,16 +63,14 @@
           @click="handleCardClick(item)"
         />
       </div>
-      
-      <!-- Refined Empty State -->
-      <div v-else class="empty-state">
-        <div class="empty-visual">
-          <div class="circle-box">
-            <font-awesome-icon icon="magnifying-glass" />
-          </div>
+
+      <!-- Compact Empty State -->
+      <div v-else class="compact-empty">
+        <div class="empty-icon-wrap">
+          <font-awesome-icon icon="inbox" />
         </div>
-        <p class="empty-text">未匹配到相关资源</p>
-        <button class="reset-btn" @click="resetFilters">重置筛选</button>
+        <p class="empty-text">未找到匹配的资源内容</p>
+        <button class="reset-link" @click="resetFilters">清除过滤条件</button>
       </div>
     </main>
   </div>
@@ -87,28 +78,14 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import ResourceCard from './ResourceCard.vue'
-
-interface Resource {
-  id: number
-  title: string
-  description: string
-  cover: string
-  price: number
-  sales: number
-  rating: number
-  isHot?: boolean
-  category: string
-  author: string
-  authorAvatar: string
-}
+import ResourceCard, { type Resource } from './ResourceCard.vue'
 
 const categories = [
-  { label: '全部', value: 'all' },
-  { label: '网站模板', value: 'template' },
-  { label: 'UI 组件库', value: 'component' },
-  { label: '开发插件', value: 'tool' },
-  { label: '视频教程', value: 'tutorial' }
+  { label: '全部项目', value: 'all' },
+  { label: '页面模板', value: 'template' },
+  { label: 'UI组件', value: 'component' },
+  { label: '开发包', value: 'tool' },
+  { label: '文档教程', value: 'tutorial' }
 ]
 
 const activeCategory = ref('all')
@@ -117,34 +94,34 @@ const cartCount = ref(3)
 
 const resources = ref<Resource[]>([
   {
-    id: 1, title: 'Vue3 Admin Pro', description: '企业级中后台管理系统模板，内置完整权限管理、多主题切换、国际化支持及丰富的常用组件。', cover: 'https://picsum.photos/600/400?random=1',
+    id: 1, title: 'Vue3 Admin Pro', description: '高品质的中后台界面模板，含详细图表与表格页', cover: 'https://picsum.photos/600/380?random=1',
     price: 129, sales: 2340, rating: 4.9, isHot: true, category: 'template',
-    author: '前端小王子', authorAvatar: 'https://i.pravatar.cc/150?u=1'
+    author: '前端精选', authorAvatar: 'https://i.pravatar.cc/150?u=1'
   },
   {
-    id: 2, title: 'React Dashboard', description: '现代化数据仪表盘，基于 Tailwind CSS 构建，支持暗黑模式和响应式布局，内置可视化图表。', cover: 'https://picsum.photos/600/400?random=2',
+    id: 2, title: 'React SaaS Dashboard', description: '为现代SaaS设计的深色模式仪表盘系统', cover: 'https://picsum.photos/600/380?random=2',
     price: 159, sales: 1890, rating: 4.8, category: 'template',
-    author: 'React达人', authorAvatar: 'https://i.pravatar.cc/150?u=2'
+    author: 'Design Lab', authorAvatar: 'https://i.pravatar.cc/150?u=2'
   },
   {
-    id: 3, title: 'Mini Program UI', description: '微信小程序高性能组件库，包含 50+ 个基础及业务组件，极致的用户体验与流畅度。', cover: 'https://picsum.photos/600/400?random=3',
+    id: 3, title: 'MP UI Library', description: '一套极简风格的小程序组件生态集合', cover: 'https://picsum.photos/600/380?random=3',
     price: 89, sales: 5670, rating: 4.9, isHot: true, category: 'component',
-    author: '小程序专家', authorAvatar: 'https://i.pravatar.cc/150?u=3'
+    author: 'MP Maker', authorAvatar: 'https://i.pravatar.cc/150?u=3'
   },
   {
-    id: 4, title: 'API Mock Server', description: '零配置 Mock 服务工具，支持 RESTful 设计哲学与 WebSocket 协议，前端解耦开发的利器。', cover: 'https://picsum.photos/600/400?random=4',
+    id: 4, title: 'FastMock Core', description: '针对前端本地联调打造的快速Mock CLI工具', cover: 'https://picsum.photos/600/380?random=4',
     price: 49, sales: 890, rating: 4.7, category: 'tool',
-    author: '后端大佬', authorAvatar: 'https://i.pravatar.cc/150?u=4'
+    author: 'Dev Tools', authorAvatar: 'https://i.pravatar.cc/150?u=4'
   },
   {
-    id: 5, title: '前端面试通关指南', description: '涵盖 800+ 核心面试真题详解，结合大厂面试官视角，助你快速斩获心仪 Offer。', cover: 'https://picsum.photos/600/400?random=5',
+    id: 5, title: '架构师图解指南', description: '深入图解全栈架构模式与实际工程痛点', cover: 'https://picsum.photos/600/380?random=5',
     price: 69, sales: 12500, rating: 4.9, isHot: true, category: 'tutorial',
-    author: '面经收割机', authorAvatar: 'https://i.pravatar.cc/150?u=5'
+    author: '架构之道', authorAvatar: 'https://i.pravatar.cc/150?u=5'
   },
   {
-    id: 6, title: 'Figma Design System', description: '完整的 UI 设计系统，包含 300+ 响应式组件、风格指南、图标库及移动端适配规范。', cover: 'https://picsum.photos/600/400?random=6',
+    id: 6, title: 'Figma UI Kits', description: '全面对应开发组件的Figma源文件库', cover: 'https://picsum.photos/600/380?random=6',
     price: 99, sales: 2150, rating: 4.8, category: 'template',
-    author: '设计师阿明', authorAvatar: 'https://i.pravatar.cc/150?u=6'
+    author: 'Design Lab', authorAvatar: 'https://i.pravatar.cc/150?u=6'
   }
 ])
 
@@ -174,234 +151,282 @@ const resetFilters = () => {
 </script>
 
 <style scoped lang="scss">
-.shop-wrapper {
-  max-width: 1400px;
+.shop-subpage {
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 40px 20px 80px;
+  padding: 24px;
 }
 
-/* Integrated Control Center - Flat Theme Unified */
-.shop-ctrl-center {
+/* Compact Control Dock */
+.toolbar-dock {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border-light, #e2e8f0);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
   position: sticky;
-  top: 10px;
-  z-index: 1000;
-  margin: 0 0 40px;
-  padding: 24px 28px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
+  top: 16px;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.96);
 }
 
-.breadcrumb-mini {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--text-tertiary);
-  font-weight: 700;
-  margin-bottom: 8px;
-
-  .s { font-size: 8px; opacity: 0.5; }
-  .a { color: var(--primary); }
-}
-
-.shop-title {
-  font-size: 26px;
-  font-weight: 950;
-  color: var(--text);
-  margin: 0;
-  letter-spacing: -0.04em;
-}
-
-/* Row Styling */
-.info-row {
+.dock-inner {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 24px;
+  align-items: center;
+  gap: 24px;
 }
 
-.live-pill {
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.breadcrumb {
   font-size: 11px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  background: var(--bg);
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
+  color: var(--text-tertiary, #94a3b8);
+  font-weight: 500;
+  .sep { margin: 0 4px; opacity: 0.5; }
+  .active { color: var(--text-secondary, #64748b); font-weight: 600; }
+}
+
+.title-group {
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid var(--border-light);
-
-  .glow-dot {
+  
+  .title-icon {
+    font-size: 14px;
+    color: var(--primary, #3b82f6);
+  }
+  
+  .page-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text, #0f172a);
+    letter-spacing: -0.5px;
+  }
+  
+  .status-dot {
     width: 6px;
     height: 6px;
-    background: var(--success);
+    background: var(--success, #10b981);
     border-radius: 50%;
-    box-shadow: 0 0 10px var(--success-light);
+    margin-left: 2px;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
   }
 }
 
-.filter-row {
+.right-col {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
+  flex: 1;
+  justify-content: flex-end;
 }
 
-.cat-list {
+/* Tab Filters */
+.filter-tabs {
   display: flex;
-  gap: 8px;
-  background: var(--bg);
-  padding: 4px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-light);
+  gap: 4px;
+  background: var(--bg-secondary, #f1f5f9);
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid var(--border-light, #e2e8f0);
 }
 
-.cat-item {
-  padding: 7px 16px;
+.tab-btn {
+  padding: 6px 14px;
   font-size: 12px;
-  font-weight: 800;
-  color: var(--text-secondary);
+  font-weight: 600;
+  color: var(--text-secondary, #64748b);
   background: transparent;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 6px;
   cursor: pointer;
-  transition: all var(--transition);
-
-  &:hover { color: var(--primary); }
+  transition: all 0.2s;
+  
+  &:hover { color: var(--text, #0f172a); }
+  
   &.active {
-    background: var(--surface);
-    color: var(--primary);
-    box-shadow: var(--shadow-sm);
+    background: var(--surface, #ffffff);
+    color: var(--text, #0f172a);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
 }
 
-.actions-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.search-refined {
+/* Compact Search Box */
+.search-box {
   position: relative;
-  .si {
+  width: 200px;
+  
+  .s-icon {
     position: absolute;
-    left: 14px;
+    left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 13px;
-    color: var(--text-tertiary);
-  }
-  input {
-    width: 200px;
-    height: 40px;
-    padding-left: 38px;
     font-size: 12px;
-    font-weight: 600;
-    color: var(--text);
-    background: var(--bg);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    transition: all var(--transition);
+    color: var(--text-tertiary, #94a3b8);
+  }
+  
+  input {
+    width: 100%;
+    height: 32px;
+    padding: 0 12px 0 28px;
+    border: 1px solid var(--border-light, #e2e8f0);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text, #1e293b);
+    background: var(--bg-secondary, #f8fafc);
+    transition: all 0.2s;
+    outline: none;
+    
     &:focus {
-      outline: none;
-      width: 280px;
-      background: var(--surface);
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-light);
+      background: var(--surface, #ffffff);
+      border-color: var(--primary, #3b82f6);
+      box-shadow: 0 0 0 2px var(--primary-light, #bfdbfe);
     }
   }
 }
 
-.tool-sep { width: 1px; height: 24px; background: var(--border-light); }
+/* Action Icons */
+.action-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 16px;
+  border-left: 1px solid var(--border-light, #e2e8f0);
+}
 
-.mini-ops { display: flex; gap: 8px; }
-
-.op-btn {
+.icon-btn {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-light, #e2e8f0);
+  background: var(--surface, #ffffff);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
-  border: 1px solid var(--border-light);
-  color: var(--text-secondary);
-  font-size: 16px;
+  color: var(--text-secondary, #64748b);
   cursor: pointer;
-  border-radius: var(--radius-md);
-  transition: all var(--transition);
+  transition: all 0.2s;
+  font-size: 13px;
+  
   &:hover {
-    background: var(--surface);
-    color: var(--primary);
-    border-color: var(--primary);
-  }
-
-  .dot-count {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    min-width: 18px;
-    height: 18px;
-    background: var(--error);
-    color: white;
-    border-radius: 50%;
-    font-size: 10px;
-    font-weight: 900;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--surface);
+    color: var(--primary, #3b82f6);
+    background: var(--bg-secondary, #f8fafc);
+    border-color: var(--border-hover, #cbd5e1);
   }
 }
 
-/* Grid Area */
+.badge-num {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 16px;
+  height: 16px;
+  background: var(--error, #ef4444);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid var(--surface, #ffffff);
+}
+
+/* Dense Grid */
 .dense-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
 }
 
-/* Empty State */
-.empty-state {
-  padding: 120px 0;
-  text-align: center;
-  .circle-box {
-    width: 64px;
-    height: 64px;
-    background: var(--bg);
-    border-radius: 50%;
-    margin: 0 auto 24px;
+/* Compact Empty State */
+.compact-empty {
+  padding: 60px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px dashed var(--border-light, #e2e8f0);
+  border-radius: 12px;
+  background: var(--bg-secondary, #f8fafc);
+  
+  .empty-icon-wrap {
+    width: 40px;
+    height: 40px;
+    background: var(--surface, #ffffff);
+    border: 1px solid var(--border-light, #e2e8f0);
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-tertiary);
-    font-size: 24px;
+    color: var(--text-tertiary, #94a3b8);
+    font-size: 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
   }
-  .empty-text { font-size: 16px; color: var(--text-secondary); margin-bottom: 24px; font-weight: 600; }
-  .reset-btn {
-    background: var(--primary);
-    border: none;
-    color: white;
-    padding: 10px 24px;
-    border-radius: var(--radius-md);
+  
+  .empty-text {
     font-size: 13px;
-    font-weight: 800;
+    font-weight: 600;
+    color: var(--text-secondary, #64748b);
+    margin: 0 0 12px;
+  }
+  
+  .reset-link {
+    background: none;
+    border: none;
+    color: var(--primary, #3b82f6);
+    font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
-    &:hover { background: var(--primary-hover); transform: translateY(-1px); }
+    
+    &:hover { text-decoration: underline; }
   }
 }
 
-@media (max-width: 850px) {
-  .shop-ctrl-center { padding: 18px 20px; margin-bottom: 25px; top: 0; border-radius: 0; margin: 0 -20px 25px; border-left: none; border-right: none; }
-  .info-row { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
-  .filter-row { flex-direction: column; align-items: stretch; gap: 16px; }
-  .cat-list { overflow-x: auto; padding: 4px; &::-webkit-scrollbar { display: none; } }
-  .actions-group { justify-content: space-between; }
-  .search-refined { flex: 1; }
-  .search-refined input { width: 100%; &:focus { width: 100%; } }
-  .dense-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+/* Responsive Overrides */
+@media (max-width: 900px) {
+  .dock-inner {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .right-col {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .search-box {
+    flex: 1;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 640px) {
+  .shop-subpage { padding: 12px; }
+  .toolbar-dock {
+    padding: 10px;
+    margin-bottom: 16px;
+    position: static;
+  }
+  .right-col {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .search-box { max-width: 100%; }
+  .action-icons { display: none; }
+  .filter-tabs { overflow-x: auto; &::-webkit-scrollbar { display: none; } }
+  .dense-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
 }
 </style>
