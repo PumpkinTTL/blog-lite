@@ -11,31 +11,41 @@
     <nav class="mx-auto px-5" style="max-width: 1320px">
       <div class="flex items-center gap-2 sm:gap-4 h-14 sm:h-16">
         <!-- Logo -->
-        <div
-          class="flex items-center gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg cursor-pointer transition-all"
-          :class="isDark ? 'hover:bg-gray-800/60' : 'hover:bg-gray-100'"
-          @click="goHome"
-        >
-          <div
-            class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center"
-            style="background: var(--primary)"
-          >
-            <font-awesome-icon
-              icon="book"
-              class="text-sm sm:text-base text-white"
-            />
+        <!-- Logo -->
+        <div class="group relative flex items-center gap-2.5 pl-2.5 pr-3.5 py-1.5 sm:py-2 rounded-[14px] cursor-pointer transition-transform duration-500 hover:scale-[1.02]"
+             :class="isDark ? 'bg-[#0f172a]/80 backdrop-blur-md shadow-sm' : 'bg-gradient-to-r from-blue-50/60 to-purple-50/60 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.03)] cursor-pointer'"
+             @click="goHome">
+             
+          <!-- 极细腻流光玻璃边框（真·空心边框，绝不污染背后的毛玻璃） -->
+          <div class="absolute inset-0 rounded-[14px] pointer-events-none opacity-90 transition-opacity duration-500 group-hover:opacity-100"
+               style="border: 1px solid transparent; 
+                      background: linear-gradient(90deg, #3b82f6, #a855f7, #3b82f6) border-box; 
+                      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); 
+                      -webkit-mask-composite: destination-out; 
+                      mask-composite: exclude; 
+                      background-size: 200% 100%; 
+                      animation: shimmer 3s linear infinite;"></div>
+
+          <!-- 精巧的图标（完全融入毛玻璃） -->
+          <div class="relative z-10 flex items-center justify-center transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3">
+            <font-awesome-icon icon="book" class="text-[16px] sm:text-[18px]" 
+                               :class="isDark ? 'text-blue-400' : 'text-blue-600'" />
           </div>
-          <div class="flex flex-col">
-            <span
-              class="text-sm sm:text-base font-semibold leading-tight"
-              :class="isDark ? 'text-white' : 'text-gray-900'"
-              >博客资源</span
-            >
-            <span
-              class="hidden sm:block text-[10px] font-medium leading-tight"
-              :class="isDark ? 'text-gray-500' : 'text-gray-400'"
-              >Resource Hub</span
-            >
+          
+          <!-- 文字部分（主副标题各自独立套用流光渐变，彻底修复 Webkit 消失 Bug） -->
+          <div class="relative z-10 flex flex-col pt-0.5">
+            <!-- 主标题：博客资源 -->
+            <span class="text-[15px] sm:text-[17px] font-black leading-tight tracking-[0.02em] text-transparent bg-clip-text"
+                  :class="isDark ? 'bg-gradient-to-r from-blue-300 via-purple-300 to-blue-300' : 'bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600'"
+                  style="background-size: 200% 100%; animation: shimmer 3s linear infinite;">
+              博客资源
+            </span>
+            <!-- 副标题：Resource Hub -->
+            <span class="text-[7.5px] font-extrabold leading-none tracking-[0.24em] uppercase mt-[2.5px] text-transparent bg-clip-text"
+                  :class="isDark ? 'bg-gradient-to-r from-blue-300 via-purple-300 to-blue-300 opacity-80' : 'bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 opacity-80'"
+                  style="background-size: 200% 100%; animation: shimmer 3s linear infinite;">
+              RESOURCE HUB
+            </span>
           </div>
         </div>
 
