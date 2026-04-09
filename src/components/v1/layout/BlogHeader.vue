@@ -40,18 +40,64 @@
         </div>
 
         <!-- Desktop Nav Panel -->
-        <div class="hidden md:flex items-center gap-1 px-1.5 py-1.5 rounded-xl ml-6 transition-all"
-             :class="isDark ? 'bg-gray-800/80' : 'bg-gray-100/80'">
-          <a v-for="(item, index) in navItems" :key="item.name" :href="item.href"
-            class="flex items-center gap-2 px-4 py-1.5 text-[14px] font-medium rounded-lg transition-all duration-300 cursor-pointer"
+        <!-- Desktop Nav Panel -->
+        <div
+          class="hidden md:flex items-center gap-1.5 px-1.5 py-1.5 rounded-xl ml-6 transition-all"
+          :class="
+            isDark
+              ? 'bg-gray-800/40 border border-gray-700/50'
+              : 'bg-gray-50/80 border border-gray-100'
+          "
+        >
+          <a
+            v-for="item in navItems"
+            :key="item.name"
+            :href="item.href"
+            class="flex items-center gap-2.5 px-4 py-1.5 text-[14px] font-medium rounded-lg transition-all duration-300 cursor-pointer"
             :class="[
-               index === 0 && !isDark ? 'bg-white text-gray-900 shadow-sm' : '',
-               index === 0 && isDark ? 'bg-gray-700 text-white shadow-sm' : '',
-               index !== 0 && !isDark ? 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50' : '',
-               index !== 0 && isDark ? 'text-gray-400 hover:text-white hover:bg-gray-700/50' : ''
-            ]" @click.prevent="handleNavClick(item)">
-            <font-awesome-icon :icon="item.icon" class="text-[13px]" :class="index === 0 ? '' : 'opacity-70'" 
-                               :style="index === 0 && !isDark ? { color: 'var(--primary)' } : {}" />
+              (item.isRoute
+                ? router.currentRoute.value.path === item.href
+                : false) && !isDark
+                ? 'bg-white text-gray-900 shadow-[0_1px_3px_rgba(0,0,0,0.06)] ring-1 ring-gray-900/5'
+                : '',
+              (item.isRoute
+                ? router.currentRoute.value.path === item.href
+                : false) && isDark
+                ? 'bg-gray-700/80 text-white shadow-sm ring-1 ring-white/10'
+                : '',
+              !(item.isRoute
+                ? router.currentRoute.value.path === item.href
+                : false) && !isDark
+                ? 'text-gray-500 hover:text-gray-900 hover:bg-gray-100/80'
+                : '',
+              !(item.isRoute
+                ? router.currentRoute.value.path === item.href
+                : false) && isDark
+                ? 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+                : '',
+            ]"
+            @click.prevent="handleNavClick(item)"
+          >
+            <font-awesome-icon
+              :icon="item.icon"
+              class="text-[13px] transition-colors"
+              :class="
+                (
+                  item.isRoute
+                    ? router.currentRoute.value.path === item.href
+                    : false
+                )
+                  ? ''
+                  : 'opacity-70'
+              "
+              :style="
+                (item.isRoute
+                  ? router.currentRoute.value.path === item.href
+                  : false) && !isDark
+                  ? { color: 'var(--primary)' }
+                  : {}
+              "
+            />
             <span>{{ item.name }}</span>
           </a>
         </div>
