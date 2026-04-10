@@ -60,6 +60,7 @@ declare module 'vue' {
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     HomeSidebar: typeof import('./src/components/v1/home/HomeSidebar.vue')['default']
     IconDemo: typeof import('./src/components/IconDemo.vue')['default']
+    LoginModal: typeof import('./src/components/v1/auth/LoginModal.vue')['default']
     MobileBottomNav: typeof import('./src/components/v1/layout/MobileBottomNav.vue')['default']
     NotificationCenter: typeof import('./src/components/v1/layout/NotificationCenter.vue')['default']
     Pagination: typeof import('./src/components/v1/common/Pagination.vue')['default']

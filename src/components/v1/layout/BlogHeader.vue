@@ -157,8 +157,8 @@
             :class="isDark ? 'bg-gray-700' : 'bg-gray-200'"
           ></div>
 
-          <!-- User Button (All screens) -->
-          <div class="relative" ref="userMenuRef">
+          <!-- User Button / Login Button (All screens) -->
+          <div v-if="user" class="relative" ref="userMenuRef">
             <button
               class="flex items-center gap-1.5 sm:gap-2.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all cursor-pointer"
               :class="
@@ -403,6 +403,15 @@
               </div>
             </transition>
           </div>
+          <!-- Login Button -->
+          <div v-else class="flex items-center">
+            <button @click="isLoginModalOpen = true"
+                    class="group flex items-center justify-center gap-1.5 px-3.5 py-[6px] rounded-[10px] font-bold text-[13px] transition-all shadow-sm active:scale-[0.96]"
+                    :class="isDark ? 'bg-blue-500/20 text-blue-400 ring-1 ring-blue-500/30' : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white border border-blue-500/20'">
+              <font-awesome-icon icon="user" class="text-[12px] relative z-10" />
+              <span class="relative z-10 tracking-wide">登录 / 注册</span>
+            </button>
+          </div>
 
           <!-- Mobile Menu Button (Mobile only) -->
           <button
@@ -514,6 +523,12 @@
       :is-dark="isDark"
       @close="isProfileCenterOpen = false"
     />
+    <LoginModal
+      :is-open="isLoginModalOpen"
+      :is-dark="isDark"
+      @close="isLoginModalOpen = false"
+      @login-success="handleLoginSuccess"
+    />
   </header>
 </template>
 
@@ -522,6 +537,7 @@ import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import NotificationCenter from "./NotificationCenter.vue";
 import ProfileCenter from "./ProfileCenter.vue";
+import LoginModal from "../auth/LoginModal.vue";
 import { useThemeStore } from "@/stores/theme";
 
 // 深色模式颜色常量
@@ -535,14 +551,20 @@ const isMobileMenuOpen = ref(false);
 const isUserMenuOpen = ref(false);
 const isNotificationOpen = ref(false);
 const isProfileCenterOpen = ref(false);
+const isLoginModalOpen = ref(false);
 const hasNotifications = ref(true);
 const userMenuRef = ref<HTMLElement | null>(null);
 
-const user = ref({
-  username: "又是一年冬",
-  email: "zhangsan@example.com",
-  isVip: true,
-});
+// 初始化未登录状态
+const user = ref<any>(null);
+
+const handleLoginSuccess = () => {
+  user.value = {
+    username: "又是一年冬",
+    email: "zhangsan@example.com",
+    isVip: true,
+  };
+};
 
 const notifications = ref([
   {
