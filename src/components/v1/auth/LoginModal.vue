@@ -11,8 +11,8 @@
     <div v-if="isOpen" class="fixed inset-0 z-[99999] flex items-center justify-center p-4">
       <!-- Backdrop -->
       <div
-        class="absolute inset-0 backdrop-blur-[2px] transition-opacity"
-        :class="isDark ? 'bg-black/55' : 'bg-gray-900/20'"
+        class="absolute inset-0 transition-opacity"
+        :class="isDark ? 'bg-black/60' : 'bg-gray-900/30'"
         @click="closeModal"
       ></div>
 
