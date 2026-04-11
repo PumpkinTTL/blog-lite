@@ -589,7 +589,7 @@ const navItems = [
   { name: "首页", href: "/", isRoute: true, icon: "home" },
   { name: "资源", href: "/#resources", isRoute: true, icon: "book" },
   { name: "商城", href: "/shop", isRoute: true, icon: "shop" },
-  { name: "关于", href: "/#about", isRoute: true, icon: "circle-info" },
+  { name: "关于", href: "/about", isRoute: true, icon: "circle-info" },
 ];
 
 const goHome = () => router.push("/");

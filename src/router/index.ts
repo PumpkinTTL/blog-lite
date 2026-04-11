@@ -26,6 +26,14 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '资源商城'
     }
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('@/views/v1/About.vue'),
+    meta: {
+      title: '关于我们'
+    }
   }
 ]
 
