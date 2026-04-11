@@ -158,7 +158,7 @@
           ></div>
 
           <!-- User Button / Login Button (All screens) -->
-          <div v-if="user" class="relative" ref="userMenuRef">
+          <div v-if="userStore.isLoggedIn" class="relative" ref="userMenuRef">
             <button
               class="flex items-center gap-1.5 sm:gap-2.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all cursor-pointer"
               :class="
@@ -178,13 +178,13 @@
                   "
                 >
                   <img
-                    src="https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg"
+                    :src="userStore.avatar || 'https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg'"
                     alt="用户头像"
                     class="w-full h-full object-cover"
                   />
                 </div>
                 <div
-                  v-if="user?.isVip"
+                  v-if="userStore.isVip"
                   class="vip-crown-badge-mobile sm:vip-crown-badge"
                 >
                   <font-awesome-icon
@@ -197,9 +197,9 @@
                 class="text-xs sm:text-sm font-medium username-text max-w-[60px] sm:max-w-none truncate"
                 :class="[
                   isDark ? 'text-gray-200' : 'text-gray-700',
-                  user?.isVip ? 'vip-shimmer' : '',
+                  userStore.isVip ? 'vip-shimmer' : '',
                 ]"
-                >{{ user?.username || "用户" }}</span
+                >{{ userStore.username }}</span
               >
               <font-awesome-icon
                 icon="chevron-down"
@@ -254,13 +254,13 @@
                         "
                       >
                         <img
-                          src="https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg"
+                          :src="userStore.avatar || 'https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg'"
                           alt="用户头像"
                           class="w-full h-full object-cover"
                         />
                       </div>
                       <div
-                        v-if="user?.isVip"
+                        v-if="userStore.isVip"
                         class="absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center ring-2"
                         :class="isDark ? 'ring-gray-800' : 'ring-white'"
                       >
@@ -276,13 +276,13 @@
                           class="text-sm font-bold username-text truncate"
                           :class="[
                             isDark ? 'text-white' : 'text-gray-900',
-                            user?.isVip ? 'vip-shimmer' : '',
+                            userStore.isVip ? 'vip-shimmer' : '',
                           ]"
                         >
-                          {{ user?.username || "用户" }}
+                          {{ userStore.username }}
                         </p>
                         <span
-                          v-if="user?.isVip"
+                          v-if="userStore.isVip"
                           class="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-semibold rounded whitespace-nowrap flex-shrink-0"
                           :class="
                             isDark
@@ -298,7 +298,7 @@
                         class="text-xs truncate"
                         :class="isDark ? 'text-gray-400' : 'text-gray-500'"
                       >
-                        {{ user?.email || "user@example.com" }}
+                        {{ userStore.email || "user@example.com" }}
                       </p>
                     </div>
                   </div>
@@ -395,6 +395,7 @@
                         ? 'text-red-400 hover:text-red-300 hover:bg-red-500/10'
                         : 'text-red-600 hover:text-red-700 hover:bg-red-50'
                     "
+                    @click.prevent="handleLogout"
                   >
                     <font-awesome-icon icon="arrow-right" class="text-sm w-4" />
                     <span>退出登录</span>
@@ -479,12 +480,12 @@
                   class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden"
                 >
                   <img
-                    src="https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg"
+                    :src="userStore.avatar || 'https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg'"
                     alt="用户头像"
                     class="w-full h-full object-cover"
                   />
                 </div>
-                <div v-if="user?.isVip" class="vip-crown-badge-large">
+                <div v-if="userStore.isVip" class="vip-crown-badge-large">
                   <font-awesome-icon icon="crown" class="text-[8px]" />
                 </div>
               </div>
@@ -493,16 +494,16 @@
                   class="text-sm font-semibold username-text"
                   :class="[
                     isDark ? 'text-white' : 'text-gray-900',
-                    user?.isVip ? 'vip-shimmer' : '',
+                    userStore.isVip ? 'vip-shimmer' : '',
                   ]"
                 >
-                  {{ user?.username || "用户" }}
+                  {{ userStore.username }}
                 </p>
                 <p
                   class="text-xs"
                   :class="isDark ? 'text-gray-400' : 'text-gray-500'"
                 >
-                  {{ user?.email || "user@example.com" }}
+                  {{ userStore.email || "user@example.com" }}
                 </p>
               </div>
             </div>
@@ -535,10 +536,12 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useRouter } from "vue-router";
+import { message } from "ant-design-vue";
 import NotificationCenter from "./NotificationCenter.vue";
 import ProfileCenter from "./ProfileCenter.vue";
 import LoginModal from "../auth/LoginModal.vue";
 import { useThemeStore } from "@/stores/theme";
+import { useUserStore } from "@/stores/user";
 
 // 深色模式颜色常量
 const DARK_BG = "#0F172A";
@@ -546,6 +549,7 @@ const DARK_BORDER = "#1f2937";
 
 const router = useRouter();
 const themeStore = useThemeStore();
+const userStore = useUserStore();
 const isDark = computed(() => themeStore.isDark);
 const isMobileMenuOpen = ref(false);
 const isUserMenuOpen = ref(false);
@@ -555,15 +559,8 @@ const isLoginModalOpen = ref(false);
 const hasNotifications = ref(true);
 const userMenuRef = ref<HTMLElement | null>(null);
 
-// 初始化未登录状态
-const user = ref<any>(null);
-
 const handleLoginSuccess = () => {
-  user.value = {
-    username: "又是一年冬",
-    email: "zhangsan@example.com",
-    isVip: true,
-  };
+  // 登录成功后 userStore 已更新，无需额外操作
 };
 
 const notifications = ref([
@@ -652,6 +649,16 @@ const openProfileCenter = () => {
 
 const handleMarkAllRead = () => {
   hasNotifications.value = false;
+};
+
+const handleLogout = async () => {
+  isUserMenuOpen.value = false;
+  try {
+    await userStore.logout();
+    message.success("已退出登录");
+  } catch {
+    message.error("退出登录失败");
+  }
 };
 
 const toggleTheme = () => {

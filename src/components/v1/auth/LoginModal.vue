@@ -91,10 +91,12 @@
               <div v-if="viewMode === 'login' && loginType === 'email'" key="login-email" class="space-y-3">
                 <div class="relative group">
                   <input
+                    v-model="emailForm.account"
                     type="email"
                     placeholder="输入常用邮箱"
                     class="input-field w-full pl-[36px] pr-3.5 py-[10.5px]"
                     :class="inputCls"
+                    @keyup.enter="handleEmailLogin"
                   />
                   <font-awesome-icon
                     icon="envelope"
@@ -105,10 +107,13 @@
                 <div class="flex gap-2">
                   <div class="relative flex-1 group">
                     <input
+                      v-model="emailForm.code"
                       type="text"
                       placeholder="6位验证码"
+                      maxlength="6"
                       class="input-field w-full pl-[36px] pr-3.5 py-[10.5px]"
                       :class="inputCls"
+                      @keyup.enter="handleEmailLogin"
                     />
                     <font-awesome-icon
                       icon="shield-halved"
@@ -116,9 +121,13 @@
                       :class="isDark ? 'text-gray-600 group-focus-within:text-blue-400' : 'text-gray-400 group-focus-within:text-blue-500'"
                     />
                   </div>
-                  <button class="code-btn px-3.5 text-[12px] font-semibold rounded-[10px] border whitespace-nowrap transition-all duration-150 active:scale-[0.97]"
-                          :class="codeBtnCls">
-                    获取验证码
+                  <button
+                    class="code-btn px-3.5 text-[12px] font-semibold rounded-[10px] border whitespace-nowrap transition-all duration-150 active:scale-[0.97]"
+                    :class="[codeBtnCls, { 'opacity-50 cursor-not-allowed': codeCooldown > 0 }]"
+                    :disabled="codeCooldown > 0 || sendingCode"
+                    @click="handleSendCode('login')"
+                  >
+                    {{ sendingCode ? '发送中...' : codeCooldown > 0 ? `${codeCooldown}s` : '获取验证码' }}
                   </button>
                 </div>
               </div>
@@ -127,10 +136,12 @@
               <div v-else-if="viewMode === 'login' && loginType === 'password'" key="login-password" class="space-y-3">
                 <div class="relative group">
                   <input
+                    v-model="pwdForm.account"
                     type="text"
                     placeholder="邮箱 / 用户名"
                     class="input-field w-full pl-[36px] pr-3.5 py-[10.5px]"
                     :class="inputCls"
+                    @keyup.enter="handlePwdLogin"
                   />
                   <font-awesome-icon
                     icon="user"
@@ -140,10 +151,12 @@
                 </div>
                 <div class="relative group">
                   <input
+                    v-model="pwdForm.password"
                     :type="showPwd ? 'text' : 'password'"
                     placeholder="请输入密码"
                     class="input-field w-full pl-[36px] pr-9 py-[10.5px]"
                     :class="inputCls"
+                    @keyup.enter="handlePwdLogin"
                   />
                   <font-awesome-icon
                     icon="lock"
@@ -178,6 +191,7 @@
                     href="#"
                     class="text-[11.5px] font-medium transition-colors"
                     :class="isDark ? 'text-gray-500 hover:text-blue-400' : 'text-gray-400 hover:text-blue-600'"
+                    @click.prevent
                   >忘记密码？</a>
                 </div>
               </div>
@@ -186,6 +200,7 @@
               <div v-else-if="viewMode === 'register'" key="register" class="space-y-3">
                 <div class="relative group">
                   <input
+                    v-model="registerForm.username"
                     type="text"
                     placeholder="设置用户名"
                     class="input-field w-full pl-[36px] pr-3.5 py-[10.5px]"
@@ -199,6 +214,7 @@
                 </div>
                 <div class="relative group">
                   <input
+                    v-model="registerForm.email"
                     type="email"
                     placeholder="绑定安全邮箱"
                     class="input-field w-full pl-[36px] pr-3.5 py-[10.5px]"
@@ -213,8 +229,10 @@
                 <div class="flex gap-2">
                   <div class="relative flex-1 group">
                     <input
+                      v-model="registerForm.code"
                       type="text"
                       placeholder="邮箱验证码"
+                      maxlength="6"
                       class="input-field w-full pl-[36px] pr-3.5 py-[10.5px]"
                       :class="inputCls"
                     />
@@ -224,13 +242,18 @@
                       :class="isDark ? 'text-gray-600 group-focus-within:text-blue-400' : 'text-gray-400 group-focus-within:text-blue-500'"
                     />
                   </div>
-                  <button class="code-btn px-3.5 text-[12px] font-semibold rounded-[10px] border whitespace-nowrap transition-all duration-150 active:scale-[0.97]"
-                          :class="codeBtnCls">
-                    获取验证码
+                  <button
+                    class="code-btn px-3.5 text-[12px] font-semibold rounded-[10px] border whitespace-nowrap transition-all duration-150 active:scale-[0.97]"
+                    :class="[codeBtnCls, { 'opacity-50 cursor-not-allowed': codeCooldown > 0 }]"
+                    :disabled="codeCooldown > 0 || sendingCode"
+                    @click="handleSendCode('register')"
+                  >
+                    {{ sendingCode ? '发送中...' : codeCooldown > 0 ? `${codeCooldown}s` : '获取验证码' }}
                   </button>
                 </div>
                 <div class="relative group">
                   <input
+                    v-model="registerForm.password"
                     :type="showPwd ? 'text' : 'password'"
                     placeholder="设置登录密码"
                     class="input-field w-full pl-[36px] pr-9 py-[10.5px]"
@@ -256,6 +279,7 @@
             <!-- ── SUBMIT BUTTON ── -->
             <button
               @click="handleSubmit"
+              :disabled="isLoading"
               class="submit-btn w-full mt-5 py-[11px] rounded-[11px] text-white text-[13.5px] font-bold tracking-wide flex items-center justify-center gap-2 relative overflow-hidden transition-all duration-200 active:scale-[0.98]"
             >
               <span
@@ -265,10 +289,17 @@
                 class="absolute inset-0 btn-gradient-hover opacity-0 btn-hover-overlay transition-opacity duration-200"
               ></span>
               <font-awesome-icon
+                v-if="!isLoading"
                 :icon="viewMode === 'login' ? 'arrow-right-to-bracket' : 'user-plus'"
                 class="text-[11.5px] relative z-10"
               />
-              <span class="relative z-10">{{ viewMode === 'login' ? '立即登录' : '创建账号' }}</span>
+              <font-awesome-icon
+                v-else
+                icon="spinner"
+                spin
+                class="text-[11.5px] relative z-10"
+              />
+              <span class="relative z-10">{{ isLoading ? '请稍候...' : viewMode === 'login' ? '立即登录' : '创建账号' }}</span>
             </button>
 
             <!-- ── SOCIAL LOGIN ── -->
@@ -305,63 +336,237 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch } from 'vue'
+import { message } from 'ant-design-vue'
+import { useUserStore } from '@/stores/user'
 
 const props = defineProps({
   isOpen: { type: Boolean, required: true },
   isDark: { type: Boolean, default: false }
-});
+})
 
-const emit = defineEmits(['close', 'login-success']);
+const emit = defineEmits(['close', 'login-success'])
 
-const viewMode = ref<'login' | 'register'>('login');
-const loginType = ref<'email' | 'password'>('email');
-const showPwd = ref(false);
-const rememberMe = ref(false);
+const userStore = useUserStore()
+
+const viewMode = ref<'login' | 'register'>('login')
+const loginType = ref<'email' | 'password'>('password')
+const showPwd = ref(false)
+const rememberMe = ref(false)
+const isLoading = ref(false)
+const sendingCode = ref(false)
+const codeCooldown = ref(0)
+
+let cooldownTimer: ReturnType<typeof setInterval> | null = null
+
+// ── 表单数据 ──
+const pwdForm = ref({ account: '', password: '' })
+const emailForm = ref({ account: '', code: '' })
+const registerForm = ref({ username: '', email: '', code: '', password: '' })
 
 const loginTabs = [
-  { key: 'email' as const, label: '验证码登录', icon: 'envelope' },
   { key: 'password' as const, label: '密码登录', icon: 'lock' },
-];
+  { key: 'email' as const, label: '验证码登录', icon: 'envelope' },
+]
 
 const socialLogins = [
   { key: 'github', icon: 'github', label: 'GitHub', color: '#6e7681' },
   { key: 'google', icon: 'google', label: 'Google', color: '#ea4335' },
-];
+]
 
 // Shared input classes
 const inputCls = computed(() =>
   props.isDark
     ? 'bg-white/[0.04] border-white/[0.08] text-gray-200 placeholder-gray-600 focus:border-blue-500/50 focus:ring-blue-500/15 hover:border-white/[0.14]'
     : 'bg-gray-50/70 border-gray-200/80 text-gray-900 placeholder-gray-400 focus:border-blue-500/60 focus:ring-blue-500/10 hover:border-gray-300 shadow-[0_1px_2px_rgba(0,0,0,0.03)]'
-);
+)
 
 const codeBtnCls = computed(() =>
   props.isDark
     ? 'bg-white/[0.05] border-white/[0.08] text-gray-300 hover:bg-white/[0.09] hover:text-white'
     : 'bg-white border-gray-200/80 text-gray-600 hover:bg-gray-50 hover:text-gray-900 shadow-sm'
-);
+)
 
 watch(() => props.isOpen, (val) => {
   if (val) {
-    viewMode.value = 'login';
-    loginType.value = 'email';
-    showPwd.value = false;
-    rememberMe.value = false;
+    viewMode.value = 'login'
+    loginType.value = 'password'
+    showPwd.value = false
+    rememberMe.value = false
+    isLoading.value = false
+    resetForms()
+    clearCooldown()
   }
-});
+})
 
-const closeModal = () => emit('close');
+function resetForms() {
+  pwdForm.value = { account: '', password: '' }
+  emailForm.value = { account: '', code: '' }
+  registerForm.value = { username: '', email: '', code: '', password: '' }
+}
+
+function clearCooldown() {
+  codeCooldown.value = 0
+  if (cooldownTimer) {
+    clearInterval(cooldownTimer)
+    cooldownTimer = null
+  }
+}
+
+function startCooldown() {
+  clearCooldown()
+  codeCooldown.value = 60
+  cooldownTimer = setInterval(() => {
+    codeCooldown.value--
+    if (codeCooldown.value <= 0) {
+      clearCooldown()
+    }
+  }, 1000)
+}
+
+const closeModal = () => emit('close')
 
 const toggleMode = () => {
-  viewMode.value = viewMode.value === 'login' ? 'register' : 'login';
-  showPwd.value = false;
-};
+  viewMode.value = viewMode.value === 'login' ? 'register' : 'login'
+  showPwd.value = false
+}
 
-const handleSubmit = () => {
-  emit('login-success');
-  closeModal();
-};
+// ── 发送验证码 ──
+async function handleSendCode(mode: 'login' | 'register') {
+  const email = mode === 'login' ? emailForm.value.account : registerForm.value.email
+  if (!email) {
+    message.warning('请先输入邮箱地址')
+    return
+  }
+  // 简单邮箱格式校验
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    message.warning('请输入有效的邮箱地址')
+    return
+  }
+
+  sendingCode.value = true
+  try {
+    await userStore.sendCode(email)
+    message.success('验证码已发送，请查看邮箱')
+    startCooldown()
+  } catch {
+    // 错误已在 request.ts 拦截器中处理
+  } finally {
+    sendingCode.value = false
+  }
+}
+
+// ── 密码登录 ──
+async function handlePwdLogin() {
+  if (!pwdForm.value.account) {
+    message.warning('请输入用户名或邮箱')
+    return
+  }
+  if (!pwdForm.value.password) {
+    message.warning('请输入密码')
+    return
+  }
+
+  isLoading.value = true
+  try {
+    await userStore.loginByPwd({
+      account: pwdForm.value.account,
+      password: pwdForm.value.password,
+    })
+    message.success('登录成功')
+    emit('login-success')
+    closeModal()
+  } catch {
+    // 错误已在拦截器中处理
+  } finally {
+    isLoading.value = false
+  }
+}
+
+// ── 验证码登录 ──
+async function handleEmailLogin() {
+  if (!emailForm.value.account) {
+    message.warning('请输入邮箱地址')
+    return
+  }
+  if (!emailForm.value.code || emailForm.value.code.length !== 6) {
+    message.warning('请输入6位验证码')
+    return
+  }
+
+  isLoading.value = true
+  try {
+    await userStore.loginByVerificationCode({
+      account: emailForm.value.account,
+      password: emailForm.value.code,
+    })
+    message.success('登录成功')
+    emit('login-success')
+    closeModal()
+  } catch {
+    // 错误已在拦截器中处理
+  } finally {
+    isLoading.value = false
+  }
+}
+
+// ── 注册 ──
+async function handleRegister() {
+  if (!registerForm.value.username) {
+    message.warning('请设置用户名')
+    return
+  }
+  if (registerForm.value.username.length < 3) {
+    message.warning('用户名至少3个字符')
+    return
+  }
+  if (!registerForm.value.email) {
+    message.warning('请输入邮箱')
+    return
+  }
+  if (!registerForm.value.code || registerForm.value.code.length !== 6) {
+    message.warning('请输入6位验证码')
+    return
+  }
+  if (!registerForm.value.password || registerForm.value.password.length < 6) {
+    message.warning('密码至少6个字符')
+    return
+  }
+
+  isLoading.value = true
+  try {
+    // 注册接口使用用户名+密码+邮箱
+    await userStore.registerAccount({
+      username: registerForm.value.username,
+      password: registerForm.value.password,
+      email: registerForm.value.email,
+    })
+    message.success('注册成功，请登录')
+    viewMode.value = 'login'
+    loginType.value = 'password'
+    pwdForm.value.account = registerForm.value.username
+    pwdForm.value.password = ''
+  } catch {
+    // 错误已在拦截器中处理
+  } finally {
+    isLoading.value = false
+  }
+}
+
+// ── 统一提交 ──
+function handleSubmit() {
+  if (isLoading.value) return
+
+  if (viewMode.value === 'login') {
+    if (loginType.value === 'email') {
+      handleEmailLogin()
+    } else {
+      handlePwdLogin()
+    }
+  } else {
+    handleRegister()
+  }
+}
 </script>
 
 <style scoped>
@@ -406,6 +611,11 @@ const handleSubmit = () => {
 }
 .submit-btn:active {
   transform: translateY(0) scale(0.98);
+}
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
 }
 
 /* ── Form transition ── */

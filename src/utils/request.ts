@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
-import { ElMessage } from 'element-plus'
+import { message } from 'ant-design-vue'
 
 // 创建axios实例
 const service: AxiosInstance = axios.create({
@@ -11,18 +11,30 @@ const service: AxiosInstance = axios.create({
   }
 })
 
+// 不需要携带 token 的公开接口路径
+const publicPaths = [
+  '/v2/user/login',
+  '/v2/user/register',
+  '/v2/user/sendEmailCode',
+  '/v2/user/checkUsername',
+  '/v2/user/checkEmail',
+  '/v2/user/refreshToken',
+  '/v2/user/requestPasswordReset',
+  '/v2/user/verifyResetToken',
+  '/v2/user/resetPassword',
+]
+
 // 请求拦截器
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // 在发送请求之前做些什么
     const token = localStorage.getItem('token')
-    if (token && config.headers) {
+    const isPublic = publicPaths.some(path => config.url?.includes(path))
+    if (token && !isPublic && config.headers) {
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
   },
   (error) => {
-    // 对请求错误做些什么
     console.error('Request error:', error)
     return Promise.reject(error)
   }
@@ -31,48 +43,83 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (response: AxiosResponse) => {
-    // 对响应数据做点什么
-    const { code, message, data } = response.data
-    
-    if (code === 200) {
-      return data
-    } else {
-      ElMessage.error(message || '请求失败')
-      return Promise.reject(new Error(message || '请求失败'))
+    const res = response.data
+
+    // 后端返回 { code, msg, data?, token?, expireTime? }
+    if (res.code === 200) {
+      return res
     }
+
+    // 业务错误
+    const errorMsg = res.msg || '请求失败'
+
+    // 401：区分公开接口业务错误 vs 认证过期
+    if (res.code === 401) {
+      const isPublic = publicPaths.some(path => response.config.url?.includes(path))
+      if (isPublic) {
+        // 登录/注册等接口的 401 是业务错误（如账号密码错误），只提示
+        message.error(errorMsg)
+      } else {
+        // 需要认证的接口 401 才是 token 过期，清除登录态并刷新
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        localStorage.removeItem('userInfo')
+        localStorage.removeItem('expireTime')
+        message.error('登录已过期，请重新登录')
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500)
+      }
+      return Promise.reject(new Error(errorMsg))
+    }
+
+    // 403：封禁
+    if (res.code === 403) {
+      message.error('账号已被禁用')
+      return Promise.reject(new Error(errorMsg))
+    }
+
+    // 其他业务错误
+    message.error(errorMsg)
+    return Promise.reject(new Error(errorMsg))
   },
   (error) => {
-    // 对响应错误做点什么
     console.error('Response error:', error)
-    
+
     if (error.response) {
       const { status, data } = error.response
-      
+      const errorMsg = data?.msg || data?.message || ''
+
       switch (status) {
         case 401:
-          ElMessage.error('未授权，请重新登录')
-          // 清除token并跳转到登录页
           localStorage.removeItem('token')
-          window.location.href = '/login'
+          localStorage.removeItem('user')
+          message.error('未授权，请重新登录')
+          setTimeout(() => {
+            window.location.reload()
+          }, 1500)
           break
         case 403:
-          ElMessage.error('拒绝访问')
+          message.error(errorMsg || '拒绝访问')
           break
         case 404:
-          ElMessage.error('请求地址出错')
+          message.error('请求地址出错')
+          break
+        case 409:
+          message.error(errorMsg || '资源冲突')
           break
         case 500:
-          ElMessage.error('服务器内部错误')
+          message.error('服务器内部错误')
           break
         default:
-          ElMessage.error(data?.message || '请求失败')
+          message.error(errorMsg || '请求失败')
       }
     } else if (error.request) {
-      ElMessage.error('网络错误，请检查网络连接')
+      message.error('网络错误，请检查网络连接')
     } else {
-      ElMessage.error('请求配置错误')
+      message.error('请求配置错误')
     }
-    
+
     return Promise.reject(error)
   }
 )

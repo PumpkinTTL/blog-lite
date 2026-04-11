@@ -93,7 +93,15 @@
 
         <!-- 内容区域 -->
         <div class="content-wrapper custom-scrollbar">
-          <transition name="page-fade" mode="out-in">
+          <!-- 加载中状态 -->
+          <div v-if="isLoadingProfile" class="loading-state">
+            <div class="loading-spinner">
+              <font-awesome-icon icon="spinner" spin class="spinner-icon" />
+              <span>正在获取资料...</span>
+            </div>
+          </div>
+
+          <transition v-else name="page-fade" mode="out-in">
             <!-- 个人资料面板 -->
             <div
               v-if="activeTab === 'profile'"
@@ -151,11 +159,11 @@
                   <div class="field-item col-span-2">
                     <div class="label-with-meta">
                       <label>个人简介</label>
-                      <span class="count">{{ formData.bio.length }}/200</span>
+                      <span class="count">{{ formData.signature.length }}/200</span>
                     </div>
                     <div class="input-wrapper">
                       <textarea
-                        v-model="formData.bio"
+                        v-model="formData.signature"
                         maxlength="200"
                         placeholder="介绍一下你自己..."
                       ></textarea>
@@ -282,8 +290,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted, onUnmounted } from "vue";
+import { ref, computed, reactive, watch, onMounted, onUnmounted } from "vue";
 import { message } from "ant-design-vue";
+import { useUserStore } from "@/stores/user";
 
 const props = defineProps({
   isOpen: { type: Boolean, default: false },
@@ -292,24 +301,52 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
+const userStore = useUserStore();
+
 const activeTab = ref("profile");
 const isSaving = ref(false);
+const isLoadingProfile = ref(false);
 const sidebarOpen = ref(false);
 const authEnabled = ref(false);
 const isMobile = ref(false);
 
 const modalWidth = computed(() => (isMobile.value ? "100%" : 840));
 
-const user = reactive({
-  username: "又是一年冬",
-  email: "zhangsan@example.com",
+const user = computed(() => ({
+  username: userStore.userInfo?.nickname || userStore.userInfo?.username || "用户",
+  email: userStore.email || "未绑定邮箱",
   avatar:
+    userStore.avatar ||
     "https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg",
-  isVip: true,
-  bio: "热爱生活，专注于前端开发。在这里分享我的技术视野与点滴思考。",
+  isVip: userStore.isVip,
+  signature: userStore.userInfo?.signature || "",
+}));
+
+const formData = reactive({
+  username: "",
+  email: "",
+  avatar: "",
+  isVip: false,
+  signature: "",
 });
 
-const formData = reactive({ ...user });
+// 打开时同步 store 数据到 formData，并从服务端拉取最新资料
+watch(() => props.isOpen, async (val) => {
+  if (val) {
+    // 先用缓存数据填充
+    Object.assign(formData, user.value);
+    // 从服务端获取最新数据，显示 loading
+    isLoadingProfile.value = true;
+    try {
+      await userStore.fetchProfile();
+      Object.assign(formData, user.value);
+    } catch {
+      // 获取失败就用缓存数据
+    } finally {
+      isLoadingProfile.value = false;
+    }
+  }
+});
 
 // UI 装饰状态
 const activeField = ref("");
@@ -378,14 +415,14 @@ const handleTabChange = (id: string) => {
 };
 
 const resetForm = () => {
-  Object.assign(formData, user);
+  Object.assign(formData, user.value);
   message.info("已重置变更内容");
 };
 
 const saveChanges = () => {
   isSaving.value = true;
+  // TODO: 对接更新用户信息 API 后替换此模拟逻辑
   setTimeout(() => {
-    Object.assign(user, formData);
     isSaving.value = false;
     message.success("设置更新成功");
   }, 800);
@@ -764,6 +801,41 @@ onUnmounted(() => {
 }
 
 /* --- 现代 SaaS 表单样式重写 --- */
+
+/* 加载状态 */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  .spinner-icon {
+    font-size: 28px;
+    color: #3b82f6;
+  }
+
+  span {
+    font-size: 13px;
+    font-weight: 500;
+    color: #94a3b8;
+  }
+
+  .dark-mode & {
+    .spinner-icon {
+      color: #58a6ff;
+    }
+    span {
+      color: #8b949e;
+    }
+  }
+}
 
 .content-wrapper {
   padding: 0 48px 48px;

@@ -33,6 +33,12 @@ export default defineConfig({
   server: {
     host: true, // 监听所有地址，包括局域网
     port: 5173,
-    open: true
+    open: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8888',
+        changeOrigin: true
+      }
+    }
   }
 })
