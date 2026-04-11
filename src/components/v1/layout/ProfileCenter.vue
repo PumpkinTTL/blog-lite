@@ -159,7 +159,9 @@
                   <div class="field-item col-span-2">
                     <div class="label-with-meta">
                       <label>个人简介</label>
-                      <span class="count">{{ formData.signature.length }}/200</span>
+                      <span class="count"
+                        >{{ formData.signature.length }}/200</span
+                      >
                     </div>
                     <div class="input-wrapper">
                       <textarea
@@ -313,7 +315,8 @@ const isMobile = ref(false);
 const modalWidth = computed(() => (isMobile.value ? "100%" : 840));
 
 const user = computed(() => ({
-  username: userStore.userInfo?.nickname || userStore.userInfo?.username || "用户",
+  username:
+    userStore.userInfo?.nickname || userStore.userInfo?.username || "用户",
   email: userStore.email || "未绑定邮箱",
   avatar:
     userStore.avatar ||
@@ -331,22 +334,25 @@ const formData = reactive({
 });
 
 // 打开时同步 store 数据到 formData，并从服务端拉取最新资料
-watch(() => props.isOpen, async (val) => {
-  if (val) {
-    // 先用缓存数据填充
-    Object.assign(formData, user.value);
-    // 从服务端获取最新数据，显示 loading
-    isLoadingProfile.value = true;
-    try {
-      await userStore.fetchProfile();
+watch(
+  () => props.isOpen,
+  async (val) => {
+    if (val) {
+      // 先用缓存数据填充
       Object.assign(formData, user.value);
-    } catch {
-      // 获取失败就用缓存数据
-    } finally {
-      isLoadingProfile.value = false;
+      // 从服务端获取最新数据，显示 loading
+      isLoadingProfile.value = true;
+      try {
+        await userStore.fetchProfile();
+        Object.assign(formData, user.value);
+      } catch {
+        // 获取失败就用缓存数据
+      } finally {
+        isLoadingProfile.value = false;
+      }
     }
   }
-});
+);
 
 // UI 装饰状态
 const activeField = ref("");
@@ -445,6 +451,7 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 /* 核心容器 */
 .profile-container {
+  font-family: "OPPO Sans";
   display: flex;
   height: 600px;
   background: #ffffff;

@@ -65,24 +65,16 @@
             :href="item.href"
             class="flex items-center gap-2.5 px-4 py-1.5 text-[14px] font-medium rounded-lg transition-all duration-300 cursor-pointer"
             :class="[
-              (item.isRoute
-                ? router.currentRoute.value.path === item.href
-                : false) && !isDark
+              isNavItemActive(item) && !isDark
                 ? 'bg-white text-gray-900 shadow-[0_1px_3px_rgba(0,0,0,0.06)] ring-1 ring-gray-900/5'
                 : '',
-              (item.isRoute
-                ? router.currentRoute.value.path === item.href
-                : false) && isDark
+              isNavItemActive(item) && isDark
                 ? 'bg-gray-700/80 text-white shadow-sm ring-1 ring-white/10'
                 : '',
-              !(item.isRoute
-                ? router.currentRoute.value.path === item.href
-                : false) && !isDark
+              !isNavItemActive(item) && !isDark
                 ? 'text-gray-500 hover:text-gray-900 hover:bg-gray-100/80'
                 : '',
-              !(item.isRoute
-                ? router.currentRoute.value.path === item.href
-                : false) && isDark
+              !isNavItemActive(item) && isDark
                 ? 'text-gray-400 hover:text-white hover:bg-gray-700/50'
                 : '',
             ]"
@@ -595,19 +587,64 @@ const notifications = ref([
 
 const navItems = [
   { name: "首页", href: "/", isRoute: true, icon: "home" },
+  { name: "资源", href: "/#resources", isRoute: true, icon: "book" },
   { name: "商城", href: "/shop", isRoute: true, icon: "shop" },
-  { name: "资源", href: "#resources", isRoute: false, icon: "book" },
-  { name: "关于", href: "#about", isRoute: false, icon: "circle-info" },
+  { name: "关于", href: "/#about", isRoute: true, icon: "circle-info" },
 ];
 
 const goHome = () => router.push("/");
 
+/** 判断导航项是否高亮 */
+const isNavItemActive = (item: (typeof navItems)[0]) => {
+  if (!item.isRoute) return false
+  const currentPath = router.currentRoute.value.path
+  const currentHash = router.currentRoute.value.hash
+  const [itemPath, itemHash] = item.href.split('#')
+
+  // 带 hash 的项需要路径 + hash 都匹配
+  if (itemHash) {
+    return currentPath === itemPath && currentHash === `#${itemHash}`
+  }
+
+  // 不带 hash 的项（如首页），只在路径匹配且没有其他 hash 项匹配时高亮
+  if (currentPath === '/') {
+    // 如果当前有 hash，检查是否有其他导航项匹配了这个 hash
+    if (currentHash) {
+      const hashMatched = navItems.some(
+        other => other !== item && other.href.split('#')[1] === currentHash.slice(1) && other.href.split('#')[0] === currentPath
+      )
+      if (hashMatched) return false
+    }
+    return currentPath === itemPath
+  }
+
+  return currentPath.startsWith(itemPath)
+};
+
 const handleNavClick = (item: (typeof navItems)[0]) => {
+  const [path, hash] = item.href.split('#')
   if (item.isRoute) {
-    router.push(item.href);
+    const currentPath = router.currentRoute.value.path
+    const currentHash = router.currentRoute.value.hash
+
+    if (hash) {
+      // 带 hash 的导航：统一用 router.push 更新 URL
+      if (currentPath === path && currentHash === `#${hash}`) {
+        // 已经在目标位置，直接滚动
+        const element = document.getElementById(hash)
+        if (element) element.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        router.push(item.href)
+      }
+    } else {
+      // 不带 hash 的路由导航：需要清除可能存在的 hash
+      if (currentPath !== path || currentHash) {
+        router.push(path)
+      }
+    }
   } else {
-    const element = document.querySelector(item.href);
-    if (element) element.scrollIntoView({ behavior: "smooth" });
+    const element = document.querySelector(item.href)
+    if (element) element.scrollIntoView({ behavior: 'smooth' })
   }
 };
 

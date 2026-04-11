@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import { nextTick } from 'vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -30,7 +31,24 @@ const routes: RouteRecordRaw[] = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(to, _from, savedPosition) {
+    if (to.hash) {
+      return new Promise((resolve) => {
+        nextTick(() => {
+          const element = document.getElementById(to.hash.slice(1))
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+          }
+          resolve({ el: to.hash, behavior: 'smooth' })
+        })
+      })
+    }
+    if (savedPosition) {
+      return savedPosition
+    }
+    return { top: 0 }
+  }
 })
 
 // 路由守卫
