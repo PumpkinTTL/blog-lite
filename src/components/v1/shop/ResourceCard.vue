@@ -1,40 +1,48 @@
 <template>
-  <div class="shop-card group" @click="handleClick">
-    <div class="card-inner">
-      <div class="visual-area">
-        <img :src="resource.cover" :alt="resource.title" class="cover" loading="lazy" />
-        <div class="overlay"></div>
-        <div class="price-pill">
-          <span class="symbol">¥</span>
-          <span class="num">{{ resource.price }}</span>
-        </div>
-        <div v-if="resource.isHot" class="hot-badge">
-          精选
-        </div>
+  <div class="product-card" @click="emit('click')">
+    <!-- 封面区域 -->
+    <div class="card-cover">
+      <img :src="resource.cover" :alt="resource.title" loading="lazy" />
+      <div class="cover-gradient"></div>
+
+      <!-- 热销标签 -->
+      <span v-if="resource.isHot" class="hot-badge">
+        <font-awesome-icon icon="fire" />
+        热销
+      </span>
+
+      <!-- 价格浮标 -->
+      <span class="cover-price">
+        <span class="yen">¥</span>{{ resource.price }}
+      </span>
+
+      <!-- Hover 操作按钮 -->
+      <div class="cover-actions">
+        <button class="action-btn primary" @click.stop="handleAddToCart" title="加入购物车">
+          <font-awesome-icon icon="bag-shopping" />
+        </button>
+        <button class="action-btn" @click.stop title="收藏">
+          <font-awesome-icon icon="heart" />
+        </button>
+      </div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="card-content">
+      <!-- 分类 -->
+      <div class="content-meta">
+        <span class="meta-cat" :style="{ '--cat-color': getCategoryColor(resource.category) }">
+          <i class="cat-dot"></i>
+          {{ getCategoryLabel(resource.category) }}
+        </span>
+        <span class="footer-sales">{{ resource.sales }} 人已购</span>
       </div>
 
-      <div class="info-area">
-        <div class="meta-line">
-          <span class="cat-tag" :style="{ color: getCategoryColor(resource.category) }">
-            {{ getCategoryLabel(resource.category) }}
-          </span>
-          <span class="sales-text">已售 {{ resource.sales }}</span>
-        </div>
+      <!-- 标题 -->
+      <h3 class="content-title" :title="resource.title">{{ resource.title }}</h3>
 
-        <h3 class="title" :title="resource.title">{{ resource.title }}</h3>
-        <p class="desc">{{ resource.description }}</p>
-
-        <div class="bottom-bar">
-          <div class="author-block">
-            <img :src="resource.authorAvatar" class="avatar" />
-            <span class="name">{{ resource.author }}</span>
-          </div>
-          
-          <button class="add-btn" @click.stop="handleAddToCart" title="加入购物车">
-            <font-awesome-icon icon="plus" class="icon" />
-          </button>
-        </div>
-      </div>
+      <!-- 描述 -->
+      <p class="content-desc">{{ resource.description }}</p>
     </div>
   </div>
 </template>
@@ -58,221 +66,268 @@ const props = defineProps<{ resource: Resource }>()
 const emit = defineEmits<{ (e: 'click'): void }>()
 
 const getCategoryLabel = (cat: string) => {
-  const labels: Record<string, string> = {
-    template: 'UI模板', component: '组件', tool: '插件', tutorial: '教程'
+  const m: Record<string, string> = {
+    ai_account: 'AI 账号',
+    dev_tool: '开发工具',
+    subscription: '会员订阅',
+    course: '学习资源',
+    design: '设计素材',
   }
-  return labels[cat] || cat
+  return m[cat] || cat
 }
 
 const getCategoryColor = (cat: string) => {
-  const colors: Record<string, string> = {
-    template: 'var(--primary, #3b82f6)',
-    component: 'var(--success, #10b981)',
-    tool: 'var(--secondary, #8b5cf6)',
-    tutorial: 'var(--warning, #f59e0b)'
+  const m: Record<string, string> = {
+    ai_account: '#8b5cf6',
+    dev_tool: '#3b82f6',
+    subscription: '#f59e0b',
+    course: '#10b981',
+    design: '#ec4899',
   }
-  return colors[cat] || 'var(--primary)'
-}
-
-const handleClick = () => {
-  emit('click')
+  return m[cat] || '#3b82f6'
 }
 
 const handleAddToCart = () => {
-  console.log('Action for:', props.resource.id)
+  console.log('Add to cart:', props.resource.id)
 }
 </script>
 
 <style scoped lang="scss">
-.shop-card {
-  display: block;
-  cursor: pointer;
-  perspective: 1000px;
-}
+/* ========================================
+   ResourceCard — Digital Resource Store
+   Style: Vibrant & Block-based
+   Palette: Primary #3B82F6 / CTA #F97316
+   Transition: cubic-bezier(0.16, 1, 0.3, 1)
+   ======================================== */
 
-.card-inner {
-  height: 100%;
-  background: var(--surface, #ffffff);
-  border: 1px solid var(--border-light, #e2e8f0);
-  border-radius: 10px;
+.product-card {
+  position: relative;
   display: flex;
   flex-direction: column;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border-light, #e2e8f0);
+  border-radius: 14px;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease;
 
   &:hover {
+    transform: translateY(-4px);
     border-color: var(--border-hover, #cbd5e1);
-    box-shadow: 0 8px 24px -6px rgba(15, 23, 42, 0.08);
-    transform: translateY(-2px);
-    
-    .cover { transform: scale(1.04); }
-    .overlay { opacity: 1; }
+    box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.1);
+
+    .cover-gradient { opacity: 1; }
+    .cover-actions { opacity: 1; transform: translateY(0); }
+    .card-cover img { transform: scale(1.05); }
+    .cover-price { opacity: 0; }
+  }
+
+  /* 暗色模式 */
+  .dark-mode & {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(71, 85, 105, 0.25);
+
+    &:hover {
+      border-color: rgba(100, 116, 139, 0.4);
+      box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.3);
+    }
   }
 }
 
-.visual-area {
+/* === 封面 === */
+.card-cover {
   position: relative;
   aspect-ratio: 16 / 10;
-  background: var(--bg-secondary, #f8fafc);
   overflow: hidden;
-  border-bottom: 1px solid var(--border-light, #f1f5f9);
+  background: var(--bg-secondary, #f1f5f9);
+
+  .dark-mode & { background: rgba(30, 41, 59, 0.4); }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }
 
-.cover {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.overlay {
+.cover-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.15) 100%);
+  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.2) 100%);
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
 }
 
-.price-pill {
+/* 热销标签 */
+.hot-badge {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  padding: 2px 8px;
+  top: 10px;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  background: #f97316;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
   border-radius: 6px;
-  display: flex;
-  align-items: baseline;
-  gap: 1px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
-  .symbol { font-size: 10px; font-weight: 800; color: var(--text-secondary, #64748b); }
-  .num { font-size: 14px; font-weight: 800; color: var(--text, #0f172a); letter-spacing: -0.5px; }
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.35);
 }
 
-@media (prefers-color-scheme: dark) {
-  html.dark .price-pill {
-    background: rgba(15, 23, 42, 0.95);
-    .symbol { color: var(--text-tertiary); }
-    .num { color: #f8fafc; }
+/* 价格浮标 */
+.cover-price {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text, #0f172a);
+  letter-spacing: -0.3px;
+  transition: opacity 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  .yen { font-size: 10px; font-weight: 700; opacity: 0.5; }
+
+  .dark-mode & {
+    background: rgba(15, 23, 42, 0.92);
+    color: #f8fafc;
   }
 }
 
-.hot-badge {
+/* Hover 操作 */
+.cover-actions {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  background: var(--error, #ef4444);
-  color: #fff;
-  font-size: 9px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.info-area {
-  padding: 12px;
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: var(--text-secondary, #475569);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #fff;
+    color: var(--text, #0f172a);
+  }
+
+  &.primary {
+    background: #3b82f6;
+    color: #fff;
+
+    &:hover { background: #2563eb; color: #fff; }
+  }
+
+  .dark-mode & {
+    background: rgba(30, 41, 59, 0.92);
+    color: #94a3b8;
+
+    &:hover { background: rgba(51, 65, 85, 0.95); color: #f8fafc; }
+
+    &.primary { background: #3b82f6; color: #fff; &:hover { background: #2563eb; } }
+  }
+}
+
+/* === 内容 === */
+.card-content {
+  padding: 14px 16px 16px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-.meta-line {
+.content-meta {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  justify-content: space-between;
+  margin-bottom: 8px;
 }
 
-.cat-tag {
-  font-size: 10px;
-  font-weight: 700;
+.meta-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cat-color, #3b82f6);
+
+  .cat-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cat-color, #3b82f6);
+    display: inline-block;
+  }
 }
 
-.sales-text {
-  font-size: 10px;
-  color: var(--text-tertiary, #94a3b8);
+.footer-sales {
+  font-size: 11px;
   font-weight: 500;
+  color: var(--text-tertiary, #94a3b8);
 }
 
-.title {
-  font-size: 14px;
+.content-title {
+  margin: 0 0 5px;
+  font-size: 15px;
   font-weight: 700;
-  color: var(--text, #1e293b);
-  margin: 0 0 4px;
+  color: var(--text, #0f172a);
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+
+  .dark-mode & { color: #f1f5f9; }
 }
 
-.desc {
+.content-desc {
+  margin: 0 0 12px;
   font-size: 12px;
   color: var(--text-secondary, #64748b);
-  line-height: 1.5;
-  margin: 0 0 12px;
+  line-height: 1.55;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex: 1;
+
+  .dark-mode & { color: #94a3b8; }
 }
 
-.bottom-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 10px;
-  border-top: 1px dashed var(--border-light, #e2e8f0);
-}
-
-.author-block {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  .avatar {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid var(--border-light, #f1f5f9);
-  }
-  
-  .name {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-secondary, #475569);
-  }
-}
-
-.add-btn {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  border: 1px solid var(--border-light, #e2e8f0);
-  background: var(--bg-secondary, #f8fafc);
-  color: var(--text-secondary, #64748b);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  .icon { font-size: 12px; }
-
-  &:hover {
-    background: var(--primary, #3b82f6);
-    border-color: var(--primary, #3b82f6);
-    color: #fff;
-    transform: scale(1.05);
-  }
+/* 减弱动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .product-card { transition: none !important; }
+  .card-cover img { transition: none !important; }
+  .cover-actions { transition: none !important; opacity: 1 !important; transform: none !important; }
 }
 </style>
