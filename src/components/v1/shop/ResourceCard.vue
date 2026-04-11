@@ -222,15 +222,15 @@ const handleAddToCart = () => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
   .currency {
-    font-size: 11px;
-    font-weight: 800;
+    font-size: 16px;
+    font-weight: 700;
     color: #ef4444;
     margin-right: 1px;
   }
   .amount {
-    font-size: 19px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
     color: #ef4444;
   }
 
