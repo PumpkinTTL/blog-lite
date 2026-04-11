@@ -5,7 +5,9 @@
       <a-layout-content class="app-main">
         <router-view v-slot="{ Component, route }">
           <transition
-            :name="route.meta.transition || 'fade-slide'"
+            @enter="onEnter"
+            @leave="onLeave"
+            :css="false"
             mode="out-in"
           >
             <component :is="Component" :key="route.path" />
@@ -21,6 +23,38 @@
 <script setup lang="ts">
 import BlogHeader from '@/components/v1/layout/BlogHeader.vue';
 import BackTop from '@/components/v1/common/BackTop.vue';
+
+const onEnter = (el: Element, done: () => void) => {
+  const htmlEl = el as HTMLElement;
+  htmlEl.style.opacity = '0';
+  htmlEl.style.transform = 'translateY(16px)';
+  // 强制浏览器重排，确保初始状态生效
+  htmlEl.offsetHeight;
+  htmlEl.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+  htmlEl.style.opacity = '1';
+  htmlEl.style.transform = 'translateY(0)';
+  const onEnd = () => {
+    htmlEl.style.transition = '';
+    htmlEl.style.transform = '';
+    htmlEl.style.opacity = '';
+    el.removeEventListener('transitionend', onEnd);
+    done();
+  };
+  el.addEventListener('transitionend', onEnd);
+};
+
+const onLeave = (el: Element, done: () => void) => {
+  const htmlEl = el as HTMLElement;
+  htmlEl.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+  htmlEl.style.opacity = '0';
+  htmlEl.style.transform = 'translateY(-10px)';
+  const onEnd = () => {
+    htmlEl.style.transition = '';
+    el.removeEventListener('transitionend', onEnd);
+    done();
+  };
+  el.addEventListener('transitionend', onEnd);
+};
 </script>
 
 <style lang="scss">
@@ -37,21 +71,5 @@ import BackTop from '@/components/v1/common/BackTop.vue';
 .app-main {
   padding-top: 64px;
   background: var(--bg);
-}
-
-/* 路由切换过渡动画 */
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.fade-slide-enter-from {
-  opacity: 0;
-  transform: translateY(12px);
-}
-
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-8px);
 }
 </style>
