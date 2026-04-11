@@ -1,5 +1,15 @@
 <template>
-  <article class="post-card" :class="{ 'is-hot': isHot, 'dark-mode': isDark }" @click="goToArticle" role="button" tabindex="0">
+  <article
+    class="post-card"
+    :class="[
+      { 'is-hot': isHot, 'dark-mode': isDark },
+      animated ? 'animate__animated animate__fadeInUp' : ''
+    ]"
+    :style="animated ? { animationDelay: `${0.15 + index * 0.08}s` } : {}"
+    @click="goToArticle"
+    role="button"
+    tabindex="0"
+  >
     <!-- ── Cover ── -->
     <div class="cover-wrap" v-if="post.image">
       <img :src="post.image" :alt="post.title" class="cover" loading="lazy" />
@@ -143,8 +153,9 @@ import type { Resource } from "@/data/mockData";
 
 const CATEGORIES = ["前端", "后端", "设计", "AI", "工具"];
 
-const props = withDefaults(defineProps<{ post: Resource; index?: number }>(), {
+const props = withDefaults(defineProps<{ post: Resource; index?: number; animated?: boolean }>(), {
   index: 0,
+  animated: false,
 });
 
 const catIndex = computed(
@@ -199,6 +210,12 @@ const goToArticle = () => {
   position: relative;
   min-width: 0;
   cursor: pointer;
+  /* 入场动画前隐藏 */
+  opacity: 0;
+
+  &.animate__animated {
+    opacity: 1;
+  }
 
   &.is-hot {
     border: 1px solid #ffedd5;

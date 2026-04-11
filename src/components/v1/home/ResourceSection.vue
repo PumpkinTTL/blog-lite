@@ -1,6 +1,12 @@
 <template>
   <section id="resources" class="resource-section" :class="{ 'dark-mode': isDark }">
-    <div class="section-header">
+    <div
+      :class="[
+        'section-header',
+        { 'animate__animated animate__fadeInUp': animated }
+      ]"
+      style="animation-delay: 0.6s"
+    >
       <div class="header-content">
         <div class="badge">资源枢纽</div>
         <h2 class="title">精选共享资源</h2>
@@ -13,11 +19,19 @@
     </div>
 
     <div class="resource-grid">
-      <ResourceCard 
-        v-for="resource in resources" 
-        :key="resource.id" 
-        :resource="resource" 
-      />
+      <div
+        v-for="(resource, index) in resources"
+        :key="resource.id"
+        :class="[
+          'resource-card-wrapper',
+          { 'animate__animated animate__fadeInUp': animated }
+        ]"
+        :style="{ animationDelay: `${0.7 + index * 0.08}s` }"
+      >
+        <ResourceCard 
+          :resource="resource" 
+        />
+      </div>
     </div>
     
     <!-- Empty state or footer if needed -->
@@ -42,6 +56,10 @@ const isDark = computed(() => themeStore.isDark);
 
 const resources = ref<Resource[]>([]);
 
+defineProps<{
+  animated?: boolean;
+}>();
+
 onMounted(() => {
   // Generate a separate set of mock resources for this section
   resources.value = generateMockResources(8);
@@ -52,6 +70,15 @@ onMounted(() => {
 .resource-section {
   padding: 60px 0 40px;
   scroll-margin-top: 100px; /* Offset for sticky header */
+}
+
+.section-header,
+.resource-card-wrapper {
+  opacity: 0;
+
+  &.animate__animated {
+    opacity: 1;
+  }
 }
 
 /* Section Header */

@@ -2,27 +2,42 @@
   <div class="home">
     <main class="main-content">
       <div class="container">
-        <Announcement 
-          title="系统更新" 
-          message="我们刚刚升级了博客内核，现在支持更快的页面加载和更精美的暗色模式体验。"
-          tag="NEW"
-          date="2024-03-21"
-          type="primary"
-          persist-key="v1_update_v3"
-        />
+        <div
+          :class="[
+            'home-announce',
+            { 'animate__animated animate__fadeInDown': animated }
+          ]"
+        >
+          <Announcement 
+            title="系统更新" 
+            message="我们刚刚升级了博客内核，现在支持更快的页面加载和更精美的暗色模式体验。"
+            tag="NEW"
+            date="2024-03-21"
+            type="primary"
+            persist-key="v1_update_v3"
+          />
+        </div>
 
         <section class="home-grid">
           <div class="feed-column">
-            <FilterBar
-              v-model="searchQuery"
-              :categories="categories"
-              :active-category="activeCategory"
-              :active-sort="activeSort"
-              @update:active-category="activeCategory = $event"
-              @update:active-sort="activeSort = $event"
-            />
+            <div
+              :class="[
+                'home-filterbar',
+                { 'animate__animated animate__fadeInUp': animated }
+              ]"
+              style="animation-delay: 0.1s"
+            >
+              <FilterBar
+                v-model="searchQuery"
+                :categories="categories"
+                :active-category="activeCategory"
+                :active-sort="activeSort"
+                @update:active-category="activeCategory = $event"
+                @update:active-sort="activeSort = $event"
+              />
+            </div>
             <div class="post-feed-wrapper">
-              <PostFeed :posts="visiblePosts" />
+              <PostFeed :posts="visiblePosts" :animated="animated" />
             </div>
             <Pagination
               v-model:current="currentPage"
@@ -31,18 +46,18 @@
               :pageSizeOptions="[5, 10, 20]"
             />
           </div>
-          <HomeSidebar />
+          <HomeSidebar :animated="animated" />
         </section>
 
         <!-- New Resource Section -->
-        <ResourceSection />
+        <ResourceSection :animated="animated" />
       </div>
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, onMounted } from "vue";
 import Announcement from "@/components/v1/common/Announcement.vue";
 import FilterBar from "@/components/v1/common/FilterBar.vue";
 import PostFeed from "@/components/v1/home/PostFeed.vue";
@@ -50,6 +65,15 @@ import HomeSidebar from "@/components/v1/home/HomeSidebar.vue";
 import Pagination from "@/components/v1/common/Pagination.vue";
 import ResourceSection from "@/components/v1/home/ResourceSection.vue";
 import { generateMockResources } from "@/data/mockData";
+
+// 入场动画控制
+const animated = ref(false);
+onMounted(() => {
+  // 下一帧触发动画，确保初始渲染不带动画
+  requestAnimationFrame(() => {
+    animated.value = true;
+  });
+});
 
 const categories = ["全部", "前端", "后端", "设计", "AI", "工具"];
 const activeCategory = ref("全部");
@@ -165,5 +189,16 @@ watch([activeCategory, activeSort, searchQuery], () => {
   .home-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* animate.css 延迟支持 */
+.home-announce,
+.home-filterbar {
+  opacity: 0;
+}
+
+.home-announce.animate__animated,
+.home-filterbar.animate__animated {
+  opacity: 1;
 }
 </style>

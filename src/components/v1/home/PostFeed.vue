@@ -5,6 +5,7 @@
       :key="post.id"
       :post="post"
       :index="index"
+      :animated="animated"
     />
   </section>
 </template>
@@ -15,6 +16,7 @@ import type { Resource } from "@/data/mockData";
 
 defineProps<{
   posts: Resource[];
+  animated?: boolean;
 }>();
 </script>
 
