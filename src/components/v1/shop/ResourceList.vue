@@ -1,33 +1,34 @@
 <template>
   <div class="shop-page" :class="{ 'dark-mode': isDark }">
-    <!-- 吸顶容器：标题 + 搜索 + 分类 + 排序 -->
+    <!-- 头部容器 -->
     <header
       class="shop-header"
-      :class="{
-        'is-stuck': isHeaderStuck,
-        'animate__animated animate__fadeIn': animated,
-      }"
-      ref="headerRef"
+      :class="{ 'animate__animated animate__fadeInUp': animated }"
+      style="animation-delay: 0s"
     >
       <div class="header-glass-wrapper">
-        <div class="header-main">
+        <!-- 第一行：标题 + 搜索/购物车 + 筛选切换按钮 -->
+        <div class="header-row">
           <div class="header-left">
             <div class="brand-badge">
               <font-awesome-icon icon="store" />
             </div>
             <div class="brand-text">
               <h1 class="page-title">资源商城</h1>
-              <p class="page-subtitle">Premium Digital Assets & Resources</p>
+              <p class="page-subtitle">Premium Digital Assets</p>
             </div>
           </div>
 
           <div class="header-actions">
-            <div class="search-box-v2" :class="{ focused: isSearchFocused }">
+            <div
+              class="search-box-v2"
+              :class="{ focused: isSearchFocused }"
+            >
               <font-awesome-icon icon="magnifying-glass" class="search-icon" />
               <input
                 type="text"
                 v-model="searchKeyword"
-                placeholder="搜索资源、软件、账号..."
+                placeholder="搜索资源..."
                 class="search-input"
                 @focus="isSearchFocused = true"
                 @blur="isSearchFocused = false"
@@ -49,18 +50,64 @@
                 }}</span>
               </div>
             </button>
+
+            <button
+              class="filter-toggle-btn"
+              :class="[{ active: isFilterOpen }, { 'animate__animated animate__fadeInUp': animated }]"
+              style="animation-delay: 0.22s"
+              @click="isFilterOpen = !isFilterOpen"
+            >
+              <font-awesome-icon icon="sliders" />
+              <span class="filter-label">筛选</span>
+              <span
+                v-if="activeCategory !== 'all' || activeSort !== 'hot'"
+                class="filter-dot"
+              ></span>
+            </button>
           </div>
         </div>
 
-        <!-- 分类筛选 + 排序 (Premium Tab Style) -->
-        <div class="filter-row-v2">
-          <div class="cat-segment-container">
-            <div class="active-pill" :style="pillStyle"></div>
-            <div class="cat-chips-v2">
+        <!-- 筛选状态提示（收缩时显示） -->
+        <div
+          v-if="!isFilterOpen && (activeCategory !== 'all' || searchKeyword || activeSort !== 'hot')"
+          class="active-filters-bar"
+        >
+          <div class="active-tags">
+            <span v-if="activeCategory !== 'all'" class="active-tag">
+              <font-awesome-icon :icon="getActiveCategoryIcon()" class="tag-icon" />
+              {{ getActiveCategoryLabel() }}
+              <font-awesome-icon icon="xmark" class="tag-remove" @click="activeCategory = 'all'" />
+            </span>
+            <span v-if="activeSort !== 'hot'" class="active-tag">
+              <font-awesome-icon icon="arrow-up-wide-short" class="tag-icon" />
+              {{ getActiveSortLabel() }}
+              <font-awesome-icon icon="xmark" class="tag-remove" @click="activeSort = 'hot'" />
+            </span>
+            <span v-if="searchKeyword" class="active-tag">
+              <font-awesome-icon icon="magnifying-glass" class="tag-icon" />
+              {{ searchKeyword }}
+              <font-awesome-icon icon="xmark" class="tag-remove" @click="searchKeyword = ''" />
+            </span>
+          </div>
+          <button class="clear-all-btn" @click="resetFilters">
+            <font-awesome-icon icon="rotate-left" />
+            重置
+          </button>
+        </div>
+
+        <!-- 可收缩的筛选面板 -->
+        <transition name="filter-slide">
+          <div v-if="isFilterOpen" class="filter-panel">
+            <div class="filter-panel-header">
+              <span class="filter-title">分类筛选</span>
+              <button class="filter-close-btn" @click="isFilterOpen = false">
+                <font-awesome-icon icon="chevron-up" />
+              </button>
+            </div>
+            <div class="cat-chips-row">
               <button
-                v-for="(cat, index) in categories"
+                v-for="cat in categories"
                 :key="cat.value"
-                :ref="(el) => setCatRef(el, index)"
                 class="cat-chip-v2"
                 :class="{ active: activeCategory === cat.value }"
                 @click="activeCategory = cat.value"
@@ -76,59 +123,47 @@
                 </span>
               </button>
             </div>
+            <div class="filter-divider"></div>
+            <div class="sort-row">
+              <span class="sort-label">排序</span>
+              <div class="sort-group-v2">
+                <button
+                  v-for="s in sortOptions"
+                  :key="s.value"
+                  class="sort-pill"
+                  :class="{ active: activeSort === s.value }"
+                  @click="activeSort = s.value"
+                >
+                  <font-awesome-icon
+                    v-if="s.value === 'hot'"
+                    icon="fire"
+                    class="s-icon"
+                  />
+                  <font-awesome-icon
+                    v-if="s.value === 'new'"
+                    icon="clock"
+                    class="s-icon"
+                  />
+                  <font-awesome-icon
+                    v-if="s.value === 'price'"
+                    icon="tag"
+                    class="s-icon"
+                  />
+                  {{ s.label }}
+                </button>
+              </div>
+            </div>
           </div>
-
-          <div class="sort-group-v2">
-            <button
-              v-for="s in sortOptions"
-              :key="s.value"
-              class="sort-pill"
-              :class="{ active: activeSort === s.value }"
-              @click="activeSort = s.value"
-            >
-              <font-awesome-icon
-                v-if="s.value === 'hot'"
-                icon="fire"
-                class="s-icon"
-              />
-              <font-awesome-icon
-                v-if="s.value === 'new'"
-                icon="clock"
-                class="s-icon"
-              />
-              <font-awesome-icon
-                v-if="s.value === 'price'"
-                icon="tag"
-                class="s-icon"
-              />
-              {{ s.label }}
-            </button>
-          </div>
-        </div>
+        </transition>
       </div>
     </header>
-
-    <!-- 筛选提示 -->
-    <div
-      v-if="activeCategory !== 'all' || searchKeyword"
-      class="filter-status"
-      :class="{ 'animate__animated animate__fadeIn': animated }"
-    >
-      <span class="status-text">
-        找到 <strong>{{ filteredResources.length }}</strong> 个资源
-      </span>
-      <button class="status-clear" @click="resetFilters">
-        <font-awesome-icon icon="rotate-left" />
-        清除筛选
-      </button>
-    </div>
 
     <!-- 精选推荐 -->
     <section
       v-if="activeCategory === 'all' && !searchKeyword"
       class="featured-section"
       :class="{ 'animate__animated animate__fadeInUp': animated }"
-      style="animation-delay: 0.2s"
+      style="animation-delay: 0.3s"
     >
       <div class="section-label">
         <font-awesome-icon icon="bolt" class="label-icon" />
@@ -221,7 +256,7 @@
           :key="item.id"
           class="grid-item"
           :class="{ 'animate__animated animate__fadeInUp': animated }"
-          :style="{ animationDelay: `${0.3 + Math.min(index, 11) * 0.05}s` }"
+          :style="{ animationDelay: `${0.45 + Math.min(index, 11) * 0.06}s` }"
         >
           <ResourceCard :resource="item" @click="handleCardClick(item)" />
         </div>
@@ -240,7 +275,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick, watch } from "vue";
+import { ref, computed } from "vue";
 import { useThemeStore } from "@/stores/theme";
 import ResourceCard, { type Resource } from "./ResourceCard.vue";
 
@@ -269,59 +304,24 @@ const activeCategory = ref("all");
 const activeSort = ref("hot");
 const searchKeyword = ref("");
 const cartCount = ref(0);
-
-// 吸顶检测
-const headerRef = ref<HTMLElement | null>(null);
-const isHeaderStuck = ref(false);
+const isFilterOpen = ref(true);
 const isSearchFocused = ref(false);
-let observer: IntersectionObserver | null = null;
 
-// 分类 Pill 动画逻辑
-const catRefs = ref<HTMLElement[]>([]);
-const pillStyle = ref({ transform: "translateX(0)", width: "0", opacity: 0 });
-
-const setCatRef = (el: any, index: number) => {
-  if (el) catRefs.value[index] = el;
+// 筛选辅助方法
+const getActiveCategoryLabel = () => {
+  const cat = categories.find((c) => c.value === activeCategory.value);
+  return cat?.label || "全部";
 };
 
-const updatePill = () => {
-  nextTick(() => {
-    const index = categories.findIndex((c) => c.value === activeCategory.value);
-    const el = catRefs.value[index];
-    if (el) {
-      pillStyle.value = {
-        opacity: 1,
-        transform: `translateX(${el.offsetLeft}px)`,
-        width: `${el.offsetWidth}px`,
-      };
-    }
-  });
+const getActiveCategoryIcon = () => {
+  const cat = categories.find((c) => c.value === activeCategory.value);
+  return cat?.icon || "folder";
 };
 
-onMounted(() => {
-  updatePill();
-  window.addEventListener("resize", updatePill);
-
-  if (!headerRef.value) return;
-  const sentinel = document.createElement("div");
-  sentinel.className = "sticky-sentinel";
-  headerRef.value.parentNode?.insertBefore(sentinel, headerRef.value);
-
-  observer = new IntersectionObserver(
-    ([entry]) => {
-      isHeaderStuck.value = !entry.isIntersecting;
-    },
-    { rootMargin: "-65px 0px 0px 0px" } // 65px = 顶部导航高度
-  );
-  observer.observe(sentinel);
-});
-
-onUnmounted(() => {
-  observer?.disconnect();
-  window.removeEventListener("resize", updatePill);
-});
-
-watch(activeCategory, updatePill);
+const getActiveSortLabel = () => {
+  const s = sortOptions.find((o) => o.value === activeSort.value);
+  return s?.label || "热门";
+};
 
 // 互联网数字资源数据
 const resources = ref<Resource[]>([
@@ -577,48 +577,32 @@ const resetFilters = () => {
   padding: 8px 24px 60px;
 }
 
-/* === 吸顶头部 (Premium Rebuild) === */
+/* === 头部容器 === */
 .shop-header {
-  position: sticky;
-  top: 60px; /* 对齐主导航高度 */
-  z-index: 100;
-  margin: 0 !important;
-  margin-bottom: 20px !important;
-  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+  margin-bottom: 20px;
   opacity: 0;
 
   &.animate__animated {
     opacity: 1;
   }
+}
 
-  &.is-stuck {
-    .header-glass-wrapper {
-      border-radius: 12px 12px 24px 24px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-      padding: 12px 24px;
-      margin: 0;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-top-color: transparent;
-    }
-  }
+/* 动画初始隐藏 — animate.css fadeInUp + fill-mode:both 在 delay 期间保持 opacity:0 */
+.featured-section,
+.grid-item {
+  opacity: 0;
 
-  .dark-mode & {
-    &.is-stuck .header-glass-wrapper {
-      background: rgba(15, 23, 42, 0.8);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
+  &.animate__animated {
+    opacity: 1;
   }
 }
 
 .header-glass-wrapper {
   background: var(--surface, #ffffff);
   border: 1px solid var(--border-light, #f1f5f9);
-  border-radius: 20px;
-  padding: 20px 28px 16px;
-  transition: all 0.4s ease;
+  border-radius: 16px;
+  padding: 20px 24px;
+  transition: all 0.3s ease;
 
   .dark-mode & {
     background: var(--surface, #1e293b);
@@ -626,11 +610,11 @@ const resetFilters = () => {
   }
 }
 
-.header-main {
+.header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 16px;
 }
 
 .header-left {
@@ -692,7 +676,7 @@ const resetFilters = () => {
   position: relative;
   width: 100%;
   max-width: 320px;
-  transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+  transition: box-shadow 0.3s cubic-bezier(0.2, 1, 0.3, 1), border-color 0.3s ease;
 
   .search-icon {
     position: absolute;
@@ -777,7 +761,7 @@ const resetFilters = () => {
   justify-content: center;
   color: #64748b;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
   flex-shrink: 0;
 
   &:hover {
@@ -795,13 +779,148 @@ const resetFilters = () => {
 }
 
 /* === 分类筛选 V2 === */
-.filter-row-v2 {
+/* === 筛选切换按钮 === */
+.filter-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--border-light, #f1f5f9);
+  border-radius: 12px;
+  background: #f8fafc;
+  color: var(--text-secondary, #64748b);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  position: relative;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+  }
+
+  &.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+  }
+
+  .dark-mode & {
+    background: rgba(30, 41, 59, 0.5);
+    border-color: rgba(255, 255, 255, 0.06);
+    color: #94a3b8;
+
+    &:hover {
+      border-color: #60a5fa;
+      color: #60a5fa;
+    }
+    &.active {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #fff;
+    }
+  }
+}
+
+.filter-dot {
+  width: 6px;
+  height: 6px;
+  background: #ef4444;
+  border-radius: 50%;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.filter-label {
+  .dark-mode & {
+    color: inherit;
+  }
+}
+
+/* === 活跃筛选标签 === */
+.active-filters-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  margin-top: 18px;
+  gap: 10px;
+  padding: 10px 0 0;
+  animation: fadeIn 0.2s ease;
+}
+
+.active-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.active-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #3b82f6;
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  .tag-icon {
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+
+  .tag-remove {
+    font-size: 9px;
+    cursor: pointer;
+    opacity: 0.6;
+    flex-shrink: 0;
+    margin-left: 2px;
+    &:hover { opacity: 1; }
+  }
+
+  .dark-mode & {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.25);
+    color: #60a5fa;
+  }
+}
+
+.clear-all-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary, #94a3b8);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &:hover {
+    color: #ef4444;
+  }
+}
+
+/* === 可收缩筛选面板 === */
+.filter-panel {
   padding-top: 16px;
+  margin-top: 14px;
   border-top: 1px solid var(--border-light, #f1f5f9);
 
   .dark-mode & {
@@ -809,63 +928,68 @@ const resetFilters = () => {
   }
 }
 
-.cat-segment-container {
+.filter-panel-header {
   display: flex;
-  position: relative;
-  background: #f1f5f9;
-  padding: 4px;
-  border-radius: 12px;
-  height: 42px;
-  min-width: 0;
-  overflow: hidden;
-
-  .dark-mode & {
-    background: rgba(15, 23, 42, 0.5);
-  }
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
 
-.active-pill {
-  position: absolute;
-  top: 4px;
-  bottom: 4px;
-  left: 0;
-  background: #fff;
+.filter-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary, #64748b);
+  letter-spacing: 0.3px;
+}
+
+.filter-close-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-  z-index: 1;
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-tertiary, #94a3b8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--text-secondary, #64748b);
+  }
 
   .dark-mode & {
-    background: #334155;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+    }
   }
 }
 
-.cat-chips-v2 {
+.cat-chips-row {
   display: flex;
-  position: relative;
-  z-index: 2;
-  overflow-x: auto;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .cat-chip-v2 {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 0 16px;
-  border: none;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--border-light, #f1f5f9);
+  border-radius: 10px;
   background: transparent;
   font-size: 13px;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-secondary, #64748b);
   cursor: pointer;
+  transition: all 0.2s;
   white-space: nowrap;
-  transition: all 0.3s;
-  height: 100%;
 
   .chip-icon {
     font-size: 12px;
@@ -874,156 +998,148 @@ const resetFilters = () => {
 
   .chip-count {
     font-size: 10px;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.04);
     padding: 1px 6px;
     border-radius: 6px;
     color: #94a3b8;
   }
 
-  &.active {
-    color: #3b82f6;
-    .chip-icon {
-      opacity: 1;
-    }
-    .chip-count {
-      background: rgba(59, 130, 246, 0.1);
-      color: #3b82f6;
-    }
-  }
-
-  .dark-mode & {
-    color: #94a3b8;
-    &.active {
-      color: #60a5fa;
-      .chip-count {
-        background: rgba(96, 165, 250, 0.1);
-        color: #60a5fa;
-      }
-    }
-  }
-}
-
-.sort-group-v2 {
-  display: flex;
-  gap: 8px;
-  background: #f1f5f9;
-  padding: 4px;
-  border-radius: 12px;
-
-  .dark-mode & {
-    background: rgba(15, 23, 42, 0.5);
-  }
-}
-
-.sort-pill {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 14px;
-  height: 34px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #64748b;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-
-  .s-icon {
-    font-size: 11px;
-    opacity: 0.5;
-  }
-
   &:hover {
+    border-color: #3b82f6;
     color: #3b82f6;
   }
 
   &.active {
-    background: #fff;
-    color: #3b82f6;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    .s-icon {
-      opacity: 1;
-    }
-
-    .dark-mode & {
-      background: #334155;
-      color: #60a5fa;
-    }
-  }
-}
-
-/* === 筛选提示 (Premium Style) === */
-.filter-status {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  padding: 12px 20px;
-  background: var(--primary-light, #eff6ff);
-  border-radius: 16px;
-  border: 1px solid var(--primary-light, #dbeafe);
-
-  .status-text {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--primary, #3b82f6);
-
-    strong {
-      font-size: 16px;
-      font-weight: 800;
-      margin: 0 4px;
-    }
-  }
-
-  .status-clear {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    background: #fff;
-    border: 1px solid #dbeafe;
-    border-radius: 10px;
-    color: #3b82f6;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
-
-    &:hover {
-      background: #3b82f6;
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+    .chip-icon { opacity: 1; }
+    .chip-count {
+      background: rgba(255, 255, 255, 0.2);
       color: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
     }
   }
 
   .dark-mode & {
-    background: rgba(59, 130, 246, 0.1);
-    border-color: rgba(59, 130, 246, 0.2);
-
-    .status-clear {
-      background: #1e293b;
-      border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.06);
+    color: #94a3b8;
+    &:hover {
+      border-color: #60a5fa;
       color: #60a5fa;
-
-      &:hover {
-        background: #3b82f6;
+    }
+    &.active {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #fff;
+      .chip-count {
+        background: rgba(255, 255, 255, 0.2);
         color: #fff;
       }
     }
   }
 }
 
+.filter-divider {
+  height: 1px;
+  background: var(--border-light, #f1f5f9);
+  margin: 12px 0;
+
+  .dark-mode & {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.sort-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sort-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-tertiary, #94a3b8);
+  flex-shrink: 0;
+}
+
+.sort-group-v2 {
+  display: flex;
+  gap: 6px;
+}
+
+.sort-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  height: 32px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-tertiary, #94a3b8);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+
+  .s-icon {
+    font-size: 10px;
+    opacity: 0.5;
+  }
+
+  &:hover {
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.05);
+  }
+
+  &.active {
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+    .s-icon { opacity: 1; }
+
+    .dark-mode & {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: rgba(59, 130, 246, 0.25);
+      color: #60a5fa;
+    }
+  }
+
+  .dark-mode & {
+    color: #64748b;
+    &:hover {
+      color: #60a5fa;
+      background: rgba(59, 130, 246, 0.08);
+    }
+  }
+}
+
+/* 筛选面板过渡动画 */
+.filter-slide-enter-active,
+.filter-slide-leave-active {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.filter-slide-enter-from,
+.filter-slide-leave-to {
+  opacity: 0;
+  max-height: 0;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.filter-slide-enter-to,
+.filter-slide-leave-from {
+  opacity: 1;
+  max-height: 300px;
+}
+
+/* === 筛选提示 (Premium Style) === */
 /* === 精选推荐 === */
 .featured-section {
   margin-bottom: 32px;
-  opacity: 0;
-  &.animate__animated {
-    opacity: 1;
-  }
 }
 
 .section-label {
@@ -1445,22 +1561,12 @@ const resetFilters = () => {
     padding: 6px 16px 40px;
   }
 
-  .shop-header {
-    margin-bottom: 16px;
-    &.is-stuck .header-glass-wrapper {
-      padding: 12px 16px;
-      margin: 0 -4px;
-    }
-  }
-
   .header-glass-wrapper {
     padding: 16px;
   }
 
-  .header-main {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
+  .header-row {
+    flex-wrap: wrap;
   }
 
   .header-actions {
@@ -1473,17 +1579,20 @@ const resetFilters = () => {
     flex: 1;
   }
 
-  .filter-row-v2 {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+  .filter-label {
+    display: none;
   }
 
-  .cat-segment-container {
-    height: 38px;
+  .cat-chips-row {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
-  .sort-group-v2 {
+  .sort-row {
     overflow-x: auto;
     scrollbar-width: none;
     &::-webkit-scrollbar {
@@ -1549,14 +1658,6 @@ const resetFilters = () => {
     padding: 4px 16px 40px;
   }
 
-  .shop-header {
-    top: 56px; /* 移动端导航高度通常略小 */
-    &.is-stuck .header-glass-wrapper {
-      margin: 0;
-      padding: 10px 16px;
-    }
-  }
-
   .product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
@@ -1603,22 +1704,11 @@ const resetFilters = () => {
   }
 }
 
-/* 确保哨兵不占位 */
-.sticky-sentinel {
-  height: 0;
-  width: 0;
-  position: absolute;
-  top: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
 /* 减弱动画偏好 */
 @media (prefers-reduced-motion: reduce) {
   .featured-section,
   .grid-item,
-  .shop-header,
-  .filter-status {
+  .shop-header {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
