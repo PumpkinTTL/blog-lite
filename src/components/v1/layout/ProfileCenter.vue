@@ -425,13 +425,20 @@ const resetForm = () => {
   message.info("已重置变更内容");
 };
 
-const saveChanges = () => {
+const saveChanges = async () => {
   isSaving.value = true;
-  // TODO: 对接更新用户信息 API 后替换此模拟逻辑
-  setTimeout(() => {
-    isSaving.value = false;
+  try {
+    await userStore.updateUserProfile({
+      nickname: formData.username,
+      signature: formData.signature,
+      avatar: formData.avatar,
+    });
     message.success("设置更新成功");
-  }, 800);
+  } catch (err: any) {
+    message.error(err?.message || "保存失败，请重试");
+  } finally {
+    isSaving.value = false;
+  }
 };
 
 const checkMobile = () => {

@@ -528,7 +528,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import { message } from "ant-design-vue";
+import { message, Modal } from "ant-design-vue";
 import NotificationCenter from "./NotificationCenter.vue";
 import ProfileCenter from "./ProfileCenter.vue";
 import LoginModal from "../auth/LoginModal.vue";
@@ -690,12 +690,21 @@ const handleMarkAllRead = () => {
 
 const handleLogout = async () => {
   isUserMenuOpen.value = false;
-  try {
-    await userStore.logout();
-    message.success("已退出登录");
-  } catch {
-    message.error("退出登录失败");
-  }
+  Modal.confirm({
+    title: '退出登录',
+    content: '确定要退出当前账号吗？',
+    okText: '确定退出',
+    cancelText: '再想想',
+    okButtonProps: { danger: true },
+    onOk: async () => {
+      try {
+        await userStore.logout();
+        message.success("已退出登录");
+      } catch {
+        message.error("退出登录失败");
+      }
+    },
+  });
 };
 
 const toggleTheme = () => {
