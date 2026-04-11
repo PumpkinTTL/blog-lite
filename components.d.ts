@@ -63,6 +63,7 @@ declare module 'vue' {
     IconDemo: typeof import('./src/components/IconDemo.vue')['default']
     LoginModal: typeof import('./src/components/v1/auth/LoginModal.vue')['default']
     MobileBottomNav: typeof import('./src/components/v1/layout/MobileBottomNav.vue')['default']
+    MobilePillNav: typeof import('./src/components/v1/layout/MobilePillNav.vue')['default']
     NotificationCenter: typeof import('./src/components/v1/layout/NotificationCenter.vue')['default']
     Pagination: typeof import('./src/components/v1/common/Pagination.vue')['default']
     PostCard: typeof import('./src/components/v1/home/PostCard.vue')['default']

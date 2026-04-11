@@ -15,13 +15,15 @@
         </router-view>
       </a-layout-content>
       <Footer />
+      <MobilePillNav />
+      <BackTop />
     </a-layout>
-    <BackTop />
   </div>
 </template>
 
 <script setup lang="ts">
 import BlogHeader from '@/components/v1/layout/BlogHeader.vue';
+import MobilePillNav from '@/components/v1/layout/MobilePillNav.vue';
 import BackTop from '@/components/v1/common/BackTop.vue';
 
 const onEnter = (el: Element, done: () => void) => {
