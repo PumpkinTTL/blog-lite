@@ -574,15 +574,16 @@ const resetFilters = () => {
 .shop-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 24px 60px;
+  padding: 8px 24px 60px;
 }
 
 /* === 吸顶头部 (Premium Rebuild) === */
 .shop-header {
   position: sticky;
-  top: 64px;
+  top: 60px; /* 对齐主导航高度 */
   z-index: 100;
-  margin-bottom: 24px;
+  margin: 0 !important;
+  margin-bottom: 20px !important;
   transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
   opacity: 0;
 
@@ -592,10 +593,10 @@ const resetFilters = () => {
 
   &.is-stuck {
     .header-glass-wrapper {
-      border-radius: 0 0 24px 24px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 1px 1px rgba(0, 0, 0, 0.02);
-      padding: 14px 28px 12px;
-      margin: 0 -12px;
+      border-radius: 12px 12px 24px 24px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      padding: 12px 24px;
+      margin: 0;
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(20px) saturate(180%);
       -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -1136,6 +1137,7 @@ const resetFilters = () => {
   padding: 3px 12px;
   border-radius: 8px;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 
   .cat-icon {
     font-size: 10px;
@@ -1200,6 +1202,7 @@ const resetFilters = () => {
   font-size: 12px;
   color: var(--text-tertiary, #94a3b8);
   font-weight: 600;
+  white-space: nowrap;
 
   .sales-icon {
     font-size: 11px;
@@ -1326,6 +1329,7 @@ const resetFilters = () => {
   padding: 2px 10px;
   border-radius: 8px;
   margin-bottom: 6px;
+  white-space: nowrap;
 
   .cat-icon {
     font-size: 9px;
@@ -1340,6 +1344,7 @@ const resetFilters = () => {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-tertiary, #94a3b8);
+  white-space: nowrap;
 
   .sales-icon {
     font-size: 11px;
@@ -1437,7 +1442,7 @@ const resetFilters = () => {
 
 @media (max-width: 768px) {
   .shop-page {
-    padding: 16px 16px 40px;
+    padding: 6px 16px 40px;
   }
 
   .shop-header {
@@ -1510,6 +1515,29 @@ const resetFilters = () => {
     min-height: 100px;
   }
 
+  .fs-info {
+    padding: 10px 12px;
+  }
+
+  .fs-cat-badge {
+    padding: 1px 6px;
+    font-size: 9px;
+    margin-bottom: 4px;
+    gap: 3px;
+    .cat-icon { font-size: 8px; }
+  }
+
+  .fs-title {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .fs-stats {
+    font-size: 11px;
+    gap: 3px;
+    .sales-icon { font-size: 10px; }
+  }
+
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
@@ -1517,9 +1545,22 @@ const resetFilters = () => {
 }
 
 @media (max-width: 480px) {
+  .shop-page {
+    padding: 4px 16px 40px;
+  }
+
+  .shop-header {
+    top: 56px; /* 移动端导航高度通常略小 */
+    &.is-stuck .header-glass-wrapper {
+      margin: 0;
+      padding: 10px 16px;
+    }
+  }
+
   .product-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+    width: 100%;
   }
 
   .page-title {
@@ -1551,6 +1592,25 @@ const resetFilters = () => {
   .fs-info {
     padding: 12px;
   }
+
+  .fs-cat-badge {
+    padding: 2px 8px;
+    font-size: 10px;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* 确保哨兵不占位 */
+.sticky-sentinel {
+  height: 0;
+  width: 0;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 /* 减弱动画偏好 */

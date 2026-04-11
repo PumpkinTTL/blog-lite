@@ -1,6 +1,6 @@
 <template>
-  <div 
-    class="product-card" 
+  <div
+    class="product-card"
     :class="{ 'dark-mode': isDark, 'is-hot': resource.isHot }"
     :style="{ '--accent-color': getCategoryColor(resource.category) }"
     @click="emit('click')"
@@ -9,7 +9,7 @@
     <div class="card-cover">
       <img :src="resource.cover" :alt="resource.title" loading="lazy" />
       <div class="cover-overlay"></div>
-      
+
       <!-- Premium Glass Gradient Overlay -->
       <div class="glass-reflection"></div>
 
@@ -24,7 +24,6 @@
         <span class="currency">¥</span>
         <span class="amount">{{ resource.price }}</span>
       </div>
-
     </div>
 
     <!-- 内容区域 -->
@@ -32,7 +31,10 @@
       <!-- 分类 & 已售 (Beautified with Icons) -->
       <div class="body-meta">
         <span class="category-tag">
-          <font-awesome-icon :icon="getCategoryIcon(resource.category)" class="cat-icon" />
+          <font-awesome-icon
+            :icon="getCategoryIcon(resource.category)"
+            class="cat-icon"
+          />
           {{ getCategoryLabel(resource.category) }}
         </span>
         <span class="sales-info">
@@ -42,8 +44,8 @@
       </div>
 
       <!-- 标题 -->
-      <h3 
-        class="product-title" 
+      <h3
+        class="product-title"
         :class="{ 'hot-title': resource.isHot }"
         :title="resource.title"
       >
@@ -105,14 +107,13 @@ const getCategoryIcon = (cat: string) => {
 const getCategoryColor = (cat: string) => {
   const m: Record<string, string> = {
     ai_account: "#8b5cf6", // Violet
-    dev_tool: "#3b82f6",   // Blue
+    dev_tool: "#3b82f6", // Blue
     subscription: "#f59e0b", // Amber
-    course: "#10b981",    // Emerald
-    design: "#ec4899",    // Pink
+    course: "#10b981", // Emerald
+    design: "#ec4899", // Pink
   };
   return m[cat] || "#3b82f6";
 };
-
 </script>
 
 <style scoped lang="scss">
@@ -122,7 +123,7 @@ const getCategoryColor = (cat: string) => {
   --card-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
   --card-shadow-hover: 0 20px 40px -12px rgba(0, 0, 0, 0.12);
   --accent-color: #3b82f6;
-  
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -137,8 +138,7 @@ const getCategoryColor = (cat: string) => {
   &:hover {
     transform: translateY(-8px);
     border-color: color-mix(in srgb, var(--accent-color) 30%, transparent);
-    box-shadow: 
-      0 20px 40px -12px rgba(0, 0, 0, 0.1),
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1),
       0 0 20px 0 color-mix(in srgb, var(--accent-color) 15%, transparent);
 
     .card-cover img {
@@ -159,8 +159,7 @@ const getCategoryColor = (cat: string) => {
   &.is-hot {
     border-color: rgba(245, 158, 11, 0.2);
     &:hover {
-      box-shadow: 
-        0 20px 40px -12px rgba(245, 158, 11, 0.1),
+      box-shadow: 0 20px 40px -12px rgba(245, 158, 11, 0.1),
         0 0 25px 0 rgba(245, 158, 11, 0.15);
     }
   }
@@ -169,11 +168,10 @@ const getCategoryColor = (cat: string) => {
     --card-bg: #1e293b;
     --card-border: rgba(255, 255, 255, 0.05);
     --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
-    
+
     &:hover {
       background: #1e293b;
-      box-shadow: 
-        0 25px 50px -12px rgba(0, 0, 0, 0.5),
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
         0 0 20px 0 color-mix(in srgb, var(--accent-color) 20%, transparent);
     }
   }
@@ -273,7 +271,6 @@ const getCategoryColor = (cat: string) => {
   }
 }
 
-
 /* === 内容区域 === */
 .card-body {
   padding: 16px 18px 20px;
@@ -306,6 +303,7 @@ const getCategoryColor = (cat: string) => {
   padding: 3px 10px;
   border-radius: 8px;
   letter-spacing: 0.3px;
+  white-space: nowrap;
 
   .cat-icon {
     font-size: 10px;
@@ -331,6 +329,7 @@ const getCategoryColor = (cat: string) => {
   font-size: 12px;
   color: var(--text-tertiary, #94a3b8);
   font-weight: 600;
+  white-space: nowrap;
 
   .sales-icon {
     font-size: 11px;
@@ -352,11 +351,11 @@ const getCategoryColor = (cat: string) => {
 
   &.hot-title {
     background: linear-gradient(
-      to right, 
-      #b45309 0%, 
-      #f59e0b 25%, 
-      #fff 50%, 
-      #f59e0b 75%, 
+      to right,
+      #b45309 0%,
+      #f59e0b 25%,
+      #fff 50%,
+      #f59e0b 75%,
       #b45309 100%
     );
     background-size: 200% auto;
@@ -372,8 +371,12 @@ const getCategoryColor = (cat: string) => {
 }
 
 @keyframes flow {
-  from { background-position: 200% center; }
-  to { background-position: 0% center; }
+  from {
+    background-position: 200% center;
+  }
+  to {
+    background-position: 0% center;
+  }
 }
 
 .product-desc {
@@ -389,6 +392,47 @@ const getCategoryColor = (cat: string) => {
 
   .dark-mode & {
     color: #94a3b8;
+  }
+}
+
+/* === 移动端优化 === */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 12px 6px 1px;
+  }
+
+  .body-meta {
+    gap: 8px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .category-tag {
+    padding: 2px 6px;
+    font-size: 10px;
+    gap: 3px;
+    .cat-icon {
+      font-size: 9px;
+    }
+  }
+
+  .sales-info {
+    font-size: 11px;
+    gap: 3px;
+    .sales-icon {
+      font-size: 10px;
+    }
+  }
+
+  .product-title {
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+
+  .product-desc {
+    font-size: 12px;
   }
 }
 </style>
