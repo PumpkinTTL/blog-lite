@@ -158,6 +158,107 @@
       </div>
     </header>
 
+    <!-- 移动端浮动筛选按钮 -->
+    <button
+      class="mobile-filter-fab"
+      :class="{ 'has-filter': activeCategory !== 'all' || activeSort !== 'hot' || searchKeyword }"
+      @click="isMobileFilterOpen = true"
+    >
+      <font-awesome-icon icon="sliders" />
+      <span v-if="activeCategory !== 'all' || activeSort !== 'hot'" class="fab-dot"></span>
+    </button>
+
+    <!-- 移动端底部筛选抽屉 -->
+    <transition name="drawer-overlay">
+      <div
+        v-if="isMobileFilterOpen"
+        class="mobile-drawer-overlay"
+        @click="isMobileFilterOpen = false"
+      ></div>
+    </transition>
+    <transition name="drawer-slide">
+      <div v-if="isMobileFilterOpen" class="mobile-filter-drawer">
+        <div class="drawer-header">
+          <span class="drawer-title">筛选</span>
+          <button class="drawer-close" @click="isMobileFilterOpen = false">
+            <font-awesome-icon icon="xmark" />
+          </button>
+        </div>
+        <div class="drawer-body">
+          <!-- 搜索 -->
+          <div class="drawer-section">
+            <div class="drawer-section-title">搜索</div>
+            <div class="drawer-search">
+              <font-awesome-icon icon="magnifying-glass" class="search-icon" />
+              <input
+                type="text"
+                v-model="searchKeyword"
+                placeholder="搜索资源..."
+                class="drawer-search-input"
+              />
+              <div
+                v-if="searchKeyword"
+                class="drawer-search-clear"
+                @click="searchKeyword = ''"
+              >
+                <font-awesome-icon icon="xmark" />
+              </div>
+            </div>
+          </div>
+          <!-- 分类 -->
+          <div class="drawer-section">
+            <div class="drawer-section-title">分类</div>
+            <div class="drawer-chips">
+              <button
+                v-for="cat in categories"
+                :key="cat.value"
+                class="drawer-chip"
+                :class="{ active: activeCategory === cat.value }"
+                @click="activeCategory = cat.value"
+              >
+                <font-awesome-icon v-if="cat.icon" :icon="cat.icon" class="chip-icon" />
+                <span>{{ cat.label }}</span>
+                <span v-if="cat.value !== 'all'" class="chip-count">{{ getCategoryCount(cat.value) }}</span>
+              </button>
+            </div>
+          </div>
+          <!-- 排序 -->
+          <div class="drawer-section">
+            <div class="drawer-section-title">排序</div>
+            <div class="drawer-sorts">
+              <button
+                v-for="s in sortOptions"
+                :key="s.value"
+                class="drawer-sort-btn"
+                :class="{ active: activeSort === s.value }"
+                @click="activeSort = s.value"
+              >
+                <font-awesome-icon
+                  v-if="s.value === 'hot'" icon="fire" class="s-icon"
+                />
+                <font-awesome-icon
+                  v-if="s.value === 'new'" icon="clock" class="s-icon"
+                />
+                <font-awesome-icon
+                  v-if="s.value === 'price'" icon="tag" class="s-icon"
+                />
+                {{ s.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="drawer-footer">
+          <button class="drawer-reset-btn" @click="resetFilters">
+            <font-awesome-icon icon="rotate-left" />
+            重置
+          </button>
+          <button class="drawer-apply-btn" @click="isMobileFilterOpen = false">
+            确定
+          </button>
+        </div>
+      </div>
+    </transition>
+
     <!-- 精选推荐 -->
     <section
       v-if="activeCategory === 'all' && !searchKeyword"
@@ -305,6 +406,7 @@ const activeSort = ref("hot");
 const searchKeyword = ref("");
 const cartCount = ref(0);
 const isFilterOpen = ref(true);
+const isMobileFilterOpen = ref(false);
 const isSearchFocused = ref(false);
 
 // 筛选辅助方法
@@ -1702,6 +1804,354 @@ const resetFilters = () => {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
+
+/* 移动端浮动筛选按钮 — PC端隐藏 */
+.mobile-filter-fab {
+  display: none;
+}
+
+/* 移动端底部筛选抽屉 — PC端隐藏 */
+.mobile-drawer-overlay,
+.mobile-filter-drawer {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* 隐藏PC端头部筛选按钮、搜索框和筛选面板 */
+  .search-box-v2 {
+    display: none;
+  }
+
+  .filter-toggle-btn {
+    display: none;
+  }
+
+  .filter-panel {
+    display: none;
+  }
+
+  .active-filters-bar {
+    display: none;
+  }
+
+  /* 浮动筛选按钮 */
+  .mobile-filter-fab {
+    display: flex;
+    position: fixed;
+    right: auto;
+    left: 16px;
+    bottom: 24px;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    border: none;
+    background: var(--primary, #3b82f6);
+    color: #fff;
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
+    z-index: 100;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:active {
+      transform: scale(0.92);
+    }
+
+    &.has-filter {
+      background: var(--primary, #3b82f6);
+    }
+
+    .fab-dot {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 8px;
+      height: 8px;
+      background: #ef4444;
+      border-radius: 50%;
+      border: 2px solid var(--primary, #3b82f6);
+    }
+  }
+
+  /* 遮罩 */
+  .mobile-drawer-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 200;
+  }
+
+  /* 抽屉 */
+  .mobile-filter-drawer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 75vh;
+    background: var(--surface, #ffffff);
+    border-radius: 20px 20px 0 0;
+    z-index: 201;
+    overflow: hidden;
+
+    .dark-mode & {
+      background: #1e293b;
+    }
+  }
+
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-light, #f1f5f9);
+
+    .dark-mode & {
+      border-bottom-color: rgba(51, 65, 85, 0.4);
+    }
+  }
+
+  .drawer-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text, #1f2937);
+
+    .dark-mode & { color: #f1f5f9; }
+  }
+
+  .drawer-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: var(--bg-secondary, #f1f5f9);
+    color: var(--text-secondary, #64748b);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .dark-mode & {
+      background: rgba(51, 65, 85, 0.5);
+      color: #94a3b8;
+    }
+  }
+
+  .drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 20px 16px;
+  }
+
+  .drawer-section {
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .drawer-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-tertiary, #94a3b8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .drawer-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-secondary, #f8fafc);
+    border: 1px solid var(--border-light, #f1f5f9);
+    border-radius: 10px;
+    padding: 0 12px;
+    height: 40px;
+
+    .dark-mode & {
+      background: rgba(30, 41, 59, 0.6);
+      border-color: rgba(51, 65, 85, 0.4);
+    }
+
+    .search-icon {
+      font-size: 13px;
+      color: var(--text-tertiary, #94a3b8);
+      flex-shrink: 0;
+    }
+
+    .drawer-search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+      color: var(--text, #1f2937);
+
+      .dark-mode & { color: #f1f5f9; }
+
+      &::placeholder {
+        color: var(--text-tertiary, #94a3b8);
+      }
+    }
+
+    .drawer-search-clear {
+      cursor: pointer;
+      color: var(--text-tertiary, #94a3b8);
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+  }
+
+  .drawer-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .drawer-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border-light, #f1f5f9);
+    background: var(--surface, #ffffff);
+    color: var(--text-secondary, #64748b);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+    .dark-mode & {
+      background: rgba(30, 41, 59, 0.6);
+      border-color: rgba(51, 65, 85, 0.4);
+    }
+
+    .chip-icon {
+      font-size: 12px;
+    }
+
+    .chip-count {
+      font-size: 11px;
+      color: var(--text-tertiary, #94a3b8);
+    }
+
+    &.active {
+      background: var(--primary, #3b82f6);
+      color: #fff;
+      border-color: var(--primary, #3b82f6);
+
+      .chip-count {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+  }
+
+  .drawer-sorts {
+    display: flex;
+    gap: 8px;
+  }
+
+  .drawer-sort-btn {
+    flex: 1;
+    padding: 8px 0;
+    border-radius: 10px;
+    border: 1px solid var(--border-light, #f1f5f9);
+    background: var(--surface, #ffffff);
+    color: var(--text-secondary, #64748b);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+    .dark-mode & {
+      background: rgba(30, 41, 59, 0.6);
+      border-color: rgba(51, 65, 85, 0.4);
+    }
+
+    .s-icon {
+      margin-right: 3px;
+      font-size: 12px;
+    }
+
+    &.active {
+      background: var(--primary, #3b82f6);
+      color: #fff;
+      border-color: var(--primary, #3b82f6);
+    }
+  }
+
+  .drawer-footer {
+    display: flex;
+    gap: 10px;
+    padding: 12px 20px 20px;
+    border-top: 1px solid var(--border-light, #f1f5f9);
+
+    .dark-mode & {
+      border-top-color: rgba(51, 65, 85, 0.4);
+    }
+  }
+
+  .drawer-reset-btn {
+    flex: 1;
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid var(--border-light, #f1f5f9);
+    background: var(--surface, #ffffff);
+    color: var(--text-secondary, #64748b);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    .dark-mode & {
+      background: rgba(30, 41, 59, 0.6);
+      border-color: rgba(51, 65, 85, 0.4);
+      color: #94a3b8;
+    }
+  }
+
+  .drawer-apply-btn {
+    flex: 2;
+    height: 42px;
+    border-radius: 10px;
+    border: none;
+    background: var(--primary, #3b82f6);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+
+/* 抽屉过渡动画 */
+.drawer-overlay-enter-active,
+.drawer-overlay-leave-active {
+  transition: opacity 0.25s ease;
+}
+.drawer-overlay-enter-from,
+.drawer-overlay-leave-to {
+  opacity: 0;
+}
+
+.drawer-slide-enter-active,
+.drawer-slide-leave-active {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.drawer-slide-enter-from,
+.drawer-slide-leave-to {
+  transform: translateY(100%);
 }
 
 /* 减弱动画偏好 */
