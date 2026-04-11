@@ -216,7 +216,7 @@ const handleAddToCart = () => {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 10px;
-  color: var(--text, #0f172a);
+  color: #ef4444;
   z-index: 2;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -224,19 +224,19 @@ const handleAddToCart = () => {
   .currency {
     font-size: 11px;
     font-weight: 800;
-    color: var(--primary);
+    color: #ef4444;
     margin-right: 1px;
   }
   .amount {
     font-size: 19px;
     font-weight: 900;
     letter-spacing: -0.5px;
-    color: var(--primary);
+    color: #ef4444;
   }
 
   .dark-mode & {
     background: rgba(15, 23, 42, 0.9);
-    color: #f8fafc;
+    color: #f87171;
   }
 }
 

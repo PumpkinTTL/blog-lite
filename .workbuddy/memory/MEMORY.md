@@ -21,10 +21,16 @@
 
 ## 已完成
 - 2026-04-11：完成 user 模块 API 接入
-  - 配置 Vite proxy 跨域代理（/api → localhost:8888）
+  - 配置 Vite proxy 跨域代理（/api → localhost:8888，直接透传不改写）
   - 修复 request.ts（移除 element-plus 依赖，改用 ant-design-vue message）
-  - 重写 apis/user.ts（按接口文档对齐全部9个接口）
+  - 重写 apis/user.ts（对齐 v2 客户端文档，16 个接口）
   - 创建 stores/user.ts（Pinia 全局用户状态管理）
   - 接入 LoginModal.vue（表单绑定 + 真实 API + 验证码倒计时）
   - 接入 BlogHeader.vue（从 store 读取用户状态 + 退出登录调 API）
-  - 接入 ProfileCenter.vue（从 store 读取用户信息，saveChanges 待对接更新API）
+  - 接入 ProfileCenter.vue（打开时请求 profile 接口 + loading 状态）
+- 2026-04-11：商城界面全面重构
+  - ResourceList：白色卡片容器头部 + Chip 分类筛选 + 精选推荐 Bento Grid
+  - ResourceCard：互联网数字产品风格（AI账号/开发工具/会员订阅/学习资源/设计素材）
+  - 亮色/深色模式适配，移动端响应式
+  - 路由切换 JS 钩子过渡动画，首页 animate.css 入场动画序列
+  - Font Awesome 图标注册（store/bag-shopping/box-open 等）

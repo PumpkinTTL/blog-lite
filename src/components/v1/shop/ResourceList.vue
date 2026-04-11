@@ -1,9 +1,10 @@
 <template>
   <div class="shop-page" :class="{ 'dark-mode': isDark }">
-    <!-- 顶部栏 -->
+    <!-- 吸顶容器：标题 + 搜索 + 分类 + 排序 -->
     <header
       class="shop-header"
-      :class="{ 'animate__animated animate__fadeIn': animated }"
+      :class="{ 'is-stuck': isHeaderStuck, 'animate__animated animate__fadeIn': animated }"
+      ref="headerRef"
     >
       <div class="header-main">
         <div class="header-left">
@@ -38,14 +39,8 @@
           </button>
         </div>
       </div>
-    </header>
 
-    <!-- 分类筛选 + 排序 -->
-    <nav
-      class="filter-nav"
-      :class="{ 'animate__animated animate__fadeInUp': animated }"
-      style="animation-delay: 0.1s"
-    >
+      <!-- 分类筛选 + 排序 -->
       <div class="filter-row">
         <div class="cat-chips">
           <button
@@ -78,7 +73,7 @@
           </button>
         </div>
       </div>
-    </nav>
+    </header>
 
     <!-- 筛选提示 -->
     <div
@@ -134,7 +129,12 @@
             <p class="fm-desc">{{ featuredMain.description }}</p>
             <div class="fm-stats">
               <span class="fm-sales">已售 {{ featuredMain.sales }} 件</span>
-              <button class="fm-action-btn" @click.stop="handleCardClick(featuredMain)">立即获取</button>
+              <button
+                class="fm-action-btn"
+                @click.stop="handleCardClick(featuredMain)"
+              >
+                立即获取
+              </button>
             </div>
           </div>
         </div>
@@ -150,7 +150,7 @@
               <div class="fs-price-tag">¥{{ item.price }}</div>
             </div>
             <div class="fs-info">
-              <span 
+              <span
                 class="fs-cat"
                 :style="{ color: getCategoryColor(item.category) }"
               >
@@ -191,7 +191,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useThemeStore } from "@/stores/theme";
 import ResourceCard, { type Resource } from "./ResourceCard.vue";
 
@@ -199,6 +199,30 @@ const themeStore = useThemeStore();
 const isDark = computed(() => themeStore.isDark);
 
 defineProps<{ animated?: boolean }>();
+
+// 吸顶检测
+const headerRef = ref<HTMLElement | null>(null);
+const isHeaderStuck = ref(false);
+let observer: IntersectionObserver | null = null;
+
+onMounted(() => {
+  if (!headerRef.value) return;
+  const sentinel = document.createElement('div');
+  sentinel.className = 'sticky-sentinel';
+  headerRef.value.parentNode?.insertBefore(sentinel, headerRef.value);
+
+  observer = new IntersectionObserver(
+    ([entry]) => {
+      isHeaderStuck.value = !entry.isIntersecting;
+    },
+    { rootMargin: '-65px 0px 0px 0px' } // 65px = 顶部导航高度
+  );
+  observer.observe(sentinel);
+});
+
+onUnmounted(() => {
+  observer?.disconnect();
+});
 
 // 互联网数字资源分类
 const categories = [
@@ -244,7 +268,7 @@ const resources = ref<Resource[]>([
     description:
       "Anthropic Claude 旗舰模型，长文本理解能力超强，支持 200K 上下文窗口",
     cover:
-      "https://images.unsplash.com/photo-1684163761883-8a2e1d86f7e5?w=600&h=380&fit=crop",
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=380&fit=crop",
     price: 59,
     sales: 2156,
     rating: 4.8,
@@ -464,21 +488,35 @@ const resetFilters = () => {
   padding: 24px 24px 60px;
 }
 
-/* === 顶部栏 === */
+/* === 吸顶头部 === */
 .shop-header {
-  padding: 28px 32px 24px;
+  position: sticky;
+  top: 64px;
+  z-index: 20;
+  padding: 20px 28px 16px;
   margin-bottom: 20px;
   background: var(--surface, #ffffff);
   border: 1px solid var(--border-light, #f3f4f6);
   border-radius: 16px;
+  transition: box-shadow 0.3s ease, border-radius 0.3s ease;
   opacity: 0;
   &.animate__animated {
     opacity: 1;
   }
 
+  &.is-stuck {
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+    border-top-color: transparent;
+  }
+
   .dark-mode & {
     background: var(--surface, #1e293b);
     border-color: rgba(51, 65, 85, 0.3);
+
+    &.is-stuck {
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+    }
   }
 }
 
@@ -667,28 +705,18 @@ const resetFilters = () => {
 }
 
 /* === 分类筛选 === */
-.filter-nav {
-  padding: 16px 24px;
-  background: var(--surface, #ffffff);
-  border: 1px solid var(--border-light, #e2e8f0);
-  border-radius: 12px;
-  margin-bottom: 24px;
-  opacity: 0;
-  &.animate__animated {
-    opacity: 1;
-  }
-
-  .dark-mode & {
-    background: var(--surface, #1e293b);
-    border-color: rgba(51, 65, 85, 0.3);
-  }
-}
-
 .filter-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-light, #f3f4f6);
+
+  .dark-mode & {
+    border-top-color: rgba(51, 65, 85, 0.3);
+  }
 }
 
 .cat-chips {
@@ -967,14 +995,19 @@ const resetFilters = () => {
   display: flex;
   align-items: baseline;
   gap: 2px;
-  color: var(--text);
+  color: #ef4444;
   background: var(--bg-secondary);
   padding: 4px 12px;
   border-radius: 10px;
   font-weight: 900;
 
-  .yen { font-size: 12px; font-weight: 800; color: var(--primary); }
-  .val { font-size: 20px; color: var(--primary); }
+  .yen {
+    font-size: 12px;
+    font-weight: 800;
+  }
+  .val {
+    font-size: 20px;
+  }
 
   .dark-mode & {
     background: rgba(255, 255, 255, 0.05);
@@ -1084,12 +1117,12 @@ const resetFilters = () => {
     border-radius: 6px;
     font-size: 12px;
     font-weight: 900;
-    color: var(--primary);
+    color: #ef4444;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
     .dark-mode & {
       background: rgba(15, 23, 42, 0.9);
-      color: #fff;
+      color: #f87171;
     }
   }
 }
@@ -1325,7 +1358,6 @@ const resetFilters = () => {
 @media (prefers-reduced-motion: reduce) {
   .featured-section,
   .grid-item,
-  .filter-nav,
   .shop-header,
   .filter-status {
     animation: none !important;
