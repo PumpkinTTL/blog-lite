@@ -674,7 +674,7 @@ const resetFilters = () => {
 
 <style scoped lang="scss">
 .shop-page {
-  max-width: 1200px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: 8px 24px 60px;
 }
