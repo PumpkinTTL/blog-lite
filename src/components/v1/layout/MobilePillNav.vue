@@ -116,13 +116,14 @@ onUnmounted(() => {
   position: fixed;
   bottom: 30px;
   left: 0;
-  right: 0;
+  width: 100vw;
   z-index: 1000;
   pointer-events: none;
   display: flex;
   justify-content: center;
   padding: 0 20px;
   padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: border-box;
 }
 
 .pill-nav {

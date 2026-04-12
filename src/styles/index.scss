@@ -22,6 +22,7 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
 body {
@@ -31,6 +32,7 @@ body {
   font-size: 15px;
   line-height: 1.6;
   transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -53,24 +55,18 @@ button {
   color: var(--primary);
 }
 
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
+/* 移动端：完全隐藏滚动条 */
+@media (max-width: 768px) {
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--gray-300);
-  border-radius: 6px;
-  border: 3px solid var(--bg-secondary);
-
-  &:hover {
-    background: var(--gray-400);
+  *::-webkit-scrollbar {
+    display: none;
   }
 }
+
 
 :focus-visible {
   outline: 2px solid var(--primary);
