@@ -1841,7 +1841,7 @@ const resetFilters = () => {
     position: fixed;
     right: auto;
     left: 16px;
-    bottom: 24px;
+    bottom: 100px;
     width: 52px;
     height: 52px;
     border-radius: 16px;

@@ -78,8 +78,8 @@ onUnmounted(() => {
   }
 
   @media (max-width: 768px) {
-    bottom: 24px;
-    right: 24px;
+    bottom: 100px;
+    right: 20px;
     width: 40px;
     height: 40px;
   }

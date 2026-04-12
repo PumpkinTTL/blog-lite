@@ -114,7 +114,7 @@ onUnmounted(() => {
 <style scoped lang="scss">
 .mobile-pill-nav-container {
   position: fixed;
-  bottom: 30px;
+  bottom: 20px;
   left: 0;
   width: 100vw;
   z-index: 1000;
@@ -134,7 +134,7 @@ onUnmounted(() => {
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.5);
-  padding: 5px;
+  padding: 6px;
   border-radius: 999px;
   box-shadow: 
     0 12px 30px -5px rgba(0, 0, 0, 0.12),
@@ -161,8 +161,8 @@ onUnmounted(() => {
 
 .active-slider {
   position: absolute;
-  top: 6px;
-  bottom: 6px;
+  top: 7px;
+  bottom: 7px;
   left: 0;
   background: white;
   border-radius: 999px;
@@ -178,7 +178,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 16px;
+  padding: 10px 18px;
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
@@ -197,19 +197,19 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     transition: transform 0.3s;
   }
 
   .nav-icon {
-    font-size: 15px;
+    font-size: 16px;
     color: #64748b;
     transition: color 0.3s;
   }
 
   .nav-label {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: #475569;
     transition: all 0.3s;
