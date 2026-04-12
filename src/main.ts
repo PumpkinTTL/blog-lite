@@ -113,7 +113,9 @@ import {
   faBagShopping,
   faBoxOpen,
   faBorderAll,
-  faGraduationCap
+  faGraduationCap,
+  faTag,
+  faChevronUp
 } from '@fortawesome/free-solid-svg-icons'
 
 // 添加图标到库
@@ -135,7 +137,8 @@ library.add(
   faShoppingCart, faShoppingBag, faFilter, faSort, faFireFlameCurved, faFire, faMagnifyingGlass, faDownload, faEye, faCircleXmark, faShop, faUsersRectangle,
   faArrowRightToBracket, faUserPlus,
   faUserCircle, faUserGear, faClockRotateLeft, faSliders, faRotateLeft, faCamera, faLocationDot, faLink, faSpinner,
-  faStore, faBagShopping, faBoxOpen, faBorderAll, faGraduationCap
+  faStore, faBagShopping, faBoxOpen, faBorderAll, faGraduationCap,
+  faTag, faChevronUp
 )
 
 const app = createApp(App)

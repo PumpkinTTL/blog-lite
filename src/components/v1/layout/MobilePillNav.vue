@@ -61,12 +61,15 @@ const handleNav = (item: typeof navItems[0]) => {
   const [path, hash] = item.href.split('#');
   if (hash) {
     if (route.path === path) {
-      const element = document.getElementById(hash);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-        router.push(item.href);
-      }
+      // 同页面，先更新 hash 再滚动
+      router.push(item.href);
+      // 等待 DOM 更新后滚动
+      nextTick(() => {
+        const element = document.getElementById(hash);
+        if (element) element.scrollIntoView({ behavior: "smooth" });
+      });
     } else {
+      // 跨页面，先跳转，滚动交给 router scrollBehavior
       router.push(item.href);
     }
   } else {

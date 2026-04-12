@@ -109,16 +109,16 @@ const socials = [
 const linkGroups = [
   {
     links: [
-      { text: '文章归档', to: '/blog' },
-      { text: '精选资源', to: '/resources' },
-      { text: '技术组件', to: '/components' }
+      { text: '网站首页', to: '/' },
+      { text: '精选资源', to: '/#resources' },
+      { text: '技术商城', to: '/shop' }
     ]
   },
   {
     links: [
-      { text: '作者简介', to: '/about' },
-      { text: '反馈中心', to: '/feedback' },
-      { text: '加入我们', to: '/join' }
+      { text: '关于我们', to: '/about' },
+      { text: '权限中心', to: '#' },
+      { text: '加入我们', to: '#' }
     ]
   }
 ];
