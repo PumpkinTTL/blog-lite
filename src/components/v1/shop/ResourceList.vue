@@ -1835,44 +1835,60 @@ const resetFilters = () => {
     display: none;
   }
 
-  /* 浮动筛选按钮 */
+  /* 浮动筛选按钮 — 贴边胶囊 */
   .mobile-filter-fab {
     display: flex;
     position: fixed;
-    right: auto;
-    left: 16px;
+    left: 0;
     bottom: 100px;
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
+    width: 42px;
+    height: 42px;
+    border-radius: 0 14px 14px 0;
     border: none;
-    background: var(--primary, #3b82f6);
-    color: #fff;
-    font-size: 20px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--text);
+    font-size: 17px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
     z-index: 100;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, width 0.2s;
+    padding-left: 2px;
 
     &:active {
-      transform: scale(0.92);
+      transform: scale(0.95);
     }
 
     &.has-filter {
-      background: var(--primary, #3b82f6);
+      width: 50px;
+      padding-left: 6px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 2px 0 16px rgba(0, 0, 0, 0.1);
     }
 
     .fab-dot {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 8px;
-      height: 8px;
+      top: 8px;
+      right: 6px;
+      width: 7px;
+      height: 7px;
       background: #ef4444;
       border-radius: 50%;
-      border: 2px solid var(--primary, #3b82f6);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+    }
+
+    .dark-mode & {
+      background: rgba(30, 41, 59, 0.85);
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.25);
+      color: #e2e8f0;
+
+      &.has-filter {
+        background: rgba(30, 41, 59, 0.92);
+        box-shadow: 2px 0 16px rgba(0, 0, 0, 0.3);
+      }
     }
   }
 
