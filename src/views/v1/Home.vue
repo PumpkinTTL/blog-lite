@@ -18,10 +18,10 @@
           />
         </div>
 
-        <section class="home-grid">
+        <!-- PC端：原有的 grid 布局 + 容器 -->
+        <section v-if="!isMobile" class="home-grid">
           <div class="feed-column">
             <div
-              v-if="!isMobile"
               :class="[
                 'home-filterbar',
                 { 'animate__animated animate__fadeInUp': animated }
@@ -40,41 +40,50 @@
 
             <div class="post-feed-wrapper" ref="feedWrapperRef">
               <PostFeed :posts="displayPosts" :animated="animated" />
-
-              <!-- 无限滚动：移动端加载状态 -->
-              <div v-if="isMobile" class="infinite-scroll-sentinel" ref="sentinelRef"></div>
-              <div v-if="isMobile && isLoadingMore" class="loading-more">
-                <div class="loading-spinner"></div>
-                <span>加载中...</span>
-              </div>
-              <div v-if="isMobile && !hasMorePosts && displayedPosts.length > 0" class="no-more">
-                — 到底啦 —
-              </div>
             </div>
 
-            <!-- PC端分页 -->
             <Pagination
-              v-if="!isMobile"
               v-model:current="currentPage"
               v-model:pageSize="pageSize"
               :total="totalItems"
               :pageSizeOptions="[5, 10, 20]"
             />
           </div>
-          <!-- 移动端：FilterBar 渲染为 FAB + 抽屉（fixed 定位，不影响布局） -->
-          <FilterBar
-            v-if="isMobile"
-            v-model="searchQuery"
-            :categories="categories"
-            :active-category="activeCategory"
-            :active-sort="activeSort"
-            @update:active-category="activeCategory = $event"
-            @update:active-sort="activeSort = $event"
-          />
           <HomeSidebar :animated="animated" />
         </section>
 
-        <!-- New Resource Section -->
+        <!-- 移动端：文章列表全宽，不受容器限制 -->
+        <section v-else class="mobile-feed">
+          <PostFeed :posts="displayPosts" :animated="animated" />
+
+          <!-- 加载更多按钮 -->
+          <div v-if="hasMorePosts" class="load-more-wrapper">
+            <button
+              class="load-more-btn"
+              :class="{ loading: isLoadingMore }"
+              :disabled="isLoadingMore"
+              @click="loadMore"
+            >
+              <div v-if="isLoadingMore" class="btn-spinner"></div>
+              <span>{{ isLoadingMore ? '加载中...' : '加载更多' }}</span>
+            </button>
+          </div>
+          <div v-else-if="displayedPosts.length > 0" class="no-more">
+            — 到底啦 —
+          </div>
+        </section>
+
+        <!-- 移动端：FilterBar 渲染为 FAB + 抽屉（fixed 定位，不影响布局） -->
+        <FilterBar
+          v-if="isMobile"
+          v-model="searchQuery"
+          :categories="categories"
+          :active-category="activeCategory"
+          :active-sort="activeSort"
+          @update:active-category="activeCategory = $event"
+          @update:active-sort="activeSort = $event"
+        />
+
         <ResourceSection :animated="animated" />
       </div>
     </main>
@@ -82,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, onUnmounted, nextTick } from "vue";
+import { computed, ref, watch, onMounted, onUnmounted } from "vue";
 import Announcement from "@/components/v1/common/Announcement.vue";
 import FilterBar from "@/components/v1/common/FilterBar.vue";
 import PostFeed from "@/components/v1/home/PostFeed.vue";
@@ -155,13 +164,11 @@ const visiblePosts = computed(() => {
   return filteredPosts.value.slice(start, end);
 });
 
-// ── 移动端无限滚动 ──
+// ── 移动端手动加载更多 ──
 const mobilePageSize = 5;
 const displayedCount = ref(mobilePageSize);
 const isLoadingMore = ref(false);
 const feedWrapperRef = ref<HTMLElement | null>(null);
-const sentinelRef = ref<HTMLElement | null>(null);
-let observer: IntersectionObserver | null = null;
 
 const displayedPosts = computed(() => {
   return filteredPosts.value.slice(0, displayedCount.value);
@@ -181,41 +188,6 @@ const loadMore = () => {
   }, 400);
 };
 
-// 设置 IntersectionObserver
-onMounted(() => {
-  nextTick(() => {
-    setupObserver();
-  });
-});
-
-const setupObserver = () => {
-  if (observer) {
-    observer.disconnect();
-  }
-  observer = new IntersectionObserver(
-    (entries) => {
-      if (entries[0].isIntersecting && hasMorePosts.value && !isLoadingMore.value) {
-        loadMore();
-      }
-    },
-    {
-      root: feedWrapperRef.value,
-      rootMargin: "200px",
-      threshold: 0,
-    }
-  );
-  if (sentinelRef.value) {
-    observer.observe(sentinelRef.value);
-  }
-};
-
-onUnmounted(() => {
-  if (observer) {
-    observer.disconnect();
-    observer = null;
-  }
-});
-
 // ── 统一展示数据 ──
 const displayPosts = computed(() => {
   return isMobile.value ? displayedPosts.value : visiblePosts.value;
@@ -225,7 +197,7 @@ const displayPosts = computed(() => {
 watch([activeCategory, activeSort, searchQuery], () => {
   // PC端重置分页
   currentPage.value = 1;
-  // 移动端重置无限滚动
+  // 移动端重置加载更多
   displayedCount.value = mobilePageSize;
 });
 </script>
@@ -245,7 +217,7 @@ watch([activeCategory, activeSort, searchQuery], () => {
   gap: 20px;
 }
 
-/* ── Main Grid ── */
+/* ── PC端 Main Grid ── */
 .home-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 280px;
@@ -253,7 +225,7 @@ watch([activeCategory, activeSort, searchQuery], () => {
   align-items: start;
 }
 
-/* ── Feed Column (Content Card Container) ── */
+/* ── Feed Column (PC端内容卡片容器) ── */
 .feed-column {
   display: flex;
   flex-direction: column;
@@ -270,7 +242,7 @@ watch([activeCategory, activeSort, searchQuery], () => {
   }
 }
 
-/* ── PostFeed Scroll Container ── */
+/* ── PostFeed Scroll Container (PC端) ── */
 .post-feed-wrapper {
   height: calc(100vh - 280px);
   overflow-y: auto;
@@ -283,10 +255,12 @@ watch([activeCategory, activeSort, searchQuery], () => {
   }
 }
 
-@media (max-width: 768px) {
-  .post-feed-wrapper {
-    height: calc(100dvh - 120px);
-  }
+/* ── 移动端文章列表（全宽，无容器限制） ── */
+.mobile-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 20px;
 }
 
 @media (max-width: 1100px) {
@@ -306,29 +280,70 @@ watch([activeCategory, activeSort, searchQuery], () => {
   opacity: 1;
 }
 
-/* ── 无限滚动样式 ── */
-.infinite-scroll-sentinel {
-  height: 1px;
-  width: 100%;
+/* ── 加载更多按钮 ── */
+.load-more-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 12px;
 }
 
-.loading-more {
+.load-more-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 20px 0 16px;
-  font-size: 13px;
-  color: var(--text-tertiary, #94a3b8);
+  min-width: 160px;
+  padding: 10px 24px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-tertiary);
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 2px 12px rgba(59, 130, 246, 0.1);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .dark-mode & {
+    background: rgba(30, 41, 59, 0.5);
+    border-color: rgba(255, 255, 255, 0.06);
+    color: #94a3b8;
+
+    &:hover:not(:disabled) {
+      background: rgba(30, 41, 59, 0.8);
+      color: #60a5fa;
+      border-color: rgba(59, 130, 246, 0.3);
+      box-shadow: 0 2px 12px rgba(59, 130, 246, 0.15);
+    }
+  }
 }
 
-.loading-spinner {
-  width: 16px;
-  height: 16px;
+.btn-spinner {
+  width: 14px;
+  height: 14px;
   border: 2px solid rgba(0, 0, 0, 0.08);
   border-top-color: var(--primary, #3b82f6);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
+
+  .dark-mode & {
+    border-color: rgba(255, 255, 255, 0.08);
+    border-top-color: #60a5fa;
+  }
 }
 
 @keyframes spin {
@@ -337,7 +352,7 @@ watch([activeCategory, activeSort, searchQuery], () => {
 
 .no-more {
   text-align: center;
-  padding: 20px 0 24px;
+  padding: 16px 0 24px;
   font-size: 12.5px;
   color: var(--text-tertiary, #94a3b8);
   opacity: 0.6;

@@ -862,14 +862,14 @@ const goToArticle = () => {
 }
 
 /* ─────────────────────────────
-   ≤ 640px  mobile app style
+   ≤ 768px  mobile layout
 ───────────────────────────── */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .post-card {
     grid-template-columns: auto 1fr;
     border-radius: 12px;
     min-height: 116px;
-    align-items: center; /* 垂直居中对齐，防止拉伸 */
+    align-items: center;
   }
 
   .cover-wrap {
@@ -909,7 +909,12 @@ const goToArticle = () => {
   .hot-badge {
     display: none;
   }
+}
 
+/* ─────────────────────────────
+   ≤ 640px  mobile app style (fine-tune)
+───────────────────────────── */
+@media (max-width: 640px) {
   .author {
     font-size: 11px;
   }

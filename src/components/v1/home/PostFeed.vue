@@ -26,5 +26,10 @@ defineProps<{
   flex-direction: column;
   gap: 12px;
   padding: 0 16px 8px;
+
+  @media (max-width: 768px) {
+    padding: 0;
+    gap: 10px;
+  }
 }
 </style>
