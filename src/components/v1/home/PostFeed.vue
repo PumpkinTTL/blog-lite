@@ -6,6 +6,7 @@
       :post="post"
       :index="index"
       :animated="animated"
+      :animateIndex="animateIndex"
     />
   </section>
 </template>
@@ -17,6 +18,7 @@ import type { Resource } from "@/data/mockData";
 defineProps<{
   posts: Resource[];
   animated?: boolean;
+  animateIndex?: number;
 }>();
 </script>
 

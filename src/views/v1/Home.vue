@@ -39,7 +39,7 @@
             </div>
 
             <div class="post-feed-wrapper" ref="feedWrapperRef">
-              <PostFeed :posts="displayPosts" :animated="animated" />
+              <PostFeed :posts="displayPosts" :animated="animated" :animateIndex="initialCount" />
             </div>
 
             <Pagination
@@ -54,7 +54,7 @@
 
         <!-- 移动端：文章列表全宽，不受容器限制 -->
         <section v-else class="mobile-feed">
-          <PostFeed :posts="displayPosts" :animated="animated" />
+          <PostFeed :posts="displayPosts" :animated="animated" :animateIndex="initialCount" />
 
           <!-- 加载更多按钮 -->
           <div v-if="hasMorePosts" class="load-more-wrapper">
@@ -64,7 +64,8 @@
               :disabled="isLoadingMore"
               @click="loadMore"
             >
-              <div v-if="isLoadingMore" class="btn-spinner"></div>
+              <font-awesome-icon v-if="isLoadingMore" icon="spinner" spin class="btn-icon" />
+              <font-awesome-icon v-else icon="chevron-down" class="btn-icon" />
               <span>{{ isLoadingMore ? '加载中...' : '加载更多' }}</span>
             </button>
           </div>
@@ -91,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, onUnmounted } from "vue";
+import { computed, ref, watch, onMounted, onUnmounted, nextTick } from "vue";
 import Announcement from "@/components/v1/common/Announcement.vue";
 import FilterBar from "@/components/v1/common/FilterBar.vue";
 import PostFeed from "@/components/v1/home/PostFeed.vue";
@@ -167,6 +168,7 @@ const visiblePosts = computed(() => {
 // ── 移动端手动加载更多 ──
 const mobilePageSize = 5;
 const displayedCount = ref(mobilePageSize);
+const initialCount = ref(mobilePageSize);
 const isLoadingMore = ref(false);
 const feedWrapperRef = ref<HTMLElement | null>(null);
 
@@ -181,7 +183,6 @@ const hasMorePosts = computed(() => {
 const loadMore = () => {
   if (isLoadingMore.value || !hasMorePosts.value) return;
   isLoadingMore.value = true;
-  // 模拟加载延迟
   setTimeout(() => {
     displayedCount.value += mobilePageSize;
     isLoadingMore.value = false;
@@ -199,6 +200,7 @@ watch([activeCategory, activeSort, searchQuery], () => {
   currentPage.value = 1;
   // 移动端重置加载更多
   displayedCount.value = mobilePageSize;
+  initialCount.value = mobilePageSize;
 });
 </script>
 
@@ -332,22 +334,8 @@ watch([activeCategory, activeSort, searchQuery], () => {
   }
 }
 
-.btn-spinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(0, 0, 0, 0.08);
-  border-top-color: var(--primary, #3b82f6);
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-
-  .dark-mode & {
-    border-color: rgba(255, 255, 255, 0.08);
-    border-top-color: #60a5fa;
-  }
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.btn-icon {
+  font-size: 12px;
 }
 
 .no-more {

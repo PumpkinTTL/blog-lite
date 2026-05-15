@@ -3,9 +3,9 @@
     class="post-card"
     :class="[
       { 'is-hot': isHot, 'dark-mode': isDark },
-      animated ? 'animate__animated animate__fadeInUp' : ''
+      animated && (animateIndex === undefined || index < animateIndex) ? 'animate__animated animate__fadeInUp' : 'no-anim'
     ]"
-    :style="animated ? { animationDelay: `${0.15 + index * 0.08}s` } : {}"
+    :style="animated && (animateIndex === undefined || index < animateIndex) ? { animationDelay: `${0.15 + index * 0.08}s` } : {}"
     @click="goToArticle"
     role="button"
     tabindex="0"
@@ -153,7 +153,7 @@ import type { Resource } from "@/data/mockData";
 
 const CATEGORIES = ["前端", "后端", "设计", "AI", "工具"];
 
-const props = withDefaults(defineProps<{ post: Resource; index?: number; animated?: boolean }>(), {
+const props = withDefaults(defineProps<{ post: Resource; index?: number; animated?: boolean; animateIndex?: number }>(), {
   index: 0,
   animated: false,
 });
@@ -214,6 +214,10 @@ const goToArticle = () => {
   opacity: 0;
 
   &.animate__animated {
+    opacity: 1;
+  }
+
+  &.no-anim {
     opacity: 1;
   }
 
