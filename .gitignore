@@ -28,3 +28,6 @@ dist-ssr
 
 # Windows reserved device names
 nul
+
+# Independent backend workspace
+backend/
