@@ -39,6 +39,7 @@ const navItems = [
   { name: "首页", href: "/", icon: "home" },
   { name: "资源", href: "/#resources", icon: "book" },
   { name: "商城", href: "/shop", icon: "shop" },
+  { name: "赞助", href: "/donation", icon: "heart" },
   { name: "关于", href: "/about", icon: "circle-info" },
 ];
 

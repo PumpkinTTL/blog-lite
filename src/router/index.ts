@@ -34,6 +34,14 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '关于我们'
     }
+  },
+  {
+    path: '/donation',
+    name: 'Donation',
+    component: () => import('@/views/v1/Donation.vue'),
+    meta: {
+      title: '赞助与捐赠'
+    }
   }
 ]
 
