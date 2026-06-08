@@ -169,13 +169,19 @@
           </transition>
         </div>
 
-        <!-- Login / Register modern action button -->
+        <!-- Login & Register modern split buttons -->
         <div v-else class="login-action-container">
           <button
-            @click="isLoginModalOpen = true"
-            class="login-cta-btn"
+            @click="openLoginModal('login')"
+            class="login-link-btn"
           >
-            登录 / 注册
+            登录
+          </button>
+          <button
+            @click="openLoginModal('register')"
+            class="register-cta-btn"
+          >
+            注册
           </button>
         </div>
 
@@ -245,7 +251,7 @@
           <div v-else class="drawer-login-prompt">
             <button
               class="drawer-login-btn"
-              @click="isLoginModalOpen = true; isMobileMenuOpen = false"
+              @click="openLoginModal('login'); isMobileMenuOpen = false"
             >
               登录 / 注册
             </button>
@@ -269,6 +275,7 @@
     <LoginModal
       :is-open="isLoginModalOpen"
       :is-dark="isDark"
+      :initial-mode="loginModalMode"
       @close="isLoginModalOpen = false"
       @login-success="handleLoginSuccess"
     />
@@ -295,6 +302,13 @@ const isUserMenuOpen = ref(false);
 const isNotificationOpen = ref(false);
 const isProfileCenterOpen = ref(false);
 const isLoginModalOpen = ref(false);
+const loginModalMode = ref<'login' | 'register'>('login');
+
+const openLoginModal = (mode: 'login' | 'register') => {
+  loginModalMode.value = mode;
+  isLoginModalOpen.value = true;
+};
+
 const hasNotifications = ref(true);
 const userMenuRef = ref<HTMLElement | null>(null);
 
@@ -659,7 +673,7 @@ watch(
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease;
   box-sizing: border-box;
   
   .link-icon {
@@ -669,6 +683,11 @@ watch(
   
   &:hover:not(.active) {
     color: var(--text, #1f2937);
+    background-color: rgba(0, 0, 0, 0.035);
+    
+    .blog-header-flat.dark-mode & {
+      background-color: rgba(255, 255, 255, 0.045);
+    }
   }
 
   &.active {
@@ -965,9 +984,33 @@ watch(
 }
 
 /* ==========================================================================
-   7. Flat Login CTA Button
+   7. Split Login & Register Buttons (SaaS Style)
    ========================================================================== */
-.login-cta-btn {
+.login-action-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-link-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary, #6b7280);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  outline: none;
+  
+  &:hover {
+    color: var(--text, #1f2937);
+    background-color: var(--surface-hover, #f9fafb);
+  }
+}
+
+.register-cta-btn {
   border: none;
   padding: 6px 16px;
   border-radius: 6px;
@@ -976,10 +1019,13 @@ watch(
   color: #ffffff;
   cursor: pointer;
   background-color: var(--primary, #3b82f6);
-  transition: background-color 0.2s, transform 0.1s;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(59, 130, 246, 0.1);
+  outline: none;
   
   &:hover {
     background-color: var(--primary-hover, #2563eb);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
   }
   
   &:active {

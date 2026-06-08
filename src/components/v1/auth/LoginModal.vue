@@ -342,7 +342,8 @@ import { useUserStore } from '@/stores/user'
 
 const props = defineProps({
   isOpen: { type: Boolean, required: true },
-  isDark: { type: Boolean, default: false }
+  isDark: { type: Boolean, default: false },
+  initialMode: { type: String, default: 'login' }
 })
 
 const emit = defineEmits(['close', 'login-success'])
@@ -389,7 +390,7 @@ const codeBtnCls = computed(() =>
 
 watch(() => props.isOpen, (val) => {
   if (val) {
-    viewMode.value = 'login'
+    viewMode.value = props.initialMode as 'login' | 'register'
     loginType.value = 'password'
     showPwd.value = false
     rememberMe.value = false
