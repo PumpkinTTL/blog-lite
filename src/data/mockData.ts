@@ -1,5 +1,7 @@
 // Mock Data for Blog Lite
 
+import { articleList } from './articleMock'
+
 export interface Resource {
   id: string
   title: string
@@ -95,11 +97,15 @@ function randomNumber(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+// 真实文章 id 池(来自 articleMock.ts),首页前 N 篇可点击进入真实详情
+const realArticleIds = articleList.map((a) => a.id)
+
 export function generateMockResources(count: number): Resource[] {
   return Array.from({ length: count }, (_, index) => {
     const category = randomItem(categories)
     return {
-      id: `resource-${index + 1}`,
+      // 前 8 篇用真实文章 id,超出部分用 fallback id(详情页会 fallback 到第一篇)
+      id: index < realArticleIds.length ? realArticleIds[index] : `resource-${index + 1}`,
       title: randomItem(titles),
       description: randomItem(descriptions),
       image: randomItem(images),
