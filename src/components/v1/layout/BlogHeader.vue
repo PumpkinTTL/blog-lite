@@ -1,510 +1,260 @@
 <template>
   <header
-    class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
-    :class="isDark ? 'border-gray-800' : 'bg-white border-gray-200'"
-    :style="isDark ? { background: 'var(--bg)' } : {}"
-    style="
-      border-bottom-width: 1px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.02);
-    "
+    class="blog-header-flat"
+    :class="{
+      'dark-mode': isDark
+    }"
   >
-    <nav class="mx-auto px-5" style="max-width: 1320px">
-      <div class="flex items-center gap-2 sm:gap-4 h-14 sm:h-16">
-        <!-- Logo -->
-        <!-- Logo -->
-        <div class="group relative flex items-center gap-2.5 pl-2.5 pr-3.5 py-1.5 sm:py-2 rounded-[14px] cursor-pointer transition-transform duration-500 hover:scale-[1.02]"
-             :class="isDark ? 'bg-[#0f172a]/80 backdrop-blur-md shadow-sm' : 'bg-gradient-to-r from-blue-50/60 to-purple-50/60 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.03)] cursor-pointer'"
-             @click="goHome">
-             
-          <!-- 极细腻流光玻璃边框（真·空心边框，绝不污染背后的毛玻璃） -->
-          <div class="absolute inset-0 rounded-[14px] pointer-events-none opacity-90 transition-opacity duration-500 group-hover:opacity-100"
-               style="border: 1px solid transparent; 
-                      background: linear-gradient(90deg, #3b82f6, #a855f7, #3b82f6) border-box; 
-                      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); 
-                      -webkit-mask-composite: destination-out; 
-                      mask-composite: exclude; 
-                      background-size: 200% 100%; 
-                      animation: shimmer 3s linear infinite;"></div>
-
-          <!-- 精巧的图标（完全融入毛玻璃） -->
-          <div class="relative z-10 flex items-center justify-center transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3">
-            <font-awesome-icon icon="book" class="text-[16px] sm:text-[18px]" 
-                               :class="isDark ? 'text-blue-400' : 'text-blue-600'" />
+    <div class="header-container">
+      <!-- Left Column Group (Logo + Nav links unified) -->
+      <div class="left-group">
+        <!-- Brand Logo -->
+        <div class="logo-wrapper" @click="goHome">
+          <div class="logo-badge">
+            <font-awesome-icon icon="book" class="logo-icon" />
           </div>
-          
-          <!-- 文字部分（主副标题各自独立套用流光渐变，彻底修复 Webkit 消失 Bug） -->
-          <div class="relative z-10 flex flex-col pt-0.5">
-            <!-- 主标题：博客资源 -->
-            <span class="text-[15px] sm:text-[17px] font-black leading-tight tracking-[0.02em] text-transparent bg-clip-text"
-                  :class="isDark ? 'bg-gradient-to-r from-blue-300 via-purple-300 to-blue-300' : 'bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600'"
-                  style="background-size: 200% 100%; animation: shimmer 3s linear infinite;">
-              博客资源
-            </span>
-            <!-- 副标题：Resource Hub -->
-            <span class="text-[7.5px] font-extrabold leading-none tracking-[0.24em] uppercase mt-[2.5px] text-transparent bg-clip-text"
-                  :class="isDark ? 'bg-gradient-to-r from-blue-300 via-purple-300 to-blue-300 opacity-80' : 'bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 opacity-80'"
-                  style="background-size: 200% 100%; animation: shimmer 3s linear infinite;">
-              RESOURCE HUB
-            </span>
-          </div>
+          <span class="logo-text">
+            博客资源<span class="logo-period">.</span>
+          </span>
         </div>
 
-        <!-- Desktop Nav Panel -->
-        <!-- Desktop Nav Panel -->
-        <div
-          class="hidden md:flex items-center gap-1.5 px-1.5 py-1.5 rounded-xl ml-6 transition-all"
-          :class="
-            isDark
-              ? 'bg-gray-800/40 border border-gray-700/50'
-              : 'bg-gray-50/80 border border-gray-100'
-          "
-        >
+        <!-- Vertical Divider inside left group -->
+        <div class="left-divider"></div>
+
+        <!-- Navigation links -->
+        <nav class="nav-links-wrapper">
           <a
-            v-for="item in navItems"
+            v-for="(item, index) in navItems"
             :key="item.name"
             :href="item.href"
-            class="flex items-center gap-2.5 px-4 py-1.5 text-[14px] font-medium rounded-lg transition-all duration-300 cursor-pointer"
-            :class="[
-              isNavItemActive(item) && !isDark
-                ? 'bg-white text-gray-900 shadow-[0_1px_3px_rgba(0,0,0,0.06)] ring-1 ring-gray-900/5'
-                : '',
-              isNavItemActive(item) && isDark
-                ? 'bg-gray-700/80 text-white shadow-sm ring-1 ring-white/10'
-                : '',
-              !isNavItemActive(item) && !isDark
-                ? 'text-gray-500 hover:text-gray-900 hover:bg-gray-100/80'
-                : '',
-              !isNavItemActive(item) && isDark
-                ? 'text-gray-400 hover:text-white hover:bg-gray-700/50'
-                : '',
-            ]"
+            :ref="(el) => setNavRef(el, index)"
+            class="nav-link-item"
+            :class="{ active: isNavItemActive(item) }"
             @click.prevent="handleNavClick(item)"
           >
-            <font-awesome-icon
-              :icon="item.icon"
-              class="text-[13px] transition-colors"
-              :class="
-                (
-                  item.isRoute
-                    ? router.currentRoute.value.path === item.href
-                    : false
-                )
-                  ? ''
-                  : 'opacity-70'
-              "
-              :style="
-                (item.isRoute
-                  ? router.currentRoute.value.path === item.href
-                  : false) && !isDark
-                  ? { color: 'var(--primary)' }
-                  : {}
-              "
-            />
-            <span>{{ item.name }}</span>
+            <font-awesome-icon :icon="item.icon" class="link-icon" />
+            <span class="link-label">{{ item.name }}</span>
           </a>
-        </div>
-
-        <div class="flex-1"></div>
-
-        <!-- Actions -->
-        <div class="flex items-center gap-1 sm:gap-2">
-          <!-- Theme Toggle (Desktop only) -->
-          <button
-            class="hidden sm:block p-2 rounded-lg transition-all cursor-pointer"
-            :class="
-              isDark
-                ? 'text-gray-400 hover:text-white hover:bg-gray-800/60'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-            "
-            @click="toggleTheme"
-          >
-            <font-awesome-icon
-              :icon="isDark ? 'sun' : 'moon'"
-              class="text-base"
-            />
-          </button>
-
-          <!-- Notification Button (Desktop only) -->
-          <button
-            class="hidden sm:block relative p-2 rounded-lg transition-all cursor-pointer"
-            :class="
-              isDark
-                ? 'text-gray-400 hover:text-white hover:bg-gray-800/60'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-            "
-            @click="toggleNotifications"
-          >
-            <font-awesome-icon icon="bell" class="text-base" />
-            <span
-              v-if="hasNotifications"
-              class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full ring-2"
-              style="background: var(--error)"
-              :class="isDark ? `ring-[${DARK_BG}]` : 'ring-white'"
-            ></span>
-          </button>
-
-          <!-- Divider (Desktop only) -->
-          <div
-            class="hidden sm:block w-px h-6 mx-1"
-            :class="isDark ? 'bg-gray-700' : 'bg-gray-200'"
-          ></div>
-
-          <!-- User Button / Login Button (All screens) -->
-          <div v-if="userStore.isLoggedIn" class="relative" ref="userMenuRef">
-            <button
-              class="flex items-center gap-1.5 sm:gap-2.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all cursor-pointer"
-              :class="
-                isDark
-                  ? 'bg-gray-800/60 hover:bg-gray-800'
-                  : 'bg-gray-100 hover:bg-gray-200'
-              "
-              @click="toggleUserMenu"
-            >
-              <div class="relative">
-                <div
-                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ring-1 sm:ring-2 ring-offset-1 sm:ring-offset-2 overflow-hidden"
-                  :class="
-                    isDark
-                      ? `ring-gray-700 ring-offset-[${DARK_BG}]`
-                      : 'ring-gray-200 ring-offset-white'
-                  "
-                >
-                  <img
-                    :src="userStore.avatar || 'https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg'"
-                    alt="用户头像"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <div
-                  v-if="userStore.isVip"
-                  class="vip-crown-badge-mobile sm:vip-crown-badge"
-                >
-                  <font-awesome-icon
-                    icon="crown"
-                    class="text-[6px] sm:text-[7px]"
-                  />
-                </div>
-              </div>
-              <span
-                class="text-xs sm:text-sm font-medium username-text max-w-[60px] sm:max-w-none truncate"
-                :class="[
-                  isDark ? 'text-gray-200' : 'text-gray-700',
-                  userStore.isVip ? 'vip-shimmer' : '',
-                ]"
-                >{{ userStore.username }}</span
-              >
-              <font-awesome-icon
-                icon="chevron-down"
-                class="text-xs transition-transform duration-200"
-                :class="[
-                  isDark ? 'text-gray-400' : 'text-gray-500',
-                  isUserMenuOpen ? 'rotate-180' : '',
-                ]"
-              />
-            </button>
-
-            <!-- User Menu Dropdown -->
-            <transition>
-              <div
-                v-if="isUserMenuOpen"
-                class="absolute right-0 mt-4 w-60 sm:w-64 rounded-xl overflow-hidden z-[9999]"
-                :class="
-                  isDark
-                    ? 'bg-gray-800/95 backdrop-blur-xl border border-gray-700/50'
-                    : 'bg-white/95 backdrop-blur-xl border border-gray-200/50'
-                "
-                style="box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3)"
-              >
-                <!-- User Info Header -->
-                <div
-                  class="animate__animated animate__fadeInUp px-4 py-4 relative overflow-hidden"
-                  style="animation-delay: 12ms; animation-duration: 180ms"
-                  :class="
-                    isDark
-                      ? 'bg-gradient-to-br from-gray-900/50 to-gray-800/50'
-                      : 'bg-gradient-to-br from-gray-50/50 to-white/50'
-                  "
-                >
-                  <div
-                    class="absolute inset-0 bg-gradient-to-br from-transparent to-transparent"
-                    style="
-                      background: linear-gradient(
-                        to bottom right,
-                        rgba(59, 130, 246, 0.05),
-                        transparent
-                      );
-                    "
-                  ></div>
-                  <div class="flex items-start gap-3 relative z-10">
-                    <div class="relative flex-shrink-0">
-                      <div
-                        class="w-12 h-12 rounded-lg overflow-hidden ring-2 ring-offset-2"
-                        :class="
-                          isDark
-                            ? 'ring-gray-700 ring-offset-gray-800'
-                            : 'ring-gray-200 ring-offset-white'
-                        "
-                      >
-                        <img
-                          :src="userStore.avatar || 'https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg'"
-                          alt="用户头像"
-                          class="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div
-                        v-if="userStore.isVip"
-                        class="absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center ring-2"
-                        :class="isDark ? 'ring-gray-800' : 'ring-white'"
-                      >
-                        <font-awesome-icon
-                          icon="crown"
-                          class="text-[8px] text-white"
-                        />
-                      </div>
-                    </div>
-                    <div class="flex-1 min-w-0 pt-0.5">
-                      <div class="flex items-center gap-1.5 mb-1.5">
-                        <p
-                          class="text-sm font-bold username-text truncate"
-                          :class="[
-                            isDark ? 'text-white' : 'text-gray-900',
-                            userStore.isVip ? 'vip-shimmer' : '',
-                          ]"
-                        >
-                          {{ userStore.username }}
-                        </p>
-                        <span
-                          v-if="userStore.isVip"
-                          class="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-semibold rounded whitespace-nowrap flex-shrink-0"
-                          :class="
-                            isDark
-                              ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
-                              : 'bg-yellow-50 text-yellow-600 border border-yellow-200'
-                          "
-                        >
-                          <font-awesome-icon icon="crown" class="text-[8px]" />
-                          VIP
-                        </span>
-                      </div>
-                      <p
-                        class="text-xs truncate"
-                        :class="isDark ? 'text-gray-400' : 'text-gray-500'"
-                      >
-                        {{ userStore.email || "user@example.com" }}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Menu Items -->
-                <div class="py-2 px-2">
-                  <a
-                    href="#"
-                    class="animate__animated animate__fadeInUp flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group"
-                    style="animation-delay: 38ms; animation-duration: 180ms"
-                    :class="
-                      isDark
-                        ? 'text-gray-300 hover:text-white hover:bg-gray-700/50'
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
-                    "
-                    @click.prevent="openProfileCenter"
-                  >
-                    <font-awesome-icon
-                      icon="user"
-                      class="text-sm w-4 menu-icon"
-                      :class="isDark ? 'text-gray-400' : 'text-gray-500'"
-                    />
-                    <span>个人资料</span>
-                  </a>
-                  <a
-                    href="#"
-                    class="animate__animated animate__fadeInUp flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group"
-                    style="animation-delay: 64ms; animation-duration: 180ms"
-                    :class="
-                      isDark
-                        ? 'text-gray-300 hover:text-white hover:bg-gray-700/50'
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
-                    "
-                  >
-                    <font-awesome-icon
-                      icon="cog"
-                      class="text-sm w-4 menu-icon"
-                      :class="isDark ? 'text-gray-400' : 'text-gray-500'"
-                    />
-                    <span>设置</span>
-                  </a>
-
-                  <!-- Mobile only options -->
-                  <a
-                    href="#"
-                    class="animate__animated animate__fadeInUp sm:hidden flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group"
-                    style="animation-delay: 90ms; animation-duration: 180ms"
-                    :class="
-                      isDark
-                        ? 'text-gray-300 hover:text-white hover:bg-gray-700/50'
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
-                    "
-                    @click.prevent="toggleTheme"
-                  >
-                    <font-awesome-icon
-                      :icon="isDark ? 'sun' : 'moon'"
-                      class="text-sm w-4 menu-icon"
-                      :class="isDark ? 'text-gray-400' : 'text-gray-500'"
-                    />
-                    <span>{{ isDark ? "浅色模式" : "深色模式" }}</span>
-                  </a>
-                  <a
-                    href="#"
-                    class="animate__animated animate__fadeInUp sm:hidden flex items-center gap-2.5 px-3 py-2 mb-0.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group relative"
-                    style="animation-delay: 116ms; animation-duration: 180ms"
-                    :class="
-                      isDark
-                        ? 'text-gray-300 hover:text-white hover:bg-gray-700/50'
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
-                    "
-                    @click.prevent="toggleNotifications"
-                  >
-                    <font-awesome-icon
-                      icon="bell"
-                      class="text-sm w-4 menu-icon"
-                      :class="isDark ? 'text-gray-400' : 'text-gray-500'"
-                    />
-                    <span>通知中心</span>
-                  </a>
-                </div>
-
-                <!-- Logout -->
-                <div
-                  class="animate__animated animate__fadeInUp px-2 pb-2 pt-1 border-t"
-                  style="animation-delay: 142ms; animation-duration: 180ms"
-                  :class="isDark ? 'border-gray-700/50' : 'border-gray-200/50'"
-                >
-                  <a
-                    href="#"
-                    class="flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer group"
-                    :class="
-                      isDark
-                        ? 'text-red-400 hover:text-red-300 hover:bg-red-500/10'
-                        : 'text-red-600 hover:text-red-700 hover:bg-red-50'
-                    "
-                    @click.prevent="handleLogout"
-                  >
-                    <font-awesome-icon icon="arrow-right" class="text-sm w-4" />
-                    <span>退出登录</span>
-                  </a>
-                </div>
-              </div>
-            </transition>
-          </div>
-          <!-- Login Button -->
-          <div v-else class="flex items-center">
-            <button @click="isLoginModalOpen = true"
-                    class="group flex items-center justify-center gap-1.5 px-3.5 py-[6px] rounded-[10px] font-bold text-[13px] transition-all shadow-sm active:scale-[0.96]"
-                    :class="isDark ? 'bg-blue-500/20 text-blue-400 ring-1 ring-blue-500/30' : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white border border-blue-500/20'">
-              <font-awesome-icon icon="user" class="text-[12px] relative z-10" />
-              <span class="relative z-10 tracking-wide">登录 / 注册</span>
-            </button>
-          </div>
-
-          <!-- Mobile Menu Button (Mobile only) -->
-          <button
-            class="md:hidden p-1.5 rounded-lg transition-all cursor-pointer"
-            :class="
-              isDark
-                ? 'text-gray-400 hover:text-white hover:bg-gray-800/60'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-            "
-            @click="toggleMobileMenu"
-          >
-            <font-awesome-icon
-              :icon="isMobileMenuOpen ? 'xmark' : 'bars'"
-              class="text-sm"
-            />
-          </button>
-        </div>
+          <!-- The sliding active capsule -->
+          <div class="nav-active-capsule" :style="navUnderlineStyle"></div>
+        </nav>
       </div>
-    </nav>
 
-    <transition
-      enter-active-class="transition duration-200 ease-out"
-      enter-from-class="opacity-0 -translate-y-2"
-      enter-to-class="opacity-100 translate-y-0"
-      leave-active-class="transition duration-150 ease-in"
-      leave-from-class="opacity-100 translate-y-0"
-      leave-to-class="opacity-0 -translate-y-2"
-    >
-      <div
-        v-if="isMobileMenuOpen"
-        class="md:hidden"
-        :class="
-          isDark ? 'bg-gray-900 border-gray-800' : 'bg-gray-50 border-gray-200'
-        "
-        style="border-top-width: 1px"
-      >
-        <div class="px-4 py-3 space-y-1">
-          <a
-            v-for="item in navItems"
-            :key="item.name"
-            :href="item.href"
-            class="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all cursor-pointer"
-            :class="
-              isDark
-                ? 'text-gray-300 hover:text-white hover:bg-gray-800/60'
-                : 'text-gray-700 hover:text-gray-900 hover:bg-white'
-            "
-            @click.prevent="handleNavClickMobile(item)"
+      <!-- Right Column Group (Cohesive elements without nested capsule borders) -->
+      <div class="right-actions-group">
+        <!-- Theme Toggle Button -->
+        <button
+          class="action-circle-btn theme-btn"
+          @click="toggleTheme"
+          aria-label="切换主题"
+        >
+          <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="action-icon theme-icon" />
+        </button>
+
+        <!-- Notifications Bell Button -->
+        <button
+          class="action-circle-btn bell-btn"
+          @click="toggleNotifications"
+          aria-label="查看通知"
+        >
+          <font-awesome-icon icon="bell" class="action-icon bell-icon" />
+          <span
+            v-if="hasNotifications"
+            class="badge-pill"
+          >3</span>
+        </button>
+
+        <!-- Vertical Divider Line -->
+        <div class="vertical-divider"></div>
+
+        <!-- User Profile Center Dropdown -->
+        <div v-if="userStore.isLoggedIn" class="user-profile-wrapper" ref="userMenuRef">
+          <button
+            class="user-profile-btn"
+            @click="toggleUserMenu"
+            :class="{ 'menu-open': isUserMenuOpen }"
           >
-            <font-awesome-icon :icon="item.icon" class="w-4" />
-            {{ item.name }}
-          </a>
-          <div
-            class="pt-3"
-            :class="
-              isDark ? 'border-t border-gray-800' : 'border-t border-gray-200'
-            "
-          >
-            <div
-              class="flex items-center gap-3 px-4 py-3 rounded-lg"
-              :class="isDark ? 'bg-gray-800/60' : 'bg-white'"
+            <div class="avatar-ring">
+              <img
+                :src="userStore.avatar || 'https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg'"
+                alt="头像"
+                class="avatar-img"
+              />
+            </div>
+            <span
+              class="username-label"
+              :class="userStore.isVip ? 'vip-shimmer' : ''"
             >
-              <div class="relative">
-                <div
-                  class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden"
-                >
-                  <img
-                    :src="userStore.avatar || 'https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg'"
-                    alt="用户头像"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <div v-if="userStore.isVip" class="vip-crown-badge-large">
-                  <font-awesome-icon icon="crown" class="text-[8px]" />
-                </div>
-              </div>
-              <div>
+              {{ userStore.username }}
+            </span>
+            <font-awesome-icon
+              icon="chevron-down"
+              class="chevron-icon"
+              :class="{ 'rotate-180': isUserMenuOpen }"
+            />
+          </button>
+
+          <!-- User Menu Dropdown Card -->
+          <transition name="dropdown-fade">
+            <div
+              v-if="isUserMenuOpen"
+              class="user-dropdown-card"
+            >
+              <!-- Dropdown profile summary -->
+              <div class="user-card-header">
                 <p
-                  class="text-sm font-semibold username-text"
-                  :class="[
-                    isDark ? 'text-white' : 'text-gray-900',
-                    userStore.isVip ? 'vip-shimmer' : '',
-                  ]"
+                  class="header-name"
+                  :class="userStore.isVip ? 'vip-shimmer' : ''"
                 >
                   {{ userStore.username }}
                 </p>
-                <p
-                  class="text-xs"
-                  :class="isDark ? 'text-gray-400' : 'text-gray-500'"
-                >
+                <p class="header-email">
                   {{ userStore.email || "user@example.com" }}
                 </p>
               </div>
+
+              <!-- Options link list -->
+              <div class="dropdown-links">
+                <a
+                  href="#"
+                  class="dropdown-link-item"
+                  @click.prevent="openProfileCenter"
+                >
+                  <font-awesome-icon icon="user" class="item-icon" />
+                  <span>个人资料</span>
+                  <span v-if="userStore.isVip" class="vip-badge">VIP</span>
+                  <span class="shortcut-key">⌘P</span>
+                </a>
+                
+                <a href="#" class="dropdown-link-item">
+                  <font-awesome-icon icon="cog" class="item-icon" />
+                  <span>账号设置</span>
+                  <span class="shortcut-key">⌘,</span>
+                </a>
+
+                <!-- Mobile integrated items inside list -->
+                <a
+                  href="#"
+                  class="dropdown-link-item mobile-only-item"
+                  @click.prevent="toggleTheme"
+                >
+                  <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" class="item-icon" />
+                  <span>{{ isDark ? "浅色模式" : "深色模式" }}</span>
+                  <span class="shortcut-key">⌘T</span>
+                </a>
+                <a
+                  href="#"
+                  class="dropdown-link-item mobile-only-item"
+                  @click.prevent="toggleNotifications"
+                >
+                  <font-awesome-icon icon="bell" class="item-icon" />
+                  <span>通知中心</span>
+                  <span class="shortcut-key">⌘N</span>
+                </a>
+              </div>
+
+              <!-- Sign out link container -->
+              <div class="dropdown-footer">
+                <a
+                  href="#"
+                  class="logout-link"
+                  @click.prevent="handleLogout"
+                >
+                  <font-awesome-icon icon="arrow-right" class="logout-icon" />
+                  <span>退出登录</span>
+                  <span class="shortcut-key">⌥⇧Q</span>
+                </a>
+              </div>
             </div>
+          </transition>
+        </div>
+
+        <!-- Login / Register modern action button -->
+        <div v-else class="login-action-container">
+          <button
+            @click="isLoginModalOpen = true"
+            class="login-cta-btn"
+          >
+            登录 / 注册
+          </button>
+        </div>
+
+        <!-- Mobile Menu hamburger icon button -->
+        <button
+          class="mobile-hamburger-btn"
+          @click="toggleMobileMenu"
+          aria-label="导航菜单"
+        >
+          <font-awesome-icon :icon="isMobileMenuOpen ? 'xmark' : 'bars'" class="hamburger-icon" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer panel -->
+    <transition name="drawer-fade">
+      <div
+        v-if="isMobileMenuOpen"
+        class="mobile-drawer-panel"
+      >
+        <div class="drawer-links-container">
+          <a
+            v-for="item in navItems"
+            :key="item.name"
+            :href="item.href"
+            class="drawer-link-item"
+            :class="{ active: isNavItemActive(item) }"
+            @click.prevent="handleNavClickMobile(item)"
+          >
+            <font-awesome-icon :icon="item.icon" class="drawer-icon" />
+            <span>{{ item.name }}</span>
+          </a>
+
+          <!-- Mobile user panel details -->
+          <div
+            v-if="userStore.isLoggedIn"
+            class="drawer-user-info-section"
+          >
+            <div class="drawer-user-card">
+              <img
+                :src="userStore.avatar || 'https://img2.woyaogexing.com/2025/04/05/2d3c285633cc350b263ae66888c525ed.jpg'"
+                alt="头像"
+                class="drawer-avatar"
+              />
+              <div class="drawer-user-text">
+                <p
+                  class="drawer-username"
+                  :class="userStore.isVip ? 'vip-shimmer' : ''"
+                >
+                  {{ userStore.username }}
+                </p>
+                <p class="drawer-email">{{ userStore.email || "user@example.com" }}</p>
+              </div>
+            </div>
+            
+            <a
+              href="#"
+              class="drawer-action-link logout-danger"
+              @click.prevent="handleLogout"
+            >
+              <font-awesome-icon icon="arrow-right" class="drawer-icon" />
+              <span>退出登录</span>
+            </a>
+          </div>
+
+          <!-- Mobile login prompt if logged out -->
+          <div v-else class="drawer-login-prompt">
+            <button
+              class="drawer-login-btn"
+              @click="isLoginModalOpen = true; isMobileMenuOpen = false"
+            >
+              登录 / 注册
+            </button>
           </div>
         </div>
       </div>
     </transition>
 
-    <!-- Notification Center Modal -->
+    <!-- Overlay Modals -->
     <NotificationCenter
       :is-open="isNotificationOpen"
       :is-dark="isDark"
@@ -526,8 +276,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from "vue";
-import { useRouter } from "vue-router";
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { message, Modal } from "ant-design-vue";
 import NotificationCenter from "./NotificationCenter.vue";
 import ProfileCenter from "./ProfileCenter.vue";
@@ -535,11 +285,8 @@ import LoginModal from "../auth/LoginModal.vue";
 import { useThemeStore } from "@/stores/theme";
 import { useUserStore } from "@/stores/user";
 
-// 深色模式颜色常量
-const DARK_BG = "#0F172A";
-const DARK_BORDER = "#1f2937";
-
 const router = useRouter();
+const route = useRoute();
 const themeStore = useThemeStore();
 const userStore = useUserStore();
 const isDark = computed(() => themeStore.isDark);
@@ -552,38 +299,8 @@ const hasNotifications = ref(true);
 const userMenuRef = ref<HTMLElement | null>(null);
 
 const handleLoginSuccess = () => {
-  // 登录成功后 userStore 已更新，无需额外操作
+  // Login success trigger
 };
-
-const notifications = ref([
-  {
-    id: 1,
-    type: "success",
-    icon: "check",
-    title: "系统更新",
-    message: "新版本已发布，包含多项功能优化",
-    time: "5分钟前",
-    read: false,
-  },
-  {
-    id: 2,
-    type: "info",
-    icon: "circle-info",
-    title: "新资源推荐",
-    message: "发现3个符合你兴趣的优质资源",
-    time: "1小时前",
-    read: false,
-  },
-  {
-    id: 3,
-    type: "warning",
-    icon: "star",
-    title: "VIP会员提醒",
-    message: "您的会员将在7天后到期",
-    time: "昨天",
-    read: true,
-  },
-]);
 
 const navItems = [
   { name: "首页", href: "/", isRoute: true, icon: "home" },
@@ -595,57 +312,84 @@ const navItems = [
 
 const goHome = () => router.push("/");
 
-/** 判断导航项是否高亮 */
+/** Check if route / hash is currently active */
 const isNavItemActive = (item: (typeof navItems)[0]) => {
-  if (!item.isRoute) return false
-  const currentPath = router.currentRoute.value.path
-  const currentHash = router.currentRoute.value.hash
-  const [itemPath, itemHash] = item.href.split('#')
+  if (!item.isRoute) return false;
+  const currentPath = router.currentRoute.value.path;
+  const currentHash = router.currentRoute.value.hash;
+  const [itemPath, itemHash] = item.href.split("#");
 
-  // 带 hash 的项需要路径 + hash 都匹配
   if (itemHash) {
-    return currentPath === itemPath && currentHash === `#${itemHash}`
+    return currentPath === itemPath && currentHash === `#${itemHash}`;
   }
 
-  // 不带 hash 的项（如首页），只在路径匹配且没有其他 hash 项匹配时高亮
-  if (currentPath === '/') {
-    // 如果当前有 hash，检查是否有其他导航项匹配了这个 hash
+  if (currentPath === "/") {
     if (currentHash) {
       const hashMatched = navItems.some(
-        other => other !== item && other.href.split('#')[1] === currentHash.slice(1) && other.href.split('#')[0] === currentPath
-      )
-      if (hashMatched) return false
+        (other) =>
+          other !== item &&
+          other.href.split("#")[1] === currentHash.slice(1) &&
+          other.href.split("#")[0] === currentPath
+      );
+      if (hashMatched) return false;
     }
-    return currentPath === itemPath
+    return currentPath === itemPath;
   }
 
-  return currentPath.startsWith(itemPath)
+  return currentPath.startsWith(itemPath);
+};
+
+// ── Active Underline Animation Logic ──
+const navRefs = ref<HTMLElement[]>([]);
+const navUnderlineStyle = ref({ transform: "translateX(0px)", width: "0px", opacity: 0 });
+
+const setNavRef = (el: any, index: number) => {
+  if (el) navRefs.value[index] = el;
+};
+
+const updateNavUnderline = () => {
+  nextTick(() => {
+    const activeIndex = navItems.findIndex(isNavItemActive);
+    if (activeIndex !== -1) {
+      const el = navRefs.value[activeIndex];
+      if (el) {
+        navUnderlineStyle.value = {
+          opacity: 1,
+          transform: `translateX(${el.offsetLeft}px)`,
+          width: `${el.offsetWidth}px`,
+        };
+      }
+    } else {
+      navUnderlineStyle.value = {
+        opacity: 0,
+        transform: "translateX(0px)",
+        width: "0px",
+      };
+    }
+  });
 };
 
 const handleNavClick = (item: (typeof navItems)[0]) => {
-  const [path, hash] = item.href.split('#')
+  const [path, hash] = item.href.split("#");
   if (item.isRoute) {
-    const currentPath = router.currentRoute.value.path
-    const currentHash = router.currentRoute.value.hash
+    const currentPath = router.currentRoute.value.path;
+    const currentHash = router.currentRoute.value.hash;
 
     if (hash) {
-      // 带 hash 的导航：统一用 router.push 更新 URL
       if (currentPath === path && currentHash === `#${hash}`) {
-        // 已经在目标位置，直接滚动
-        const element = document.getElementById(hash)
-        if (element) element.scrollIntoView({ behavior: 'smooth' })
+        const element = document.getElementById(hash);
+        if (element) element.scrollIntoView({ behavior: "smooth" });
       } else {
-        router.push(item.href)
+        router.push(item.href);
       }
     } else {
-      // 不带 hash 的路由导航：需要清除可能存在的 hash
       if (currentPath !== path || currentHash) {
-        router.push(path)
+        router.push(path);
       }
     }
   } else {
-    const element = document.querySelector(item.href)
-    if (element) element.scrollIntoView({ behavior: 'smooth' })
+    const element = document.querySelector(item.href);
+    if (element) element.scrollIntoView({ behavior: "smooth" });
   }
 };
 
@@ -692,10 +436,10 @@ const handleMarkAllRead = () => {
 const handleLogout = async () => {
   isUserMenuOpen.value = false;
   Modal.confirm({
-    title: '退出登录',
-    content: '确定要退出当前账号吗？',
-    okText: '确定退出',
-    cancelText: '再想想',
+    title: "退出登录",
+    content: "确定要退出当前账号吗？",
+    okText: "确定退出",
+    cancelText: "再想想",
     okButtonProps: { danger: true },
     onOk: async () => {
       try {
@@ -712,7 +456,6 @@ const toggleTheme = () => {
   themeStore.toggle();
 };
 
-// 点击外部关闭用户菜单
 const handleClickOutside = (event: MouseEvent) => {
   if (userMenuRef.value && !userMenuRef.value.contains(event.target as Node)) {
     isUserMenuOpen.value = false;
@@ -721,38 +464,709 @@ const handleClickOutside = (event: MouseEvent) => {
 
 onMounted(() => {
   document.addEventListener("click", handleClickOutside);
+  window.addEventListener("resize", updateNavUnderline);
+  updateNavUnderline();
 });
 
 onUnmounted(() => {
   document.removeEventListener("click", handleClickOutside);
+  window.removeEventListener("resize", updateNavUnderline);
 });
+
+// Watch route path and hash to slide the active underline
+watch(
+  () => [route.path, route.hash],
+  () => {
+    updateNavUnderline();
+  }
+);
 </script>
 
-<style scoped>
-/* 导航图标悬停颜色 - 整行悬停时图标变色 */
-.group:hover .nav-icon {
-  color: var(--primary) !important;
+<style scoped lang="scss">
+/* ==========================================================================
+   1. Flat Solid Sticky Layout
+   ========================================================================== */
+.blog-header-flat {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 50;
+  height: 64px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+
+  background-color: var(--bg-secondary, #ffffff);
+  border-bottom: 1px solid var(--border-light, #f3f4f6);
+  transition: background-color 0.25s, border-color 0.25s;
+  
+  &.dark-mode {
+    background-color: var(--bg, #0f172a);
+    border-bottom: 1px solid var(--border-light, #1e293b);
+    
+    .vertical-divider {
+      background-color: var(--border, #334155);
+    }
+  }
 }
 
-html.dark .group:hover .nav-icon {
-  color: var(--primary-soft) !important;
+.header-container {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  box-sizing: border-box;
 }
 
-.menu-icon {
+/* ==========================================================================
+   2. Group Alignments (SaaS Layout)
+   ========================================================================== */
+.left-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+}
+
+.left-divider {
+  display: none;
+  width: 1px;
+  height: 16px;
+  background-color: var(--border-light, #f3f4f6);
+  flex-shrink: 0;
+  
+  @media (min-width: 820px) {
+    display: block;
+  }
+  
+  .blog-header-flat.dark-mode & {
+    background-color: var(--border-light, #1e293b);
+  }
+}
+
+/* ==========================================================================
+   3. Logo Branding
+   ========================================================================== */
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  
+  &:hover {
+    .logo-badge {
+      border-radius: 10px;
+      transform: translateY(-0.5px);
+      background-color: var(--primary-hover, #2563eb);
+      
+      .logo-icon {
+        transform: rotate(-10deg) scale(1.08);
+      }
+    }
+  }
+}
+
+.logo-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: var(--primary, #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  
+  .logo-icon {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+  }
+}
+
+.logo-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text, #1f2937);
   transition: color 0.2s;
 }
 
-.group:hover .menu-icon {
-  color: var(--primary) !important;
+.logo-period {
+  color: var(--primary, #3b82f6);
 }
 
-html.dark .group:hover .menu-icon {
-  color: var(--primary-soft) !important;
-}
-
-/* VIP 会员昵称流光动画 - 粉紫色高级感 */
-.vip-shimmer {
+/* ==========================================================================
+   4. Segmented Control Navigation Capsule
+   ========================================================================== */
+.nav-links-wrapper {
+  display: none; /* Hidden on mobile */
   position: relative;
+  align-items: center;
+  gap: 2px;
+  height: 36px;
+  background-color: var(--border-light, #f3f4f6);
+  padding: 3px;
+  border-radius: 99px;
+  box-sizing: border-box;
+  
+  @media (min-width: 820px) {
+    display: flex;
+  }
+}
+
+/* Active sliding background block */
+.nav-active-capsule {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  border-radius: 99px;
+  background-color: var(--bg-secondary, #ffffff);
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.05));
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), width 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  opacity: 0;
+  z-index: 5;
+  box-sizing: border-box;
+  
+  .blog-header-flat.dark-mode & {
+    background-color: var(--bg, #0f172a);
+    box-shadow: none;
+    border: 1px solid var(--border, #334155);
+  }
+}
+
+.nav-link-item {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  padding: 0 16px;
+  border-radius: 99px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary, #6b7280);
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+  box-sizing: border-box;
+  
+  .link-icon {
+    font-size: 11px;
+    opacity: 0.7;
+  }
+  
+  &:hover:not(.active) {
+    color: var(--text, #1f2937);
+  }
+
+  &.active {
+    color: var(--primary, #3b82f6);
+    font-weight: 700;
+  }
+}
+
+/* ==========================================================================
+   5. Right Utility Icons & Actions
+   ========================================================================== */
+.right-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Circular Borderless Action Button */
+.action-circle-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary, #6b7280);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s, color 0.2s;
+  outline: none;
+  
+  .action-icon {
+    font-size: 14px;
+    transition: color 0.2s ease;
+  }
+  
+  &:hover {
+    background-color: var(--surface-hover, #f9fafb);
+    color: var(--text, #1f2937);
+  }
+  
+  /* Icon colors on hover */
+  &.theme-btn:hover {
+    .theme-icon {
+      color: var(--warning, #f59e0b);
+    }
+  }
+  
+  &.bell-btn:hover {
+    .bell-icon {
+      color: var(--primary, #3b82f6);
+    }
+  }
+}
+
+/* Red Dot notification badge pill */
+.badge-pill {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  background-color: var(--error, #ef4444);
+  color: #ffffff;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 1.5px 4px;
+  border-radius: 99px;
+  transform: scale(0.85);
+  box-shadow: 0 0 0 1.5px var(--bg-secondary, #ffffff);
+  
+  .blog-header-flat.dark-mode & {
+    box-shadow: 0 0 0 1.5px var(--bg, #0f172a);
+  }
+}
+
+.vertical-divider {
+  width: 1px;
+  height: 14px;
+  background-color: var(--border, #e5e7eb);
+  flex-shrink: 0;
+  margin: 0 4px;
+  
+  .blog-header-flat.dark-mode & {
+    background-color: var(--border-light, #1e293b);
+  }
+}
+
+/* ==========================================================================
+   6. User Account Center Dropdown (Flat Card)
+   ========================================================================== */
+.user-profile-wrapper {
+  position: relative;
+}
+
+.user-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  outline: none;
+  
+  &:hover, &.menu-open {
+    background-color: var(--surface-hover, #f9fafb);
+  }
+}
+
+.avatar-ring {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.username-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text, #1f2937);
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.chevron-icon {
+  font-size: 8px;
+  color: var(--text-tertiary, #9ca3af);
+  transition: transform 0.2s ease;
+}
+
+/* User dropdown floating card style */
+.user-dropdown-card {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  width: 220px;
+  border-radius: var(--radius, 8px);
+  overflow: hidden;
+  z-index: 100;
+  
+  border: 1px solid var(--border, #e5e7eb);
+  background-color: var(--bg-secondary, #ffffff);
+  box-shadow: var(--shadow, 0 4px 6px rgba(0, 0, 0, 0.07));
+  box-sizing: border-box;
+}
+
+.user-card-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  
+  .header-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text, #1f2937);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .header-email {
+    font-size: 11px;
+    color: var(--text-secondary, #6b7280);
+    margin: 2px 0 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.dropdown-links {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dropdown-link-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text, #1f2937);
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+  box-sizing: border-box;
+  
+  .item-icon {
+    font-size: 11px;
+    color: var(--text-tertiary, #9ca3af);
+    width: 12px;
+    text-align: center;
+    opacity: 0.8;
+  }
+  
+  .vip-badge {
+    margin-left: auto;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: var(--warning-light, #fef3c7);
+    color: var(--warning, #f59e0b);
+  }
+  
+  .shortcut-key {
+    margin-left: auto;
+    font-size: 9.5px;
+    color: var(--text-tertiary, #9ca3af);
+    background-color: var(--surface-hover, #f9fafb);
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-weight: 500;
+  }
+  
+  .vip-badge + .shortcut-key {
+    margin-left: 6px;
+  }
+  
+  &:hover {
+    background-color: var(--surface-hover, #f9fafb);
+    
+    .item-icon {
+      color: var(--primary, #3b82f6);
+    }
+  }
+}
+
+.dropdown-footer {
+  padding: 4px;
+  border-top: 1px solid var(--border, #e5e7eb);
+  
+  .logout-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm, 6px);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--error, #ef4444);
+    text-decoration: none;
+    transition: background-color 0.2s;
+    box-sizing: border-box;
+    
+    .logout-icon {
+      font-size: 11px;
+    }
+    
+    .shortcut-key {
+      margin-left: auto;
+      font-size: 9.5px;
+      color: var(--error, #ef4444);
+      background-color: var(--error-light, #fee2e2);
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-weight: 500;
+    }
+    
+    &:hover {
+      background-color: var(--error-light, #fee2e2);
+    }
+  }
+}
+
+/* Transition animation for dropdown */
+.dropdown-fade-enter-active, .dropdown-fade-leave-active {
+  transition: opacity 0.15s ease;
+}
+.dropdown-fade-enter-from, .dropdown-fade-leave-to {
+  opacity: 0;
+}
+
+/* ==========================================================================
+   7. Flat Login CTA Button
+   ========================================================================== */
+.login-cta-btn {
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  background-color: var(--primary, #3b82f6);
+  transition: background-color 0.2s, transform 0.1s;
+  
+  &:hover {
+    background-color: var(--primary-hover, #2563eb);
+  }
+  
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+/* ==========================================================================
+   8. Mobile Menu Hamburger Button & Drawer Panel
+   ========================================================================== */
+.mobile-hamburger-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary, #6b7280);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  
+  .hamburger-icon {
+    font-size: 15px;
+  }
+  
+  &:hover {
+    background-color: var(--surface-hover, #f9fafb);
+    color: var(--text, #1f2937);
+  }
+
+  @media (min-width: 820px) {
+    display: none;
+  }
+}
+
+/* Mobile Drawer Dropdown Panel */
+.mobile-drawer-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  background-color: var(--bg-secondary, #ffffff);
+  
+  @media (min-width: 820px) {
+    display: none;
+  }
+}
+
+.drawer-links-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.drawer-link-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary, #6b7280);
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+  
+  .drawer-icon {
+    font-size: 13px;
+    opacity: 0.7;
+  }
+  
+  &:hover, &.active {
+    background-color: var(--surface-hover, #f9fafb);
+    color: var(--primary, #3b82f6);
+  }
+}
+
+.drawer-auth-section {
+  padding: 12px 8px;
+  margin-top: 8px;
+  border-top: 1px solid var(--border, #e5e7eb);
+}
+
+.drawer-login-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary, #3b82f6);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: var(--primary-hover, #2563eb);
+  }
+}
+
+.drawer-user-info-section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border, #e5e7eb);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.drawer-user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background-color: var(--surface-hover, #f9fafb);
+  border-radius: 8px;
+  
+  .drawer-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .drawer-user-text {
+    min-width: 0;
+    flex: 1;
+  }
+  
+  .drawer-username {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text, #1f2937);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .drawer-email {
+    font-size: 11px;
+    color: var(--text-secondary, #6b7280);
+    margin: 1px 0 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.drawer-action-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  
+  &.logout-danger {
+    color: var(--error, #ef4444);
+    
+    &:hover {
+      background-color: var(--error-light, #fee2e2);
+    }
+  }
+}
+
+/* Mobile drawer entry transitions */
+.drawer-fade-enter-active, .drawer-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.drawer-fade-enter-from, .drawer-fade-leave-to {
+  opacity: 0;
+}
+
+/* ==========================================================================
+   9. VIP Member User Name Shimmering (Kept Intact)
+   ========================================================================== */
+.vip-shimmer {
   background: linear-gradient(
     90deg,
     #ec4899 0%,
@@ -772,143 +1186,6 @@ html.dark .group:hover .menu-icon {
   0% {
     background-position: 200% 0;
   }
-
-  100% {
-    background-position: -200% 0;
-  }
-}
-
-/* 确保非会员用户正常显示 */
-.username-text:not(.vip-shimmer) {
-  -webkit-text-fill-color: inherit;
-}
-
-/* VIP 皇冠徽章 - 边缘流光版 */
-.vip-crown-badge-mobile {
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  width: 14px;
-  height: 14px;
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #f4c430 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1.5px solid transparent;
-  background-clip: padding-box;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.7);
-  color: #8b6914;
-  z-index: 10;
-}
-
-.vip-crown-badge-mobile::before {
-  content: "";
-  position: absolute;
-  inset: -1.5px;
-  border-radius: 50%;
-  padding: 1.5px;
-  background: linear-gradient(
-    90deg,
-    #ffd700 0%,
-    #fff 25%,
-    #ffd700 50%,
-    #fff 75%,
-    #ffd700 100%
-  );
-  background-size: 200% 100%;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: borderShimmer 2s linear infinite;
-}
-
-.vip-crown-badge {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 16px;
-  height: 16px;
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #f4c430 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15),
-    inset 0 1px 2px rgba(255, 255, 255, 0.7);
-  color: #8b6914;
-  z-index: 10;
-}
-
-.vip-crown-badge::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  padding: 2px;
-  background: linear-gradient(
-    90deg,
-    #ffd700 0%,
-    #fff 25%,
-    #ffd700 50%,
-    #fff 75%,
-    #ffd700 100%
-  );
-  background-size: 200% 100%;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: borderShimmer 2s linear infinite;
-}
-
-.vip-crown-badge-large {
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  width: 18px;
-  height: 18px;
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #f4c430 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2.5px solid transparent;
-  background-clip: padding-box;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15),
-    inset 0 1px 2px rgba(255, 255, 255, 0.7);
-  color: #8b6914;
-  z-index: 10;
-}
-
-.vip-crown-badge-large::before {
-  content: "";
-  position: absolute;
-  inset: -2.5px;
-  border-radius: 50%;
-  padding: 2.5px;
-  background: linear-gradient(
-    90deg,
-    #ffd700 0%,
-    #fff 25%,
-    #ffd700 50%,
-    #fff 75%,
-    #ffd700 100%
-  );
-  background-size: 200% 100%;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: borderShimmer 2s linear infinite;
-}
-
-@keyframes borderShimmer {
-  0% {
-    background-position: 200% 0;
-  }
-
   100% {
     background-position: -200% 0;
   }
