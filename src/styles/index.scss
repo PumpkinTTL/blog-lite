@@ -23,6 +23,8 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
+  /* 始终预留滚动条空间,防止 reka-ui scroll lock 时滚动条消失导致布局偏移 */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -32,13 +34,12 @@ body {
   font-size: 15px;
   line-height: 1.6;
   transition: background 0.3s ease, color 0.3s ease;
-  overflow-x: hidden;
+  /* clip 不创建滚动容器,避免破坏内部 position: sticky;旧 hidden 会让 sticky 相对 body 失效 */
+  overflow-x: clip;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
 }
 
 a {

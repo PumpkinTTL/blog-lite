@@ -9,6 +9,7 @@ import { initTheme } from '@/utils/theme'
 // 样式导入
 import '@/style.css'
 import '@/styles/index.scss'
+import '@/styles/v2.css'
 import 'animate.css'
 // Font Awesome 图标
 import { library } from '@fortawesome/fontawesome-svg-core'
