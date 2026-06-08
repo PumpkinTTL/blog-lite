@@ -4,6 +4,7 @@ import type { Resource } from '@/data/mockData'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import AdCard from '@/components/v2/common/AdCard.vue'
 
@@ -30,7 +31,7 @@ const socialLinks = [
     </Alert>
 
     <!-- 社交媒体 -->
-    <section class="rounded-xl border bg-card p-5">
+    <Card class="shadow-none rounded-xl p-5">
       <h3 class="text-sm font-semibold">关注我们</h3>
       <p class="mt-1 text-xs text-muted-foreground">获取最新动态和开源项目</p>
       <Separator class="my-3" />
@@ -49,7 +50,7 @@ const socialLinks = [
           <component :is="link.icon" class="h-4 w-4" />
         </Button>
       </div>
-    </section>
+    </Card>
 
     <!-- 广告位 -->
     <AdCard
@@ -61,7 +62,7 @@ const socialLinks = [
     />
 
     <!-- 订阅卡片 -->
-    <section class="rounded-xl border bg-gradient-to-br from-card to-muted/40 p-5">
+    <Card class="shadow-none rounded-xl bg-gradient-to-br from-card to-muted/40 p-5">
       <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
         <Mail class="h-5 w-5 text-primary" />
       </div>
@@ -76,6 +77,6 @@ const socialLinks = [
           <ArrowRight class="ml-1 h-3.5 w-3.5" />
         </Button>
       </div>
-    </section>
+    </Card>
   </aside>
 </template>

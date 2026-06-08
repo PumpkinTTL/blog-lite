@@ -4,6 +4,8 @@ import { useRouter } from 'vue-router'
 import type { Resource } from '@/data/mockData'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 
 const props = defineProps<{
   post: Resource
@@ -38,8 +40,8 @@ function estimateReadTime(post: Resource): number {
 </script>
 
 <template>
-  <article
-    class="group cursor-pointer overflow-hidden rounded-xl border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
+  <Card
+    class="group cursor-pointer shadow-none overflow-hidden rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
     @click="goToArticle"
   >
     <!-- 封面 -->
@@ -118,5 +120,5 @@ function estimateReadTime(post: Resource): number {
         </span>
       </div>
     </div>
-  </article>
+  </Card>
 </template>

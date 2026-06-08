@@ -5,6 +5,8 @@ import type { Resource } from '@/data/mockData'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 
 const props = defineProps<{
   resource: Resource
@@ -32,8 +34,8 @@ function isHighRated(likes: number): boolean {
 </script>
 
 <template>
-  <article
-    class="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
+  <Card
+    class="group relative flex cursor-pointer shadow-none flex-col overflow-hidden rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
     @click="goToResource"
   >
     <!-- 封面 -->
@@ -111,5 +113,5 @@ function isHighRated(likes: number): boolean {
         </div>
       </div>
     </div>
-  </article>
+  </Card>
 </template>

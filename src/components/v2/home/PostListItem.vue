@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import type { Resource } from '@/data/mockData'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { Card } from '@/components/ui/card'
 
 const props = defineProps<{
   post: Resource
@@ -37,8 +38,8 @@ function estimateReadTime(post: Resource): number {
 </script>
 
 <template>
-  <article
-    class="group flex cursor-pointer gap-4 overflow-hidden rounded-xl border bg-card p-3 transition-all duration-200 hover:border-primary/30 hover:shadow-sm sm:gap-5 sm:p-4"
+  <Card
+    class="group flex cursor-pointer shadow-none gap-4 overflow-hidden rounded-xl p-3 transition-all duration-200 hover:border-primary/30 hover:shadow-sm sm:gap-5 sm:p-4"
     @click="goToArticle"
   >
     <!-- 封面 -->
@@ -85,7 +86,7 @@ function estimateReadTime(post: Resource): number {
       <div class="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-2 text-[11px] text-muted-foreground">
         <!-- 作者 -->
         <div class="flex items-center gap-1.5">
-          <Avatar class="h-4 w-4">
+          <Avatar class="h-5 w-5">
             <AvatarImage :src="post.author.avatar" :alt="post.author.name" />
             <AvatarFallback>{{ post.author.name.slice(0, 1) }}</AvatarFallback>
           </Avatar>
@@ -115,12 +116,11 @@ function estimateReadTime(post: Resource): number {
         <!-- 精选标记 -->
         <Badge
           v-if="post.featured"
-          variant="outline"
-          class="ml-auto border-amber-500/30 bg-amber-500/10 text-[10px] font-medium text-amber-600"
+          class="ml-auto border-none bg-amber-500/90 text-[10px] font-semibold text-white shadow-sm"
         >
           精选
         </Badge>
       </div>
     </div>
-  </article>
+  </Card>
 </template>

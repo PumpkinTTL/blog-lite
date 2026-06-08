@@ -5,6 +5,7 @@ import { ArrowUpRight, Clock, Eye } from 'lucide-vue-next'
 import type { Resource } from '@/data/mockData'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { Card } from '@/components/ui/card'
 import SectionHeading from '@/components/v2/common/SectionHeading.vue'
 
 const props = defineProps<{
@@ -55,8 +56,8 @@ function relativeTime(iso: string): string {
 
     <div class="grid gap-5 lg:grid-cols-5">
       <!-- 主推 -->
-      <article
-        class="group relative col-span-1 cursor-pointer overflow-hidden rounded-xl border bg-card transition-all hover:border-primary/30 hover:shadow-lg lg:col-span-3"
+      <Card
+        class="group relative col-span-1 cursor-pointer shadow-none overflow-hidden rounded-xl transition-all hover:border-primary/30 hover:shadow-lg lg:col-span-3"
         @click="goToArticle(featured.primary.id)"
       >
         <div class="grid h-full sm:grid-cols-2">
@@ -107,16 +108,16 @@ function relativeTime(iso: string): string {
             </div>
           </div>
         </div>
-      </article>
+      </Card>
 
       <!-- 副推 -->
       <div class="col-span-1 grid gap-5 lg:col-span-2">
-        <article
-          v-for="post in featured.secondary"
-          :key="post.id"
-          class="group relative cursor-pointer overflow-hidden rounded-xl border bg-card transition-all hover:border-primary/30 hover:shadow-md"
-          @click="goToArticle(post.id)"
-        >
+          <Card
+            v-for="post in featured.secondary"
+            :key="post.id"
+            class="group relative cursor-pointer shadow-none overflow-hidden rounded-xl transition-all hover:border-primary/30 hover:shadow-md"
+            @click="goToArticle(post.id)"
+          >
           <div class="flex h-full gap-3 p-3">
             <div class="relative aspect-[4/3] w-32 shrink-0 overflow-hidden rounded-lg sm:w-36">
               <img
@@ -149,7 +150,7 @@ function relativeTime(iso: string): string {
               </div>
             </div>
           </div>
-        </article>
+        </Card>
       </div>
     </div>
   </section>

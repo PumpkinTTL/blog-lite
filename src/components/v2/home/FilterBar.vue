@@ -4,6 +4,8 @@ import { Search, X, ArrowDownUp, LayoutGrid, List } from 'lucide-vue-next'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 
 const props = defineProps<{
   activeCategory: string
@@ -56,7 +58,7 @@ function onCategoryChange(value: string | number | boolean) {
 </script>
 
 <template>
-  <div class="sticky top-16 z-20 rounded-xl border bg-card">
+  <Card class="sticky top-16 z-20 shadow-none rounded-xl">
     <!-- 顶栏:分类 + 搜索 + 排序 + 数量 -->
     <div class="flex flex-col gap-3 px-3 pt-3 sm:flex-row sm:items-center sm:justify-between">
       <!-- 分类 -->
@@ -184,8 +186,7 @@ function onCategoryChange(value: string | number | boolean) {
       <span class="text-xs text-muted-foreground">共 {{ total }} 篇</span>
     </div>
 
-    <!-- 分隔线 -->
-    <div class="border-t" />
+    <div class="my-2 border-t" />
 
     <!-- 标签 -->
     <div class="flex items-center gap-1.5 overflow-x-auto px-3 py-2.5">
@@ -207,5 +208,5 @@ function onCategoryChange(value: string | number | boolean) {
         {{ tag }}
       </Badge>
     </div>
-  </div>
+  </Card>
 </template>

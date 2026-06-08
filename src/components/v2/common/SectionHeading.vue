@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 
 withDefaults(defineProps<{
   /** 主标题(必填) */
@@ -22,8 +23,8 @@ withDefaults(defineProps<{
 </script>
 
 <template>
-  <div
-    class="rounded-xl border bg-card p-5"
+  <Card
+    class="shadow-none rounded-xl p-5"
     :class="align === 'center' ? 'text-center' : 'text-left'"
   >
     <div class="flex items-center justify-between">
@@ -56,5 +57,5 @@ withDefaults(defineProps<{
       <!-- 右侧 action slot -->
       <slot name="actions" />
     </div>
-  </div>
+  </Card>
 </template>
