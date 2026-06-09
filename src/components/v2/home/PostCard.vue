@@ -59,7 +59,7 @@ function estimateReadTime(post: Resource): number {
       </Badge>
       <Badge
         v-if="post.featured"
-        class="absolute right-2.5 top-2.5 border-none bg-amber-500/95 text-[10px] font-semibold text-white shadow-sm"
+        class="absolute right-2.5 top-2.5 border-none bg-amber-500/95 text-[10px] font-semibold text-white shadow-sm dark:bg-amber-600/90"
       >
         <Star class="mr-0.5 h-3 w-3 fill-current" />
         精选
@@ -97,7 +97,7 @@ function estimateReadTime(post: Resource): number {
           <span class="text-xs font-medium">{{ post.author.name }}</span>
         </div>
         <div class="flex items-center gap-2 text-[11px] text-muted-foreground">
-          <span class="inline-flex items-center gap-0.5 transition-colors group-hover:text-red-500">
+          <span class="inline-flex items-center gap-0.5 transition-colors group-hover:text-red-500 dark:group-hover:text-red-400">
             <Heart class="h-3 w-3" />
             {{ formatCount(post.likes) }}
           </span>

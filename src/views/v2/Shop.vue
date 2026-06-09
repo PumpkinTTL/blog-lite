@@ -46,9 +46,9 @@ const filteredProducts = computed(() => {
 })
 
 const badgeStyles: Record<string, string> = {
-  hot: 'bg-red-500/95 text-white',
-  new: 'bg-emerald-500/95 text-white',
-  sale: 'bg-amber-500/95 text-white',
+  hot: 'bg-red-500/95 text-white dark:bg-red-600/90',
+  new: 'bg-emerald-500/95 text-white dark:bg-emerald-600/90',
+  sale: 'bg-amber-500/95 text-white dark:bg-amber-600/90',
 }
 
 const badgeLabels: Record<string, string> = {
@@ -143,7 +143,7 @@ const badgeLabels: Record<string, string> = {
           <CardContent class="flex-1 pb-2">
             <!-- 评分 -->
             <div class="flex items-center gap-2 text-xs">
-              <div class="inline-flex items-center gap-0.5 text-amber-500">
+              <div class="inline-flex items-center gap-0.5 text-amber-500 dark:text-amber-400">
                 <Star class="h-3 w-3 fill-current" />
                 <span class="font-medium">{{ product.rating }}</span>
               </div>

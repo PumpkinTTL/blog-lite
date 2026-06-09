@@ -330,7 +330,7 @@ function initial(name: string): string {
                 <button
                   type="button"
                   class="inline-flex items-center gap-1 text-xs transition-colors"
-                  :class="comment.liked ? 'text-red-500' : 'text-muted-foreground hover:text-foreground'"
+                  :class="comment.liked ? 'text-red-500 dark:text-red-400' : 'text-muted-foreground hover:text-foreground'"
                   @click="toggleLike(comment)"
                 >
                   <ThumbsUp class="h-3 w-3" :class="comment.liked ? 'fill-current' : ''" />
@@ -380,7 +380,7 @@ function initial(name: string): string {
                   <button
                     type="button"
                     class="inline-flex items-center gap-1 text-xs transition-colors"
-                    :class="reply.liked ? 'text-red-500' : 'text-muted-foreground hover:text-foreground'"
+                    :class="reply.liked ? 'text-red-500 dark:text-red-400' : 'text-muted-foreground hover:text-foreground'"
                     @click="toggleLike(reply)"
                   >
                     <ThumbsUp class="h-3 w-3" :class="reply.liked ? 'fill-current' : ''" />

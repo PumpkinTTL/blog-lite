@@ -105,7 +105,7 @@ function estimateReadTime(post: Resource): number {
         </span>
         <span class="hidden h-3 w-px bg-border sm:inline-block" />
         <!-- 互动 -->
-        <span class="inline-flex items-center gap-1 transition-colors group-hover:text-red-500">
+        <span class="inline-flex items-center gap-1 transition-colors group-hover:text-red-500 dark:group-hover:text-red-400">
           <Heart class="h-3 w-3" />
           {{ formatCount(post.likes) }}
         </span>
@@ -116,7 +116,7 @@ function estimateReadTime(post: Resource): number {
         <!-- 精选标记 -->
         <Badge
           v-if="post.featured"
-          class="ml-auto border-none bg-amber-500/90 text-[10px] font-semibold text-white shadow-sm"
+          class="ml-auto border-none bg-amber-500/90 text-[10px] font-semibold text-white shadow-sm dark:bg-amber-600/85"
         >
           <Star class="mr-0.5 h-3 w-3 fill-current" />
           精选

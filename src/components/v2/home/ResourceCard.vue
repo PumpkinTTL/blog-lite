@@ -100,7 +100,7 @@ function isHighRated(likes: number): boolean {
         <div class="flex shrink-0 items-center gap-2">
           <span
             class="inline-flex items-center gap-0.5"
-            :class="isHighRated(resource.likes) ? 'text-amber-500' : ''"
+            :class="isHighRated(resource.likes) ? 'text-amber-500 dark:text-amber-400' : ''"
           >
             <component :is="isHighRated(resource.likes) ? Star : Eye" class="h-3 w-3" />
             {{ formatCount(resource.likes) }}
