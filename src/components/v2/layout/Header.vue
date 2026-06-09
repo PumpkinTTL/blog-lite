@@ -171,7 +171,7 @@ onBeforeUnmount(() => {
         </Button>
         <router-link to="/v2/donation">
           <Button size="sm" class="h-7 gap-1 rounded-full px-2.5 text-xs">
-            <Heart class="h-3 w-3 fill-current" />
+            <Heart class="h-3 w-3 fill-current animate-[heartbeat_1.8s_ease-in-out_infinite]" />
             赞助
           </Button>
         </router-link>
@@ -331,7 +331,7 @@ onBeforeUnmount(() => {
                 </Button>
                 <router-link to="/v2/donation" class="block" @click="mobileOpen = false">
                   <Button class="w-full justify-start gap-2 rounded-full">
-                    <Heart class="h-3 w-3 fill-current" />
+                    <Heart class="h-3 w-3 fill-current animate-[heartbeat_1.8s_ease-in-out_infinite]" />
                     赞助
                   </Button>
                 </router-link>

@@ -173,3 +173,15 @@
 .v2-root * {
   border-color: hsl(var(--v2-border));
 }
+
+@keyframes heartbeat {
+  0%, 70%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  78% {
+    transform: translateY(-1px) scale(1.08);
+  }
+  86% {
+    transform: translateY(0) scale(1);
+  }
+}
