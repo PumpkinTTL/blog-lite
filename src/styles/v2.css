@@ -111,12 +111,12 @@
   --v2-chart-5: 27 87% 67%;
 }
 
-.v2-root.dark {
+.dark .v2-root {
   --background: 0 0% 3.9%;
   --foreground: 0 0% 98%;
-  --card: 0 0% 3.9%;
+  --card: 0 0% 7%;
   --card-foreground: 0 0% 98%;
-  --popover: 0 0% 3.9%;
+  --popover: 0 0% 7%;
   --popover-foreground: 0 0% 98%;
   --primary: 0 0% 98%;
   --primary-foreground: 0 0% 9%;
@@ -140,9 +140,9 @@
   /* --v2-* 暗色覆盖 */
   --v2-background: 0 0% 3.9%;
   --v2-foreground: 0 0% 98%;
-  --v2-card: 0 0% 3.9%;
+  --v2-card: 0 0% 7%;
   --v2-card-foreground: 0 0% 98%;
-  --v2-popover: 0 0% 3.9%;
+  --v2-popover: 0 0% 7%;
   --v2-popover-foreground: 0 0% 98%;
   --v2-primary: 0 0% 98%;
   --v2-primary-foreground: 0 0% 9%;
@@ -162,4 +162,14 @@
   --v2-chart-3: 30 80% 55%;
   --v2-chart-4: 280 65% 60%;
   --v2-chart-5: 340 75% 55%;
+}
+
+/* ═══ shadcn 基础色：确保 border/background/foreground 正确 ═══ */
+.v2-root {
+  background-color: hsl(var(--v2-background));
+  color: hsl(var(--v2-foreground));
+}
+
+.v2-root * {
+  border-color: hsl(var(--v2-border));
 }
