@@ -29,6 +29,7 @@ import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import LoginModal from '@/components/v2/auth/LoginModal.vue'
 import NotificationCenter from '@/components/v2/layout/NotificationCenter.vue'
+import UserCenter from '@/components/v2/user/UserCenter.vue'
 
 const route = useRoute()
 
@@ -41,6 +42,7 @@ const navItems = [
 // 模拟登录状态(后续接入真实用户状态替换)
 const isLoggedIn = ref(true)
 const showLoginModal = ref(false)
+const showUserCenter = ref(false)
 
 type PlanType = 'Pro' | 'Plus' | 'Free'
 const planConfig: Record<PlanType, { class: string }> = {
@@ -221,20 +223,11 @@ onBeforeUnmount(() => {
                     </button>
                   </div>
                 </div>
-                <!-- 菜单项 -->
-                <button class="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent" @click="userDropdownOpen = false">
-                  <User class="h-4 w-4" />
-                  个人主页
-                </button>
-                <button class="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent" @click="userDropdownOpen = false">
-                  <Bookmark class="h-4 w-4" />
-                  我的收藏
-                </button>
-                <button class="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent" @click="userDropdownOpen = false">
+                <button class="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent" @click="userDropdownOpen = false; showUserCenter = true">
                   <Settings class="h-4 w-4" />
-                  设置
+                  个人中心
                 </button>
-                <button class="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-destructive outline-none transition-colors hover:bg-accent mt-1" @click="userDropdownOpen = false; toggleLogin()">
+                <button class="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-destructive outline-none transition-colors hover:bg-accent" @click="userDropdownOpen = false; toggleLogin()">
                   <LogOut class="h-4 w-4" />
                   退出登录
                 </button>
@@ -353,13 +346,9 @@ onBeforeUnmount(() => {
                   </Button>
                 </router-link>
                 <template v-if="isLoggedIn">
-                  <Button variant="ghost" class="w-full justify-start gap-2 rounded-md text-muted-foreground hover:text-foreground">
+                  <Button variant="ghost" class="w-full justify-start gap-2 rounded-md text-muted-foreground hover:text-foreground" @click="mobileOpen = false; showUserCenter = true">
                     <User class="h-4 w-4" />
-                    个人主页
-                  </Button>
-                  <Button variant="ghost" class="w-full justify-start gap-2 rounded-md text-muted-foreground hover:text-foreground">
-                    <Bookmark class="h-4 w-4" />
-                    我的收藏
+                    个人中心
                   </Button>
                   <Button variant="ghost" class="w-full justify-start gap-2 rounded-md text-destructive hover:bg-destructive/10 hover:text-destructive" @click="toggleLogin">
                     <LogOut class="h-4 w-4" />
@@ -382,5 +371,10 @@ onBeforeUnmount(() => {
   <LoginModal
     v-model:open="showLoginModal"
     @login-success="isLoggedIn = true"
+  />
+
+  <!-- 个人中心弹窗 -->
+  <UserCenter
+    v-model:open="showUserCenter"
   />
 </template>
