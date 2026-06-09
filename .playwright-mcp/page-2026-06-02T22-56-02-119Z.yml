@@ -1,0 +1,708 @@
+- generic [ref=e4]:
+  - navigation [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8] [cursor=pointer]:
+        - img [ref=e10]
+        - generic [ref=e12]:
+          - generic [ref=e13]: 博客资源
+          - generic [ref=e14]: RESOURCE HUB
+      - generic [ref=e15]:
+        - link "首页" [ref=e16] [cursor=pointer]:
+          - /url: /
+          - img [ref=e17]
+          - generic [ref=e19]: 首页
+        - link "资源" [ref=e20] [cursor=pointer]:
+          - /url: /#resources
+          - img [ref=e21]
+          - generic [ref=e23]: 资源
+        - link "商城" [ref=e24] [cursor=pointer]:
+          - /url: /shop
+          - img [ref=e25]
+          - generic [ref=e27]: 商城
+        - link "赞助" [ref=e28] [cursor=pointer]:
+          - /url: /donation
+          - img [ref=e29]
+          - generic [ref=e31]: 赞助
+        - link "关于" [ref=e32] [cursor=pointer]:
+          - /url: /about
+          - img [ref=e33]
+          - generic [ref=e35]: 关于
+      - generic [ref=e36]:
+        - button [ref=e37] [cursor=pointer]:
+          - img [ref=e38]
+        - button [ref=e40] [cursor=pointer]:
+          - img [ref=e41]
+        - button "登录 / 注册" [ref=e46]:
+          - img [ref=e47]
+          - generic [ref=e49]: 登录 / 注册
+  - main [ref=e50]:
+    - main [ref=e52]:
+      - generic [ref=e53]:
+        - generic [ref=e57]:
+          - img [ref=e59]
+          - generic [ref=e61]:
+            - generic [ref=e62]:
+              - generic [ref=e63]: NEW
+              - heading "系统更新" [level=4] [ref=e64]
+              - generic [ref=e65]: 2024-03-21
+            - paragraph [ref=e66]: 我们刚刚升级了博客内核，现在支持更快的页面加载和更精美的暗色模式体验。
+          - button "不再显示" [ref=e68] [cursor=pointer]:
+            - img [ref=e69]
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - generic [ref=e75]:
+              - generic [ref=e76]:
+                - generic [ref=e77]:
+                  - button "全部" [ref=e79] [cursor=pointer]:
+                    - img [ref=e80]
+                    - generic [ref=e82]: 全部
+                  - button "前端" [ref=e83] [cursor=pointer]:
+                    - img [ref=e84]
+                    - generic [ref=e86]: 前端
+                  - button "后端" [ref=e87] [cursor=pointer]:
+                    - img [ref=e88]
+                    - generic [ref=e90]: 后端
+                  - button "设计" [ref=e91] [cursor=pointer]:
+                    - img [ref=e92]
+                    - generic [ref=e94]: 设计
+                  - button "AI" [ref=e95] [cursor=pointer]:
+                    - img [ref=e96]
+                    - generic [ref=e98]: AI
+                  - button "工具" [ref=e99] [cursor=pointer]:
+                    - img [ref=e100]
+                    - generic [ref=e102]: 工具
+                - generic [ref=e103]:
+                  - generic [ref=e104]:
+                    - img [ref=e105]
+                    - textbox "搜索文章内容..." [ref=e107]
+                  - generic [ref=e109]:
+                    - button "最新" [ref=e110] [cursor=pointer]:
+                      - img [ref=e111]
+                      - generic [ref=e113]: 最新
+                    - button "热门" [ref=e114] [cursor=pointer]:
+                      - img [ref=e115]
+                      - generic [ref=e117]: 热门
+              - generic [ref=e119]:
+                - generic [ref=e120]:
+                  - img [ref=e122]
+                  - generic [ref=e124]: "热门筛选:"
+                - generic [ref=e125]:
+                  - button "# JavaScript" [ref=e126] [cursor=pointer]:
+                    - generic [ref=e127]: "#"
+                    - generic [ref=e128]: JavaScript
+                  - button "# Python" [ref=e129] [cursor=pointer]:
+                    - generic [ref=e130]: "#"
+                    - generic [ref=e131]: Python
+                  - button "# UI/UX" [ref=e132] [cursor=pointer]:
+                    - generic [ref=e133]: "#"
+                    - generic [ref=e134]: UI/UX
+                  - button "# Github" [ref=e135] [cursor=pointer]:
+                    - generic [ref=e136]: "#"
+                    - generic [ref=e137]: Github
+                  - button "# Docker" [ref=e138] [cursor=pointer]:
+                    - generic [ref=e139]: "#"
+                    - generic [ref=e140]: Docker
+            - generic [ref=e142]:
+              - 'button "Next.js 13 App Router 详解 设计 3 min Next.js 13 App Router 详解 收藏 总结了多年实战经验，分享最佳实践和常见陷阱 腼腆的西瓜 腼腆的西瓜 站长 · 2026-06-03 1.2k 830 13 # Next.js # UI/UX # TypeScript 分享" [ref=e143] [cursor=pointer]':
+                - generic [ref=e144]:
+                  - img "Next.js 13 App Router 详解" [ref=e145]
+                  - generic [ref=e147]:
+                    - img [ref=e148]
+                    - text: 设计
+                  - generic [ref=e150]:
+                    - img [ref=e151]
+                    - text: 3 min
+                - generic [ref=e153]:
+                  - generic [ref=e154]:
+                    - heading "Next.js 13 App Router 详解" [level=3] [ref=e155]
+                    - button "收藏" [ref=e156]:
+                      - img [ref=e157]
+                  - paragraph [ref=e159]: 总结了多年实战经验，分享最佳实践和常见陷阱
+                  - generic [ref=e160]:
+                    - img "腼腆的西瓜" [ref=e161]
+                    - generic [ref=e162]:
+                      - generic [ref=e163]: 腼腆的西瓜
+                      - generic [ref=e165]:
+                        - img [ref=e166]
+                        - text: 站长
+                    - generic [ref=e168]: ·
+                    - generic [ref=e169]:
+                      - img [ref=e170]
+                      - generic [ref=e172]: 2026-06-03
+                  - generic [ref=e173]:
+                    - generic [ref=e174]:
+                      - generic [ref=e175]:
+                        - img [ref=e176]
+                        - text: 1.2k
+                      - generic [ref=e178]:
+                        - img [ref=e179]
+                        - text: "830"
+                      - generic [ref=e181]:
+                        - img [ref=e182]
+                        - text: "13"
+                    - generic [ref=e184]:
+                      - generic [ref=e185]: "# Next.js"
+                      - generic [ref=e186]: "# UI/UX"
+                      - generic [ref=e187]: "# TypeScript"
+                    - button "分享" [ref=e189]:
+                      - img [ref=e190]
+              - 'button "ChatGPT 提示词工程技巧 后端 3 min ChatGPT 提示词工程技巧 收藏 社区精选内容，经过验证的高质量资源 追风的饭团 追风的饭团 会员 · 2026-06-03 4.7k 210 49 # Webpack # UI/UX # TypeScript 分享" [ref=e192] [cursor=pointer]':
+                - generic [ref=e193]:
+                  - img "ChatGPT 提示词工程技巧" [ref=e194]
+                  - generic [ref=e196]:
+                    - img [ref=e197]
+                    - text: 后端
+                  - generic [ref=e199]:
+                    - img [ref=e200]
+                    - text: 3 min
+                - generic [ref=e202]:
+                  - generic [ref=e203]:
+                    - heading "ChatGPT 提示词工程技巧" [level=3] [ref=e204]
+                    - button "收藏" [ref=e205]:
+                      - img [ref=e206]
+                  - paragraph [ref=e208]: 社区精选内容，经过验证的高质量资源
+                  - generic [ref=e209]:
+                    - img "追风的饭团" [ref=e210]
+                    - generic [ref=e211]:
+                      - generic [ref=e212]: 追风的饭团
+                      - generic [ref=e214]:
+                        - img [ref=e215]
+                        - text: 会员
+                    - generic [ref=e217]: ·
+                    - generic [ref=e218]:
+                      - img [ref=e219]
+                      - generic [ref=e221]: 2026-06-03
+                  - generic [ref=e222]:
+                    - generic [ref=e223]:
+                      - generic [ref=e224]:
+                        - img [ref=e225]
+                        - text: 4.7k
+                      - generic [ref=e227]:
+                        - img [ref=e228]
+                        - text: "210"
+                      - generic [ref=e230]:
+                        - img [ref=e231]
+                        - text: "49"
+                    - generic [ref=e233]:
+                      - generic [ref=e234]: "# Webpack"
+                      - generic [ref=e235]: "# UI/UX"
+                      - generic [ref=e236]: "# TypeScript"
+                    - button "分享" [ref=e238]:
+                      - img [ref=e239]
+              - 'button "Docker 容器化部署实践 后端 3 min HOT Docker 容器化部署实践 收藏 图文并茂的教程，配合视频演示更易理解 正义的土豆 正义的土豆 超管 · 2026-06-02 8.7k 489 91 # Nuxt # UI/UX 分享" [ref=e241] [cursor=pointer]':
+                - generic [ref=e242]:
+                  - img "Docker 容器化部署实践" [ref=e243]
+                  - generic [ref=e245]:
+                    - img [ref=e246]
+                    - text: 后端
+                  - generic [ref=e248]:
+                    - img [ref=e249]
+                    - text: 3 min
+                  - generic [ref=e251]:
+                    - img [ref=e252]
+                    - generic [ref=e254]: HOT
+                - generic [ref=e255]:
+                  - generic [ref=e256]:
+                    - heading "Docker 容器化部署实践" [level=3] [ref=e257]
+                    - button "收藏" [ref=e258]:
+                      - img [ref=e259]
+                  - paragraph [ref=e261]: 图文并茂的教程，配合视频演示更易理解
+                  - generic [ref=e262]:
+                    - img "正义的土豆" [ref=e263]
+                    - generic [ref=e264]:
+                      - generic [ref=e265]: 正义的土豆
+                      - generic [ref=e267]:
+                        - img [ref=e268]
+                        - text: 超管
+                    - generic [ref=e270]: ·
+                    - generic [ref=e271]:
+                      - img [ref=e272]
+                      - generic [ref=e274]: 2026-06-02
+                  - generic [ref=e275]:
+                    - generic [ref=e276]:
+                      - generic [ref=e277]:
+                        - img [ref=e278]
+                        - text: 8.7k
+                      - generic [ref=e280]:
+                        - img [ref=e281]
+                        - text: "489"
+                      - generic [ref=e283]:
+                        - img [ref=e284]
+                        - text: "91"
+                    - generic [ref=e286]:
+                      - generic [ref=e287]: "# Nuxt"
+                      - generic [ref=e288]: "# UI/UX"
+                    - button "分享" [ref=e290]:
+                      - img [ref=e291]
+              - 'button "Docker 容器化部署实践 AI 3 min HOT Docker 容器化部署实践 收藏 详细的代码示例和注释，让你轻松理解每个知识点 正义的土豆 正义的土豆 超管 · 2026-06-01 7.9k 153 84 # Webpack # Vue 3 # React 分享" [ref=e293] [cursor=pointer]':
+                - generic [ref=e294]:
+                  - img "Docker 容器化部署实践" [ref=e295]
+                  - generic [ref=e297]:
+                    - img [ref=e298]
+                    - text: AI
+                  - generic [ref=e300]:
+                    - img [ref=e301]
+                    - text: 3 min
+                  - generic [ref=e303]:
+                    - img [ref=e304]
+                    - generic [ref=e306]: HOT
+                - generic [ref=e307]:
+                  - generic [ref=e308]:
+                    - heading "Docker 容器化部署实践" [level=3] [ref=e309]
+                    - button "收藏" [ref=e310]:
+                      - img [ref=e311]
+                  - paragraph [ref=e313]: 详细的代码示例和注释，让你轻松理解每个知识点
+                  - generic [ref=e314]:
+                    - img "正义的土豆" [ref=e315]
+                    - generic [ref=e316]:
+                      - generic [ref=e317]: 正义的土豆
+                      - generic [ref=e319]:
+                        - img [ref=e320]
+                        - text: 超管
+                    - generic [ref=e322]: ·
+                    - generic [ref=e323]:
+                      - img [ref=e324]
+                      - generic [ref=e326]: 2026-06-01
+                  - generic [ref=e327]:
+                    - generic [ref=e328]:
+                      - generic [ref=e329]:
+                        - img [ref=e330]
+                        - text: 7.9k
+                      - generic [ref=e332]:
+                        - img [ref=e333]
+                        - text: "153"
+                      - generic [ref=e335]:
+                        - img [ref=e336]
+                        - text: "84"
+                    - generic [ref=e338]:
+                      - generic [ref=e339]: "# Webpack"
+                      - generic [ref=e340]: "# Vue 3"
+                      - generic [ref=e341]: "# React"
+                    - button "分享" [ref=e343]:
+                      - img [ref=e344]
+              - 'button "Vue 3 组合式 API 完全指南 AI 3 min Vue 3 组合式 API 完全指南 收藏 深入浅出讲解核心概念，配合实战案例帮助你快速掌握 微醺的布丁 微醺的布丁 会员 · 2026-06-01 1.6k 56 17 # Docker # UI/UX # ChatGPT 分享" [ref=e346] [cursor=pointer]':
+                - generic [ref=e347]:
+                  - img "Vue 3 组合式 API 完全指南" [ref=e348]
+                  - generic [ref=e350]:
+                    - img [ref=e351]
+                    - text: AI
+                  - generic [ref=e353]:
+                    - img [ref=e354]
+                    - text: 3 min
+                - generic [ref=e356]:
+                  - generic [ref=e357]:
+                    - heading "Vue 3 组合式 API 完全指南" [level=3] [ref=e358]
+                    - button "收藏" [ref=e359]:
+                      - img [ref=e360]
+                  - paragraph [ref=e362]: 深入浅出讲解核心概念，配合实战案例帮助你快速掌握
+                  - generic [ref=e363]:
+                    - img "微醺的布丁" [ref=e364]
+                    - generic [ref=e365]:
+                      - generic [ref=e366]: 微醺的布丁
+                      - generic [ref=e368]:
+                        - img [ref=e369]
+                        - text: 会员
+                    - generic [ref=e371]: ·
+                    - generic [ref=e372]:
+                      - img [ref=e373]
+                      - generic [ref=e375]: 2026-06-01
+                  - generic [ref=e376]:
+                    - generic [ref=e377]:
+                      - generic [ref=e378]:
+                        - img [ref=e379]
+                        - text: 1.6k
+                      - generic [ref=e381]:
+                        - img [ref=e382]
+                        - text: "56"
+                      - generic [ref=e384]:
+                        - img [ref=e385]
+                        - text: "17"
+                    - generic [ref=e387]:
+                      - generic [ref=e388]: "# Docker"
+                      - generic [ref=e389]: "# UI/UX"
+                      - generic [ref=e390]: "# ChatGPT"
+                    - button "分享" [ref=e392]:
+                      - img [ref=e393]
+            - generic [ref=e396]:
+              - button [disabled] [ref=e397]:
+                - img [ref=e398]
+              - generic [ref=e400]:
+                - button "1" [ref=e401] [cursor=pointer]:
+                  - generic [ref=e402]: "1"
+                - button "2" [ref=e403] [cursor=pointer]:
+                  - generic [ref=e404]: "2"
+                - button "3" [ref=e405] [cursor=pointer]:
+                  - generic [ref=e406]: "3"
+                - button "4" [ref=e407] [cursor=pointer]:
+                  - generic [ref=e408]: "4"
+                - button "5" [ref=e409] [cursor=pointer]:
+                  - generic [ref=e410]: "5"
+              - button [ref=e411] [cursor=pointer]:
+                - img [ref=e412]
+              - generic [ref=e414]:
+                - combobox [ref=e417] [cursor=pointer]:
+                  - option "5条/页" [selected]
+                  - option "10条/页"
+                  - option "20条/页"
+                - generic [ref=e419]:
+                  - generic [ref=e420]: 跳至
+                  - spinbutton [ref=e421]: "1"
+                  - generic [ref=e422]: 页
+                - generic [ref=e424]:
+                  - generic [ref=e425]: 第
+                  - generic [ref=e426]: "1"
+                  - generic [ref=e427]: / 5 页
+          - complementary [ref=e428]:
+            - generic [ref=e430]:
+              - generic [ref=e431]:
+                - generic [ref=e432]:
+                  - img [ref=e434]
+                  - generic [ref=e436]:
+                    - heading "站点实时概览" [level=3] [ref=e437]
+                    - paragraph [ref=e438]: LIVE ANALYTICS MONITOR
+                - generic [ref=e441]: 运行中
+              - generic [ref=e442]:
+                - generic [ref=e443]:
+                  - img [ref=e445]
+                  - generic [ref=e447]:
+                    - generic [ref=e448]: 3,248
+                    - generic [ref=e449]: 内容总计
+                - generic [ref=e450]:
+                  - img [ref=e452]
+                  - generic [ref=e454]:
+                    - generic [ref=e455]: 512+
+                    - generic [ref=e456]: 建站天数
+                - generic [ref=e457]:
+                  - img [ref=e459]
+                  - generic [ref=e461]:
+                    - generic [ref=e462]: 1.2k
+                    - generic [ref=e463]: 今日到访
+                - generic [ref=e464]:
+                  - img [ref=e466]
+                  - generic [ref=e468]:
+                    - generic [ref=e469]: 45.8k
+                    - generic [ref=e470]: 累计访客
+              - generic [ref=e472]:
+                - img [ref=e473]
+                - generic [ref=e475]: 精选优质内容，记录技术成长
+            - generic [ref=e478] [cursor=pointer]:
+              - generic: 广告
+              - iframe [ref=e480]:
+                
+            - generic [ref=e483] [cursor=pointer]:
+              - generic: 广告
+              - generic [ref=e484]:
+                - generic [ref=e485]:
+                  - img [ref=e487]
+                  - generic [ref=e489]:
+                    - heading "加入技术沙龙" [level=4] [ref=e490]
+                    - paragraph [ref=e491]: 与行业大佬零距离接触，探索最前沿的技术变迁与工程实践。
+                - button "立即报名" [ref=e492]:
+                  - text: 立即报名
+                  - img [ref=e493]
+        - generic [ref=e495]:
+          - generic [ref=e496]:
+            - generic [ref=e497]:
+              - generic [ref=e498]: 资源枢纽
+              - heading "精选共享资源" [level=2] [ref=e499]
+              - paragraph [ref=e500]: 为您精心挑选的优质开发资源、设计模板和学习资料
+            - button "查看全部" [ref=e501] [cursor=pointer]:
+              - text: 查看全部
+              - img [ref=e502]
+          - generic [ref=e504]:
+            - generic [ref=e507] [cursor=pointer]:
+              - generic [ref=e508]:
+                - img "Docker 容器化部署实践" [ref=e509]
+                - generic [ref=e511]: 后端
+              - generic [ref=e513]:
+                - heading "Docker 容器化部署实践" [level=3] [ref=e514]
+                - paragraph [ref=e515]: 详细的代码示例和注释，让你轻松理解每个知识点
+                - generic [ref=e516]:
+                  - generic [ref=e517]: TypeScript
+                  - generic [ref=e518]: React
+                  - generic [ref=e519]: Nuxt
+                - generic [ref=e520]:
+                  - generic [ref=e521]:
+                    - img "熬夜的考拉" [ref=e523]
+                    - generic [ref=e524]:
+                      - generic [ref=e525]: 熬夜的考拉
+                      - generic [ref=e526]: 5-18
+                  - generic [ref=e527]:
+                    - generic [ref=e528]:
+                      - generic [ref=e529]:
+                        - img [ref=e530]
+                        - text: 2.7k
+                      - generic [ref=e532]:
+                        - img [ref=e533]
+                        - text: "448"
+                    - button "获取资源" [ref=e535]:
+                      - img [ref=e536]
+            - generic [ref=e540] [cursor=pointer]:
+              - generic [ref=e541]:
+                - img "Vue 3 组合式 API 完全指南" [ref=e542]
+                - generic [ref=e544]: 设计
+                - generic [ref=e547]:
+                  - img [ref=e548]
+                  - text: HOT
+              - generic [ref=e550]:
+                - heading "Vue 3 组合式 API 完全指南" [level=3] [ref=e551]
+                - paragraph [ref=e552]: 深入浅出讲解核心概念，配合实战案例帮助你快速掌握
+                - generic [ref=e553]:
+                  - generic [ref=e554]: Vue 3
+                  - generic [ref=e555]: Node.js
+                  - generic [ref=e556]: Nuxt
+                - generic [ref=e557]:
+                  - generic [ref=e558]:
+                    - img "流浪的摩卡" [ref=e560]
+                    - generic [ref=e561]:
+                      - generic [ref=e562]: 流浪的摩卡
+                      - generic [ref=e563]: 5-6
+                  - generic [ref=e564]:
+                    - generic [ref=e565]:
+                      - generic [ref=e566]:
+                        - img [ref=e567]
+                        - text: 7.3k
+                      - generic [ref=e569]:
+                        - img [ref=e570]
+                        - text: "342"
+                    - button "获取资源" [ref=e572]:
+                      - img [ref=e573]
+            - generic [ref=e577] [cursor=pointer]:
+              - generic [ref=e578]:
+                - img "Tailwind CSS 最佳实践分享" [ref=e579]
+                - generic [ref=e581]: AI
+              - generic [ref=e583]:
+                - heading "Tailwind CSS 最佳实践分享" [level=3] [ref=e584]
+                - paragraph [ref=e585]: 涵盖最新技术栈，紧跟行业发展趋势
+                - generic [ref=e586]:
+                  - generic [ref=e587]: Nuxt
+                  - generic [ref=e588]: Python
+                - generic [ref=e589]:
+                  - generic [ref=e590]:
+                    - generic [ref=e591]:
+                      - img "追风的饭团" [ref=e592]
+                      - img [ref=e594]
+                    - generic [ref=e596]:
+                      - generic [ref=e597]: 追风的饭团
+                      - generic [ref=e598]: 5-21
+                  - generic [ref=e599]:
+                    - generic [ref=e600]:
+                      - generic [ref=e601]:
+                        - img [ref=e602]
+                        - text: "571"
+                      - generic [ref=e604]:
+                        - img [ref=e605]
+                        - text: "323"
+                    - button "获取资源" [ref=e607]:
+                      - img [ref=e608]
+            - generic [ref=e612] [cursor=pointer]:
+              - generic [ref=e613]:
+                - img "CSS Grid 布局实战案例" [ref=e614]
+                - generic [ref=e616]: AI
+                - generic [ref=e619]:
+                  - img [ref=e620]
+                  - text: HOT
+              - generic [ref=e622]:
+                - heading "CSS Grid 布局实战案例" [level=3] [ref=e623]
+                - paragraph [ref=e624]: 从基础到进阶，系统性学习路径，适合各个阶段的开发者
+                - generic [ref=e625]:
+                  - generic [ref=e626]: TypeScript
+                  - generic [ref=e627]: React
+                  - generic [ref=e628]: Webpack
+                - generic [ref=e629]:
+                  - generic [ref=e630]:
+                    - img "熬夜的考拉" [ref=e632]
+                    - generic [ref=e633]:
+                      - generic [ref=e634]: 熬夜的考拉
+                      - generic [ref=e635]: 5-21
+                  - generic [ref=e636]:
+                    - generic [ref=e637]:
+                      - generic [ref=e638]:
+                        - img [ref=e639]
+                        - text: 6.5k
+                      - generic [ref=e641]:
+                        - img [ref=e642]
+                        - text: "734"
+                    - button "获取资源" [ref=e644]:
+                      - img [ref=e645]
+            - generic [ref=e649] [cursor=pointer]:
+              - generic [ref=e650]:
+                - img "ChatGPT 提示词工程技巧" [ref=e651]
+                - generic [ref=e653]: 后端
+                - generic [ref=e656]:
+                  - img [ref=e657]
+                  - text: HOT
+              - generic [ref=e659]:
+                - heading "ChatGPT 提示词工程技巧" [level=3] [ref=e660]
+                - paragraph [ref=e661]: 社区精选内容，经过验证的高质量资源
+                - generic [ref=e662]:
+                  - generic [ref=e663]: Webpack
+                  - generic [ref=e664]: UI/UX
+                - generic [ref=e665]:
+                  - generic [ref=e666]:
+                    - generic [ref=e667]:
+                      - img "微醺的布丁" [ref=e668]
+                      - img [ref=e670]
+                    - generic [ref=e672]:
+                      - generic [ref=e673]: 微醺的布丁
+                      - generic [ref=e674]: 5-11
+                  - generic [ref=e675]:
+                    - generic [ref=e676]:
+                      - generic [ref=e677]:
+                        - img [ref=e678]
+                        - text: 6.2k
+                      - generic [ref=e680]:
+                        - img [ref=e681]
+                        - text: "343"
+                    - button "获取资源" [ref=e683]:
+                      - img [ref=e684]
+            - generic [ref=e688] [cursor=pointer]:
+              - generic [ref=e689]:
+                - img "Vite 插件开发入门教程" [ref=e690]
+                - generic [ref=e692]: 后端
+                - generic [ref=e695]:
+                  - img [ref=e696]
+                  - text: HOT
+              - generic [ref=e698]:
+                - heading "Vite 插件开发入门教程" [level=3] [ref=e699]
+                - paragraph [ref=e700]: 涵盖最新技术栈，紧跟行业发展趋势
+                - generic [ref=e701]:
+                  - generic [ref=e702]: Node.js
+                  - generic [ref=e703]: Tailwind CSS
+                - generic [ref=e704]:
+                  - generic [ref=e705]:
+                    - img "熬夜的考拉" [ref=e707]
+                    - generic [ref=e708]:
+                      - generic [ref=e709]: 熬夜的考拉
+                      - generic [ref=e710]: 5-9
+                  - generic [ref=e711]:
+                    - generic [ref=e712]:
+                      - generic [ref=e713]:
+                        - img [ref=e714]
+                        - text: 8.1k
+                      - generic [ref=e716]:
+                        - img [ref=e717]
+                        - text: "826"
+                    - button "获取资源" [ref=e719]:
+                      - img [ref=e720]
+            - generic [ref=e724] [cursor=pointer]:
+              - generic [ref=e725]:
+                - img "Node.js 性能优化实战" [ref=e726]
+                - generic [ref=e728]: 设计
+                - generic [ref=e731]: NEW
+              - generic [ref=e732]:
+                - heading "Node.js 性能优化实战" [level=3] [ref=e733]
+                - paragraph [ref=e734]: 详细的代码示例和注释，让你轻松理解每个知识点
+                - generic [ref=e735]:
+                  - generic [ref=e736]: Webpack
+                  - generic [ref=e737]: Vite
+                - generic [ref=e738]:
+                  - generic [ref=e739]:
+                    - img "流浪的摩卡" [ref=e741]
+                    - generic [ref=e742]:
+                      - generic [ref=e743]: 流浪的摩卡
+                      - generic [ref=e744]: 5-31
+                  - generic [ref=e745]:
+                    - generic [ref=e746]:
+                      - generic [ref=e747]:
+                        - img [ref=e748]
+                        - text: 2.5k
+                      - generic [ref=e750]:
+                        - img [ref=e751]
+                        - text: "911"
+                    - button "获取资源" [ref=e753]:
+                      - img [ref=e754]
+            - generic [ref=e758] [cursor=pointer]:
+              - generic [ref=e759]:
+                - img "Node.js 性能优化实战" [ref=e760]
+                - generic [ref=e762]: 前端
+                - generic [ref=e765]:
+                  - img [ref=e766]
+                  - text: HOT
+              - generic [ref=e768]:
+                - heading "Node.js 性能优化实战" [level=3] [ref=e769]
+                - paragraph [ref=e770]: 总结了多年实战经验，分享最佳实践和常见陷阱
+                - generic [ref=e771]:
+                  - generic [ref=e772]: Docker
+                  - generic [ref=e773]: UI/UX
+                - generic [ref=e774]:
+                  - generic [ref=e775]:
+                    - img "熬夜的考拉" [ref=e777]
+                    - generic [ref=e778]:
+                      - generic [ref=e779]: 熬夜的考拉
+                      - generic [ref=e780]: 5-14
+                  - generic [ref=e781]:
+                    - generic [ref=e782]:
+                      - generic [ref=e783]:
+                        - img [ref=e784]
+                        - text: 7.5k
+                      - generic [ref=e786]:
+                        - img [ref=e787]
+                        - text: "939"
+                    - button "获取资源" [ref=e789]:
+                      - img [ref=e790]
+          - generic [ref=e794]: 更多内容正在持续更新中...
+  - generic [ref=e796]:
+    - generic [ref=e797]:
+      - generic [ref=e798]:
+        - generic [ref=e799] [cursor=pointer]:
+          - img [ref=e801]
+          - generic [ref=e803]:
+            - generic [ref=e804]: 博客资源中心
+            - generic [ref=e805]: Resource Hub
+        - paragraph [ref=e806]: 探索无限可能，记录成长的每一小步。建立一个开放、包容且富有灵感的开发者社区。
+        - generic [ref=e807]:
+          - link [ref=e808] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e809]
+          - link [ref=e811] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e812]
+          - link [ref=e814] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e815]
+          - link [ref=e817] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e818]
+      - generic [ref=e820]:
+        - heading "资源探索" [level=5] [ref=e821]
+        - generic [ref=e822]:
+          - link "网站首页" [ref=e823] [cursor=pointer]:
+            - /url: /
+          - link "精选资源" [ref=e824] [cursor=pointer]:
+            - /url: /#resources
+          - link "技术商城" [ref=e825] [cursor=pointer]:
+            - /url: /shop
+      - generic [ref=e826]:
+        - heading "关于社区" [level=5] [ref=e827]
+        - generic [ref=e828]:
+          - link "关于我们" [ref=e829] [cursor=pointer]:
+            - /url: /about
+          - link "权限中心" [ref=e830] [cursor=pointer]:
+            - /url: /#
+          - link "加入我们" [ref=e831] [cursor=pointer]:
+            - /url: /#
+      - generic [ref=e832]:
+        - heading "订阅我们的动态" [level=5] [ref=e833]
+        - paragraph [ref=e834]: 第一时间获取精品技术内容与优质资源，我们绝不骚扰。
+        - generic [ref=e836]:
+          - img [ref=e838]
+          - textbox "输入邮箱地址..." [ref=e840]
+          - button "立即订阅" [ref=e841] [cursor=pointer]:
+            - generic [ref=e842]: 立即订阅
+            - img [ref=e843]
+        - generic [ref=e845]:
+          - img [ref=e846]
+          - generic [ref=e848]: 在线支持 (9:00 - 22:00)
+    - generic [ref=e849]:
+      - generic [ref=e850]:
+        - generic [ref=e851]: © 2026 BlogLite.
+        - generic [ref=e852]:
+          - link "隐私政策" [ref=e853] [cursor=pointer]:
+            - /url: "#"
+          - link "服务条款" [ref=e855] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=e857]:
+        - text: Built with
+        - img [ref=e858]
+        - text: for Developers

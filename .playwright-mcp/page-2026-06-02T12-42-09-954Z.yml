@@ -1,0 +1,224 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "B Blog Lite" [ref=e7] [cursor=pointer]:
+        - /url: /v2
+        - generic [ref=e9]: B
+        - generic [ref=e10]: Blog Lite
+      - navigation [ref=e11]:
+        - link "首页" [ref=e12] [cursor=pointer]:
+          - /url: /v2
+          - img [ref=e13]
+          - text: 首页
+        - link "商城" [ref=e16] [cursor=pointer]:
+          - /url: /v2/shop
+          - img [ref=e17]
+          - text: 商城
+        - link "赞助" [ref=e20] [cursor=pointer]:
+          - /url: /v2/donation
+          - img [ref=e21]
+          - text: 赞助
+        - link "关于" [ref=e23] [cursor=pointer]:
+          - /url: /v2/about
+          - img [ref=e24]
+          - text: 关于
+      - generic [ref=e26]:
+        - button "切换主题" [ref=e27]:
+          - img
+          - img
+          - generic [ref=e28]: 切换主题
+        - button "登录" [ref=e29]:
+          - img
+          - text: 登录
+  - main [ref=e30]:
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - generic [ref=e33]:
+          - button "全部" [ref=e34]
+          - button "前端" [ref=e35]
+          - button "后端" [ref=e36]
+          - button "设计" [ref=e37]
+          - button "AI" [ref=e38]
+          - button "工具" [ref=e39]
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - img [ref=e42]
+            - textbox "搜索文章..." [ref=e45]
+          - button "最新" [ref=e46]:
+            - img
+          - button "最热" [ref=e47]:
+            - img
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - link "Vue 3 组合式 API 完全指南 AI Vue 3 组合式 API 完全指南 从基础到进阶，系统性学习路径，适合各个阶段的开发者 追风的饭团 3248 88" [ref=e51] [cursor=pointer]:
+            - /url: /v2/article/resource-20
+            - generic [ref=e52]:
+              - img "Vue 3 组合式 API 完全指南" [ref=e53]
+              - generic [ref=e55]:
+                - generic [ref=e56]: AI
+                - heading "Vue 3 组合式 API 完全指南" [level=2] [ref=e57]
+                - paragraph [ref=e58]: 从基础到进阶，系统性学习路径，适合各个阶段的开发者
+                - generic [ref=e59]:
+                  - img [ref=e60]
+                  - generic [ref=e61]: 追风的饭团
+                  - generic [ref=e62]:
+                    - img [ref=e63]
+                    - text: "3248"
+                  - generic [ref=e66]:
+                    - img [ref=e67]
+                    - text: "88"
+          - generic [ref=e69]:
+            - link "Figma 设计系统搭建指南 设计 2026-06-01 Figma 设计系统搭建指南 图文并茂的教程，配合视频演示更易理解 流浪的摩卡 9464 121" [ref=e71] [cursor=pointer]:
+              - /url: /v2/article/resource-5
+              - img "Figma 设计系统搭建指南" [ref=e73]
+              - generic [ref=e74]:
+                - generic [ref=e75]:
+                  - generic [ref=e76]: 设计
+                  - generic [ref=e77]: 2026-06-01
+                - heading "Figma 设计系统搭建指南" [level=3] [ref=e78]
+                - paragraph [ref=e79]: 图文并茂的教程，配合视频演示更易理解
+                - generic [ref=e80]:
+                  - img [ref=e81]
+                  - generic [ref=e82]: 流浪的摩卡
+                  - generic [ref=e83]:
+                    - img [ref=e84]
+                    - text: "9464"
+                  - generic [ref=e87]:
+                    - img [ref=e88]
+                    - text: "121"
+            - link "微前端架构设计与实现 后端 2026-06-01 微前端架构设计与实现 图文并茂的教程，配合视频演示更易理解 流浪的摩卡 4673 974" [ref=e91] [cursor=pointer]:
+              - /url: /v2/article/resource-10
+              - img "微前端架构设计与实现" [ref=e93]
+              - generic [ref=e94]:
+                - generic [ref=e95]:
+                  - generic [ref=e96]: 后端
+                  - generic [ref=e97]: 2026-06-01
+                - heading "微前端架构设计与实现" [level=3] [ref=e98]
+                - paragraph [ref=e99]: 图文并茂的教程，配合视频演示更易理解
+                - generic [ref=e100]:
+                  - img [ref=e101]
+                  - generic [ref=e102]: 流浪的摩卡
+                  - generic [ref=e103]:
+                    - img [ref=e104]
+                    - text: "4673"
+                  - generic [ref=e107]:
+                    - img [ref=e108]
+                    - text: "974"
+            - link "Next.js 13 App Router 详解 设计 2026-05-31 Next.js 13 App Router 详解 涵盖最新技术栈，紧跟行业发展趋势 正义的土豆 2162 860" [ref=e111] [cursor=pointer]:
+              - /url: /v2/article/resource-18
+              - img "Next.js 13 App Router 详解" [ref=e113]
+              - generic [ref=e114]:
+                - generic [ref=e115]:
+                  - generic [ref=e116]: 设计
+                  - generic [ref=e117]: 2026-05-31
+                - heading "Next.js 13 App Router 详解" [level=3] [ref=e118]
+                - paragraph [ref=e119]: 涵盖最新技术栈，紧跟行业发展趋势
+                - generic [ref=e120]:
+                  - img [ref=e121]
+                  - generic [ref=e122]: 正义的土豆
+                  - generic [ref=e123]:
+                    - img [ref=e124]
+                    - text: "2162"
+                  - generic [ref=e127]:
+                    - img [ref=e128]
+                    - text: "860"
+            - link "Node.js 性能优化实战 AI 2026-05-30 Node.js 性能优化实战 涵盖最新技术栈，紧跟行业发展趋势 流浪的摩卡 2943 522" [ref=e131] [cursor=pointer]:
+              - /url: /v2/article/resource-13
+              - img "Node.js 性能优化实战" [ref=e133]
+              - generic [ref=e134]:
+                - generic [ref=e135]:
+                  - generic [ref=e136]: AI
+                  - generic [ref=e137]: 2026-05-30
+                - heading "Node.js 性能优化实战" [level=3] [ref=e138]
+                - paragraph [ref=e139]: 涵盖最新技术栈，紧跟行业发展趋势
+                - generic [ref=e140]:
+                  - img [ref=e141]
+                  - generic [ref=e142]: 流浪的摩卡
+                  - generic [ref=e143]:
+                    - img [ref=e144]
+                    - text: "2943"
+                  - generic [ref=e147]:
+                    - img [ref=e148]
+                    - text: "522"
+            - link "Next.js 13 App Router 详解 工具 2026-05-29 Next.js 13 App Router 详解 详细的代码示例和注释，让你轻松理解每个知识点 微醺的布丁 7331 472" [ref=e151] [cursor=pointer]:
+              - /url: /v2/article/resource-14
+              - img "Next.js 13 App Router 详解" [ref=e153]
+              - generic [ref=e154]:
+                - generic [ref=e155]:
+                  - generic [ref=e156]: 工具
+                  - generic [ref=e157]: 2026-05-29
+                - heading "Next.js 13 App Router 详解" [level=3] [ref=e158]
+                - paragraph [ref=e159]: 详细的代码示例和注释，让你轻松理解每个知识点
+                - generic [ref=e160]:
+                  - img [ref=e161]
+                  - generic [ref=e162]: 微醺的布丁
+                  - generic [ref=e163]:
+                    - img [ref=e164]
+                    - text: "7331"
+                  - generic [ref=e167]:
+                    - img [ref=e168]
+                    - text: "472"
+            - link "Vue 3 组合式 API 完全指南 工具 2026-05-26 Vue 3 组合式 API 完全指南 深入浅出讲解核心概念，配合实战案例帮助你快速掌握 流浪的摩卡 7760 146" [ref=e171] [cursor=pointer]:
+              - /url: /v2/article/resource-3
+              - img "Vue 3 组合式 API 完全指南" [ref=e173]
+              - generic [ref=e174]:
+                - generic [ref=e175]:
+                  - generic [ref=e176]: 工具
+                  - generic [ref=e177]: 2026-05-26
+                - heading "Vue 3 组合式 API 完全指南" [level=3] [ref=e178]
+                - paragraph [ref=e179]: 深入浅出讲解核心概念，配合实战案例帮助你快速掌握
+                - generic [ref=e180]:
+                  - img [ref=e181]
+                  - generic [ref=e182]: 流浪的摩卡
+                  - generic [ref=e183]:
+                    - img [ref=e184]
+                    - text: "7760"
+                  - generic [ref=e187]:
+                    - img [ref=e188]
+                    - text: "146"
+            - link "GraphQL API 设计最佳实践 前端 2026-05-25 GraphQL API 设计最佳实践 图文并茂的教程，配合视频演示更易理解 追风的饭团 905 675" [ref=e191] [cursor=pointer]:
+              - /url: /v2/article/resource-6
+              - img "GraphQL API 设计最佳实践" [ref=e193]
+              - generic [ref=e194]:
+                - generic [ref=e195]:
+                  - generic [ref=e196]: 前端
+                  - generic [ref=e197]: 2026-05-25
+                - heading "GraphQL API 设计最佳实践" [level=3] [ref=e198]
+                - paragraph [ref=e199]: 图文并茂的教程，配合视频演示更易理解
+                - generic [ref=e200]:
+                  - img [ref=e201]
+                  - generic [ref=e202]: 追风的饭团
+                  - generic [ref=e203]:
+                    - img [ref=e204]
+                    - text: "905"
+                  - generic [ref=e207]:
+                    - img [ref=e208]
+                    - text: "675"
+          - generic [ref=e210]:
+            - button [disabled]:
+              - img
+            - generic [ref=e211]: 1 / 3
+            - button [ref=e212]:
+              - img
+        - complementary [ref=e213]:
+          - generic [ref=e214]:
+            - generic [ref=e217]: 关于博客
+            - generic [ref=e218]: 分享前端、后端、设计与 AI 领域的高质量技术文章，助力开发者成长。
+          - generic [ref=e219]:
+            - generic [ref=e222]: 热门标签
+            - generic [ref=e223]:
+              - generic [ref=e224] [cursor=pointer]: Vue 3
+              - generic [ref=e225] [cursor=pointer]: TypeScript
+              - generic [ref=e226] [cursor=pointer]: Tailwind CSS
+              - generic [ref=e227] [cursor=pointer]: React
+              - generic [ref=e228] [cursor=pointer]: Node.js
+              - generic [ref=e229] [cursor=pointer]: Docker
+              - generic [ref=e230] [cursor=pointer]: ChatGPT
+              - generic [ref=e231] [cursor=pointer]: Figma
+  - contentinfo [ref=e232]:
+    - generic [ref=e233]:
+      - link [ref=e235] [cursor=pointer]:
+        - /url: https://github.com
+        - img [ref=e236]
+      - paragraph [ref=e238]: © 2026 Blog Lite. All rights reserved.
+      - paragraph [ref=e239]: Built with Vue 3 · shadcn-vue · Tailwind CSS

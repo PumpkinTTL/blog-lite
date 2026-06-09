@@ -17,17 +17,20 @@ onMounted(() => {
 
 <template>
   <section v-if="resources.length" class="mx-auto max-w-7xl px-4 pt-10 pb-4 sm:px-6 lg:px-8">
-    <!-- 标题区:SectionHeading + 右侧查看全部 -->
-    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <!-- 标题区:SectionHeading 内置按钮 -->
+    <div class="mb-6">
       <SectionHeading
         eyebrow="资源中心"
         title="精选共享资源"
         description="优质开发工具、设计模板与学习资料,一键获取"
-      />
-      <Button variant="outline" size="sm" class="cursor-pointer self-start sm:self-auto">
-        查看全部
-        <ArrowRight class="ml-1 h-3.5 w-3.5" />
-      </Button>
+      >
+        <template #actions>
+          <Button variant="outline" size="sm" class="cursor-pointer shrink-0">
+            查看全部
+            <ArrowRight class="ml-1 h-3.5 w-3.5" />
+          </Button>
+        </template>
+      </SectionHeading>
     </div>
 
     <!-- 资源网格:桌面 4 列 / 平板 2 列 / 移动 1 列 -->

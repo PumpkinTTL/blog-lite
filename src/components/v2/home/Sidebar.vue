@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Mail, ArrowRight, Megaphone, Github, Twitter, Rss, Users } from 'lucide-vue-next'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { Mail, ArrowRight, Megaphone, Github, Twitter, Rss, Users, ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import type { Resource } from '@/data/mockData'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import AdCard from '@/components/v2/common/AdCard.vue'
@@ -17,18 +17,78 @@ const socialLinks = [
   { label: 'Twitter', icon: Twitter, href: 'https://twitter.com' },
   { label: 'RSS', icon: Rss, href: '/rss.xml' },
 ]
+
+// 公告跑马灯
+const announcements = [
+  { title: 'v2.0 上线公告', text: '全新设计已发布，支持暗色模式和响应式布局，欢迎体验并反馈。' },
+  { title: '社区征稿活动', text: '分享你的技术实践，优秀文章将获得首页推荐和专属徽章奖励。' },
+  { title: '每周精选 #42', text: '本周热门：Vue 3.5 新特性解析、Rust 入门指南、AI 辅助编码实践。' },
+]
+
+const currentIndex = ref(0)
+let timer: ReturnType<typeof setInterval> | null = null
+
+function prev() {
+  currentIndex.value = (currentIndex.value - 1 + announcements.length) % announcements.length
+  resetTimer()
+}
+
+function next() {
+  currentIndex.value = (currentIndex.value + 1) % announcements.length
+  resetTimer()
+}
+
+function resetTimer() {
+  if (timer) clearInterval(timer)
+  timer = setInterval(() => {
+    currentIndex.value = (currentIndex.value + 1) % announcements.length
+  }, 5000)
+}
+
+onMounted(() => {
+  resetTimer()
+})
+
+onUnmounted(() => {
+  if (timer) clearInterval(timer)
+})
 </script>
 
 <template>
   <aside class="space-y-5">
-    <!-- 公告栏 -->
-    <Alert class="rounded-xl border-amber-500/30 bg-amber-500/5">
-      <Megaphone class="h-4 w-4 text-amber-600" />
-      <AlertDescription class="text-xs leading-relaxed">
-        <span class="font-medium text-amber-700 dark:text-amber-400">v2.0 上线公告</span>
-        <span class="text-muted-foreground"> — 全新设计已发布，支持暗色模式和响应式布局，欢迎体验并反馈。</span>
-      </AlertDescription>
-    </Alert>
+    <!-- 公告栏：跑马灯 -->
+    <Card class="shadow-none rounded-xl p-4">
+      <div class="flex items-start gap-3">
+        <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900/30">
+          <Megaphone class="h-4 w-4 text-amber-700 dark:text-amber-400" />
+        </div>
+        <div class="min-w-0 flex-1">
+          <div class="text-xs font-semibold text-amber-700 dark:text-amber-400">
+            {{ announcements[currentIndex].title }}
+          </div>
+          <p class="mt-0.5 text-[11px] leading-relaxed text-muted-foreground">
+            {{ announcements[currentIndex].text }}
+          </p>
+        </div>
+        <div class="flex shrink-0 items-center gap-0.5">
+          <Button variant="ghost" size="icon" class="h-6 w-6 cursor-pointer" @click="prev">
+            <ChevronLeft class="h-3.5 w-3.5" />
+          </Button>
+          <Button variant="ghost" size="icon" class="h-6 w-6 cursor-pointer" @click="next">
+            <ChevronRight class="h-3.5 w-3.5" />
+          </Button>
+        </div>
+      </div>
+      <!-- 指示点 -->
+      <div class="mt-2 flex items-center justify-center gap-1">
+        <span
+          v-for="(_, i) in announcements"
+          :key="i"
+          class="block h-1 rounded-full transition-all duration-300"
+          :class="i === currentIndex ? 'w-3 bg-amber-700 dark:bg-amber-400' : 'w-1 bg-muted-foreground/25'"
+        />
+      </div>
+    </Card>
 
     <!-- 社交媒体 -->
     <Card class="shadow-none rounded-xl p-5">

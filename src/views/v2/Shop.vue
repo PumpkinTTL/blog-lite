@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
+import SectionHeading from '@/components/v2/common/SectionHeading.vue'
 
 interface Product {
   id: number
@@ -59,26 +60,13 @@ const badgeLabels: Record<string, string> = {
 
 <template>
   <Layout>
-    <!-- Hero -->
-    <section class="relative overflow-hidden border-b">
-      <div class="pointer-events-none absolute inset-0 -z-10">
-        <div class="absolute right-1/4 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-primary/5 blur-3xl" />
-      </div>
-      <div class="mx-auto max-w-4xl px-4 py-12 text-center sm:px-6 sm:py-16">
-        <span class="inline-flex items-center rounded-full border bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
-          <ShoppingBag class="mr-1.5 h-3 w-3" />
-          精选商城
-        </span>
-        <h1 class="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
-          为开发者准备的
-          <span class="bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
-            优质资源
-          </span>
-        </h1>
-        <p class="mx-auto mt-4 max-w-xl text-base text-muted-foreground">
-          精选技术书籍、效率工具与周边商品,每一件都经过团队亲测推荐。
-        </p>
-      </div>
+    <!-- 标题区 -->
+    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+      <SectionHeading
+        eyebrow="精选商城"
+        title="为开发者准备的优质资源"
+        description="精选技术书籍、效率工具与周边商品,每一件都经过团队亲测推荐。"
+      />
     </section>
 
     <!-- 促销 banner -->

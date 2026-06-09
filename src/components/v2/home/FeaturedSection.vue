@@ -69,16 +69,16 @@ function relativeTime(iso: string): string {
               loading="lazy"
             />
             <Badge
-              class="absolute left-3 top-3 border-none text-white shadow-sm"
-              :style="{ backgroundColor: featured.primary.categoryColor }"
+              class="absolute left-3 top-3 border-none shadow-sm backdrop-blur-sm"
+              :style="{ backgroundColor: featured.primary.categoryColor + '20', color: featured.primary.categoryColor }"
             >
               {{ featured.primary.category }}
             </Badge>
           </div>
           <div class="flex flex-col justify-between p-5 sm:p-6">
             <div>
-              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-primary">
-                <Star class="h-3.5 w-3.5 fill-primary/20" />
+              <span class="inline-flex items-center gap-1 text-xs font-medium" :style="{ color: featured.primary.categoryColor }">
+                <Star class="h-3.5 w-3.5" :style="{ fill: featured.primary.categoryColor + '30' }" />
                 主编推荐
               </span>
               <h3 class="mt-2 line-clamp-2 text-lg font-bold leading-snug transition-colors group-hover:text-primary sm:text-xl">
@@ -130,14 +130,17 @@ function relativeTime(iso: string): string {
             <div class="flex flex-1 flex-col justify-between py-0.5">
               <div>
                 <Badge
-                  class="border-none text-white"
-                  :style="{ backgroundColor: post.categoryColor }"
+                  class="border-none"
+                  :style="{ backgroundColor: post.categoryColor + '18', color: post.categoryColor }"
                 >
                   {{ post.category }}
                 </Badge>
                 <h3 class="mt-1.5 line-clamp-2 text-sm font-semibold leading-snug transition-colors group-hover:text-primary">
                   {{ post.title }}
                 </h3>
+                <p class="mt-1 line-clamp-2 text-xs text-muted-foreground leading-relaxed">
+                  {{ post.description }}
+                </p>
               </div>
               <div class="flex items-center gap-2 text-[11px] text-muted-foreground">
                 <Clock class="h-3 w-3" />

@@ -46,8 +46,8 @@ function isHighRated(likes: number): boolean {
         loading="lazy"
       />
       <Badge
-        class="absolute left-2.5 top-2.5 border-none text-white shadow-sm"
-        :style="{ backgroundColor: resource.categoryColor }"
+        class="absolute left-2.5 top-2.5 border-none shadow-sm backdrop-blur-sm"
+        :style="{ backgroundColor: resource.categoryColor + '20', color: resource.categoryColor }"
       >
         {{ resource.category }}
       </Badge>

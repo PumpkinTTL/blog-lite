@@ -52,8 +52,8 @@ function estimateReadTime(post: Resource): number {
         loading="lazy"
       />
       <Badge
-        class="absolute left-2.5 top-2.5 border-none text-white shadow-sm"
-        :style="{ backgroundColor: post.categoryColor }"
+        class="absolute left-2.5 top-2.5 border-none shadow-sm backdrop-blur-sm"
+        :style="{ backgroundColor: post.categoryColor + '20', color: post.categoryColor }"
       >
         {{ post.category }}
       </Badge>
