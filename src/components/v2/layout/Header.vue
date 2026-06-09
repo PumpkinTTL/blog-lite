@@ -10,7 +10,6 @@ import {
   X,
   Sun,
   Moon,
-  Bell,
   User,
   LogIn,
   LogOut,
@@ -29,6 +28,7 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import LoginModal from '@/components/v2/auth/LoginModal.vue'
+import NotificationCenter from '@/components/v2/layout/NotificationCenter.vue'
 
 const route = useRoute()
 
@@ -161,10 +161,7 @@ onBeforeUnmount(() => {
 
       <!-- Desktop Actions -->
       <div class="hidden items-center gap-1 md:flex">
-        <Button variant="ghost" size="icon" class="relative h-9 w-9">
-          <Bell class="h-4 w-4" />
-          <span v-if="isLoggedIn" class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive" />
-        </Button>
+        <NotificationCenter />
         <Button variant="ghost" size="icon" class="h-9 w-9" @click="toggleTheme">
           <Sun v-if="isDark" class="h-4 w-4" />
           <Moon v-else class="h-4 w-4" />
@@ -259,13 +256,36 @@ onBeforeUnmount(() => {
           <Sun v-if="isDark" class="h-4 w-4" />
           <Moon v-else class="h-4 w-4" />
         </Button>
+        <Button
+          v-if="isLoggedIn"
+          variant="ghost"
+          class="h-9 gap-1.5 px-2"
+          @click="mobileOpen = true"
+        >
+          <Avatar class="h-5 w-5">
+            <AvatarImage :src="mockUser.avatar" :alt="mockUser.name" />
+            <AvatarFallback>{{ mockUser.name.slice(0, 1) }}</AvatarFallback>
+          </Avatar>
+          <span class="max-w-24 truncate text-xs font-medium">{{ mockUser.name }}</span>
+          <span
+            v-if="mockUser.plan !== 'Free'"
+            class="inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold leading-none"
+            :class="planConfig[mockUser.plan].class"
+          >
+            {{ mockUser.plan }}
+          </span>
+        </Button>
+        <Button v-else variant="outline" size="sm" class="h-8 gap-1.5 px-2 text-xs" @click="toggleLogin">
+          <LogIn class="h-3.5 w-3.5" />
+          登录
+        </Button>
         <Sheet v-model:open="mobileOpen">
           <SheetTrigger as-child>
             <Button variant="ghost" size="icon" class="h-9 w-9">
               <Menu class="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" class="w-72">
+          <SheetContent side="right" class="v2-root w-72 bg-background text-foreground">
             <div class="flex flex-col gap-6 pt-6">
               <!-- Mobile 用户信息 -->
               <div v-if="isLoggedIn" class="flex items-center gap-3 px-2">
@@ -325,31 +345,28 @@ onBeforeUnmount(() => {
 
               <!-- Mobile Actions -->
               <div class="flex flex-col gap-2 px-2">
-                <Button variant="outline" class="w-full justify-start gap-2">
-                  <Bell class="h-4 w-4" />
-                  通知
-                </Button>
+                <NotificationCenter mobile />
                 <router-link to="/v2/donation" class="block" @click="mobileOpen = false">
-                  <Button class="w-full justify-start gap-2 rounded-full">
+                  <Button class="w-full justify-start gap-2 rounded-md">
                     <Heart class="h-3 w-3 fill-current animate-[heartbeat_1.8s_ease-in-out_infinite]" />
                     赞助
                   </Button>
                 </router-link>
                 <template v-if="isLoggedIn">
-                  <Button variant="outline" class="w-full justify-start gap-2">
+                  <Button variant="ghost" class="w-full justify-start gap-2 rounded-md text-muted-foreground hover:text-foreground">
                     <User class="h-4 w-4" />
                     个人主页
                   </Button>
-                  <Button variant="outline" class="w-full justify-start gap-2">
+                  <Button variant="ghost" class="w-full justify-start gap-2 rounded-md text-muted-foreground hover:text-foreground">
                     <Bookmark class="h-4 w-4" />
                     我的收藏
                   </Button>
-                  <Button variant="outline" class="w-full justify-start gap-2 text-destructive" @click="toggleLogin">
+                  <Button variant="ghost" class="w-full justify-start gap-2 rounded-md text-destructive hover:bg-destructive/10 hover:text-destructive" @click="toggleLogin">
                     <LogOut class="h-4 w-4" />
                     退出登录
                   </Button>
                 </template>
-                <Button v-else class="w-full justify-start gap-2" @click="toggleLogin">
+                <Button v-else class="w-full justify-start gap-2 rounded-md" @click="toggleLogin">
                   <LogIn class="h-4 w-4" />
                   登录
                 </Button>
