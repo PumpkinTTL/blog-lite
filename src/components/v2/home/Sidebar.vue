@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Mail, ArrowRight, Megaphone, Github, Twitter, Rss } from 'lucide-vue-next'
+import { Mail, ArrowRight, Megaphone, Github, Twitter, Rss, Users } from 'lucide-vue-next'
 import type { Resource } from '@/data/mockData'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -32,7 +32,10 @@ const socialLinks = [
 
     <!-- 社交媒体 -->
     <Card class="shadow-none rounded-xl p-5">
-      <h3 class="text-sm font-semibold">关注我们</h3>
+      <h3 class="flex items-center gap-2 text-sm font-semibold">
+        <Users class="h-4 w-4 text-muted-foreground" />
+        关注我们
+      </h3>
       <p class="mt-1 text-xs text-muted-foreground">获取最新动态和开源项目</p>
       <Separator class="my-3" />
       <div class="flex items-center gap-2">

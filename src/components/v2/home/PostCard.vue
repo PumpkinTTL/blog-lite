@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { Heart, Eye, Clock, BookOpen } from 'lucide-vue-next'
+import { Heart, Eye, Clock, BookOpen, Star } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import type { Resource } from '@/data/mockData'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 
 const props = defineProps<{
   post: Resource
@@ -62,6 +61,7 @@ function estimateReadTime(post: Resource): number {
         v-if="post.featured"
         class="absolute right-2.5 top-2.5 border-none bg-amber-500/95 text-[10px] font-semibold text-white shadow-sm"
       >
+        <Star class="mr-0.5 h-3 w-3 fill-current" />
         精选
       </Badge>
     </div>

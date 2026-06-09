@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 
 const props = defineProps<{
   activeCategory: string
@@ -25,9 +24,9 @@ const emit = defineEmits<{
 }>()
 
 const categories = [
-  { name: '全部', color: '#6B7280' },
-  { name: '前端', color: '#3B82F6' },
-  { name: '后端', color: '#10B981' },
+  { name: '全部', color: '#94A3B8' },
+  { name: '前端', color: '#6366F1' },
+  { name: '后端', color: '#14B8A6' },
   { name: '设计', color: '#EC4899' },
   { name: 'AI', color: '#8B5CF6' },
   { name: '工具', color: '#F59E0B' },
@@ -50,10 +49,9 @@ const tagsMap: Record<string, string[]> = {
 const currentTags = computed(() => tagsMap[props.activeCategory] || tagsMap['全部'])
 
 function onCategoryChange(value: string | number | boolean) {
-  if (typeof value === 'string') {
-    emit('update:activeCategory', value)
-    emit('update:activeTag', '')
-  }
+  if (typeof value !== 'string') return
+  emit('update:activeCategory', value)
+  emit('update:activeTag', '')
 }
 </script>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Heart, Eye, Clock, BookOpen } from 'lucide-vue-next'
+import { Heart, Eye, Clock, BookOpen, Star } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import type { Resource } from '@/data/mockData'
 import { Badge } from '@/components/ui/badge'
@@ -118,6 +118,7 @@ function estimateReadTime(post: Resource): number {
           v-if="post.featured"
           class="ml-auto border-none bg-amber-500/90 text-[10px] font-semibold text-white shadow-sm"
         >
+          <Star class="mr-0.5 h-3 w-3 fill-current" />
           精选
         </Badge>
       </div>

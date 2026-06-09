@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 
 const props = defineProps<{
   resource: Resource

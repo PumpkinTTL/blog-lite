@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { ArrowUpRight, Clock, Eye } from 'lucide-vue-next'
+import { ArrowUpRight, Clock, Eye, Star } from 'lucide-vue-next'
 import type { Resource } from '@/data/mockData'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
@@ -77,8 +77,8 @@ function relativeTime(iso: string): string {
           </div>
           <div class="flex flex-col justify-between p-5 sm:p-6">
             <div>
-              <span class="inline-flex items-center gap-1 text-xs font-medium text-primary">
-                <span class="h-1 w-1 rounded-full bg-primary" />
+              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-primary">
+                <Star class="h-3.5 w-3.5 fill-primary/20" />
                 主编推荐
               </span>
               <h3 class="mt-2 line-clamp-2 text-lg font-bold leading-snug transition-colors group-hover:text-primary sm:text-xl">

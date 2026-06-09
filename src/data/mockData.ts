@@ -22,8 +22,8 @@ export interface Resource {
 }
 
 const categories = [
-  { name: '前端', color: '#3B82F6' },
-  { name: '后端', color: '#10B981' },
+  { name: '前端', color: '#6366F1' },
+  { name: '后端', color: '#14B8A6' },
   { name: '设计', color: '#EC4899' },
   { name: 'AI', color: '#8B5CF6' },
   { name: '工具', color: '#F59E0B' }
