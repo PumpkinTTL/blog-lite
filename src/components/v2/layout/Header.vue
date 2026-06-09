@@ -29,6 +29,7 @@ import {
 } from '@/components/ui/sheet'
 import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import LoginModal from '@/components/v2/auth/LoginModal.vue'
 
 const route = useRoute()
 
@@ -41,6 +42,7 @@ const navItems = [
 
 // 模拟登录状态(后续接入真实用户状态替换)
 const isLoggedIn = ref(true)
+const showLoginModal = ref(false)
 
 type PlanType = 'Pro' | 'Plus' | 'Free'
 const planConfig: Record<PlanType, { class: string }> = {
@@ -76,7 +78,11 @@ const isActive = (to: string) => {
 }
 
 function toggleLogin() {
-  isLoggedIn.value = !isLoggedIn.value
+  if (isLoggedIn.value) {
+    isLoggedIn.value = false
+  } else {
+    showLoginModal.value = true
+  }
 }
 
 const mobileOpen = ref(false)
@@ -351,4 +357,10 @@ onBeforeUnmount(() => {
       </div>
     </div>
   </header>
+
+  <!-- 登录弹窗 -->
+  <LoginModal
+    v-model:open="showLoginModal"
+    @login-success="isLoggedIn = true"
+  />
 </template>
