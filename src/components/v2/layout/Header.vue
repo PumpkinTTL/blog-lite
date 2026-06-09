@@ -171,7 +171,7 @@ onBeforeUnmount(() => {
         </Button>
         <router-link to="/v2/donation">
           <Button size="sm" class="h-7 gap-1 rounded-full px-2.5 text-xs">
-                    <Heart class="h-3 w-3 fill-white text-white" />
+            <Heart class="h-3 w-3 fill-current" />
             赞助
           </Button>
         </router-link>
@@ -219,7 +219,7 @@ onBeforeUnmount(() => {
                       class="inline-flex items-center justify-center rounded p-0.5 hover:bg-accent transition-colors"
                       @click.stop="copyUid"
                     >
-                      <Check v-if="copied" class="h-3 w-3 text-green-500" />
+                      <Check v-if="copied" class="h-3 w-3 text-green-500 dark:text-green-400" />
                       <Copy v-else class="h-3 w-3" />
                     </button>
                   </div>
@@ -291,7 +291,7 @@ onBeforeUnmount(() => {
                       class="inline-flex items-center justify-center rounded p-0.5 hover:bg-accent transition-colors"
                       @click.stop="copyUid"
                     >
-                      <Check v-if="copied" class="h-3 w-3 text-green-500" />
+                      <Check v-if="copied" class="h-3 w-3 text-green-500 dark:text-green-400" />
                       <Copy v-else class="h-3 w-3" />
                     </button>
                   </div>
@@ -331,7 +331,7 @@ onBeforeUnmount(() => {
                 </Button>
                 <router-link to="/v2/donation" class="block" @click="mobileOpen = false">
                   <Button class="w-full justify-start gap-2 rounded-full">
-            <Heart class="h-3 w-3 fill-white text-white" />
+                    <Heart class="h-3 w-3 fill-current" />
                     赞助
                   </Button>
                 </router-link>

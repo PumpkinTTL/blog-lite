@@ -102,7 +102,7 @@ const navGroups = [
       <div class="flex flex-col items-center gap-1 text-[11px] text-muted-foreground/60 sm:flex-row sm:justify-between">
         <span>&copy; {{ currentYear }} Blog Lite. All rights reserved.</span>
         <span class="inline-flex items-center gap-1">
-          Made with <Heart class="h-3 w-3 fill-red-500 text-red-500" /> Vue 3 + shadcn-vue
+          Made with <Heart class="h-3 w-3 fill-red-500 text-red-500 dark:fill-red-400 dark:text-red-400" /> Vue 3 + shadcn-vue
         </span>
       </div>
     </div>

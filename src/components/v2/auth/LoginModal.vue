@@ -179,7 +179,7 @@ watch(() => props.open, (val) => {
           <template v-else>
             <div class="space-y-3">
               <div class="space-y-1.5">
-                <Label>邀请码 <span class="text-red-500">*</span></Label>
+                <Label>邀请码 <span class="text-red-500 dark:text-red-400">*</span></Label>
                 <div class="relative">
                   <Ticket class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input v-model="registerForm.inviteCode" placeholder="输入邀请码" class="pl-9" />
