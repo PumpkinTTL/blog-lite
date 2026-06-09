@@ -34,15 +34,15 @@ function isHighRated(likes: number): boolean {
 
 <template>
   <Card
-    class="group relative flex cursor-pointer shadow-none flex-col overflow-hidden rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
+    class="group relative flex cursor-pointer shadow-none flex-col overflow-hidden rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
     @click="goToResource"
   >
     <!-- 封面 -->
-    <div class="relative aspect-[4/3] overflow-hidden">
+    <div class="relative aspect-video overflow-hidden rounded-t-xl bg-muted">
       <img
         :src="resource.image"
         :alt="resource.title"
-        class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        class="h-full w-full object-cover"
         loading="lazy"
       />
       <Badge
@@ -68,12 +68,12 @@ function isHighRated(likes: number): boolean {
       <h3 class="line-clamp-2 text-sm font-semibold leading-snug transition-colors group-hover:text-primary">
         {{ resource.title }}
       </h3>
-      <p class="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+      <p class="mt-1.5 line-clamp-2 shrink-0 text-xs leading-relaxed text-muted-foreground">
         {{ resource.description }}
       </p>
 
       <!-- 标签 -->
-      <div v-if="resource.tags.length" class="mt-2 flex flex-wrap gap-1">
+      <div v-if="resource.tags.length" class="mt-2 flex min-h-[1.375rem] shrink-0 flex-wrap gap-1 pb-3">
         <Badge
           v-for="tag in resource.tags.slice(0, 3)"
           :key="tag"

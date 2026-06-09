@@ -39,7 +39,7 @@ function estimateReadTime(post: Resource): number {
 
 <template>
   <Card
-    class="group flex cursor-pointer shadow-none gap-4 overflow-hidden rounded-xl p-3 transition-all duration-200 hover:border-primary/30 hover:shadow-sm sm:gap-5 sm:p-4"
+    class="group flex cursor-pointer shadow-none gap-4 overflow-hidden rounded-xl p-3 transition-all duration-200 hover:shadow-sm sm:gap-5 sm:p-4"
     @click="goToArticle"
   >
     <!-- 封面 -->
@@ -47,7 +47,7 @@ function estimateReadTime(post: Resource): number {
       <img
         :src="post.image"
         :alt="post.title"
-        class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        class="h-full w-full object-cover"
         loading="lazy"
       />
       <Badge

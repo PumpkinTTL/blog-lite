@@ -57,15 +57,15 @@ function relativeTime(iso: string): string {
     <div class="grid gap-5 lg:grid-cols-5">
       <!-- 主推 -->
       <Card
-        class="group relative col-span-1 cursor-pointer shadow-none overflow-hidden rounded-xl transition-all hover:border-primary/30 hover:shadow-lg lg:col-span-3"
+        class="group relative col-span-1 cursor-pointer shadow-none overflow-hidden rounded-xl transition-all hover:shadow-lg lg:col-span-3"
         @click="goToArticle(featured.primary.id)"
       >
         <div class="grid h-full sm:grid-cols-2">
-          <div class="relative aspect-[16/10] overflow-hidden sm:aspect-auto">
+          <div class="relative aspect-[16/10] overflow-hidden rounded-t-xl sm:aspect-auto sm:rounded-l-xl sm:rounded-tr-none">
             <img
               :src="featured.primary.image"
               :alt="featured.primary.title"
-              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              class="h-full w-full object-cover"
               loading="lazy"
             />
             <Badge
@@ -115,7 +115,7 @@ function relativeTime(iso: string): string {
           <Card
             v-for="post in featured.secondary"
             :key="post.id"
-            class="group relative cursor-pointer shadow-none overflow-hidden rounded-xl transition-all hover:border-primary/30 hover:shadow-md"
+            class="group relative cursor-pointer shadow-none overflow-hidden rounded-xl transition-all hover:shadow-md"
             @click="goToArticle(post.id)"
           >
           <div class="flex h-full gap-3 p-3">
@@ -123,7 +123,7 @@ function relativeTime(iso: string): string {
               <img
                 :src="post.image"
                 :alt="post.title"
-                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                class="h-full w-full object-cover"
                 loading="lazy"
               />
             </div>
