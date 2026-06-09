@@ -10,7 +10,6 @@ import {
   X,
   Sun,
   Moon,
-  Search,
   Bell,
   User,
   LogIn,
@@ -36,7 +35,6 @@ const route = useRoute()
 const navItems = [
   { label: '首页', to: '/v2', icon: Home },
   { label: '商城', to: '/v2/shop', icon: ShoppingBag },
-  { label: '赞助', to: '/v2/donation', icon: Heart },
   { label: '关于', to: '/v2/about', icon: Info },
 ]
 
@@ -163,9 +161,6 @@ onBeforeUnmount(() => {
 
       <!-- Desktop Actions -->
       <div class="hidden items-center gap-1 md:flex">
-        <Button variant="ghost" size="icon" class="h-9 w-9">
-          <Search class="h-4 w-4" />
-        </Button>
         <Button variant="ghost" size="icon" class="relative h-9 w-9">
           <Bell class="h-4 w-4" />
           <span v-if="isLoggedIn" class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive" />
@@ -174,6 +169,12 @@ onBeforeUnmount(() => {
           <Sun v-if="isDark" class="h-4 w-4" />
           <Moon v-else class="h-4 w-4" />
         </Button>
+        <router-link to="/v2/donation">
+          <Button size="sm" class="h-7 gap-1 rounded-full px-2.5 text-xs">
+                    <Heart class="h-3 w-3 fill-white text-white" />
+            赞助
+          </Button>
+        </router-link>
         <Separator orientation="vertical" class="mx-2 h-5" />
 
         <!-- 已登录:头像下拉菜单 -->
@@ -325,13 +326,15 @@ onBeforeUnmount(() => {
               <!-- Mobile Actions -->
               <div class="flex flex-col gap-2 px-2">
                 <Button variant="outline" class="w-full justify-start gap-2">
-                  <Search class="h-4 w-4" />
-                  搜索
-                </Button>
-                <Button variant="outline" class="w-full justify-start gap-2">
                   <Bell class="h-4 w-4" />
                   通知
                 </Button>
+                <router-link to="/v2/donation" class="block" @click="mobileOpen = false">
+                  <Button class="w-full justify-start gap-2 rounded-full">
+            <Heart class="h-3 w-3 fill-white text-white" />
+                    赞助
+                  </Button>
+                </router-link>
                 <template v-if="isLoggedIn">
                   <Button variant="outline" class="w-full justify-start gap-2">
                     <User class="h-4 w-4" />

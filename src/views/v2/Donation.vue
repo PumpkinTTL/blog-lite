@@ -82,44 +82,42 @@ const accordionValue = ref<string[]>([])
 
 <template>
   <Layout>
-    <!-- Hero -->
-    <section class="relative overflow-hidden border-b">
-      <div class="pointer-events-none absolute inset-0 -z-10">
-        <div class="absolute left-1/2 top-1/2 h-72 w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-500/5 blur-3xl" />
-      </div>
-      <div class="mx-auto max-w-4xl px-4 py-14 text-center sm:px-6 sm:py-20">
-        <span class="inline-flex items-center rounded-full border bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
-          <Heart class="mr-1.5 h-3 w-3 text-rose-500" />
-          赞助支持
-        </span>
-        <h1 class="mt-5 text-4xl font-bold tracking-tight sm:text-5xl">
-          你的支持,是
-          <span class="bg-gradient-to-r from-rose-500 to-orange-500 bg-clip-text text-transparent">
-            持续创作
-          </span>
-          的动力
-        </h1>
-        <p class="mx-auto mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
-          如果 Blog Lite 的内容对你有帮助,欢迎请作者喝杯咖啡。
-          所有赞助将用于服务器、内容创作与作者补贴。
-        </p>
+    <!-- 标题区 -->
+    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+      <Card class="shadow-none rounded-xl p-5">
+        <div class="flex flex-col gap-1">
+          <Badge variant="outline" class="w-fit text-[10px] font-medium uppercase tracking-wider">
+            <Heart class="mr-1 h-3 w-3 text-rose-500" />
+            赞助支持
+          </Badge>
+          <div class="flex items-baseline gap-3">
+            <h2 class="scroll-m-20 text-lg font-bold tracking-tight sm:text-xl">
+              你的支持，是<span class="bg-gradient-to-r from-rose-500 to-orange-500 bg-clip-text text-transparent">持续创作</span>的动力
+            </h2>
+            <p class="text-xs text-muted-foreground">
+              如果 Blog Lite 的内容对你有帮助，欢迎请作者喝杯咖啡。
+            </p>
+          </div>
+        </div>
+      </Card>
+    </section>
 
-        <!-- 总数据 -->
-        <div class="mx-auto mt-8 inline-flex flex-wrap items-center justify-center gap-6 rounded-xl border bg-card/60 p-5 backdrop-blur sm:gap-10">
-          <div>
-            <div class="text-2xl font-bold tracking-tight">{{ stats.totalRaised }}</div>
-            <div class="text-xs text-muted-foreground">累计赞助</div>
-          </div>
-          <div class="h-8 w-px bg-border" />
-          <div>
-            <div class="text-2xl font-bold tracking-tight">{{ stats.supporterCount }}</div>
-            <div class="text-xs text-muted-foreground">赞助人数</div>
-          </div>
-          <div class="h-8 w-px bg-border" />
-          <div>
-            <div class="text-2xl font-bold tracking-tight">{{ stats.articleCount }}</div>
-            <div class="text-xs text-muted-foreground">产出文章</div>
-          </div>
+    <!-- 总数据 -->
+    <section class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+        <div class="text-center">
+          <div class="text-2xl font-bold tracking-tight">{{ stats.totalRaised }}</div>
+          <div class="text-xs text-muted-foreground">累计赞助</div>
+        </div>
+        <div class="h-8 w-px bg-border" />
+        <div class="text-center">
+          <div class="text-2xl font-bold tracking-tight">{{ stats.supporterCount }}</div>
+          <div class="text-xs text-muted-foreground">赞助人数</div>
+        </div>
+        <div class="h-8 w-px bg-border" />
+        <div class="text-center">
+          <div class="text-2xl font-bold tracking-tight">{{ stats.articleCount }}</div>
+          <div class="text-xs text-muted-foreground">产出文章</div>
         </div>
       </div>
     </section>
@@ -216,16 +214,13 @@ const accordionValue = ref<string[]>([])
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="mx-auto max-w-3xl px-4 pb-16 sm:px-6">
+    <section id="faq" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
       <Separator class="mb-10" />
-      <div class="text-center">
-        <SectionHeading
-          align="center"
+      <SectionHeading
           eyebrow="FAQ"
           title="常见问题"
           description="关于赞助,你想知道的都在这里"
         />
-      </div>
 
       <Accordion
         v-model="accordionValue"
