@@ -60,7 +60,7 @@ const badgeLabels: Record<string, string> = {
 <template>
   <div>
     <!-- 标题区 -->
-    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 v2-animate-up">
       <SectionHeading
         eyebrow="精选商城"
         title="为开发者准备的优质资源"
@@ -69,7 +69,7 @@ const badgeLabels: Record<string, string> = {
     </section>
 
     <!-- 促销 banner -->
-    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 v2-animate-up v2-delay-1">
       <div class="flex items-center gap-3 rounded-xl border bg-gradient-to-r from-amber-50 to-orange-50 p-4 dark:from-amber-950/20 dark:to-orange-950/20">
         <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-500/15">
           <Sparkles class="h-5 w-5 text-amber-600 dark:text-amber-400" />
@@ -87,7 +87,7 @@ const badgeLabels: Record<string, string> = {
     </section>
 
     <!-- 分类筛选 -->
-    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 v2-animate-up v2-delay-2">
       <div class="flex items-center gap-2 overflow-x-auto">
         <button
           v-for="cat in categories"
@@ -113,7 +113,7 @@ const badgeLabels: Record<string, string> = {
     </section>
 
     <!-- 商品网格 -->
-    <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 v2-animate-up v2-delay-3">
       <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <Card
           v-for="product in filteredProducts"
@@ -168,7 +168,7 @@ const badgeLabels: Record<string, string> = {
     </section>
 
     <!-- 底部说明 -->
-    <section class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 v2-animate-up v2-delay-4">
       <Separator class="mb-6" />
       <div class="grid gap-4 text-center sm:grid-cols-3">
         <div>

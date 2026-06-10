@@ -82,7 +82,7 @@ const accordionValue = ref<string[]>([])
 <template>
   <div>
     <!-- 标题区 -->
-    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 v2-animate-up">
       <Card class="shadow-none rounded-xl p-5">
         <div class="flex flex-col gap-1">
           <Badge variant="outline" class="w-fit text-[10px] font-medium uppercase tracking-wider">
@@ -102,7 +102,7 @@ const accordionValue = ref<string[]>([])
     </section>
 
     <!-- 总数据 -->
-    <section class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8 v2-animate-up v2-delay-1">
       <div class="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
         <div class="text-center">
           <div class="text-2xl font-bold tracking-tight">{{ stats.totalRaised }}</div>
@@ -122,7 +122,7 @@ const accordionValue = ref<string[]>([])
     </section>
 
     <!-- 套餐 -->
-    <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 v2-animate-up v2-delay-2">
       <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <Card
           v-for="tier in tiers"
@@ -183,7 +183,7 @@ const accordionValue = ref<string[]>([])
     </section>
 
     <!-- 赞助者墙 -->
-    <section class="mx-auto max-w-6xl px-4 pb-12 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-6xl px-4 pb-12 sm:px-6 lg:px-8 v2-animate-up v2-delay-3">
       <Separator class="mb-10" />
 
       <SectionHeading
@@ -213,7 +213,7 @@ const accordionValue = ref<string[]>([])
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+    <section id="faq" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8 v2-animate-up v2-delay-4">
       <Separator class="mb-10" />
       <SectionHeading
           eyebrow="FAQ"

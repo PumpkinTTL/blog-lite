@@ -37,7 +37,7 @@ const milestones = [
 <template>
   <div>
   <!-- 标题区 -->
-    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 v2-animate-up">
       <Card class="shadow-none rounded-xl p-5">
         <div class="flex flex-col gap-1">
           <Badge variant="outline" class="w-fit text-[10px] font-medium uppercase tracking-wider">
@@ -56,7 +56,7 @@ const milestones = [
     </section>
 
     <!-- 数据条 -->
-    <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 v2-animate-up v2-delay-1">
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <Card v-for="stat in stats" :key="stat.label" class="shadow-none text-center">
           <CardContent class="flex flex-col items-center justify-center py-5">
@@ -69,7 +69,7 @@ const milestones = [
     </section>
 
     <!-- 我们的故事 -->
-    <section class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8 v2-animate-up v2-delay-2">
       <div class="grid gap-6 sm:grid-cols-[1fr_2fr]">
         <SectionHeading
           title="我们的故事"
@@ -84,7 +84,7 @@ const milestones = [
     </section>
 
     <!-- 技术栈 -->
-    <section class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8 v2-animate-up v2-delay-3">
       <SectionHeading
         eyebrow="Stack"
         title="技术栈"
@@ -105,7 +105,7 @@ const milestones = [
     </section>
 
     <!-- 时间线 -->
-    <section id="changelog" class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+    <section id="changelog" class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8 v2-animate-up v2-delay-4">
       <SectionHeading
         eyebrow="Timeline"
         title="里程碑"
@@ -130,7 +130,7 @@ const milestones = [
     </section>
 
     <!-- 联系我们 -->
-    <section id="contact" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+    <section id="contact" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8 v2-animate-up v2-delay-5">
       <Separator class="mb-10" />
       <SectionHeading
         eyebrow="Contact"
