@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { nextTick } from 'vue'
+import { progressStart, progressDone } from '@/utils/nprogress'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -76,11 +77,15 @@ const router = createRouter({
 
 // 路由守卫
 router.beforeEach((to, _from, next) => {
-  // 设置页面标题
+  progressStart()
   if (to.meta?.title) {
     document.title = `${to.meta.title} - Vue Template`
   }
   next()
+})
+
+router.afterEach(() => {
+  progressDone()
 })
 
 export default router

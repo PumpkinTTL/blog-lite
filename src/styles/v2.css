@@ -276,3 +276,15 @@
 .v2-root .animate__animated {
   --animate-duration: 0.55s;
 }
+
+/* ═══ NProgress 路由加载条 — 主题色由 JS 动态注入 ═══ */
+#nprogress {
+  pointer-events: none;
+}
+#nprogress .bar {
+  background: var(--np-color, #3b82f6) !important;
+  height: 2.5px;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--np-color, #3b82f6), 0 0 5px var(--np-color, #3b82f6) !important;
+}
