@@ -35,7 +35,7 @@ function loadMore() {
       v-if="posts.length > 0 && (viewMode ?? 'grid') === 'grid'"
       class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
     >
-      <PostCard v-for="post in visiblePosts" :key="post.id" :post="post" />
+      <PostCard v-for="(post, idx) in visiblePosts" :key="post.id" :post="post" :index="idx" />
     </div>
 
     <!-- 列表视图 -->
@@ -43,7 +43,7 @@ function loadMore() {
       v-else-if="posts.length > 0 && viewMode === 'list'"
       class="flex flex-col gap-3"
     >
-      <PostListItem v-for="post in visiblePosts" :key="post.id" :post="post" />
+      <PostListItem v-for="(post, idx) in visiblePosts" :key="post.id" :post="post" :index="idx" />
     </div>
 
     <!-- 空状态 -->

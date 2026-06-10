@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/card'
 
 const props = defineProps<{
   post: Resource
+  index?: number
 }>()
 
 const router = useRouter()
@@ -39,7 +40,8 @@ function estimateReadTime(post: Resource): number {
 
 <template>
   <Card
-    class="group flex cursor-pointer shadow-none gap-4 overflow-hidden rounded-xl p-3 transition-all duration-200 hover:shadow-sm sm:gap-5 sm:p-4"
+    class="group flex cursor-pointer shadow-none gap-4 overflow-hidden rounded-xl p-3 transition-all duration-200 hover:shadow-sm sm:gap-5 sm:p-4 v2-animate-up"
+    :class="index != null ? `v2-delay-${(index % 8) + 1}` : ''"
     @click="goToArticle"
   >
     <!-- 封面 -->
