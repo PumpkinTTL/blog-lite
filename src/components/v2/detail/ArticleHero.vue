@@ -36,7 +36,7 @@ function authorInitial(name: string): string {
     <!-- 内容:底部对齐,白色文字 -->
     <div class="relative flex min-h-[280px] flex-col justify-end p-5 sm:min-h-[320px] sm:p-7 lg:min-h-[380px] lg:p-9">
       <!-- 分类 + 难度 -->
-      <div class="mb-2 flex items-center gap-2">
+      <div class="mb-2 flex items-center gap-2 v2-animate-left v2-delay-1">
         <Badge class="bg-white/20 text-xs text-white backdrop-blur-md">
           {{ article.category }}
         </Badge>
@@ -45,17 +45,17 @@ function authorInitial(name: string): string {
       </div>
 
       <!-- 标题:大字号白色,tracking-tight -->
-      <h1 class="mb-2 max-w-3xl text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-5xl">
+      <h1 class="mb-2 max-w-3xl text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-5xl v2-animate-up v2-delay-2">
         {{ article.title }}
       </h1>
 
       <!-- 描述:适中字号,白色/80 -->
-      <p class="mb-3 max-w-2xl text-sm leading-relaxed text-white/80 sm:text-base">
+      <p class="mb-3 max-w-2xl text-sm leading-relaxed text-white/80 sm:text-base v2-animate-up v2-delay-3">
         {{ article.description }}
       </p>
 
       <!-- 元信息:单行排列,backdrop-blur -->
-      <div class="flex flex-wrap items-center gap-3 rounded-lg bg-black/20 px-3 py-2 text-xs text-white/70 backdrop-blur-sm">
+      <div class="flex flex-wrap items-center gap-3 rounded-lg bg-black/20 px-3 py-2 text-xs text-white/70 backdrop-blur-sm v2-animate-up v2-delay-4">
         <div class="flex items-center gap-1.5">
           <Avatar class="h-5 w-5 border border-white/30">
             <AvatarImage :src="article.author.avatar" :alt="article.author.name" />
@@ -79,7 +79,7 @@ function authorInitial(name: string): string {
       </div>
 
       <!-- 标签:底部 -->
-      <div v-if="article.tags.length" class="mt-3 flex flex-wrap gap-1.5">
+      <div v-if="article.tags.length" class="mt-3 flex flex-wrap gap-1.5 v2-animate-up v2-delay-5">
         <Badge
           v-for="tag in article.tags"
           :key="tag"

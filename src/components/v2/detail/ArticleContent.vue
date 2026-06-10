@@ -36,7 +36,7 @@ function onGetCatalog(list: HeadList[]) {
     <!-- AI 导读:shadcn Alert 标准组件 -->
     <Alert
       v-if="article.lead"
-      class="border-primary/20 bg-primary/[0.04]"
+      class="border-primary/20 bg-primary/[0.04] v2-animate-in v2-delay-2"
     >
       <Sparkles class="h-4 w-4 text-primary" />
       <AlertTitle class="text-primary">AI 导读</AlertTitle>
@@ -46,7 +46,7 @@ function onGetCatalog(list: HeadList[]) {
     </Alert>
 
     <!-- Markdown 正文(已去重 H1) -->
-    <div class="article-md">
+    <div class="article-md v2-animate-up v2-delay-3">
       <MdPreview
         :id="previewId"
         :model-value="processedMarkdown"
