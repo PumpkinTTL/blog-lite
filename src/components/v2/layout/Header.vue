@@ -207,7 +207,7 @@ onBeforeUnmount(() => {
                 v-if="userDropdownOpen"
                 data-user-dropdown
                 :style="dropdownStyle"
-                class="z-50 w-48 rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
+                class="v2-root z-50 w-48 rounded-md border-border/40 bg-card p-1 text-card-foreground shadow-lg dark:bg-[hsl(222,18%,15%)]"
               >
                 <!-- 用户信息 -->
                 <div class="px-2 pt-1.5 pb-2">

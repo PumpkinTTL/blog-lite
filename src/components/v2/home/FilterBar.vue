@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { Search, X, ArrowDownUp, LayoutGrid, List } from 'lucide-vue-next'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
@@ -48,6 +48,19 @@ const tagsMap: Record<string, string[]> = {
 
 const currentTags = computed(() => tagsMap[props.activeCategory] || tagsMap['全部'])
 
+const isStuck = ref(false)
+const sentinelRef = ref<HTMLElement | null>(null)
+
+function onSentinelRef(el: HTMLElement | null) {
+  sentinelRef.value = el
+  if (!el) return
+  const observer = new IntersectionObserver(
+    ([e]) => { isStuck.value = e.intersectionRatio < 1 },
+    { threshold: [1], rootMargin: '-65px 0px 0px 0px' }
+  )
+  observer.observe(el)
+}
+
 function onCategoryChange(value: string | number | boolean) {
   if (typeof value !== 'string') return
   emit('update:activeCategory', value)
@@ -56,7 +69,12 @@ function onCategoryChange(value: string | number | boolean) {
 </script>
 
 <template>
-  <Card class="sticky top-16 z-20 shadow-none rounded-xl">
+  <!-- sentinel for stuck detection -->
+  <div :ref="onSentinelRef" class="h-0" />
+  <Card
+    class="sticky top-16 z-20 shadow-none transition-all duration-200"
+    :class="isStuck ? 'rounded-t-none rounded-b-xl border-x-0 border-t-0 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.4)]' : 'rounded-xl'"
+  >
     <!-- 顶栏:分类 + 搜索 + 排序 + 数量 -->
     <div class="flex flex-col gap-3 px-3 pt-3 sm:flex-row sm:items-center sm:justify-between">
       <!-- 分类 -->
