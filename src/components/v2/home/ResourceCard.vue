@@ -34,7 +34,7 @@ function isHighRated(likes: number): boolean {
 
 <template>
   <Card
-    class="group relative flex cursor-pointer shadow-none flex-col overflow-hidden rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+    class="group relative flex cursor-pointer shadow-none flex-col overflow-hidden rounded-xl v2-card-hover hover:-translate-y-2 hover:shadow-md hover:border-primary/20"
     @click="goToResource"
   >
     <!-- 封面 -->
@@ -42,11 +42,11 @@ function isHighRated(likes: number): boolean {
       <img
         :src="resource.image"
         :alt="resource.title"
-        class="h-full w-full object-cover"
+        class="h-full w-full object-cover v2-img-zoom group-hover:scale-105"
         loading="lazy"
       />
       <Badge
-        class="absolute left-2.5 top-2.5 border-none shadow-sm backdrop-blur-sm"
+        class="absolute left-2.5 top-2.5 border-none shadow-sm backdrop-blur-sm v2-child-left v2-cd-1"
         :style="{ backgroundColor: resource.categoryColor + '20', color: resource.categoryColor }"
       >
         {{ resource.category }}
@@ -55,7 +55,7 @@ function isHighRated(likes: number): boolean {
       <Button
         variant="secondary"
         size="icon"
-        class="absolute right-2 top-2 h-7 w-7 cursor-pointer rounded-full opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        class="absolute right-2 top-2 h-7 w-7 cursor-pointer rounded-full opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground"
         aria-label="获取资源"
         @click.stop
       >
@@ -65,27 +65,27 @@ function isHighRated(likes: number): boolean {
 
     <!-- 内容 -->
     <div class="flex flex-1 flex-col p-3">
-      <h3 class="line-clamp-2 text-sm font-semibold leading-snug transition-colors group-hover:text-primary">
+      <h3 class="line-clamp-2 text-sm font-semibold leading-snug transition-all duration-300 group-hover:text-primary v2-child-up v2-cd-2">
         {{ resource.title }}
       </h3>
-      <p class="mt-1.5 line-clamp-2 shrink-0 text-xs leading-relaxed text-muted-foreground">
+      <p class="mt-1.5 line-clamp-2 shrink-0 text-xs leading-relaxed text-muted-foreground v2-child-up v2-cd-3">
         {{ resource.description }}
       </p>
 
       <!-- 标签 -->
-      <div v-if="resource.tags.length" class="mt-2 flex min-h-[1.375rem] shrink-0 flex-wrap gap-1 pb-3">
+      <div v-if="resource.tags.length" class="mt-2 flex min-h-[1.375rem] shrink-0 flex-wrap gap-1 pb-3 v2-child-up v2-cd-4">
         <Badge
           v-for="tag in resource.tags.slice(0, 3)"
           :key="tag"
           variant="secondary"
-          class="text-[10px] font-medium"
+          class="text-[10px] font-medium v2-lift hover:-translate-y-px hover:shadow-sm"
         >
           {{ tag }}
         </Badge>
       </div>
 
       <!-- 底部元信息 -->
-      <div class="mt-auto flex items-center justify-between gap-2 border-t pt-2.5 text-[11px] text-muted-foreground">
+      <div class="mt-auto flex items-center justify-between gap-2 border-t pt-2.5 text-[11px] text-muted-foreground v2-child-up v2-cd-5">
         <!-- 作者 + 日期 -->
         <div class="flex min-w-0 items-center gap-1.5">
           <Avatar class="h-5 w-5">

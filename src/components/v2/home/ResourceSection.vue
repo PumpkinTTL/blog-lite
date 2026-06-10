@@ -16,7 +16,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section v-if="resources.length" class="mx-auto max-w-7xl px-4 pt-10 pb-4 sm:px-6 lg:px-8 v2-animate-up v2-delay-3">
+  <section v-if="resources.length" v-animate class="mx-auto max-w-7xl px-4 pt-10 pb-4 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.20s">
     <!-- 标题区:SectionHeading 内置按钮 -->
     <div class="mb-6">
       <SectionHeading
@@ -35,11 +35,15 @@ onMounted(() => {
 
     <!-- 资源网格:桌面 4 列 / 平板 2 列 / 移动 1 列 -->
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <ResourceCard
-        v-for="resource in resources"
+      <div
+        v-for="(resource, idx) in resources"
         :key="resource.id"
-        :resource="resource"
-      />
+        v-animate
+        class="animate__animated animate__fadeInUp"
+        :style="{ animationDelay: `${0.15 + idx * 0.08}s` }"
+      >
+        <ResourceCard :resource="resource" />
+      </div>
     </div>
   </section>
 </template>

@@ -174,6 +174,7 @@
   border-color: hsl(var(--v2-border));
 }
 
+/* ═══ heartbeat 赞助按钮 ═══ */
 @keyframes heartbeat {
   0%, 70%, 100% {
     transform: translateY(0) scale(1);
@@ -186,79 +187,92 @@
   }
 }
 
-/* ═══ v2 细腻入场动画（更慢、更柔，避免“傻快傻快”） ═══ */
-@keyframes v2-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ═══ 通用交互微动效（对齐 v1 transition 节奏） ═══ */
+
+/* 卡片标准 hover：0.35s + 弹性缓动，对齐 v1 card 0.4s */
+.v2-card-hover {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes v2-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* 图片缩放：0.55s + 弹性缓动，对齐 v1 cover 0.6s cubic-bezier(0.33,1,0.68,1) */
+.v2-img-zoom {
+  transition: transform 0.55s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-@keyframes v2-fade-left {
-  from {
-    opacity: 0;
-    transform: translateX(-14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+/* 弹性弹簧（按钮、图标弹跳）- 对齐 v1 bookmark cubic-bezier(0.34,1.56,0.64,1) */
+.v2-spring {
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes v2-fade-right {
-  from {
-    opacity: 0;
-    transform: translateX(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+/* 微上浮（标签、统计 pill hover）- 对齐 v1 tag translateY(-1px) */
+.v2-lift {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes v2-scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.975) translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+/* ═══ 子元素微入场 — 由父级 .v2-animated 触发（transition 方式，仅视口内播放） ═══ */
+.v2-child-up {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.v2-child-left {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.v2-child-right {
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.v2-child-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.v2-child-fade {
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 动画工具类 */
-.v2-animate-up {
-  animation: v2-fade-up 0.68s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.v2-animate-in {
-  animation: v2-fade-in 0.58s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.v2-animate-left {
-  animation: v2-fade-left 0.68s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.v2-animate-right {
-  animation: v2-fade-right 0.68s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.v2-animate-scale {
-  animation: v2-scale-in 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+/* 更明显的子元素入场 (FilterBar 等需要清晰动画的 UI，10px 位移) */
+.v2-child-up-clear {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 阶梯延迟 */
-.v2-delay-1 { animation-delay: 90ms; }
-.v2-delay-2 { animation-delay: 180ms; }
-.v2-delay-3 { animation-delay: 270ms; }
-.v2-delay-4 { animation-delay: 360ms; }
-.v2-delay-5 { animation-delay: 450ms; }
-.v2-delay-6 { animation-delay: 540ms; }
-.v2-delay-7 { animation-delay: 630ms; }
-.v2-delay-8 { animation-delay: 720ms; }
+/* 父级进入视口后，子元素 transition 到最终态 */
+.v2-animated .v2-child-up,
+.v2-animated .v2-child-up-clear,
+.v2-animated .v2-child-left,
+.v2-animated .v2-child-right,
+.v2-animated .v2-child-scale {
+  opacity: 1;
+  transform: translate(0) scale(1);
+}
+.v2-animated .v2-child-fade {
+  opacity: 1;
+}
+
+/* 子元素阶梯延迟 — 40ms 递增，轻量不拖沓 */
+.v2-cd-1 { transition-delay: 0.04s; }
+.v2-cd-2 { transition-delay: 0.08s; }
+.v2-cd-3 { transition-delay: 0.12s; }
+.v2-cd-4 { transition-delay: 0.16s; }
+.v2-cd-5 { transition-delay: 0.20s; }
+.v2-cd-6 { transition-delay: 0.24s; }
+.v2-cd-7 { transition-delay: 0.28s; }
+.v2-cd-8 { transition-delay: 0.32s; }
+.v2-cd-9 { transition-delay: 0.36s; }
+.v2-cd-10 { transition-delay: 0.40s; }
+
+/* ═══ animate.css 覆盖：v2 使用与 v1 一致的 0.55s duration ═══ */
+.v2-root .animate__animated {
+  --animate-duration: 0.55s;
+}

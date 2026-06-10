@@ -82,18 +82,18 @@ const accordionValue = ref<string[]>([])
 <template>
   <div>
     <!-- 标题区 -->
-    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 v2-animate-up">
+    <section v-animate class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 animate__animated animate__fadeInUp">
       <Card class="shadow-none rounded-xl p-5">
         <div class="flex flex-col gap-1">
-          <Badge variant="outline" class="w-fit text-[10px] font-medium uppercase tracking-wider">
+          <Badge variant="outline" class="w-fit text-[10px] font-medium uppercase tracking-wider v2-child-left v2-cd-1">
             <Heart class="mr-1 h-3 w-3 text-rose-500" />
             赞助支持
           </Badge>
           <div class="flex items-baseline gap-3">
-            <h2 class="scroll-m-20 text-lg font-bold tracking-tight sm:text-xl">
+            <h2 class="scroll-m-20 text-lg font-bold tracking-tight sm:text-xl v2-child-up v2-cd-2">
               你的支持，是<span class="bg-gradient-to-r from-rose-500 to-orange-500 bg-clip-text text-transparent">持续创作</span>的动力
             </h2>
-            <p class="text-xs text-muted-foreground">
+            <p class="text-xs text-muted-foreground v2-child-fade v2-cd-3">
               如果 Blog Lite 的内容对你有帮助，欢迎请作者喝杯咖啡。
             </p>
           </div>
@@ -102,7 +102,7 @@ const accordionValue = ref<string[]>([])
     </section>
 
     <!-- 总数据 -->
-    <section class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8 v2-animate-up v2-delay-1">
+    <section v-animate class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
       <div class="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
         <div class="text-center">
           <div class="text-2xl font-bold tracking-tight">{{ stats.totalRaised }}</div>
@@ -122,7 +122,7 @@ const accordionValue = ref<string[]>([])
     </section>
 
     <!-- 套餐 -->
-    <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 v2-animate-up v2-delay-2">
+    <section v-animate class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
       <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <Card
           v-for="tier in tiers"
@@ -139,17 +139,17 @@ const accordionValue = ref<string[]>([])
           </Badge>
 
           <CardHeader class="pb-3">
-            <CardTitle class="text-base">{{ tier.name }}</CardTitle>
-            <CardDescription>{{ tier.description }}</CardDescription>
+            <CardTitle class="text-base v2-child-up v2-cd-1">{{ tier.name }}</CardTitle>
+            <CardDescription class="v2-child-up v2-cd-2">{{ tier.description }}</CardDescription>
           </CardHeader>
 
           <CardContent class="flex-1 pb-3">
-            <div class="mb-4 flex items-baseline gap-1">
+            <div class="mb-4 flex items-baseline gap-1 v2-child-scale v2-cd-3">
               <span class="text-3xl font-bold tracking-tight">¥{{ tier.amount }}</span>
               <span class="text-sm text-muted-foreground">/ 次</span>
             </div>
 
-            <ul class="space-y-2">
+            <ul class="space-y-2 v2-child-up v2-cd-4">
               <li
                 v-for="benefit in tier.benefits"
                 :key="benefit"
@@ -164,7 +164,7 @@ const accordionValue = ref<string[]>([])
             </ul>
           </CardContent>
 
-          <CardFooter>
+          <CardFooter class="v2-child-up v2-cd-5">
             <Button
               class="w-full cursor-pointer"
               :variant="tier.popular ? 'default' : 'outline'"
@@ -183,7 +183,7 @@ const accordionValue = ref<string[]>([])
     </section>
 
     <!-- 赞助者墙 -->
-    <section class="mx-auto max-w-6xl px-4 pb-12 sm:px-6 lg:px-8 v2-animate-up v2-delay-3">
+    <section v-animate class="mx-auto max-w-6xl px-4 pb-12 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
       <Separator class="mb-10" />
 
       <SectionHeading
@@ -213,7 +213,7 @@ const accordionValue = ref<string[]>([])
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8 v2-animate-up v2-delay-4">
+    <section v-animate id="faq" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
       <Separator class="mb-10" />
       <SectionHeading
           eyebrow="FAQ"

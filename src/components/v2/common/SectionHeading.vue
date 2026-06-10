@@ -24,7 +24,8 @@ withDefaults(defineProps<{
 
 <template>
   <Card
-    class="shadow-none rounded-xl p-5"
+    v-animate
+    class="shadow-none rounded-xl p-5 animate__animated animate__fadeInUp"
     :class="align === 'center' ? 'text-center' : 'text-left'"
   >
     <div class="flex items-center justify-between">
@@ -32,7 +33,7 @@ withDefaults(defineProps<{
         <Badge
           v-if="eyebrow"
           :variant="eyebrowVariant"
-          class="w-fit text-[10px] font-medium uppercase tracking-wider"
+          class="w-fit text-[10px] font-medium uppercase tracking-wider v2-child-left v2-cd-1"
         >
           {{ eyebrow }}
         </Badge>
@@ -40,14 +41,14 @@ withDefaults(defineProps<{
         <div class="flex items-baseline gap-3">
           <component
             :is="as"
-            class="scroll-m-20 text-lg font-bold tracking-tight sm:text-xl"
+            class="scroll-m-20 text-lg font-bold tracking-tight sm:text-xl v2-child-up v2-cd-2"
           >
             {{ title }}
           </component>
 
           <p
             v-if="description"
-            class="text-xs text-muted-foreground"
+            class="text-xs text-muted-foreground v2-child-fade v2-cd-3"
           >
             {{ description }}
           </p>

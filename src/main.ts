@@ -149,6 +149,10 @@ app.use(pinia)
 app.use(router)
 app.component('font-awesome-icon', FontAwesomeIcon)
 
+// 注册 v-animate 滚动触发动画指令
+import { vAnimate } from './directives/vAnimate'
+app.directive('animate', vAnimate)
+
 // 初始化主题
 initTheme()
 

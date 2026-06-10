@@ -37,17 +37,17 @@ const milestones = [
 <template>
   <div>
   <!-- 标题区 -->
-    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 v2-animate-up">
+    <section v-animate class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 animate__animated animate__fadeInUp">
       <Card class="shadow-none rounded-xl p-5">
         <div class="flex flex-col gap-1">
-          <Badge variant="outline" class="w-fit text-[10px] font-medium uppercase tracking-wider">
+          <Badge variant="outline" class="w-fit text-[10px] font-medium uppercase tracking-wider v2-child-left v2-cd-1">
             关于我们
           </Badge>
           <div class="flex items-baseline gap-3">
-            <h2 class="scroll-m-20 text-lg font-bold tracking-tight sm:text-xl">
+            <h2 class="scroll-m-20 text-lg font-bold tracking-tight sm:text-xl v2-child-up v2-cd-2">
               一个为开发者而生的<span class="bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">内容社区</span>
             </h2>
-            <p class="text-xs text-muted-foreground">
+            <p class="text-xs text-muted-foreground v2-child-fade v2-cd-3">
               优质的技术内容应该简洁、清晰、易于传播。
             </p>
           </div>
@@ -56,20 +56,20 @@ const milestones = [
     </section>
 
     <!-- 数据条 -->
-    <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 v2-animate-up v2-delay-1">
+    <section v-animate class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.08s">
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Card v-for="stat in stats" :key="stat.label" class="shadow-none text-center">
+        <Card v-for="stat in stats" :key="stat.label" class="shadow-none text-center v2-card-hover hover:-translate-y-0.5 hover:shadow-sm hover:border-primary/20">
           <CardContent class="flex flex-col items-center justify-center py-5">
-            <component :is="stat.icon" class="mb-2 h-5 w-5 text-muted-foreground" />
-            <div class="text-2xl font-bold tracking-tight">{{ stat.value }}</div>
-            <div class="mt-0.5 text-xs text-muted-foreground">{{ stat.label }}</div>
+            <component :is="stat.icon" class="mb-2 h-5 w-5 text-muted-foreground v2-child-scale v2-cd-1" />
+            <div class="text-2xl font-bold tracking-tight v2-child-up v2-cd-2">{{ stat.value }}</div>
+            <div class="mt-0.5 text-xs text-muted-foreground v2-child-fade v2-cd-3">{{ stat.label }}</div>
           </CardContent>
         </Card>
       </div>
     </section>
 
     <!-- 我们的故事 -->
-    <section class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8 v2-animate-up v2-delay-2">
+    <section v-animate class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
       <div class="grid gap-6 sm:grid-cols-[1fr_2fr]">
         <SectionHeading
           title="我们的故事"
@@ -84,7 +84,7 @@ const milestones = [
     </section>
 
     <!-- 技术栈 -->
-    <section class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8 v2-animate-up v2-delay-3">
+    <section v-animate class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
       <SectionHeading
         eyebrow="Stack"
         title="技术栈"
@@ -95,7 +95,7 @@ const milestones = [
         <div
           v-for="tech in techStack"
           :key="tech.name"
-          class="group inline-flex items-center gap-2 rounded-lg border bg-card px-3 py-1.5 shadow-none transition-all hover:border-primary/30 hover:shadow-sm cursor-pointer"
+          class="group inline-flex items-center gap-2 rounded-lg border bg-card px-3 py-1.5 shadow-none transition-all hover:border-primary/30 hover:shadow-sm cursor-pointer v2-child-up"
         >
           <span class="h-2 w-2 rounded-full" :style="{ backgroundColor: tech.color }" />
           <span class="text-sm font-medium">{{ tech.name }}</span>
@@ -105,7 +105,7 @@ const milestones = [
     </section>
 
     <!-- 时间线 -->
-    <section id="changelog" class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8 v2-animate-up v2-delay-4">
+    <section v-animate id="changelog" class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
       <SectionHeading
         eyebrow="Timeline"
         title="里程碑"
@@ -130,7 +130,7 @@ const milestones = [
     </section>
 
     <!-- 联系我们 -->
-    <section id="contact" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8 v2-animate-up v2-delay-5">
+    <section v-animate id="contact" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.5s">
       <Separator class="mb-10" />
       <SectionHeading
         eyebrow="Contact"

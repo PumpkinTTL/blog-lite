@@ -9,7 +9,7 @@ const THEME_KEY = 'app-theme'
  */
 export function getCurrentTheme(): ThemeMode {
   const saved = localStorage.getItem(THEME_KEY) as ThemeMode
-  return saved || 'auto'
+  return saved || 'light'
 }
 
 /**

@@ -120,12 +120,12 @@ const onLeave = (el: Element, done: () => void) => {
   background: var(--bg);
 }
 
-/* v2 过渡动画 — 淡入+微上移 */
+/* v2 过渡动画 — 对齐 v1 page-fade 节奏 */
 .v2-fade-enter-active {
-  animation: v2-route-in 0.46s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: v2-route-in 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .v2-fade-leave-active {
-  animation: v2-route-out 0.24s cubic-bezier(0.4, 0, 1, 1);
+  animation: v2-route-out 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 @keyframes v2-route-in {
   from {

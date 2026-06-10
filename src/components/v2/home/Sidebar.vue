@@ -57,7 +57,7 @@ onUnmounted(() => {
 <template>
   <aside class="space-y-5">
     <!-- 公告栏：跑马灯 -->
-    <Card class="shadow-none rounded-xl p-4">
+    <Card class="shadow-none rounded-xl p-4 v2-card-hover hover:-translate-y-0.5 hover:shadow-sm hover:border-primary/20">
       <div class="flex items-start gap-3">
         <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900/30">
           <Megaphone class="h-4 w-4 text-amber-700 dark:text-amber-400" />
@@ -91,7 +91,7 @@ onUnmounted(() => {
     </Card>
 
     <!-- 社交媒体 -->
-    <Card class="shadow-none rounded-xl p-5">
+    <Card class="shadow-none rounded-xl p-5 v2-card-hover hover:-translate-y-0.5 hover:shadow-sm hover:border-primary/20">
       <h3 class="flex items-center gap-2 text-sm font-semibold">
         <Users class="h-4 w-4 text-muted-foreground" />
         关注我们
@@ -125,7 +125,7 @@ onUnmounted(() => {
     />
 
     <!-- 订阅卡片 -->
-    <Card class="shadow-none rounded-xl bg-gradient-to-br from-card to-muted/40 p-5">
+    <Card class="shadow-none rounded-xl bg-gradient-to-br from-card to-muted/40 p-5 v2-card-hover hover:-translate-y-0.5 hover:shadow-sm hover:border-primary/20">
       <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
         <Mail class="h-5 w-5 text-primary" />
       </div>

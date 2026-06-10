@@ -45,7 +45,7 @@ function relativeTime(iso: string): string {
 </script>
 
 <template>
-  <section v-if="featured.primary" class="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8 v2-animate-scale">
+  <section v-if="featured.primary" v-animate class="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8 animate__animated animate__fadeIn">
     <div class="mb-5">
       <SectionHeading
         eyebrow="Featured"
@@ -57,7 +57,7 @@ function relativeTime(iso: string): string {
     <div class="grid gap-5 lg:grid-cols-5">
       <!-- 主推 -->
       <Card
-        class="group relative col-span-1 cursor-pointer shadow-none overflow-hidden rounded-xl transition-all hover:shadow-lg lg:col-span-3"
+        class="group relative col-span-1 cursor-pointer shadow-none overflow-hidden rounded-xl v2-card-hover hover:-translate-y-1 hover:shadow-lg hover:border-primary/20 v2-child-up v2-cd-1 lg:col-span-3"
         @click="goToArticle(featured.primary.id)"
       >
         <div class="grid h-full sm:grid-cols-2">
@@ -65,11 +65,11 @@ function relativeTime(iso: string): string {
             <img
               :src="featured.primary.image"
               :alt="featured.primary.title"
-              class="h-full w-full object-cover"
+              class="h-full w-full object-cover v2-img-zoom group-hover:scale-105"
               loading="lazy"
             />
             <Badge
-              class="absolute left-3 top-3 border-none shadow-sm backdrop-blur-sm"
+              class="absolute left-3 top-3 border-none shadow-sm backdrop-blur-sm v2-child-left v2-cd-1"
               :style="{ backgroundColor: featured.primary.categoryColor + '20', color: featured.primary.categoryColor }"
             >
               {{ featured.primary.category }}
@@ -81,14 +81,14 @@ function relativeTime(iso: string): string {
                 <Star class="h-3.5 w-3.5" :style="{ fill: featured.primary.categoryColor + '30' }" />
                 主编推荐
               </span>
-              <h3 class="mt-2 line-clamp-2 text-lg font-bold leading-snug transition-colors group-hover:text-primary sm:text-xl">
+              <h3 class="mt-2 line-clamp-2 text-lg font-bold leading-snug transition-all duration-300 group-hover:text-primary sm:text-xl v2-child-up v2-cd-2">
                 {{ featured.primary.title }}
               </h3>
-              <p class="mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
+              <p class="mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed v2-child-up v2-cd-3">
                 {{ featured.primary.description }}
               </p>
             </div>
-            <div class="mt-4 flex items-center justify-between">
+            <div class="mt-4 flex items-center justify-between v2-child-up v2-cd-4">
               <div class="flex items-center gap-2">
                 <Avatar class="h-7 w-7">
                   <AvatarImage :src="featured.primary.author.avatar" :alt="featured.primary.author.name" />
@@ -113,9 +113,10 @@ function relativeTime(iso: string): string {
       <!-- 副推 -->
       <div class="col-span-1 grid gap-5 lg:col-span-2">
           <Card
-            v-for="post in featured.secondary"
+            v-for="(post, idx) in featured.secondary"
             :key="post.id"
-            class="group relative cursor-pointer shadow-none overflow-hidden rounded-xl transition-all hover:shadow-md"
+            class="group relative cursor-pointer shadow-none overflow-hidden rounded-xl v2-card-hover hover:-translate-y-0.5 hover:shadow-md hover:border-primary/20 v2-child-up"
+            :class="idx === 0 ? 'v2-cd-2' : 'v2-cd-3'"
             @click="goToArticle(post.id)"
           >
           <div class="flex h-full gap-3 p-3">
@@ -123,26 +124,26 @@ function relativeTime(iso: string): string {
               <img
                 :src="post.image"
                 :alt="post.title"
-                class="h-full w-full object-cover"
+                class="h-full w-full object-cover v2-img-zoom group-hover:scale-105"
                 loading="lazy"
               />
             </div>
             <div class="flex flex-1 flex-col justify-between py-0.5">
               <div>
                 <Badge
-                  class="border-none"
+                  class="border-none v2-child-left v2-cd-1"
                   :style="{ backgroundColor: post.categoryColor + '18', color: post.categoryColor }"
                 >
                   {{ post.category }}
                 </Badge>
-                <h3 class="mt-1.5 line-clamp-2 text-sm font-semibold leading-snug transition-colors group-hover:text-primary">
+                <h3 class="mt-1.5 line-clamp-2 text-sm font-semibold leading-snug transition-all duration-300 group-hover:text-primary v2-child-up v2-cd-2">
                   {{ post.title }}
                 </h3>
-                <p class="mt-1 line-clamp-2 text-xs text-muted-foreground leading-relaxed">
+                <p class="mt-1 line-clamp-2 text-xs text-muted-foreground leading-relaxed v2-child-up v2-cd-3">
                   {{ post.description }}
                 </p>
               </div>
-              <div class="flex items-center gap-2 text-[11px] text-muted-foreground">
+              <div class="flex items-center gap-2 text-[11px] text-muted-foreground v2-child-fade v2-cd-4">
                 <Clock class="h-3 w-3" />
                 {{ relativeTime(post.createdAt) }}
                 <span class="mx-0.5">·</span>

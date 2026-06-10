@@ -60,7 +60,7 @@ const badgeLabels: Record<string, string> = {
 <template>
   <div>
     <!-- 标题区 -->
-    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 v2-animate-up">
+    <section v-animate class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 animate__animated animate__fadeInUp">
       <SectionHeading
         eyebrow="精选商城"
         title="为开发者准备的优质资源"
@@ -69,7 +69,7 @@ const badgeLabels: Record<string, string> = {
     </section>
 
     <!-- 促销 banner -->
-    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 v2-animate-up v2-delay-1">
+    <section v-animate class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
       <div class="flex items-center gap-3 rounded-xl border bg-gradient-to-r from-amber-50 to-orange-50 p-4 dark:from-amber-950/20 dark:to-orange-950/20">
         <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-500/15">
           <Sparkles class="h-5 w-5 text-amber-600 dark:text-amber-400" />
@@ -87,7 +87,7 @@ const badgeLabels: Record<string, string> = {
     </section>
 
     <!-- 分类筛选 -->
-    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 v2-animate-up v2-delay-2">
+    <section v-animate class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
       <div class="flex items-center gap-2 overflow-x-auto">
         <button
           v-for="cat in categories"
@@ -113,21 +113,21 @@ const badgeLabels: Record<string, string> = {
     </section>
 
     <!-- 商品网格 -->
-    <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 v2-animate-up v2-delay-3">
+    <section v-animate class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
       <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <Card
           v-for="product in filteredProducts"
           :key="product.id"
-          class="group flex flex-col transition-all hover:-translate-y-0.5 hover:shadow-md"
+          class="group flex flex-col v2-card-hover hover:-translate-y-1 hover:shadow-md hover:border-primary/20"
         >
           <!-- 顶部图标 + badge -->
           <div class="relative flex h-32 items-center justify-center bg-muted/30">
-            <div class="flex h-14 w-14 items-center justify-center rounded-xl border bg-background shadow-sm transition-transform group-hover:scale-105">
+            <div class="flex h-14 w-14 items-center justify-center rounded-xl border bg-background shadow-sm v2-spring group-hover:scale-110 v2-child-scale v2-cd-1">
               <component :is="categoryIcons[product.category]" class="h-6 w-6 text-muted-foreground" />
             </div>
             <Badge
               v-if="product.badge"
-              class="absolute left-3 top-3 border-none text-[10px] font-semibold"
+              class="absolute left-3 top-3 border-none text-[10px] font-semibold v2-child-left v2-cd-2"
               :class="badgeStyles[product.badge]"
             >
               {{ badgeLabels[product.badge] }}
@@ -135,13 +135,13 @@ const badgeLabels: Record<string, string> = {
           </div>
 
           <CardHeader class="pb-2">
-            <CardTitle class="text-base">{{ product.name }}</CardTitle>
-            <CardDescription class="line-clamp-2">{{ product.description }}</CardDescription>
+            <CardTitle class="text-base v2-child-up v2-cd-3">{{ product.name }}</CardTitle>
+            <CardDescription class="line-clamp-2 v2-child-up v2-cd-4">{{ product.description }}</CardDescription>
           </CardHeader>
 
           <CardContent class="flex-1 pb-2">
             <!-- 评分 -->
-            <div class="flex items-center gap-2 text-xs">
+            <div class="flex items-center gap-2 text-xs v2-child-fade v2-cd-5">
               <div class="inline-flex items-center gap-0.5 text-amber-500 dark:text-amber-400">
                 <Star class="h-3 w-3 fill-current" />
                 <span class="font-medium">{{ product.rating }}</span>
@@ -151,7 +151,7 @@ const badgeLabels: Record<string, string> = {
             </div>
           </CardContent>
 
-          <CardFooter class="flex items-center justify-between pt-0">
+          <CardFooter class="flex items-center justify-between pt-0 v2-child-up v2-cd-6">
             <span class="text-lg font-bold tracking-tight">{{ product.price }}</span>
             <Button size="sm" class="cursor-pointer">
               立即购买
@@ -168,7 +168,7 @@ const badgeLabels: Record<string, string> = {
     </section>
 
     <!-- 底部说明 -->
-    <section class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 v2-animate-up v2-delay-4">
+    <section v-animate class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
       <Separator class="mb-6" />
       <div class="grid gap-4 text-center sm:grid-cols-3">
         <div>

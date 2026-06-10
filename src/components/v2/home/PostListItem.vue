@@ -40,8 +40,9 @@ function estimateReadTime(post: Resource): number {
 
 <template>
   <Card
-    class="group flex cursor-pointer shadow-none gap-4 overflow-hidden rounded-xl p-3 transition-all duration-200 hover:shadow-sm sm:gap-5 sm:p-4 v2-animate-up"
-    :class="index != null ? `v2-delay-${(index % 8) + 1}` : ''"
+    v-animate
+    class="group flex cursor-pointer shadow-none gap-4 overflow-hidden rounded-xl p-3 v2-card-hover hover:-translate-y-0.5 hover:shadow-sm hover:border-primary/20 sm:gap-5 sm:p-4 animate__animated animate__fadeInUp"
+    :style="index != null ? { animationDelay: `${0.15 + index * 0.08}s` } : {}"
     @click="goToArticle"
   >
     <!-- 封面 -->
@@ -49,11 +50,11 @@ function estimateReadTime(post: Resource): number {
       <img
         :src="post.image"
         :alt="post.title"
-        class="h-full w-full object-cover"
+        class="h-full w-full object-cover v2-img-zoom group-hover:scale-105"
         loading="lazy"
       />
       <Badge
-        class="absolute left-1.5 top-1.5 border-none text-[10px] text-white shadow-sm"
+        class="absolute left-1.5 top-1.5 border-none text-[10px] text-white shadow-sm v2-child-left v2-cd-1"
         :style="{ backgroundColor: post.categoryColor }"
       >
         {{ post.category }}
@@ -63,29 +64,29 @@ function estimateReadTime(post: Resource): number {
     <!-- 内容 -->
     <div class="flex min-w-0 flex-1 flex-col">
       <!-- 标题 -->
-      <h3 class="line-clamp-2 text-sm font-semibold leading-snug transition-colors group-hover:text-primary sm:text-[15px]">
+      <h3 class="line-clamp-2 text-sm font-semibold leading-snug transition-all duration-300 group-hover:text-primary group-hover:translate-x-0.5 sm:text-[15px] v2-child-up v2-cd-2">
         {{ post.title }}
       </h3>
 
       <!-- 描述 -->
-      <p class="mt-1.5 hidden line-clamp-2 text-xs leading-relaxed text-muted-foreground sm:block">
+      <p class="mt-1.5 hidden line-clamp-2 text-xs leading-relaxed text-muted-foreground transition-colors duration-300 group-hover:text-muted-foreground/70 sm:block v2-child-up v2-cd-3">
         {{ post.description }}
       </p>
 
       <!-- 标签 -->
-      <div v-if="post.tags.length" class="mt-2 hidden flex-wrap gap-1 sm:flex">
+      <div v-if="post.tags.length" class="mt-2 hidden flex-wrap gap-1 sm:flex v2-child-up v2-cd-4">
         <Badge
           v-for="tag in post.tags.slice(0, 3)"
           :key="tag"
           variant="secondary"
-          class="text-[10px] font-medium"
+          class="text-[10px] font-medium v2-lift hover:-translate-y-px hover:shadow-sm"
         >
           {{ tag }}
         </Badge>
       </div>
 
       <!-- 元信息(底部) -->
-      <div class="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-2 text-[11px] text-muted-foreground">
+      <div class="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-2 text-[11px] text-muted-foreground v2-child-up v2-cd-5">
         <!-- 作者 -->
         <div class="flex items-center gap-1.5">
           <Avatar class="h-5 w-5">
@@ -107,12 +108,12 @@ function estimateReadTime(post: Resource): number {
         </span>
         <span class="hidden h-3 w-px bg-border sm:inline-block" />
         <!-- 互动 -->
-        <span class="inline-flex items-center gap-1 transition-colors group-hover:text-red-500 dark:group-hover:text-red-400">
-          <Heart class="h-3 w-3" />
+        <span class="inline-flex items-center gap-1 transition-colors duration-300 group-hover:text-red-500 dark:group-hover:text-red-400">
+          <Heart class="h-3 w-3 group-hover:scale-125" />
           {{ formatCount(post.likes) }}
         </span>
-        <span class="inline-flex items-center gap-1">
-          <Eye class="h-3 w-3" />
+        <span class="inline-flex items-center gap-1 v2-lift">
+          <Eye class="h-3 w-3 hover:scale-110" />
           {{ formatCount(post.views) }}
         </span>
         <!-- 精选标记 -->

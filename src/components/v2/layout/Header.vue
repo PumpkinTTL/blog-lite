@@ -67,11 +67,13 @@ function copyUid() {
   setTimeout(() => { copied.value = false }, 2000)
 }
 
-const isDark = ref(document.documentElement.classList.contains('dark'))
+import { useThemeStore } from '@/stores/theme'
+
+const themeStore = useThemeStore()
+const isDark = computed(() => themeStore.isDark)
 
 function toggleTheme() {
-  isDark.value = !isDark.value
-  document.documentElement.classList.toggle('dark', isDark.value)
+  themeStore.toggle()
 }
 
 const isActive = (to: string) => {

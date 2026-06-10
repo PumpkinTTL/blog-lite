@@ -72,7 +72,8 @@ function onCategoryChange(value: string | number | boolean) {
   <!-- sentinel for stuck detection -->
   <div :ref="onSentinelRef" class="h-0" />
   <Card
-    class="sticky top-16 z-20 shadow-none transition-all duration-200 v2-animate-in"
+    class="sticky top-16 z-20 shadow-none animate__animated animate__fadeInUp transition-shadow duration-300"
+    style="animation-delay: 0.12s"
     :class="isStuck ? 'rounded-t-none rounded-b-xl border-x-0 border-t-0 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.4)]' : 'rounded-xl'"
   >
     <!-- 顶栏:分类 + 搜索 + 排序 + 数量 -->
@@ -207,7 +208,7 @@ function onCategoryChange(value: string | number | boolean) {
     <!-- 标签 -->
     <div class="flex items-center gap-1.5 overflow-x-auto px-3 py-2.5">
       <Badge
-        class="shrink-0 cursor-pointer rounded-md text-xs transition-colors"
+        class="shrink-0 cursor-pointer rounded-md text-xs v2-lift hover:-translate-y-px hover:shadow-sm"
         :variant="activeTag === '' ? 'default' : 'outline'"
         @click="emit('update:activeTag', '')"
       >
@@ -217,7 +218,7 @@ function onCategoryChange(value: string | number | boolean) {
       <Badge
         v-for="tag in currentTags"
         :key="tag"
-        class="shrink-0 cursor-pointer rounded-md text-xs transition-colors"
+        class="shrink-0 cursor-pointer rounded-md text-xs v2-lift hover:-translate-y-px hover:shadow-sm"
         :variant="activeTag === tag ? 'default' : 'outline'"
         @click="emit('update:activeTag', activeTag === tag ? '' : tag)"
       >
