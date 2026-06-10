@@ -39,7 +39,7 @@ function scrollToTop() {
       v-if="visible"
       variant="outline"
       size="icon"
-      class="fixed bottom-6 right-6 z-50 h-10 w-10 rounded-full shadow-md cursor-pointer"
+      class="fixed right-6 z-50 h-10 w-10 rounded-full shadow-md cursor-pointer md:bottom-6 bottom-20"
       aria-label="回到顶部"
       @click="scrollToTop"
     >

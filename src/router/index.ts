@@ -44,37 +44,12 @@ const routes: RouteRecordRaw[] = [
     }
   },
 
-  // ── v2 路由 ──
-  {
-    path: '/v2',
-    name: 'V2Home',
-    component: () => import('@/views/v2/Home.vue'),
-    meta: { title: '首页', version: 'v2' }
-  },
-  {
-    path: '/v2/article/:id',
-    name: 'V2ArticleDetail',
-    component: () => import('@/views/v2/ArticleDetail.vue'),
-    meta: { title: '文章详情', version: 'v2' }
-  },
-  {
-    path: '/v2/about',
-    name: 'V2About',
-    component: () => import('@/views/v2/About.vue'),
-    meta: { title: '关于', version: 'v2' }
-  },
-  {
-    path: '/v2/shop',
-    name: 'V2Shop',
-    component: () => import('@/views/v2/Shop.vue'),
-    meta: { title: '商城', version: 'v2' }
-  },
-  {
-    path: '/v2/donation',
-    name: 'V2Donation',
-    component: () => import('@/views/v2/Donation.vue'),
-    meta: { title: '赞助', version: 'v2' }
-  },
+  // ── v2 路由（平铺：Layout 在 App.vue 里，切换不闪） ──
+  { path: '/v2', name: 'V2Home', component: () => import('@/views/v2/Home.vue'), meta: { title: '首页', version: 'v2' } },
+  { path: '/v2/article/:id', name: 'V2ArticleDetail', component: () => import('@/views/v2/ArticleDetail.vue'), meta: { title: '文章详情', version: 'v2' } },
+  { path: '/v2/about', name: 'V2About', component: () => import('@/views/v2/About.vue'), meta: { title: '关于', version: 'v2' } },
+  { path: '/v2/donation', name: 'V2Donation', component: () => import('@/views/v2/Donation.vue'), meta: { title: '赞助', version: 'v2' } },
+  { path: '/v2/shop', name: 'V2Shop', component: () => import('@/views/v2/Shop.vue'), meta: { title: '商城', version: 'v2' } },
 ]
 
 const router = createRouter({

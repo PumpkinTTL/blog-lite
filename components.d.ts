@@ -201,6 +201,7 @@ declare module 'vue' {
     MenubarSubTrigger: typeof import('./src/components/ui/menubar/MenubarSubTrigger.vue')['default']
     MenubarTrigger: typeof import('./src/components/ui/menubar/MenubarTrigger.vue')['default']
     MobileBottomNav: typeof import('./src/components/v1/layout/MobileBottomNav.vue')['default']
+    MobileBottomTab: typeof import('./src/components/v2/layout/MobileBottomTab.vue')['default']
     MobilePillNav: typeof import('./src/components/v1/layout/MobilePillNav.vue')['default']
     NavigationMenu: typeof import('./src/components/ui/navigation-menu/NavigationMenu.vue')['default']
     NavigationMenuContent: typeof import('./src/components/ui/navigation-menu/NavigationMenuContent.vue')['default']

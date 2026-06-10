@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { generateMockResources, type Resource } from '@/data/mockData'
-import Layout from '@/components/v2/layout/Layout.vue'
+
 import FeaturedSection from '@/components/v2/home/FeaturedSection.vue'
 import FilterBar from '@/components/v2/home/FilterBar.vue'
 import PostList from '@/components/v2/home/PostList.vue'
@@ -54,7 +54,7 @@ const featuredSourcePosts = computed(() => {
 </script>
 
 <template>
-  <Layout>
+  <div>
     <!-- 精选(只在未选标签/未搜索时显示;按当前分类筛选;分类下文章 < 3 时隐藏避免尴尬) -->
     <FeaturedSection
       v-if="!activeTag && !searchQuery && featuredSourcePosts.length >= 3"
@@ -107,5 +107,5 @@ const featuredSourcePosts = computed(() => {
 
     <!-- 锚点占位 -->
     <div id="tags" class="sr-only">标签云</div>
-  </Layout>
+  </div>
 </template>

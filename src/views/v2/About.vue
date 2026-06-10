@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Users, FileText, Eye, Mail, Github, MessageCircle, Star } from 'lucide-vue-next'
-import Layout from '@/components/v2/layout/Layout.vue'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
@@ -36,8 +35,8 @@ const milestones = [
 </script>
 
 <template>
-  <Layout>
-    <!-- 标题区 -->
+  <div>
+  <!-- 标题区 -->
     <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
       <Card class="shadow-none rounded-xl p-5">
         <div class="flex flex-col gap-1">
@@ -61,7 +60,7 @@ const milestones = [
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <Card v-for="stat in stats" :key="stat.label" class="shadow-none text-center">
           <CardContent class="flex flex-col items-center justify-center py-5">
-            <stat.icon class="mb-2 h-5 w-5 text-muted-foreground" />
+            <component :is="stat.icon" class="mb-2 h-5 w-5 text-muted-foreground" />
             <div class="text-2xl font-bold tracking-tight">{{ stat.value }}</div>
             <div class="mt-0.5 text-xs text-muted-foreground">{{ stat.label }}</div>
           </CardContent>
@@ -163,5 +162,5 @@ const milestones = [
         </Card>
       </div>
     </section>
-  </Layout>
+  </div>
 </template>

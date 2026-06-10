@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ShoppingBag, Star, Sparkles, Book, Wrench, Gift } from 'lucide-vue-next'
-import Layout from '@/components/v2/layout/Layout.vue'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -59,7 +58,7 @@ const badgeLabels: Record<string, string> = {
 </script>
 
 <template>
-  <Layout>
+  <div>
     <!-- 标题区 -->
     <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
       <SectionHeading
@@ -186,5 +185,5 @@ const badgeLabels: Record<string, string> = {
         </div>
       </div>
     </section>
-  </Layout>
+  </div>
 </template>

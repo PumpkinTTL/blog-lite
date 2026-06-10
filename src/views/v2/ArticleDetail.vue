@@ -3,7 +3,6 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { List } from 'lucide-vue-next'
 import type { HeadList } from 'md-editor-v3'
-import Layout from '@/components/v2/layout/Layout.vue'
 import ArticleHero from '@/components/v2/detail/ArticleHero.vue'
 import ArticleContent from '@/components/v2/detail/ArticleContent.vue'
 import ArticleToc from '@/components/v2/detail/ArticleToc.vue'
@@ -111,7 +110,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Layout>
+  <div>
     <main class="mx-auto max-w-6xl px-4 pt-16 pb-6 sm:px-6 sm:pt-20 lg:pt-24 lg:pb-10">
       <div v-if="article" class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
         <!-- 主栏:editorial 内容自然填满主栏宽度 -->
@@ -209,5 +208,5 @@ onBeforeUnmount(() => {
         </SheetContent>
       </Sheet>
     </div>
-  </Layout>
+  </div>
 </template>

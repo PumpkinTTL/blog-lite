@@ -29,20 +29,22 @@ import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import LoginModal from '@/components/v2/auth/LoginModal.vue'
 import NotificationCenter from '@/components/v2/layout/NotificationCenter.vue'
-import UserCenter from '@/components/v2/user/UserCenter.vue'
+const emit = defineEmits<{
+  (e: 'open-user-center'): void
+}>()
 
 const route = useRoute()
 
 const navItems = [
   { label: '首页', to: '/v2', icon: Home },
   { label: '商城', to: '/v2/shop', icon: ShoppingBag },
+  { label: '捐赠', to: '/v2/donation', icon: Heart },
   { label: '关于', to: '/v2/about', icon: Info },
 ]
 
 // 模拟登录状态(后续接入真实用户状态替换)
 const isLoggedIn = ref(true)
 const showLoginModal = ref(false)
-const showUserCenter = ref(false)
 
 type PlanType = 'Pro' | 'Plus' | 'Free'
 const planConfig: Record<PlanType, { class: string }> = {
@@ -223,7 +225,7 @@ onBeforeUnmount(() => {
                     </button>
                   </div>
                 </div>
-                <button class="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent" @click="userDropdownOpen = false; showUserCenter = true">
+                <button class="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent" @click="userDropdownOpen = false; emit('open-user-center')">
                   <Settings class="h-4 w-4" />
                   个人中心
                 </button>
@@ -346,7 +348,7 @@ onBeforeUnmount(() => {
                   </Button>
                 </router-link>
                 <template v-if="isLoggedIn">
-                  <Button variant="ghost" class="w-full justify-start gap-2 rounded-md text-muted-foreground hover:text-foreground" @click="mobileOpen = false; showUserCenter = true">
+                  <Button variant="ghost" class="w-full justify-start gap-2 rounded-md text-muted-foreground hover:text-foreground" @click="mobileOpen = false; emit('open-user-center')">
                     <User class="h-4 w-4" />
                     个人中心
                   </Button>
@@ -371,10 +373,5 @@ onBeforeUnmount(() => {
   <LoginModal
     v-model:open="showLoginModal"
     @login-success="isLoggedIn = true"
-  />
-
-  <!-- 个人中心弹窗 -->
-  <UserCenter
-    v-model:open="showUserCenter"
   />
 </template>

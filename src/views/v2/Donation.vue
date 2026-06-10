@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Heart, Check } from 'lucide-vue-next'
-import Layout from '@/components/v2/layout/Layout.vue'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -81,7 +80,7 @@ const accordionValue = ref<string[]>([])
 </script>
 
 <template>
-  <Layout>
+  <div>
     <!-- 标题区 -->
     <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
       <Card class="shadow-none rounded-xl p-5">
@@ -242,5 +241,5 @@ const accordionValue = ref<string[]>([])
         </AccordionItem>
       </Accordion>
     </section>
-  </Layout>
+  </div>
 </template>

@@ -1,11 +1,19 @@
 <template>
-  <!-- v2 路由：使用 v2 布局 -->
-  <div v-if="isV2" class="v2-root">
-    <router-view v-slot="{ Component, route }">
-      <transition name="v2-fade" mode="out-in">
-        <component :is="Component" :key="route.path" />
-      </transition>
-    </router-view>
+  <!-- v2 路由：Layout 常驻，只有 router-view 切换 -->
+  <div v-if="isV2" class="v2-root min-h-screen bg-background text-foreground flex flex-col">
+    <V2Header @open-user-center="showUserCenter = true" />
+    <main class="flex-1">
+      <router-view v-slot="{ Component, route }">
+        <transition name="v2-fade" mode="out-in">
+          <component :is="Component" :key="route.path" />
+        </transition>
+      </router-view>
+    </main>
+    <V2Footer />
+    <MobileBottomTab />
+    <BackToTop />
+    <UserCenter v-model:open="showUserCenter" />
+    <div class="h-14 md:hidden" />
   </div>
 
   <!-- v1 路由：原始布局，完全不动 -->
@@ -32,14 +40,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+// v1 组件
 import BlogHeader from '@/components/v1/layout/BlogHeader.vue'
 import MobilePillNav from '@/components/v1/layout/MobilePillNav.vue'
 import BackTop from '@/components/v1/common/BackTop.vue'
+// v2 组件
+import V2Header from '@/components/v2/layout/Header.vue'
+import V2Footer from '@/components/v2/layout/Footer.vue'
+import MobileBottomTab from '@/components/v2/layout/MobileBottomTab.vue'
+import BackToTop from '@/components/v2/common/BackToTop.vue'
+import UserCenter from '@/components/v2/user/UserCenter.vue'
 
 const route = useRoute()
 const isV2 = computed(() => route.path.startsWith('/v2'))
+
+const showUserCenter = ref(false)
 
 const onEnter = (el: Element, done: () => void) => {
   const htmlEl = el as HTMLElement;
@@ -106,7 +123,7 @@ const onLeave = (el: Element, done: () => void) => {
 /* v2 过渡动画 */
 .v2-fade-enter-active,
 .v2-fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.15s ease;
 }
 
 .v2-fade-enter-from,

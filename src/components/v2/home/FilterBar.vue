@@ -156,12 +156,12 @@ function onCategoryChange(value: string | number | boolean) {
             <List class="h-3.5 w-3.5" />
           </button>
         </div>
-        <span class="shrink-0 text-xs text-muted-foreground">共 {{ total }} 篇</span>
+        <span class="hidden shrink-0 text-xs text-muted-foreground sm:block">共 {{ total }} 篇</span>
       </div>
     </div>
 
     <!-- 移动端排序 + 视图切换 -->
-    <div class="flex items-center justify-between gap-2 px-3 pb-2 sm:hidden">
+    <div class="flex items-center justify-between gap-2 px-3 pt-3 pb-2 sm:hidden">
       <div class="flex items-center gap-2">
         <div class="flex items-center gap-0.5 rounded-md bg-muted p-0.5">
           <button
