@@ -117,7 +117,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div>
-    <main class="mx-auto max-w-6xl px-4 pt-16 pb-6 sm:px-6 sm:pt-20 lg:pt-24 lg:pb-10">
+    <main class="mx-auto max-w-6xl px-4 pt-8 pb-6 sm:px-6 sm:pt-10 lg:pt-12 lg:pb-10">
       <ArticleDetailSkeleton v-if="loading" />
       <div v-else-if="article" class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
         <!-- 主栏:editorial 内容自然填满主栏宽度 -->

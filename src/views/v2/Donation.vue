@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { Heart, Check } from 'lucide-vue-next'
+import { Heart, Check, Pencil } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import DonationDialog from '@/components/v2/donation/DonationDialog.vue'
 import {
   Accordion,
   AccordionContent,
@@ -20,26 +22,35 @@ onMounted(async () => {
   loading.value = false
 })
 
+const customAmount = ref('')
+const dialogOpen = ref(false)
+const dialogAmount = ref(0)
+
+function openDonation(amount: number) {
+  dialogAmount.value = amount
+  dialogOpen.value = true
+}
+
 const tiers = [
   {
-    name: '一杯咖啡',
+    name: '一瓶快乐水',
     amount: 10,
-    description: '买一杯咖啡,支持作者继续创作。',
-    benefits: ['文章署名感谢', '优先阅读新文章', '专属读者徽章'],
+    description: '写 bug 写到头秃的时候，来口可乐续一下命。',
+    benefits: ['帮我买一瓶冰可乐', '代码能多跑十分钟不报错', '心情指数 +10'],
     popular: false,
   },
   {
-    name: '一顿午餐',
-    amount: 30,
-    description: '赞助一顿午餐,获得更多专属权益。',
-    benefits: ['一杯咖啡 全部权益', '加入读者社群', '每月直播答疑', '文章 PDF 合集'],
+    name: '一顿外卖',
+    amount: 20,
+    description: '吃饱了才有力气debug，饿着肚子调样式容易翻车。',
+    benefits: ['帮我点一份黄焖鸡米饭', '下午不再饿着肚子写需求', '少写两个 off-by-one 的概率'],
     popular: true,
   },
   {
-    name: '长期支持',
-    amount: 100,
-    description: '成为长期支持者,享受全部赞助权益。',
-    benefits: ['一顿午餐 全部权益', '一对一技术咨询(每月 1 次)', '产品决策投票权', '限定周边赠品'],
+    name: '一杯咖啡',
+    amount: 50,
+    description: '深夜赶稿的灵魂燃料，清醒的脑子才配得上好文章。',
+    benefits: ['帮我买一杯大杯美式', '深夜 coding 续命两小时', '搞定那个想了三天的方案', '撑一周的服务器费用'],
     popular: false,
   },
 ]
@@ -130,8 +141,8 @@ const accordionValue = ref<string[]>([])
     </section>
 
     <!-- 套餐 -->
-    <section v-animate class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <section v-animate class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <Card
           v-for="tier in tiers"
           :key="tier.name"
@@ -176,9 +187,63 @@ const accordionValue = ref<string[]>([])
             <Button
               class="w-full cursor-pointer"
               :variant="tier.popular ? 'default' : 'outline'"
+              @click="openDonation(tier.amount)"
             >
               <Heart class="mr-1 h-3.5 w-3.5" />
               赞助 ¥{{ tier.amount }}
+            </Button>
+          </CardFooter>
+        </Card>
+
+        <!-- 自定义金额卡片 -->
+        <Card class="relative flex flex-col transition-all hover:border-primary/30 hover:shadow-md">
+          <CardHeader class="pb-3">
+            <CardTitle class="text-base">自定义金额</CardTitle>
+            <CardDescription>随心赞助，多少都是心意。</CardDescription>
+          </CardHeader>
+
+          <CardContent class="flex-1 pb-3">
+            <div class="mb-4 flex items-baseline gap-1">
+              <span class="text-3xl font-bold tracking-tight">¥</span>
+              <span class="text-sm text-muted-foreground">你说了算</span>
+            </div>
+
+            <ul class="mb-4 space-y-2">
+              <li class="flex items-start gap-2 text-sm">
+                <Check class="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                <span class="text-muted-foreground">金额由你定，心意无大小</span>
+              </li>
+              <li class="flex items-start gap-2 text-sm">
+                <Check class="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                <span class="text-muted-foreground">每一分都让我离梦想更近</span>
+              </li>
+              <li class="flex items-start gap-2 text-sm">
+                <Check class="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                <span class="text-muted-foreground">支持我继续写出好内容</span>
+              </li>
+            </ul>
+
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-muted-foreground">¥</span>
+              <Input
+                v-model="customAmount"
+                type="number"
+                min="1"
+                placeholder="输入金额"
+                class="h-8 flex-1"
+              />
+            </div>
+          </CardContent>
+
+          <CardFooter>
+            <Button
+              class="w-full cursor-pointer"
+              variant="outline"
+              :disabled="!customAmount || Number(customAmount) <= 0"
+              @click="openDonation(Number(customAmount))"
+            >
+              <Heart class="mr-1 h-3.5 w-3.5" />
+              赞助
             </Button>
           </CardFooter>
         </Card>
@@ -191,9 +256,7 @@ const accordionValue = ref<string[]>([])
     </section>
 
     <!-- 赞助者墙 -->
-    <section v-animate class="mx-auto max-w-6xl px-4 pb-12 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
-      <Separator class="mb-10" />
-
+    <section v-animate class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
       <SectionHeading
         eyebrow="Supporters"
         title="感谢赞助者"
@@ -249,5 +312,12 @@ const accordionValue = ref<string[]>([])
         </AccordionItem>
       </Accordion>
     </section>
+
+    <!-- 捐赠弹窗 -->
+    <DonationDialog
+      v-model:open="dialogOpen"
+      :amount="dialogAmount"
+      @submitted="(data) => console.log('捐赠提交:', data)"
+    />
   </div>
 </template>

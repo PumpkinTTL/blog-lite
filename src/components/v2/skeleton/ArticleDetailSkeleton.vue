@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card'
 </script>
 
 <template>
-  <div class="mx-auto max-w-6xl px-4 pt-16 pb-6 sm:px-6 sm:pt-20 lg:pt-24 lg:pb-10">
+  <div class="mx-auto max-w-6xl px-4 pt-8 pb-6 sm:px-6 sm:pt-10 lg:pt-12 lg:pb-10">
     <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
       <!-- 主栏 -->
       <div class="min-w-0 space-y-6">
