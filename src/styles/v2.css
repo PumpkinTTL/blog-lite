@@ -185,3 +185,80 @@
     transform: translateY(0) scale(1);
   }
 }
+
+/* ═══ v2 细腻入场动画（更慢、更柔，避免“傻快傻快”） ═══ */
+@keyframes v2-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes v2-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes v2-fade-left {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes v2-fade-right {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes v2-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.975) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* 动画工具类 */
+.v2-animate-up {
+  animation: v2-fade-up 0.68s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.v2-animate-in {
+  animation: v2-fade-in 0.58s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.v2-animate-left {
+  animation: v2-fade-left 0.68s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.v2-animate-right {
+  animation: v2-fade-right 0.68s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.v2-animate-scale {
+  animation: v2-scale-in 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 阶梯延迟 */
+.v2-delay-1 { animation-delay: 90ms; }
+.v2-delay-2 { animation-delay: 180ms; }
+.v2-delay-3 { animation-delay: 270ms; }
+.v2-delay-4 { animation-delay: 360ms; }
+.v2-delay-5 { animation-delay: 450ms; }
+.v2-delay-6 { animation-delay: 540ms; }
+.v2-delay-7 { animation-delay: 630ms; }
+.v2-delay-8 { animation-delay: 720ms; }

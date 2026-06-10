@@ -120,14 +120,31 @@ const onLeave = (el: Element, done: () => void) => {
   background: var(--bg);
 }
 
-/* v2 过渡动画 */
-.v2-fade-enter-active,
-.v2-fade-leave-active {
-  transition: opacity 0.15s ease;
+/* v2 过渡动画 — 淡入+微上移 */
+.v2-fade-enter-active {
+  animation: v2-route-in 0.46s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-.v2-fade-enter-from,
-.v2-fade-leave-to {
-  opacity: 0;
+.v2-fade-leave-active {
+  animation: v2-route-out 0.24s cubic-bezier(0.4, 0, 1, 1);
+}
+@keyframes v2-route-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes v2-route-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }
 </style>
