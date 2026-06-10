@@ -89,7 +89,7 @@ const featuredSourcePosts = computed(() => {
         </div>
 
         <!-- 侧栏 -->
-        <div class="hidden lg:block">
+        <div class="hidden lg:block v2-animate-right v2-delay-4">
           <div class="sticky top-20">
             <Sidebar :posts="allPosts" />
           </div>

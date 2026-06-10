@@ -16,7 +16,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section v-if="resources.length" class="mx-auto max-w-7xl px-4 pt-10 pb-4 sm:px-6 lg:px-8">
+  <section v-if="resources.length" class="mx-auto max-w-7xl px-4 pt-10 pb-4 sm:px-6 lg:px-8 v2-animate-up v2-delay-3">
     <!-- 标题区:SectionHeading 内置按钮 -->
     <div class="mb-6">
       <SectionHeading

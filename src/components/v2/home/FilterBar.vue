@@ -72,7 +72,7 @@ function onCategoryChange(value: string | number | boolean) {
   <!-- sentinel for stuck detection -->
   <div :ref="onSentinelRef" class="h-0" />
   <Card
-    class="sticky top-16 z-20 shadow-none transition-all duration-200"
+    class="sticky top-16 z-20 shadow-none transition-all duration-200 v2-animate-in"
     :class="isStuck ? 'rounded-t-none rounded-b-xl border-x-0 border-t-0 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.4)]' : 'rounded-xl'"
   >
     <!-- 顶栏:分类 + 搜索 + 排序 + 数量 -->
