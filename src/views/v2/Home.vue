@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { generateMockResources, type Resource } from '@/data/mockData'
 
 import FeaturedSection from '@/components/v2/home/FeaturedSection.vue'
@@ -9,7 +9,17 @@ import Sidebar from '@/components/v2/home/Sidebar.vue'
 import ResourceSection from '@/components/v2/home/ResourceSection.vue'
 import SectionHeading from '@/components/v2/common/SectionHeading.vue'
 
-const allPosts = ref<Resource[]>(generateMockResources(24))
+// 骨架屏
+import FeaturedSectionSkeleton from '@/components/v2/skeleton/FeaturedSectionSkeleton.vue'
+import FilterBarSkeleton from '@/components/v2/skeleton/FilterBarSkeleton.vue'
+import PostCardSkeleton from '@/components/v2/skeleton/PostCardSkeleton.vue'
+import PostListItemSkeleton from '@/components/v2/skeleton/PostListItemSkeleton.vue'
+import SidebarSkeleton from '@/components/v2/skeleton/SidebarSkeleton.vue'
+import ResourceSectionSkeleton from '@/components/v2/skeleton/ResourceSectionSkeleton.vue'
+import { Skeleton } from '@/components/ui/skeleton'
+
+const allPosts = ref<Resource[]>([])
+const loading = ref(true)
 
 const activeCategory = ref('全部')
 const activeTag = ref('')
@@ -51,10 +61,45 @@ const featuredSourcePosts = computed(() => {
   if (activeCategory.value === '全部') return allPosts.value
   return allPosts.value.filter(p => p.category === activeCategory.value)
 })
+
+onMounted(async () => {
+  // TODO: 替换为真实 API 调用
+  await new Promise(r => setTimeout(r, 600))
+  allPosts.value = generateMockResources(24)
+  loading.value = false
+})
 </script>
 
 <template>
-  <div>
+  <div v-if="loading">
+    <!-- 骨架屏 -->
+    <FeaturedSectionSkeleton />
+
+    <section class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+      <div class="grid gap-8 lg:grid-cols-[1fr_300px]">
+        <div class="min-w-0 space-y-5">
+          <div class="mb-5 space-y-1">
+            <Skeleton class="h-6 w-24" />
+            <Skeleton class="h-3.5 w-36" />
+          </div>
+          <FilterBarSkeleton />
+          <!-- 网格骨架 -->
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <PostCardSkeleton v-for="i in 6" :key="i" />
+          </div>
+        </div>
+        <div class="hidden lg:block">
+          <div class="sticky top-20">
+            <SidebarSkeleton />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <ResourceSectionSkeleton />
+  </div>
+
+  <div v-else>
     <!-- 精选(只在未选标签/未搜索时显示;按当前分类筛选;分类下文章 < 3 时隐藏避免尴尬) -->
     <FeaturedSection
       v-if="!activeTag && !searchQuery && featuredSourcePosts.length >= 3"

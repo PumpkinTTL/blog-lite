@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Heart, Check } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -12,6 +12,13 @@ import {
 } from '@/components/ui/accordion'
 import { Separator } from '@/components/ui/separator'
 import SectionHeading from '@/components/v2/common/SectionHeading.vue'
+import PageSkeleton from '@/components/v2/skeleton/PageSkeleton.vue'
+
+const loading = ref(true)
+onMounted(async () => {
+  await new Promise(r => setTimeout(r, 300))
+  loading.value = false
+})
 
 const tiers = [
   {
@@ -80,7 +87,8 @@ const accordionValue = ref<string[]>([])
 </script>
 
 <template>
-  <div>
+  <PageSkeleton v-if="loading" hero />
+  <div v-else>
     <!-- 标题区 -->
     <section v-animate class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 animate__animated animate__fadeInUp">
       <Card class="shadow-none rounded-xl p-5">

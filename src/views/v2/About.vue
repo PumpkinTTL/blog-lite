@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { Users, FileText, Eye, Mail, Github, MessageCircle, Star } from 'lucide-vue-next'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import SectionHeading from '@/components/v2/common/SectionHeading.vue'
+import PageSkeleton from '@/components/v2/skeleton/PageSkeleton.vue'
+
+const loading = ref(true)
+onMounted(async () => {
+  await new Promise(r => setTimeout(r, 300))
+  loading.value = false
+})
 
 const stats = [
   { label: '原创文章', value: '128', icon: FileText },
@@ -35,7 +43,8 @@ const milestones = [
 </script>
 
 <template>
-  <div>
+  <PageSkeleton v-if="loading" />
+  <div v-else>
   <!-- 标题区 -->
     <section v-animate class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 animate__animated animate__fadeInUp">
       <Card class="shadow-none rounded-xl p-5">

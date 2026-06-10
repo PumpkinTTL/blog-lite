@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { ShoppingBag, Star, Sparkles, Book, Wrench, Gift } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import SectionHeading from '@/components/v2/common/SectionHeading.vue'
+import PageSkeleton from '@/components/v2/skeleton/PageSkeleton.vue'
+
+const loading = ref(true)
+onMounted(async () => {
+  await new Promise(r => setTimeout(r, 300))
+  loading.value = false
+})
 
 interface Product {
   id: number
@@ -58,7 +65,8 @@ const badgeLabels: Record<string, string> = {
 </script>
 
 <template>
-  <div>
+  <PageSkeleton v-if="loading" />
+  <div v-else>
     <!-- 标题区 -->
     <section v-animate class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 animate__animated animate__fadeInUp">
       <SectionHeading

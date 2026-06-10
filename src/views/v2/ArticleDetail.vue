@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { articleList, getAdjacentArticles } from '@/data/articleMock'
+import ArticleDetailSkeleton from '@/components/v2/skeleton/ArticleDetailSkeleton.vue'
 import type { ArticleFull } from '@/data/articleMock'
 
 const route = useRoute()
@@ -29,6 +30,7 @@ const prevArticle = ref<{ id: string; title: string; cover: string; category: st
 const nextArticle = ref<{ id: string; title: string; cover: string; category: string } | null>(null)
 const mobileTocOpen = ref(false)
 const isMobile = ref(false)
+const loading = ref(true)
 // MdPreview 渲染完成后:目录数据(HeadList[])+ 自增版本号触发 TOC 重建 observer
 const catalogList = ref<HeadList[]>([])
 const catalogVersion = ref(0)
@@ -82,13 +84,17 @@ function onCatalogReady(list: HeadList[]) {
   catalogVersion.value += 1
 }
 
-function loadArticle() {
+async function loadArticle() {
+  loading.value = true
+  // TODO: 替换为真实 API 调用
+  await new Promise(r => setTimeout(r, 500))
   const id = route.params.id as string
   const found = articleList.find((a) => a.id === id)
   article.value = found ?? articleList[0] ?? null
   const { prev, next } = getAdjacentArticles(article.value?.id ?? id)
   prevArticle.value = prev
   nextArticle.value = next
+  loading.value = false
 }
 
 watch(() => route.path, () => {
@@ -112,7 +118,8 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <main class="mx-auto max-w-6xl px-4 pt-16 pb-6 sm:px-6 sm:pt-20 lg:pt-24 lg:pb-10">
-      <div v-if="article" class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
+      <ArticleDetailSkeleton v-if="loading" />
+      <div v-else-if="article" class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
         <!-- 主栏:editorial 内容自然填满主栏宽度 -->
         <div class="min-w-0">
           <div class="space-y-6">
@@ -171,9 +178,7 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- 加载状态 -->
-      <div v-else class="flex items-center justify-center py-20 text-muted-foreground">
-        <p class="text-sm">文章加载中...</p>
-      </div>
+      <ArticleDetailSkeleton v-else />
     </main>
 
     <!-- 移动端 TOC:shadcn Sheet 抽屉 -->
