@@ -3,6 +3,7 @@ import { ref, computed, watch, onUnmounted, nextTick } from 'vue'
 import {
   Heart, Copy, Check, ArrowRight, ArrowLeft,
   Wallet, QrCode, Minus, Plus,
+  CreditCard, User, MessageSquare, Ticket,
 } from 'lucide-vue-next'
 import {
   Dialog,
@@ -41,6 +42,7 @@ export interface DonationFormData {
 const step = ref(1)
 const totalSteps = 3
 const copied = ref(false)
+const voucherCopied = ref(false)
 const donationId = ref('')
 
 const form = ref<DonationFormData>({
@@ -99,11 +101,65 @@ function prevStep() {
 }
 
 function copyAddress() {
-  navigator.clipboard.writeText(currentAddress.value).then(() => {
-    copied.value = true
-    toast({ title: '已复制钱包地址', duration: 2000 })
-    setTimeout(() => { copied.value = false }, 2000)
-  })
+  if (copied.value) return
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(currentAddress.value).then(() => {
+        copied.value = true
+        toast({ title: '已复制钱包地址', duration: 2000 })
+      }).catch(() => {
+        fallbackCopyAddress()
+      })
+    } else {
+      fallbackCopyAddress()
+    }
+  } catch {
+    fallbackCopyAddress()
+  }
+}
+
+function fallbackCopyAddress() {
+  const ta = document.createElement('textarea')
+  ta.value = currentAddress.value
+  ta.style.cssText = 'position:fixed;opacity:0;left:-9999px'
+  document.body.appendChild(ta)
+  ta.focus()
+  ta.select()
+  document.execCommand('copy')
+  document.body.removeChild(ta)
+  copied.value = true
+  toast({ title: '已复制钱包地址', duration: 2000 })
+}
+
+function copyVoucher() {
+  if (voucherCopied.value) return
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(donationId.value).then(() => {
+        voucherCopied.value = true
+        toast({ title: '凭证已复制', duration: 2000 })
+      }).catch(() => {
+        fallbackCopyVoucher()
+      })
+    } else {
+      fallbackCopyVoucher()
+    }
+  } catch {
+    fallbackCopyVoucher()
+  }
+}
+
+function fallbackCopyVoucher() {
+  const ta = document.createElement('textarea')
+  ta.value = donationId.value
+  ta.style.cssText = 'position:fixed;opacity:0;left:-9999px'
+  document.body.appendChild(ta)
+  ta.focus()
+  ta.select()
+  document.execCommand('copy')
+  document.body.removeChild(ta)
+  voucherCopied.value = true
+  toast({ title: '凭证已复制', duration: 2000 })
 }
 
 /* ═══ 生成捐赠唯一凭证 ═══ */
@@ -187,6 +243,7 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
 <template>
   <Dialog :open="open" @update:open="emit('update:open', $event)">
     <DialogContent class="w-[calc(100%-2rem)] sm:w-full sm:max-w-[480px] max-h-[92vh] gap-0 p-0 overflow-y-auto rounded-lg">
+      <DialogDescription class="sr-only">捐赠弹窗</DialogDescription>
 
       <!-- ═══ 成功页 (step === 4) ═══ -->
       <template v-if="step === 4">
@@ -235,35 +292,50 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
           </div>
 
           <!-- 收据信息 -->
-          <div class="donation-success-detail mt-5 w-full rounded-xl bg-muted/30 px-4 py-3 text-left">
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] text-muted-foreground/60">支付方式</span>
+          <div class="donation-success-detail mt-5 w-full rounded-xl border border-border/40 bg-card overflow-hidden">
+            <div class="flex items-center justify-between border-b border-border/30 px-4 py-2.5">
+              <span class="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <CreditCard class="h-3 w-3" />
+                支付方式
+              </span>
               <span class="text-xs font-medium">{{ payMethodLabel }}</span>
             </div>
-            <div v-if="form.donorName" class="mt-1.5 flex items-center justify-between">
-              <span class="text-[11px] text-muted-foreground/60">赞助者</span>
+            <div v-if="form.donorName" class="flex items-center justify-between border-b border-border/30 px-4 py-2.5">
+              <span class="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <User class="h-3 w-3" />
+                赞助者
+              </span>
               <span class="text-xs font-medium">{{ form.donorName }}</span>
             </div>
-            <div v-if="form.message" class="mt-1.5 flex items-center justify-between">
-              <span class="text-[11px] text-muted-foreground/60">留言</span>
-              <span class="max-w-[160px] truncate text-xs font-medium">{{ form.message }}</span>
+            <div v-if="form.message" class="flex items-center justify-between border-b border-border/30 px-4 py-2.5">
+              <span class="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <MessageSquare class="h-3 w-3" />
+                留言
+              </span>
+              <span class="max-w-[180px] truncate text-xs font-medium">{{ form.message }}</span>
             </div>
-          </div>
-
-          <!-- 凭证 -->
-          <div class="donation-success-voucher mt-3 flex items-center gap-1.5">
-            <code class="font-mono text-[10px] text-muted-foreground/40">{{ donationId }}</code>
-            <button
-              type="button"
-              class="cursor-pointer text-muted-foreground/25 hover:text-foreground transition-colors"
-              @click="() => { navigator.clipboard.writeText(donationId); toast({ title: '已复制', duration: 1500 }) }"
-            >
-              <Copy class="h-2.5 w-2.5" />
-            </button>
+            <!-- 凭证 -->
+            <div class="flex items-center justify-between px-4 py-2.5">
+              <span class="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <Ticket class="h-3 w-3" />
+                捐赠凭证
+              </span>
+              <div class="flex items-center gap-1.5">
+                <code class="font-mono text-[10px] text-foreground/70 select-all">{{ donationId }}</code>
+                <button
+                  type="button"
+                  class="flex items-center gap-1 rounded-md border border-border/50 px-2 py-0.5 text-[10px] text-foreground/60 hover:text-foreground hover:border-border transition-colors cursor-pointer bg-background"
+                  @click="copyVoucher"
+                >
+                  <component :is="voucherCopied ? Check : Copy" class="h-3 w-3" />
+                  {{ voucherCopied ? '已复制' : '复制' }}
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- 完成按钮 -->
-          <Button class="donation-success-btn mt-6 cursor-pointer rounded-full px-10" @click="closeSuccess">
+          <Button class="donation-success-btn mt-6 w-full max-w-[220px] cursor-pointer rounded-full" @click="closeSuccess">
             完成
           </Button>
         </div>
@@ -622,10 +694,6 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
 
 .donation-success-detail {
   animation: success-fade-up 0.4s 0.34s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
-.donation-success-voucher {
-  animation: success-fade-up 0.4s 0.38s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .donation-success-btn {
