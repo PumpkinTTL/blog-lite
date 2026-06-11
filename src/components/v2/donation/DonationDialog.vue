@@ -63,9 +63,9 @@ watch(() => props.open, (v) => {
 
 // TODO: 从后端设置接口获取
 const walletAddresses: Record<string, string> = {
-  TRC20: 'TXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-  BSC: '0xYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY',
-  POL: '0xZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ',
+  TRC20: 'TJYeasTPa6gpVh7ZsAPDfnBrLaaTSE3qKr',
+  BSC: '0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18',
+  POL: '0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18',
 }
 
 const currentAddress = computed(() => walletAddresses[form.value.cryptoNetwork] ?? '')
@@ -78,12 +78,17 @@ const payMethods = [
 ]
 
 const networkOptions = [
-  { value: 'TRC20' as const, label: 'TRC20', color: '#EF0027', desc: 'Tron · USDT/TRX' },
-  { value: 'BSC' as const, label: 'BSC', color: '#F0B90B', desc: 'BNB Chain · BEP-20' },
-  { value: 'POL' as const, label: 'Polygon', color: '#8247E5', desc: 'MATIC / ERC-20' },
+  { value: 'TRC20' as const, label: 'TRC20', color: '#50AF95', desc: 'Tron · USDT/TRX', recommended: false },
+  { value: 'BSC' as const, label: 'BSC', color: '#F0B90B', desc: 'BNB Chain · BEP-20', recommended: true },
+  { value: 'POL' as const, label: 'Polygon', color: '#8247E5', desc: 'MATIC / ERC-20', recommended: true },
 ]
 
 const stepLabels = ['填写信息', '选择支付', '确认提交']
+
+const currentNetworkDesc = computed(() => networkOptions.find(n => n.value === form.value.cryptoNetwork)?.desc ?? '')
+
+const USDT_RATE = 7
+const usdtAmount = computed(() => (form.value.amount / USDT_RATE).toFixed(2))
 
 function nextStep() {
   if (step.value < totalSteps) step.value++
@@ -181,7 +186,7 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
 
 <template>
   <Dialog :open="open" @update:open="emit('update:open', $event)">
-    <DialogContent class="sm:max-w-[480px] gap-0 p-0 overflow-hidden">
+    <DialogContent class="w-[calc(100%-2rem)] sm:w-full sm:max-w-[480px] max-h-[92vh] gap-0 p-0 overflow-y-auto rounded-lg">
 
       <!-- ═══ 成功页 (step === 4) ═══ -->
       <template v-if="step === 4">
@@ -209,46 +214,56 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
           </div>
         </div>
 
-        <div class="relative flex flex-col items-center px-6 pt-10 pb-8">
-          <!-- 成功图标 -->
-          <div class="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30 donation-success-icon">
-            <Check class="h-7 w-7 text-emerald-600 dark:text-emerald-400" />
+        <div class="donation-success-page">
+          <!-- 礼炮 -->
+          <div class="donation-success-emoji text-6xl">🎉</div>
+
+          <!-- 金额突出 -->
+          <div class="donation-success-amount mt-4">
+            <span class="text-base text-primary/40">¥</span>
+            <span class="text-5xl font-extrabold tracking-tight text-primary">{{ form.amount }}</span>
           </div>
 
-          <!-- 感谢标题 -->
-          <h3 class="mt-4 text-lg font-bold tracking-tight donation-success-title">
-            赞助成功，感谢你的善意
-          </h3>
+          <!-- 标题 -->
+          <h3 class="donation-success-title mt-3 text-base font-bold">赞助成功</h3>
 
-          <!-- 感谢语 -->
-          <p class="mt-2 text-center text-sm text-muted-foreground leading-relaxed max-w-[300px] donation-success-desc">
-            世界千疮百孔，但总会有人缝缝补补——感谢你成为其中之一。
-          </p>
-
-          <!-- 金额 -->
-          <div class="mt-5 rounded-lg border bg-muted/30 px-6 py-3 text-center donation-success-amount">
-            <span class="text-xs text-muted-foreground">赞助金额</span>
-            <div class="mt-0.5 text-2xl font-bold">¥{{ form.amount }}</div>
+          <!-- 感谢语 — 多行有内容 -->
+          <div class="donation-success-desc mt-3 space-y-1.5 text-[13px] text-muted-foreground leading-relaxed">
+            <p>每一份支持，都是对创作的最大鼓励。</p>
+            <p>你的慷慨让这里变得更好，</p>
+            <p>感谢你选择成为这段旅程的一部分 ✨</p>
           </div>
 
-          <!-- 唯一凭证 -->
-          <div class="mt-3 rounded-md border bg-muted/20 px-4 py-2.5 text-center donation-success-voucher">
-            <span class="text-[10px] uppercase tracking-wider text-muted-foreground">捐赠凭证</span>
-            <div class="mt-0.5 flex items-center justify-center gap-1.5">
-              <code class="font-mono text-xs font-semibold tracking-wide">{{ donationId }}</code>
-              <Button
-                variant="ghost"
-                size="sm"
-                class="h-5 w-5 p-0 cursor-pointer"
-                @click="() => { navigator.clipboard.writeText(donationId); toast({ title: '凭证已复制', duration: 1500 }) }"
-              >
-                <Copy class="h-3 w-3" />
-              </Button>
+          <!-- 收据信息 -->
+          <div class="donation-success-detail mt-5 w-full rounded-xl bg-muted/30 px-4 py-3 text-left">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] text-muted-foreground/60">支付方式</span>
+              <span class="text-xs font-medium">{{ payMethodLabel }}</span>
+            </div>
+            <div v-if="form.donorName" class="mt-1.5 flex items-center justify-between">
+              <span class="text-[11px] text-muted-foreground/60">赞助者</span>
+              <span class="text-xs font-medium">{{ form.donorName }}</span>
+            </div>
+            <div v-if="form.message" class="mt-1.5 flex items-center justify-between">
+              <span class="text-[11px] text-muted-foreground/60">留言</span>
+              <span class="max-w-[160px] truncate text-xs font-medium">{{ form.message }}</span>
             </div>
           </div>
 
-          <!-- 关闭按钮 -->
-          <Button class="mt-6 w-full cursor-pointer donation-success-btn" @click="closeSuccess">
+          <!-- 凭证 -->
+          <div class="donation-success-voucher mt-3 flex items-center gap-1.5">
+            <code class="font-mono text-[10px] text-muted-foreground/40">{{ donationId }}</code>
+            <button
+              type="button"
+              class="cursor-pointer text-muted-foreground/25 hover:text-foreground transition-colors"
+              @click="() => { navigator.clipboard.writeText(donationId); toast({ title: '已复制', duration: 1500 }) }"
+            >
+              <Copy class="h-2.5 w-2.5" />
+            </button>
+          </div>
+
+          <!-- 完成按钮 -->
+          <Button class="donation-success-btn mt-6 cursor-pointer rounded-full px-10" @click="closeSuccess">
             完成
           </Button>
         </div>
@@ -257,82 +272,60 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
       <!-- ═══ 正常步骤页 (step 1-3) ═══ -->
       <template v-else>
         <!-- 头部 -->
-        <div class="px-6 pt-5 pb-3">
-          <DialogTitle class="flex items-center gap-2 text-base font-semibold">
-            <Heart class="h-4 w-4 text-primary" />
-            赞助支持
-          </DialogTitle>
-          <DialogDescription class="mt-1 text-xs text-muted-foreground">
-            第 {{ step }} 步 / 共 {{ totalSteps }} 步 · {{ stepLabels[step - 1] }}
-          </DialogDescription>
-
-          <!-- 步骤条 -->
-          <div class="mt-4 flex items-center gap-2">
+        <div class="pr-8 pl-4 pt-4 pb-2 sm:px-7 sm:pt-6 sm:pb-4">
+          <DialogTitle class="text-base font-semibold">赞助支持</DialogTitle>
+          <div class="mt-1.5 sm:mt-2 flex items-center gap-1.5 sm:gap-2">
             <template v-for="i in totalSteps" :key="i">
               <div
-                class="h-1 flex-1 rounded-full transition-all duration-300"
-                :class="i < step ? 'bg-primary' : i === step ? 'bg-primary/60' : 'bg-muted'"
-              />
+                class="flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full text-[9px] sm:text-[10px] font-medium transition-all duration-300"
+                :class="i < step
+                  ? 'bg-primary text-primary-foreground'
+                  : i === step
+                    ? 'bg-primary/15 text-primary ring-1 ring-primary/30'
+                    : 'bg-muted text-muted-foreground'"
+              >{{ i }}</div>
+              <div v-if="i < totalSteps" class="h-px flex-1 bg-border/50" />
             </template>
+            <span class="ml-1 text-[10px] sm:text-[11px] text-muted-foreground">{{ stepLabels[step - 1] }}</span>
           </div>
         </div>
 
-        <Separator />
+        <Separator class="opacity-50" />
 
         <!-- 内容区 -->
-        <div class="px-6 py-5 min-h-[320px]">
+        <div class="donation-step-content overflow-y-auto px-4 py-3 sm:px-7 sm:py-5">
 
           <!-- Step 1: 基本信息 -->
-          <div v-if="step === 1" class="space-y-4">
-            <div class="space-y-1.5">
-              <label for="donor-name" class="text-xs font-medium text-muted-foreground">昵称（选填）</label>
-              <Input
-                id="donor-name"
-                v-model="form.donorName"
-                placeholder="你的昵称"
-                maxlength="50"
-              />
-            </div>
-
-            <div class="space-y-1.5">
-              <label for="donor-email" class="text-xs font-medium text-muted-foreground">邮箱（选填）</label>
-              <Input
-                id="donor-email"
-                v-model="form.donorEmail"
-                type="email"
-                placeholder="your@email.com"
-              />
-            </div>
-
-            <div class="space-y-1.5">
-              <label for="donor-amount" class="text-xs font-medium text-muted-foreground">
+          <div v-if="step === 1" class="space-y-5">
+            <div class="space-y-2">
+              <label for="donor-amount" class="text-xs font-medium text-foreground/70">
                 赞助金额 <span class="text-primary">*</span>
               </label>
               <div class="flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="icon"
-                  class="h-9 w-9 shrink-0 cursor-pointer"
+                  class="h-9 w-9 shrink-0 cursor-pointer rounded-lg"
                   :disabled="form.amount <= 1 || (amount != null && amount > 0)"
                   @click="form.amount = Math.max(1, form.amount - 1)"
                 >
                   <Minus class="h-3.5 w-3.5" />
                 </Button>
                 <div class="relative flex-1">
-                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">¥</span>
+                  <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">¥</span>
                   <Input
                     id="donor-amount"
                     v-model.number="form.amount"
                     type="number"
                     min="1"
-                    class="h-9 pl-7 text-center font-semibold"
+                    class="h-10 pl-8 text-center text-base font-semibold"
                     :disabled="amount != null && amount > 0"
                   />
                 </div>
                 <Button
                   variant="outline"
                   size="icon"
-                  class="h-9 w-9 shrink-0 cursor-pointer"
+                  class="h-9 w-9 shrink-0 cursor-pointer rounded-lg"
                   :disabled="amount != null && amount > 0"
                   @click="form.amount = form.amount + 1"
                 >
@@ -341,8 +334,18 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
               </div>
             </div>
 
-            <div class="space-y-1.5">
-              <label for="donor-message" class="text-xs font-medium text-muted-foreground">留言（选填）</label>
+            <div class="space-y-2">
+              <label for="donor-name" class="text-xs font-medium text-foreground/70">联系方式<span class="ml-1 text-[10px] font-normal text-muted-foreground/50">选填</span></label>
+              <Input
+                id="donor-name"
+                v-model="form.donorName"
+                placeholder="昵称 / 邮箱 / TG"
+                maxlength="50"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label for="donor-message" class="text-xs font-medium text-foreground/70">留言<span class="ml-1 text-[10px] font-normal text-muted-foreground/50">选填</span></label>
               <Input
                 id="donor-message"
                 v-model="form.message"
@@ -354,17 +357,17 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
 
           <!-- Step 2: 支付方式 -->
           <div v-if="step === 2" class="space-y-5">
-            <div class="space-y-2">
-              <label class="text-xs font-medium text-muted-foreground">选择支付方式</label>
-              <div class="grid grid-cols-3 gap-2">
+            <div class="space-y-2.5">
+              <label class="text-xs font-medium text-foreground/70">选择支付方式</label>
+              <div class="grid grid-cols-3 gap-2.5">
                 <button
                   v-for="m in payMethods"
                   :key="m.value"
                   type="button"
-                  class="relative flex flex-col items-center gap-1.5 rounded-lg border p-3 transition-all cursor-pointer"
+                  class="donation-pay-btn relative flex flex-col items-center gap-2 rounded-xl border p-3.5 transition-all cursor-pointer"
                   :class="form.payMethod === m.value
-                    ? 'border-primary bg-primary/5 shadow-sm'
-                    : 'hover:border-primary/30 hover:shadow-sm'"
+                    ? 'border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20'
+                    : 'border-border/60 hover:border-primary/30 hover:shadow-sm'"
                   @click="form.payMethod = m.value"
                 >
                   <!-- Bitcoin icon -->
@@ -382,7 +385,7 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
             <!-- 微信 / 支付宝 -->
             <div v-if="form.payMethod !== 'crypto'" class="space-y-3">
               <div class="flex justify-center">
-                <div class="flex h-40 w-40 items-center justify-center rounded-xl border border-dashed bg-muted/30">
+                <div class="flex h-40 w-40 items-center justify-center rounded-xl border border-dashed border-border/50 bg-muted/20">
                   <div class="text-center text-muted-foreground">
                     <QrCode class="mx-auto h-7 w-7" />
                     <p class="mt-1.5 text-[11px]">{{ form.payMethod === 'wechat' ? '微信' : '支付宝' }}收款码</p>
@@ -395,79 +398,105 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
             </div>
 
             <!-- 加密货币 -->
-            <div v-if="form.payMethod === 'crypto'" class="space-y-4">
-              <div class="space-y-2">
-                <label class="text-xs font-medium text-muted-foreground">选择网络</label>
-                <div class="grid grid-cols-3 gap-2">
+            <div v-if="form.payMethod === 'crypto'" class="space-y-5">
+              <!-- 网络选择 -->
+              <div class="space-y-2.5">
+                <label class="text-xs font-medium text-foreground/70">选择网络</label>
+                <div class="flex flex-wrap items-center gap-2">
                   <button
                     v-for="net in networkOptions"
                     :key="net.value"
                     type="button"
-                    class="flex flex-col items-center gap-1 rounded-lg border p-2.5 transition-all cursor-pointer"
+                    class="flex items-center gap-1.5 rounded-lg border px-3 py-1.5 transition-all cursor-pointer"
                     :class="form.cryptoNetwork === net.value
-                      ? 'border-primary bg-primary/5 shadow-sm'
-                      : 'hover:border-primary/30 hover:shadow-sm'"
+                      ? 'border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20'
+                      : 'border-border/60 hover:border-primary/30'"
                     @click="form.cryptoNetwork = net.value"
                   >
-                    <!-- Tether (TRC20) -->
-                    <svg v-if="net.value === 'TRC20'" class="h-5 w-5" viewBox="0 0 24 24" fill="#50AF95"><path d="M18.7538 10.5176c0 .6251-2.2379 1.1483-5.2381 1.2812l.0028.0007c-.0848.0064-.5233.0325-1.5012.0325-.7778 0-1.33-.0233-1.5237-.0325-3.0059-.1322-5.2495-.6555-5.2495-1.2819s2.2436-1.149 5.2495-1.2834v2.0442c.1965.0142.7594.0474 1.5372.0474.9334 0 1.4008-.0389 1.4849-.0466V9.2356c2.9994.1337 5.2381.657 5.2381 1.282zm5.19.5466L12.1248 22.389a.1803.1803 0 0 1-.2496 0L.0562 11.0635a.1781.1781 0 0 1-.0382-.2079l4.3762-9.1921a.1767.1767 0 0 1 .1626-.1026h14.8878a.1768.1768 0 0 1 .1612.1032l4.3762 9.1922a.1782.1782 0 0 1-.0382.2079zm-4.478-.4038c0-.8068-2.5515-1.4799-5.9473-1.6369V7.195h4.186V4.4055H6.3076V7.195h4.1852v1.8286c-3.4018.1562-5.9601.83-5.9601 1.6376 0 .8075 2.5583 1.4806 5.9601 1.6376v5.8618h3.025v-5.8639c3.394-.1563 5.948-.8295 5.948-1.6363z"/></svg>
-                    <!-- BNB Chain -->
-                    <svg v-else-if="net.value === 'BSC'" class="h-5 w-5" viewBox="0 0 24 24" fill="#F0B90B"><path d="M5.631 3.676 12.001 0l6.367 3.676-2.34 1.358L12 2.716 7.972 5.034l-2.34-1.358Zm12.737 4.636-2.34-1.358L12 9.272 7.972 6.954l-2.34 1.358v2.716l4.026 2.318v4.636L12 19.341l2.341-1.359v-4.636l4.027-2.318V8.312Zm0 7.352v-2.716l-2.34 1.358v2.716l2.34-1.358Zm1.663.96-4.027 2.318v2.717l6.368-3.677V10.63l-2.34 1.358v4.636Zm-2.34-10.63 2.34 1.358v2.716l2.341-1.358V5.994l-2.34-1.358-2.342 1.358ZM9.657 19.926v2.716L12 24l2.341-1.358v-2.716l-2.34 1.358-2.343-1.358Zm-4.027-4.262 2.341 1.358v-2.716l-2.34-1.358v2.716Zm4.027-9.67L12 7.352l2.341-1.358-2.34-1.358-2.343 1.358Zm-5.69 1.358L6.31 5.994 3.968 4.636l-2.34 1.358V8.71l2.34 1.358V7.352Zm0 4.636-2.34-1.358v7.352l6.368 3.677v-2.717l-4.028-2.318v-4.636Z"/></svg>
-                    <!-- Polygon -->
-                    <svg v-else class="h-5 w-5" viewBox="0 0 24 24" fill="#7B3FE4"><path d="m17.82 16.342 5.692-3.287A.98.98 0 0 0 24 12.21V5.635a.98.98 0 0 0-.488-.846l-5.693-3.286a.98.98 0 0 0-.977 0L11.15 4.789a.98.98 0 0 0-.489.846v11.747L6.67 19.686l-3.992-2.304v-4.61l3.992-2.304 2.633 1.52V8.896L7.158 7.658a.98.98 0 0 0-.977 0L.488 10.945a.98.98 0 0 0-.488.846v6.573a.98.98 0 0 0 .488.847l5.693 3.286a.981.981 0 0 0 .977 0l5.692-3.286a.98.98 0 0 0 .489-.846V6.618l.072-.041 3.92-2.263 3.99 2.305v4.609l-3.99 2.304-2.63-1.517v3.092l2.14 1.236a.981.981 0 0 0 .978 0v-.001Z"/></svg>
+                    <svg v-if="net.value === 'TRC20'" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="#50AF95"><path d="M18.7538 10.5176c0 .6251-2.2379 1.1483-5.2381 1.2812l.0028.0007c-.0848.0064-.5233.0325-1.5012.0325-.7778 0-1.33-.0233-1.5237-.0325-3.0059-.1322-5.2495-.6555-5.2495-1.2819s2.2436-1.149 5.2495-1.2834v2.0442c.1965.0142.7594.0474 1.5372.0474.9334 0 1.4008-.0389 1.4849-.0466V9.2356c2.9994.1337 5.2381.657 5.2381 1.282zm5.19.5466L12.1248 22.389a.1803.1803 0 0 1-.2496 0L.0562 11.0635a.1781.1781 0 0 1-.0382-.2079l4.3762-9.1921a.1767.1767 0 0 1 .1626-.1026h14.8878a.1768.1768 0 0 1 .1612.1032l4.3762 9.1922a.1782.1782 0 0 1-.0382.2079zm-4.478-.4038c0-.8068-2.5515-1.4799-5.9473-1.6369V7.195h4.186V4.4055H6.3076V7.195h4.1852v1.8286c-3.4018.1562-5.9601.83-5.9601 1.6376 0 .8075 2.5583 1.4806 5.9601 1.6376v5.8618h3.025v-5.8639c3.394-.1563 5.948-.8295 5.948-1.6363z"/></svg>
+                    <svg v-else-if="net.value === 'BSC'" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="#F0B90B"><path d="M5.631 3.676 12.001 0l6.367 3.676-2.34 1.358L12 2.716 7.972 5.034l-2.34-1.358Zm12.737 4.636-2.34-1.358L12 9.272 7.972 6.954l-2.34 1.358v2.716l4.026 2.318v4.636L12 19.341l2.341-1.359v-4.636l4.027-2.318V8.312Zm0 7.352v-2.716l-2.34 1.358v2.716l2.34-1.358Zm1.663.96-4.027 2.318v2.717l6.368-3.677V10.63l-2.34 1.358v4.636Zm-2.34-10.63 2.34 1.358v2.716l2.341-1.358V5.994l-2.34-1.358-2.342 1.358ZM9.657 19.926v2.716L12 24l2.341-1.358v-2.716l-2.34 1.358-2.343-1.358Zm-4.027-4.262 2.341 1.358v-2.716l-2.34-1.358v2.716Zm4.027-9.67L12 7.352l2.341-1.358-2.34-1.358-2.343 1.358Zm-5.69 1.358L6.31 5.994 3.968 4.636l-2.34 1.358V8.71l2.34 1.358V7.352Zm0 4.636-2.34-1.358v7.352l6.368 3.677v-2.717l-4.028-2.318v-4.636Z"/></svg>
+                    <svg v-else class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="#7B3FE4"><path d="m17.82 16.342 5.692-3.287A.98.98 0 0 0 24 12.21V5.635a.98.98 0 0 0-.488-.846l-5.693-3.286a.98.98 0 0 0-.977 0L11.15 4.789a.98.98 0 0 0-.489.846v11.747L6.67 19.686l-3.992-2.304v-4.61l3.992-2.304 2.633 1.52V8.896L7.158 7.658a.98.98 0 0 0-.977 0L.488 10.945a.98.98 0 0 0-.488.846v6.573a.98.98 0 0 0 .488.847l5.693 3.286a.981.981 0 0 0 .977 0l5.692-3.286a.98.98 0 0 0 .489-.846V6.618l.072-.041 3.92-2.263 3.99 2.305v4.609l-3.99 2.304-2.63-1.517v3.092l2.14 1.236a.981.981 0 0 0 .978 0v-.001Z"/></svg>
                     <span class="text-[11px] font-medium">{{ net.label }}</span>
-                    <span class="text-[10px] text-muted-foreground leading-tight">{{ net.desc }}</span>
+                    <span v-if="net.recommended" class="rounded bg-primary/10 px-1 py-px text-[8px] font-medium text-primary">推荐</span>
                   </button>
                 </div>
               </div>
 
-              <div class="space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <label class="text-xs font-medium text-muted-foreground">收款地址</label>
-                  <Button variant="ghost" size="sm" class="h-6 gap-1 px-1.5 text-[11px] cursor-pointer" @click="copyAddress">
-                    <component :is="copied ? Check : Copy" class="h-3 w-3" />
-                    {{ copied ? '已复制' : '复制' }}
-                  </Button>
+              <!-- 支付信息卡片 -->
+              <div class="rounded-xl border border-border/50 bg-card overflow-hidden text-xs sm:text-sm">
+                <!-- 顶栏：金额 -->
+                <div class="flex items-center justify-between border-b border-border/30 px-3 py-2 sm:px-4 sm:py-2.5">
+                  <span class="text-[10px] sm:text-[11px] text-muted-foreground">转账金额</span>
+                  <div class="text-right">
+                    <span class="text-xs sm:text-sm font-bold tracking-tight">¥{{ form.amount }}</span>
+                    <span class="ml-1.5 text-[10px] sm:text-[11px] text-primary/70 font-medium">≈ ${{ usdtAmount }} USDT</span>
+                  </div>
                 </div>
-                <div class="rounded-md bg-muted/50 p-2.5">
-                  <p class="break-all font-mono text-[11px] leading-relaxed">{{ currentAddress }}</p>
+                <!-- 主体：移动端上下，桌面端左右 -->
+                <div class="flex flex-col sm:flex-row gap-2.5 sm:gap-4 p-3 sm:p-4">
+                  <!-- 左：地址 + 警告 -->
+                  <div class="flex min-w-0 flex-1 flex-col">
+                    <div class="flex items-center justify-between">
+                      <span class="text-[10px] sm:text-[11px] font-medium text-foreground/60">{{ form.cryptoNetwork }} 收款地址</span>
+                      <button
+                        type="button"
+                        class="flex items-center gap-1 rounded-md border border-border/50 px-2 py-0.5 text-[10px] text-foreground/60 hover:text-foreground hover:border-border transition-colors cursor-pointer bg-background"
+                        @click="copyAddress"
+                      >
+                        <component :is="copied ? Check : Copy" class="h-3 w-3" />
+                        {{ copied ? '已复制' : '复制' }}
+                      </button>
+                    </div>
+                    <div class="mt-1.5 rounded-lg bg-muted/30 p-2 sm:p-2.5">
+                      <p class="break-all font-mono text-[9px] sm:text-[10px] leading-relaxed select-all">{{ currentAddress }}</p>
+                    </div>
+                    <div class="mt-2 rounded-md border border-amber-500/20 bg-amber-500/8 px-2.5 py-1.5">
+                      <p class="text-[10px] sm:text-[11px] leading-relaxed text-amber-600 dark:text-amber-400 font-medium">
+                        ⚠ 仅限 {{ currentNetworkDesc }} 资产，其他网络无法到账。
+                      </p>
+                    </div>
+                  </div>
+                  <!-- 右：二维码 -->
+                  <div class="flex h-20 w-20 sm:h-[132px] sm:w-[132px] shrink-0 mx-auto sm:mx-0 items-center justify-center rounded-lg bg-muted/20">
+                    <div class="text-center text-muted-foreground/40">
+                      <QrCode class="mx-auto h-4 w-4 sm:h-6 sm:w-6" />
+                      <p class="mt-0.5 sm:mt-1 text-[8px] sm:text-[9px]">扫码</p>
+                    </div>
+                  </div>
                 </div>
-                <p class="text-[11px] text-muted-foreground">
-                  转账 <span class="font-medium text-foreground">¥{{ form.amount }}</span> 等值的加密货币，完成后在下一步填写交易哈希。
-                </p>
               </div>
             </div>
           </div>
 
           <!-- Step 3: 确认 -->
           <div v-if="step === 3" class="space-y-5">
-            <div class="rounded-lg border divide-y">
-              <div class="flex justify-between px-3.5 py-2.5">
-                <span class="text-xs text-muted-foreground">昵称</span>
-                <span class="text-xs font-medium">{{ form.donorName || '匿名' }}</span>
+            <div class="rounded-xl border border-border/60 divide-y divide-border/40">
+              <div class="flex justify-between px-4 py-3">
+                <span class="text-xs text-muted-foreground/60">联系方式</span>
+                <span class="text-xs font-medium">{{ form.donorName || '未填写' }}</span>
               </div>
-              <div class="flex justify-between px-3.5 py-2.5">
-                <span class="text-xs text-muted-foreground">金额</span>
+              <div class="flex justify-between px-4 py-3">
+                <span class="text-xs text-muted-foreground/60">金额</span>
                 <span class="text-xs font-semibold">¥{{ form.amount }}</span>
               </div>
-              <div class="flex justify-between px-3.5 py-2.5">
-                <span class="text-xs text-muted-foreground">支付方式</span>
+              <div class="flex justify-between px-4 py-3">
+                <span class="text-xs text-muted-foreground/60">支付方式</span>
                 <span class="text-xs font-medium">{{ payMethodLabel }}</span>
               </div>
-              <div v-if="form.payMethod === 'crypto'" class="flex justify-between px-3.5 py-2.5">
-                <span class="text-xs text-muted-foreground">网络</span>
+              <div v-if="form.payMethod === 'crypto'" class="flex justify-between px-4 py-3">
+                <span class="text-xs text-muted-foreground/60">网络</span>
                 <span class="text-xs font-medium">{{ form.cryptoNetwork }}</span>
               </div>
-              <div v-if="form.message" class="flex justify-between px-3.5 py-2.5">
-                <span class="text-xs text-muted-foreground">留言</span>
+              <div v-if="form.message" class="flex justify-between px-4 py-3">
+                <span class="text-xs text-muted-foreground/60">留言</span>
                 <span class="max-w-[180px] truncate text-xs font-medium">{{ form.message }}</span>
               </div>
             </div>
 
-            <div v-if="form.payMethod === 'crypto'" class="space-y-1.5">
-              <label class="text-xs font-medium text-muted-foreground">
+            <div v-if="form.payMethod === 'crypto'" class="space-y-2">
+              <label class="text-xs font-medium text-foreground/70">
                 <Wallet class="mr-1 inline h-3 w-3" />
-                交易哈希<span class="ml-0.5 text-[10px] font-normal text-muted-foreground/60">选填</span>
+                交易哈希<span class="ml-1 text-[10px] font-normal text-muted-foreground/50">选填</span>
               </label>
               <Input
                 v-model="form.cryptoTxHash"
@@ -479,17 +508,17 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
               </p>
             </div>
 
-            <div v-else class="rounded-md bg-muted/40 px-3.5 py-3 text-center">
+            <div v-else class="rounded-lg bg-muted/30 px-4 py-3 text-center">
               <p class="text-xs text-muted-foreground">请确认已完成扫码支付</p>
-              <p class="mt-0.5 text-[11px] text-muted-foreground">提交后我们会人工核实到账情况</p>
+              <p class="mt-0.5 text-[11px] text-muted-foreground/60">提交后我们会人工核实到账情况</p>
             </div>
           </div>
         </div>
 
-        <Separator />
+        <Separator class="opacity-50" />
 
         <!-- 底部按钮 -->
-        <div class="flex items-center justify-between px-6 py-4">
+        <div class="flex items-center justify-between px-4 py-2.5 sm:px-7 sm:py-4">
           <Button
             v-if="step > 1"
             variant="ghost"
@@ -505,7 +534,7 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
           <Button
             v-if="step < totalSteps"
             size="sm"
-            class="cursor-pointer"
+            class="cursor-pointer rounded-lg"
             :disabled="!canNext"
             @click="nextStep"
           >
@@ -515,7 +544,7 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
           <Button
             v-else
             size="sm"
-            class="cursor-pointer"
+            class="cursor-pointer rounded-lg"
             @click="handleSubmit"
           >
             <Heart class="mr-1 h-3.5 w-3.5 fill-current" />
@@ -545,11 +574,19 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
   animation: confetti-fall cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-/* ═══ 成功页入场动画 ═══ */
-@keyframes success-pop {
-  0% { transform: scale(0.5); opacity: 0; }
-  60% { transform: scale(1.15); }
-  100% { transform: scale(1); opacity: 1; }
+/* ═══ 成功页 ═══ */
+.donation-success-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1.5rem 1.5rem;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .donation-success-page {
+    padding: 2.5rem 2rem 2rem;
+  }
 }
 
 @keyframes success-fade-up {
@@ -557,27 +594,41 @@ const payMethodLabel = computed(() => payMethods.find(m => m.value === form.valu
   to { opacity: 1; transform: translateY(0); }
 }
 
-.donation-success-icon {
-  animation: success-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+.donation-success-emoji {
+  display: inline-block;
+  animation: success-bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-.donation-success-title {
-  animation: success-fade-up 0.5s 0.15s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
-.donation-success-desc {
-  animation: success-fade-up 0.5s 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+@keyframes success-bounce {
+  0% { transform: scale(0.3) rotate(-15deg); opacity: 0; }
+  60% { transform: scale(1.15) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
 .donation-success-amount {
-  animation: success-fade-up 0.5s 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  animation: success-fade-up 0.4s 0.15s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.donation-success-title {
+  animation: success-fade-up 0.4s 0.22s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.donation-success-desc {
+  animation: success-fade-up 0.4s 0.28s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.donation-success-detail {
+  animation: success-fade-up 0.4s 0.34s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .donation-success-voucher {
-  animation: success-fade-up 0.5s 0.42s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: success-fade-up 0.4s 0.38s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .donation-success-btn {
-  animation: success-fade-up 0.5s 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: success-fade-up 0.4s 0.44s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 </style>
